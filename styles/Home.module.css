@@ -120,3 +120,8 @@
     flex-direction: column;
   }
 }
+
+.inlineCode::before,
+.inlineCode::after {
+  content: '`';
+}
