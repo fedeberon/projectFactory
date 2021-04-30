@@ -1,8 +1,14 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
 const Code = (p) => <code className={styles.inlineCode} {...p} />
 function Home() {
+// const Home = () => {
 
+  const { t } = useTranslation('common');
+  
   return (
     <div className={styles.container}>
       <Head>
@@ -12,7 +18,7 @@ function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to {process.env.NEXT_PUBLIC_PROJECT_NAME}
+        {t('Welcome')} to {process.env.NEXT_PUBLIC_PROJECT_NAME}
         </h1>
 
         <p className={styles.description}>
@@ -65,18 +71,10 @@ function Home() {
   )
 }
 
-// `getStaticProps`, and similar Next.js methods like `getStaticPaths` and `getServerSideProps`
-// only run in Node.js. Check the terminal to see the environment variables
-export async function getStaticProps() {
-  // Using the variables below in the browser will return `undefined`. Next.js doesn't
-  // expose environment variables unless they start with `NEXT_PUBLIC_`
-  console.log('[Node.js only] ENV_VARIABLE:', process.env.HOST)
-  console.log(
-      '[Node.js only] ENV_LOCAL_VARIABLE:',
-      process.env.DB
-  )
-
-  return { props: {} }
-}
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common']),
+  },
+})
 
 export default Home;
