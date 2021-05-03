@@ -23,6 +23,30 @@ export default NextAuth({
     // ...add more providers here
   ],
 
+  callbacks: {
+    /**
+     * @param  {object} user     User object
+     * @param  {object} account  Provider account
+     * @param  {object} profile  Provider profile 
+     * @return {boolean|string}  Return `true` to allow sign in
+     *                           Return `false` to deny access
+     *                           Return `string` to redirect to (eg.: "/unauthorized")
+     */
+    async signIn(user, account, profile) {
+      const isAllowedToSignIn = true
+      if (isAllowedToSignIn) {
+        console.log("Entro bien");
+        console.log(user);
+        return true
+      } else {
+        // Return false to display a default error message
+        return false
+        // Or you can return a URL to redirect to:
+        // return '/unauthorized'
+      }
+    }
+  },
+
   // A database is optional, but required to persist accounts in a database
   database: process.env.DATABASE_URL,
 });
