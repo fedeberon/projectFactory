@@ -1,6 +1,10 @@
 import React from "react";
 import { signIn, signOut, useSession } from "next-auth/client";
 
+/**
+ * Login and logout component when user wants to use Facebook or Instagram or Google account.
+ * @returns template html with login and logout.
+ */
 const Authentication = () => {
   const [session, loading] = useSession();
 

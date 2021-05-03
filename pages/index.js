@@ -5,7 +5,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Authentication from '../components/Authentication';
 
 const Code = (p) => <code className={styles.inlineCode} {...p} />
-// function Home() {
+
 const Home = () => {
 
   const { t } = useTranslation('common');
