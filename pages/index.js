@@ -3,6 +3,7 @@ import styles from '../styles/Home.module.css';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Authentication from '../components/Authentication';
+import Header from '../components/Header';
 
 const Code = (p) => <code className={styles.inlineCode} {...p} />
 
@@ -12,6 +13,7 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
+      <Header lang={lang} />
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
@@ -26,8 +28,6 @@ const Home = () => {
           Get started by editing{" "}
           <code className={styles.code}>pages/index.js</code>
         </p>
-
-        <NavBar lang={lang} />
 
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
