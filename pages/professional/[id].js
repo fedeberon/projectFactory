@@ -1,11 +1,16 @@
-import React from 'react'
+import React from "react";
+import { useRouter } from "next/router";
 
 const ProfessionalDetail = () => {
-    return (
-        <div>
-            <h1>Professional ID</h1>
-        </div>
-    )
-}
+  const router = useRouter();
+  const { id } = router.query;
+  
+  return (
+    <div>
+      <h1>Professional ID</h1>
+      <p>Post: {id}</p>
+    </div>
+  );
+};
 
 export default ProfessionalDetail;
