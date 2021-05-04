@@ -1,12 +1,12 @@
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import NavBar from "../components/NavBar";
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import Authentication from '../components/Authentication';
 
-const Code = (p) => <code className={styles.inlineCode} {...p} />;
+const Code = (p) => <code className={styles.inlineCode} {...p} />
 
-function Home() {
+const Home = () => {
 
   const { t, lang } = useTranslation("common");
 
@@ -16,8 +16,8 @@ function Home() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main className={styles.main}>
+        <Authentication />
         <h1 className={styles.title}>
           {t("Welcome")} to {process.env.NEXT_PUBLIC_PROJECT_NAME}
         </h1>
