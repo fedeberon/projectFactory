@@ -8,8 +8,8 @@ const Code = (p) => <code className={styles.inlineCode} {...p} />
 
 const Home = () => {
 
-  const { t } = useTranslation('common');
-  
+  const { t, lang } = useTranslation("common");
+
   return (
     <div className={styles.container}>
       <Head>
@@ -19,13 +19,15 @@ const Home = () => {
       <main className={styles.main}>
         <Authentication />
         <h1 className={styles.title}>
-        {t('Welcome')} to {process.env.NEXT_PUBLIC_PROJECT_NAME}
+          {t("Welcome")} to {process.env.NEXT_PUBLIC_PROJECT_NAME}
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.js</code>
         </p>
+
+        <NavBar lang={lang} />
 
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
@@ -64,18 +66,18 @@ const Home = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
         </a>
       </footer>
     </div>
-  )
+  );
 }
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['common']),
+    ...(await serverSideTranslations(locale, ["common"])),
   },
-})
+});
 
 export default Home;
