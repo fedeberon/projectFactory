@@ -2,27 +2,30 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import Authentication from '../components/Authentication';
+import Header from '../components/Header';
 
 const Code = (p) => <code className={styles.inlineCode} {...p} />
-function Home() {
-// const Home = () => {
 
-  const { t } = useTranslation('common');
-  
+const Home = () => {
+
+  const { t, lang } = useTranslation("common");
+
   return (
     <div className={styles.container}>
+      <Header lang={lang} />
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main className={styles.main}>
+        <Authentication />
         <h1 className={styles.title}>
-        {t('Welcome')} to {process.env.NEXT_PUBLIC_PROJECT_NAME}
+          {t("Welcome")} to {process.env.NEXT_PUBLIC_PROJECT_NAME}
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.js</code>
         </p>
 
@@ -63,18 +66,18 @@ function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
         </a>
       </footer>
     </div>
-  )
+  );
 }
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['common']),
+    ...(await serverSideTranslations(locale, ["common"])),
   },
-})
+});
 
 export default Home;
