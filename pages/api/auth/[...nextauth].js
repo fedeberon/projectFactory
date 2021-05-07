@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import { addUser } from "../../../services/userService";
-
+import { signInCallBack } from "../../../services/userService";
 
 /**
  * This implement is on site:
@@ -35,18 +34,11 @@ export default NextAuth({
      *                           Return `string` to redirect to (eg.: "/unauthorized")
      */
     async signIn(user, account, profile) {
-      // return await signInCallBack(user, account, profile);
-      const isAllowedToSignIn = true;
-      if (isAllowedToSignIn) {
-        const newUser = await addUser("lucho", "1234");
-        console.log(newUser);
-        return true
-      } else {
-        // Return false to display a default error message
-        return false
-        // Or you can return a URL to redirect to:
-        // return '/unauthorized'
-      }
+      const token = await signInCallBack(user, account, profile);
+      // invertigar como usar lo mismo pero con nextJS
+      // localStorage.setItem("token", token);
+
+      return !!token;
     },
 
     /**
