@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { loginUser } from "../../services/userController";
+import { loginUser } from "../../services/userService";
 
 const initialUsers = [];
 

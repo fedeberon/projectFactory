@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import { addUser } from "../../../services/userController";
+import { addUser } from "../../../services/userService";
+
 
 /**
  * This implement is on site:
@@ -34,19 +35,15 @@ export default NextAuth({
      *                           Return `string` to redirect to (eg.: "/unauthorized")
      */
     async signIn(user, account, profile) {
-      //ir al back para crear el user o para hacer un update del user
-      //ir al back y preguntar si existe si existe edit el campo lastlogin
-      //
+      // return await signInCallBack(user, account, profile);
       const isAllowedToSignIn = true;
-      // const newUser = await addUser("tomy","1234");
-      // console.log(newUser);
       if (isAllowedToSignIn) {
-        console.log("Entro bien");
-        // console.log(user);
-        return true;
+        const newUser = await addUser("lucho", "1234");
+        console.log(newUser);
+        return true
       } else {
         // Return false to display a default error message
-        return false;
+        return false
         // Or you can return a URL to redirect to:
         // return '/unauthorized'
       }
