@@ -1,11 +1,11 @@
 import API from "./api";
 
-export const getProjects = async (page, size, session) => {
+export const getAll = async (page, size, session) => {
   API.defaults.headers.common["Authorization"] = session.accessToken;
   return await API.get(`/projects?page=${page}&size=${size}`);
 };
 
-export const getProjectById = async (id, session) => {
+export const getById = async (id, session) => {
   API.defaults.headers.common["Authorization"] = session.accessToken;
   return await API.get(`/projects/${id}`);
 };

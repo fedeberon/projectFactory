@@ -35,14 +35,7 @@ export default NextAuth({
      */
     async signIn(user, account, profile) {
       const token = await signInCallBack(user, account, profile);
-      // invertigar como usar lo mismo pero con nextJS
-      console.log("USER SIGNIN TOKEN------------------");
-      console.log(token);
       user.token = token;
-      // console.log("Guarda TOKEN------------------");
-      // console.log(user.token);
-      // localStorage.setItem("token", token);
-      // global.localStorage.setItem("token", token);
 
       return !!token;
     },
@@ -59,22 +52,8 @@ export default NextAuth({
       // access token me lo dan los providers
       // Add access_token to the token right after signin
       if (user) {
-        // console.log("accessToken------------");
-        // console.log(user);
         token.accessToken = user.token;
       }
-      // console.log("TOKEN_TOKEN------------");
-      // console.log(token);
-      // console.log("USER_TOKEN------------");
-      // console.log(user);
-      // console.log("ACCOUNT_TOKEN------------");
-      // console.log(account);
-      // console.log("PROFILE_TOKEN------------");
-      // console.log(profile);
-      // console.log("ISNEWUSER_TOKEN------------");
-      // console.log(isNewUser);
-      // console.log("returnTOKEN------------");
-      // console.log(token);
       return token;
     },
     /**

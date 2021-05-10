@@ -14,7 +14,7 @@ axiosInstance.interceptors.request.use(
     // if (session) {
     //   config.headers['Authorization'] = session.accessToken;
     // }
-    // config.headers['Authorization'] = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJMYUZhYnJpY2FEZVByb3llY3RvcyBCb2xpdmFyIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYyMDU5ODEzNywiZXhwIjoxNjIwNjAxNzM3fQ._yc8NVA6Jn5zEP3_cs2xEDOr2v0N1gFAfXbPnHbizfnHEnFXW3m6W6xI8hNcvF8vZDl8-T6whd3M4Iw5uzhGVg";
+    // config.headers['Authorization'] = "Bearer ";
     return config;
   },
   function (error) {
