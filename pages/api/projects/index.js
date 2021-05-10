@@ -1,5 +1,5 @@
 import { getSession } from "next-auth/client";
-import { getProfesionals } from "../../../services/professionalService";
+import { getProjects } from "../../../services/projectService";
 
 export default async (req, res) => {
   const { page, size } = req.query;
@@ -7,7 +7,7 @@ export default async (req, res) => {
     if (!(size <= 0)) {
       const session = await getSession({ req });
       if (session) {
-        const json = await getProfesionals(page, size, session);
+        const json = await getProjects(page, size, session);
         return res.status(200).json(json);
       }
     } else {

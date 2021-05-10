@@ -8,8 +8,8 @@ export default async function handler(req, res) {
     const { id } = req.query;
     console.log("REQ_QUERY-------", req.query);
 
-    const json = await getProfesionalById(id, session);
-    console.log("PROFESSIONALS_BY_ID----------", json);
+    const json = await getProjectById(id, session);
+    console.log("PROJECT_BY_ID----------", json);
     return res.status(200).json(json);
   }
   return res.status(401).json({ message: `Unauthorized` });

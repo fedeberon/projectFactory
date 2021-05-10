@@ -36,7 +36,13 @@ export default NextAuth({
     async signIn(user, account, profile) {
       const token = await signInCallBack(user, account, profile);
       // invertigar como usar lo mismo pero con nextJS
+      console.log("USER SIGNIN TOKEN------------------");
+      console.log(token);
+      user.token = token;
+      // console.log("Guarda TOKEN------------------");
+      // console.log(user.token);
       // localStorage.setItem("token", token);
+      // global.localStorage.setItem("token", token);
 
       return !!token;
     },
@@ -52,12 +58,35 @@ export default NextAuth({
     async jwt(token, user, account, profile, isNewUser) {
       // access token me lo dan los providers
       // Add access_token to the token right after signin
-      if (account?.accessToken) {
-        token.accessToken = account.accessToken;
-        // token.accessToken es de la red social
-        // token.ownerToken es nuestro
+      if (user) {
+        // console.log("accessToken------------");
+        // console.log(user);
+        token.accessToken = user.token;
       }
+      // console.log("TOKEN_TOKEN------------");
+      // console.log(token);
+      // console.log("USER_TOKEN------------");
+      // console.log(user);
+      // console.log("ACCOUNT_TOKEN------------");
+      // console.log(account);
+      // console.log("PROFILE_TOKEN------------");
+      // console.log(profile);
+      // console.log("ISNEWUSER_TOKEN------------");
+      // console.log(isNewUser);
+      // console.log("returnTOKEN------------");
+      // console.log(token);
       return token;
+    },
+    /**
+     * @param  {object} session      Session object
+     * @param  {object} token        User object    (if using database sessions)
+     *                               JSON Web Token (if not using database sessions)
+     * @return {object}              Session that will be returned to the client
+     */
+    async session(session, token) {
+      // Add property to session, like an access_token from a provider.
+      session.accessToken = token.accessToken;
+      return session;
     },
   },
 
