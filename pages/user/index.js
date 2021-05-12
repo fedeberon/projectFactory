@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { loginUser } from "../../services/userService";
+import { login } from "../../services/userService";
 
 const initialUsers = [];
 
@@ -7,7 +7,7 @@ const Users = () => {
   const [users, setUsers] = useState(initialUsers);
 
   useEffect(async()=>{
-    const users = await loginUser("lucho","1234");
+    const users = await login("lucho","1234");
     setUsers(users);
   }, []);
 
@@ -18,7 +18,6 @@ const Users = () => {
         {users.map((user, index) => {
           return <li key={index}>{user}</li>;
         })}
-        {/* <li>{users}</li> */}
       </ul>
     </div>
   );

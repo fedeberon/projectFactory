@@ -1,14 +1,13 @@
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import Authentication from '../components/Authentication';
-import Header from '../components/Header';
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Authentication from "../components/Authentication";
+import Header from "../components/Header";
 
-const Code = (p) => <code className={styles.inlineCode} {...p} />
+const Code = (p) => <code className={styles.inlineCode} {...p} />;
 
 const Home = () => {
-
   const { t, lang } = useTranslation("common");
 
   return (
@@ -72,7 +71,7 @@ const Home = () => {
       </footer>
     </div>
   );
-}
+};
 
 export const getStaticProps = async ({ locale }) => ({
   props: {

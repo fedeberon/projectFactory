@@ -1,7 +1,7 @@
 import API from "./api";
 
-export const getAll = async (page, size, session) => {
-  API.defaults.headers.common["Authorization"] = session.accessToken;
+export const findAll = async (page, size, token) => {
+  API.defaults.headers.common["Authorization"] = token;
   return await API.get(`/projects?page=${page}&size=${size}`);
 };
 
@@ -10,20 +10,8 @@ export const getById = async (id, session) => {
   return await API.get(`/projects/${id}`);
 };
 
-export const setProject = async (
-  name,
-  description,
-  totalArea,
-  year,
-  website
-) => {
-  const data = {
-    name,
-    description,
-    totalArea,
-    year,
-    website,
-  };
+export const setProject = async (project, session) => {
+  
   API.defaults.headers.common["Authorization"] = session.accessToken;
-  return await API.post(`/projects`, data);
+  return await API.post(`/projects`, project);
 };

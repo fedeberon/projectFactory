@@ -8,8 +8,8 @@ export default function Header() {
       <Link href="/">Home</Link>
       <Link href="/professional">Professional</Link>
       <Link href="/professional/12-details" as="/">Professional/12-details</Link>
-      <Link href="/proyect">Proyect</Link>
-      <Link href="/proyect/21" as="/proyect/sarasa">Proyect/21-sarasa</Link>
+      <Link href="/project">Project</Link>
+      <Link href="/project/21" as="/project/sarasa">Project/21-sarasa</Link>
       <Link href="/magazine">Magazine</Link>
       <Link href="/magazine/31" as="/magazine/sarasa3">Magazine/31-sarasa</Link>
       <Link href="/about">About</Link>
@@ -19,9 +19,6 @@ export default function Header() {
 }
 
 const Link = ({ children, href }) => {
-  // console.log("#1 children nombre: " + children);
-  // console.log("#2 href Ruta: " + href);
-  // console.log("\n");
   const router = useRouter();
   return (
     <a

@@ -14,7 +14,7 @@ export const signInCallBack = async (user, account, profile) => {
   return token;
 };
 
-export const loginUser = async (username, password) => {
+export const login = async (username, password) => {
   const data = {
     username,
     password,
@@ -24,24 +24,27 @@ export const loginUser = async (username, password) => {
   return token;
 };
 
-export const getUsers = async () => {
+export const findAll = async (session) => {
+  API.defaults.headers.common["Authorization"] = session.accessToken;
   return await API.get(`/users`);
 };
 
-export const getUserById = async (userId) => {
+export const getById = async (userId) => {
   return await API.get(`/users/${userId}`);
 };
 
-export const addUser = async (username, password) => {
+export const add = async (username, password, session) => {
   const data = {
     username,
     password,
   };
 
+  API.defaults.headers.common["Authorization"] = session.accessToken;
   const { token } = await API.post(`/users/register`, data);
   return token;
 };
 
-export const isUnique = async (email) => {
+export const isUnique = async (email, session) => {
+  API.defaults.headers.common["Authorization"] = session.accessToken;
   return await API.post(`/users/email`, { email });
 };

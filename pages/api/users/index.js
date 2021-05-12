@@ -1,7 +1,6 @@
-import { loginUser } from "../../../services/userService";
+import { login } from "../../../services/userService";
 
 export default async (req, res) => {
-  const token = await loginUser("lucho", "1234");
-  console.log(token);
+  const token = await login("lucho", "1234");
   res.status(200).json({ token: token });
 };

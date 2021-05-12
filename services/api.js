@@ -11,10 +11,6 @@ const axiosInstance = axios.create({
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
   async function (config) {
-    // if (session) {
-    //   config.headers['Authorization'] = session.accessToken;
-    // }
-    // config.headers['Authorization'] = "Bearer ";
     return config;
   },
   function (error) {
