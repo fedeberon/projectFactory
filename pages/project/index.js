@@ -5,6 +5,7 @@ import { useSession } from "next-auth/client";
 
 // components
 import Header from "../../components/Header";
+import FormProject from "../../components/FormProject";
 
 // services
 import { getProjects } from "../_clientServices";
@@ -24,6 +25,7 @@ const Project = () => {
     <div>
       <Header lang={lang} />
       <h1>Project</h1>
+      <FormProject />
 
       {!data ? (
         <h1>{data}</h1>
