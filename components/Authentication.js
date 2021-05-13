@@ -1,5 +1,7 @@
 import React from "react";
 import { signIn, signOut, useSession } from "next-auth/client";
+import { useTranslation } from "react-i18next";
+
 
 /**
  * Login and logout component when user wants to use Facebook or Instagram or Google account.
@@ -8,12 +10,14 @@ import { signIn, signOut, useSession } from "next-auth/client";
 const Authentication = () => {
   const [session, loading] = useSession();
 
+  const { t, lang } = useTranslation("common");
+
   return (
     <>
       {!session && (
         <>
-          Not signed in <br />
-          <button onClick={() => signIn()}>Sign in</button>
+          <br />
+          <button type="button" class="btn btn-primary" onClick={() => signIn()}>{t("Sign in")}</button>
         </>
       )}
       {session && (
@@ -25,5 +29,7 @@ const Authentication = () => {
     </>
   );
 };
+
+
 
 export default Authentication;
