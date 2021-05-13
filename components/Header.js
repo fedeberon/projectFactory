@@ -32,11 +32,6 @@ const Link = ({ children, href }) => {
       }}
     >
       {children}
-      <style jsx>{`
-        a {
-          margin-right: 10px;
-        }
-      `}</style>
     </a>
   );
 };
