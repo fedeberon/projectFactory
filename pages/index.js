@@ -1,11 +1,11 @@
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import Authentication from "../components/Authentication";
-import Header from "../components/Header";
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Header from '../components/Header';
 
-const Code = (p) => <code className={styles.inlineCode} {...p} />;
+
+const Code = (p) => <code className={styles.inlineCode} {...p} />
 
 const Home = () => {
   const { t, lang } = useTranslation("common");
@@ -18,7 +18,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <Authentication />
+        
         <h1 className={styles.title}>
           {t("Welcome")} to {process.env.NEXT_PUBLIC_PROJECT_NAME}
         </h1>
@@ -27,7 +27,6 @@ const Home = () => {
           Get started by editing{" "}
           <code className={styles.code}>pages/index.js</code>
         </p>
-
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
             <h3>Documentation &rarr;</h3>
