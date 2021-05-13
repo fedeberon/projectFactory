@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
+import { signInCallBack } from "../../../services/userService";
 
 /**
  * This implement is on site:
@@ -14,11 +15,11 @@ export default NextAuth({
     }),
     Providers.Instagram({
       clientId: process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_ID,
-      clientSecret: process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_SECRET
+      clientSecret: process.env.NEXT_PUBLIC_INSTAGRAM_CLIENT_SECRET,
     }),
     Providers.Facebook({
       clientId: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID,
-      clientSecret: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_SECRET
+      clientSecret: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_SECRET,
     }),
     // ...add more providers here
   ],
@@ -27,24 +28,45 @@ export default NextAuth({
     /**
      * @param  {object} user     User object
      * @param  {object} account  Provider account
-     * @param  {object} profile  Provider profile 
+     * @param  {object} profile  Provider profile
      * @return {boolean|string}  Return `true` to allow sign in
      *                           Return `false` to deny access
      *                           Return `string` to redirect to (eg.: "/unauthorized")
      */
     async signIn(user, account, profile) {
-      const isAllowedToSignIn = true
-      if (isAllowedToSignIn) {
-        console.log("Entro bien");
-        console.log(user);
-        return true
-      } else {
-        // Return false to display a default error message
-        return false
-        // Or you can return a URL to redirect to:
-        // return '/unauthorized'
+      const token = await signInCallBack(user, account, profile);
+      user.token = token;
+
+      return !!token;
+    },
+
+    /**
+     * @param  {object}  token     Decrypted JSON Web Token
+     * @param  {object}  user      User object      (only available on sign in)
+     * @param  {object}  account   Provider account (only available on sign in)
+     * @param  {object}  profile   Provider profile (only available on sign in)
+     * @param  {boolean} isNewUser True if new user (only available on sign in)
+     * @return {object}            JSON Web Token that will be saved
+     */
+    async jwt(token, user, account, profile, isNewUser) {
+      // access token me lo dan los providers
+      // Add access_token to the token right after signin
+      if (user) {
+        token.accessToken = user.token;
       }
-    }
+      return token;
+    },
+    /**
+     * @param  {object} session      Session object
+     * @param  {object} token        User object    (if using database sessions)
+     *                               JSON Web Token (if not using database sessions)
+     * @return {object}              Session that will be returned to the client
+     */
+    async session(session, token) {
+      // Add property to session, like an access_token from a provider.
+      session.accessToken = token.accessToken;
+      return session;
+    },
   },
 
   // A database is optional, but required to persist accounts in a database

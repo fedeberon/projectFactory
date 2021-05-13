@@ -8,8 +8,8 @@ export default function Header() {
       <Link href="/">Home</Link>
       <Link href="/professional">Professional</Link>
       <Link href="/professional/12-details" as="/">Professional/12-details</Link>
-      <Link href="/proyect">Proyect</Link>
-      <Link href="/proyect/21" as="/proyect/sarasa">Proyect/21-sarasa</Link>
+      <Link href="/project">Project</Link>
+      <Link href="/project/21" as="/project/sarasa">Project/21-sarasa</Link>
       <Link href="/magazine">Magazine</Link>
       <Link href="/magazine/31" as="/magazine/sarasa3">Magazine/31-sarasa</Link>
       <Link href="/about">About</Link>
@@ -19,9 +19,6 @@ export default function Header() {
 }
 
 const Link = ({ children, href }) => {
-  // console.log("#1 children nombre: " + children);
-  // console.log("#2 href Ruta: " + href);
-  // console.log("\n");
   const router = useRouter();
   return (
     <a
@@ -43,58 +40,3 @@ const Link = ({ children, href }) => {
     </a>
   );
 };
-
-// const Header = ({ lang }) => {
-//   return (
-//     <div>
-//       <ul>
-//         <li>
-//           <Link href="/professional" lang={lang}>
-//             <a>Go to [professional].js</a>
-//           </Link>
-//         </li>
-//         <li>
-//           <Link
-//             href="/professional/12-details"
-//             as="/professional/sarasa2"
-//             lang={lang}
-//           >
-//             <a>Go to [professional/12-details].js</a>
-//           </Link>
-//         </li>
-//         <li>
-//           <Link href="/proyect" lang={lang}>
-//             <a>Go to [proyect].js</a>
-//           </Link>
-//         </li>
-//         <li>
-//           <Link href="/proyect/21" as="/proyect/sarasa" lang={lang}>
-//             <a>Go to proyect/[21-sarasa].js</a>
-//           </Link>
-//         </li>
-//         <li>
-//           <Link href="/magazine" lang={lang}>
-//             <a>Go to [magazine].js</a>
-//           </Link>
-//         </li>
-//         <li>
-//           <Link href="/magazine/31" as="/magazine/sarasa3" lang={lang}>
-//             <a>Go to magazine/[31-sarasa].js</a>
-//           </Link>
-//         </li>
-//         <li>
-//           <Link href="/about" lang={lang}>
-//             <a>Go to [about].js</a>
-//           </Link>
-//         </li>
-//         <li>
-//           <Link href="/contact" lang={lang}>
-//             <a>Go to [contact].js</a>
-//           </Link>
-//         </li>
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default Header;

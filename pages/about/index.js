@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../../components/Header";
 
-const index = () => {
+const About = () => {
   const { t, lang } = useTranslation("common");
 
   return (
@@ -13,4 +13,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default About;
