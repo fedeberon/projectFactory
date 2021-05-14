@@ -1,9 +1,15 @@
 import { getSession } from "next-auth/client";
-import { findAll } from "../../../services/projectService";
+import { findAll, setProject } from "../../../services/projectService";
 
 export default async (req, res) => {
   let token;
   const session = await getSession({ req });
+
+  if (req.method === 'POST') {
+    console.log("REQ_POST",req.body);
+    const project = req.body;
+    await setProject(project, session);
+  }
 
   let { page, size } = req.__NEXT_INIT_QUERY;
 

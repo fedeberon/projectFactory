@@ -1,6 +1,7 @@
 import React from "react";
 import { signIn, signOut, useSession } from "next-auth/client";
 import { useTranslation } from "react-i18next";
+import { Button } from "reactstrap";
 
 
 /**
@@ -17,13 +18,13 @@ const Authentication = () => {
       {!session && (
         <>
           <br />
-          <button type="button" class="btn btn-primary" onClick={() => signIn()}>{t("Sign in")}</button>
+          <Button color="primary" onClick={() => signIn()}>{t("Sign in")}</Button>
         </>
       )}
       {session && (
         <>
           Signed in as {session.user.email} <br />
-          <button onClick={() => signOut()}>Sign out</button>
+          <Button color="primary" onClick={() => signOut()}>Sign out</Button>
         </>
       )}
     </>

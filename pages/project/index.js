@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSession } from "next-auth/client";
+import { Container } from "reactstrap";
 
 // components
 import Header from "../../components/Header";
@@ -16,16 +17,20 @@ const Project = () => {
 
   const { t, lang } = useTranslation("common");
 
-  useEffect(async () => {
+  const updateProjectList = async () => {
     const projects = await getProjects();
     setData(projects);
+  };
+
+  useEffect(async () => {
+    await updateProjectList();
   }, [session]);
 
   return (
-    <div>
+    <Container fluid>
       <Header lang={lang} />
       <h1>Project</h1>
-      <FormProject />
+      <FormProject updateProjectList={updateProjectList} />
 
       {!data ? (
         <h1>{data}</h1>
@@ -40,7 +45,7 @@ const Project = () => {
           </div>
         ))
       )}
-    </div>
+    </Container>
   );
 };
 

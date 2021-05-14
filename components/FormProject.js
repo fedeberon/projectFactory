@@ -1,130 +1,165 @@
-import React, { useState } from "react";
+import { useSession } from "next-auth/client";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  FormText,
+  Input,
+  Label,
+  Row,
+} from "reactstrap";
+import { addProject } from "../pages/_clientServices";
 
-const FormProject = () => {
-  const [user, setUser] = useState();
+const FormProject = ({ updateProjectList }) => {
+  const [session, loading] = useSession();
+  // const [data, setData] = useState();
+
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
-  const onSubmit = ({ name, description, remember }) => {
-    // You should handle login logic with name, password and remember form data
-    setUser({ name: name });
+  const onSubmit = async (
+    { name, description, totalArea, website, year },
+    event
+  ) => {
+    // You should handle login logic with name, description, totalArea, website and year form data
+    let data = {
+      name,
+      description,
+      totalArea,
+      website,
+      year,
+    };
+    const project = await addProject(data, session);
+    updateProjectList();
+    event.target.reset();
   };
 
   return (
-    // <div className="container">
-    //   {user ? (
-    //     <span className="hello-user">Hello, {user.name}!</span>
-    //   ) : (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="row">
-        <h3 className="form-header">FORM PROJECT</h3>
-      </div>
-      <div className="row">
-        <input
-          type="text"
-          placeholder="write the name here please"
-          {...register("name", {
-            required: { value: true, message: "Name is required" },
-            minLength: {
-              value: 3,
-              message: "Name cannot be less than 3 character",
-            },
-          })}
-          className={"form-field" + (errors.name ? " has-error" : "")}
-        />
-        {errors.name && (
-          <span className="error-label">{errors.name.message}</span>
-        )}
-      </div>
-      <div className="row">
-        <input
-          type="text"
-          placeholder="write the description here please"
-          {...register("description", {
-            required: { value: true, message: "Description is required" },
-            minLength: {
-              value: 3,
-              message: "Description cannot be less than 3 character",
-            },
-          })}
-          className={"form-field" + (errors.description ? " has-error" : "")}
-        />
-        {errors.description && (
-          <span className="error-label">{errors.description.message}</span>
-        )}
-      </div>
-      <div className="row">
-        <input
-          type="number"
-          placeholder="write the totalArea here please"
-          {...register("totalArea", {
-            required: { value: true, message: "TotalArea is required" },
-            minLength: {
-              value: 3,
-              message: "TotalArea cannot be less than 3 character",
-            },
-          })}
-          className={"form-field" + (errors.totalArea ? " has-error" : "")}
-        />
-        {errors.totalArea && (
-          <span className="error-label">{errors.totalArea.message}</span>
-        )}
-      </div>
-      <div className="row">
-        <input
-          type="email"
-          placeholder="write the Email here please"
-          {...register("email", {
-            required: { value: true, message: "Email is required" },
-            minLength: {
-              value: 3,
-              message: "Email cannot be less than 3 character",
-            },
-          })}
-          className={"form-field" + (errors.email ? " has-error" : "")}
-        />
-        {errors.email && (
-          <span className="error-label">{errors.email.message}</span>
-        )}
-      </div>
-      <div className="row">
-        <input type="number" placeholder="write the Year here please" />
-      </div>
-
-      {/* <div className="row">
-        <input
-          type="password"
-          placeholder="password"
-          {...register("password", {
-            required: {
-              value: true,
-              message: "Please enter your password",
-            },
-          })}
-          className={"form-field" + (errors.password ? " has-error" : "")}
-        />
-        {errors.password && (
-          <span className="error-label">{errors.password.message}</span>
-        )}
-      </div> */}
-      <div className="row row-remember">
-        <input type="checkbox" id="remember" {...register("remember")} />
-        <label htmlFor="remember" className="remember-label">
-          Remember me
-        </label>
-      </div>
-      <div className="row">
-        <button type="submit" className="btn login-btn">
-          Login
-        </button>
-      </div>
-    </form>
-    //   )}
-    // </div>
+    <Container fluid="sm">
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Row>
+          <Col>
+            <h3 className="form-header">FORM PROJECT</h3>
+          </Col>
+        </Row>
+        <FormGroup>
+          <Label for="name">Name</Label>
+          <Input
+            type="text"
+            name="name"
+            id="name"
+            placeholder="write the name here please"
+            {...register("name", {
+              required: { value: true, message: "Name is required" },
+              minLength: {
+                value: 3,
+                message: "Name cannot be less than 3 character",
+              },
+            })}
+            className={"form-field" + (errors.name ? " has-error" : "")}
+          />
+          {errors.name && (
+            <FormText className="invalid error-label">{errors.name.message}</FormText>
+          )}
+        </FormGroup>
+        <FormGroup>
+          <Label for="description">Description</Label>
+          <Input
+            type="text"
+            name="description"
+            id="description"
+            placeholder="write the description here please"
+            {...register("description", {
+              required: { value: true, message: "Description is required" },
+              minLength: {
+                value: 3,
+                message: "Description cannot be less than 3 character",
+              },
+            })}
+            className={"form-field" + (errors.description ? " has-error" : "")}
+          />
+          {errors.description && (
+            <FormText className="error-label">
+              {errors.description.message}
+            </FormText>
+          )}
+        </FormGroup>
+        <FormGroup>
+          <Label for="totalArea">TotalArea</Label>
+          <Input
+            type="number"
+            name="totalArea"
+            id="totalArea"
+            placeholder="write the totalArea here please"
+            {...register("totalArea", {
+              required: { value: true, message: "TotalArea is required" },
+              minLength: {
+                value: 3,
+                message: "TotalArea cannot be less than 3 character",
+              },
+            })}
+            className={"form-field" + (errors.totalArea ? " has-error" : "")}
+          />
+          {errors.totalArea && (
+            <FormText className="error-label">
+              {errors.totalArea.message}
+            </FormText>
+          )}
+        </FormGroup>
+        <FormGroup>
+          <Label for="email">Email</Label>
+          <Input
+            type="email"
+            name="website"
+            id="email"
+            placeholder="with a placeholder"
+            {...register("website", {
+              required: { value: true, message: "Email is required" },
+              minLength: {
+                value: 3,
+                message: "Email cannot be less than 3 character",
+              },
+            })}
+            className={"form-field" + (errors.website ? " has-error" : "")}
+          />
+          {errors.website && (
+            <FormText className="error-label">
+              {errors.website.message}
+            </FormText>
+          )}
+        </FormGroup>
+        <FormGroup>
+          <Label for="year">Year</Label>
+          <Input
+            type="number"
+            name="year"
+            id="year"
+            placeholder="write the Year here please"
+            {...register("year", {
+              required: { value: true, message: "Year is required" },
+              minLength: {
+                value: 3,
+                message: "Year cannot be less than 3 character",
+              },
+            })}
+            className={"form-field" + (errors.year ? " has-error" : "")}
+          />
+          {errors.year && (
+            <FormText className="error-label">{errors.year.message}</FormText>
+          )}
+        </FormGroup>
+        <Button type="submit" color="primary">
+          Enviar
+        </Button>
+      </Form>
+    </Container>
   );
 };
 

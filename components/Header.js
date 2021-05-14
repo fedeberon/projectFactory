@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import { useRouter } from "next/router";
-import{  Collapse,
+import React, { useState } from "react";
+import {
+  Collapse,
   Navbar,
   NavbarToggler,
   NavbarBrand,
@@ -10,34 +10,15 @@ import{  Collapse,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem} from 'reactstrap';
-import Authentication from './Authentication';
-
-export default function Header() {
-  const[dropdown, setDropdown] =useState(false);
-
-  const toggle = () => setDropdown(dropdown => !dropdown);
- 
- 
-  return (
-    <div>
-      {/* <Link href="/">Home</Link>
-      <Link href="/professional">Professional</Link>
-      <Link href="/professional/12-details" as="/">Professional/12-details</Link>
-      <Link href="/project">Project</Link>
-      <Link href="/project/21" as="/project/sarasa">Project/21-sarasa</Link>
-      <Link href="/magazine">Magazine</Link>
-      <Link href="/magazine/31" as="/magazine/sarasa3">Magazine/31-sarasa</Link>
-      <Link href="/about">About</Link>
-      <Link href="/contact">Contact</Link>
-    </div>
-  );
-}
+  DropdownItem,
+} from "reactstrap";
+import Authentication from "./Authentication";
+import { useRouter } from "next/dist/client/router";
 
 const Link = ({ children, href }) => {
   const router = useRouter();
   return (
-    <a
+    <NavLink
       href="#"
       onClick={(e) => {
         e.preventDefault();
@@ -48,20 +29,18 @@ const Link = ({ children, href }) => {
       }}
     >
       {children}
-      <style jsx>{`
-        a {
-          margin-right: 10px;
-        }
-      `}</style>
-    </a>
+    </NavLink>
   );
-}; */}
+};
+
+export default function Header() {
+  const [dropdown, setDropdown] = useState(false);
+
+  const toggle = () => setDropdown((dropdown) => !dropdown);
+
+  return (
     <Navbar color="light" light expand="md">
-      <NavbarBrand nav>
-        <NavLink href="/">
-          Home
-        </NavLink>
-      </NavbarBrand>
+      <Link href="/"> Home</Link>
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={dropdown} navbar>
         <Nav navbar>
@@ -71,36 +50,27 @@ const Link = ({ children, href }) => {
             </DropdownToggle>
             <DropdownMenu>
               <DropdownItem>
-                <NavLink href="/professional">
-                  Professional
-                </NavLink>
+                <Link href="/professional">Professional</Link>
               </DropdownItem>
-              <DropdownItem>
-                Option 2
-              </DropdownItem>
+              <DropdownItem>Option 2</DropdownItem>
               <DropdownItem divider />
-              <DropdownItem>
-                Reset
-              </DropdownItem>
+              <DropdownItem>Reset</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
               Project
             </DropdownToggle>
-            <DropdownMenu >
+            <DropdownMenu>
               <DropdownItem>
-                <NavLink href="/project">
-                  Project
-                </NavLink>
+                {/* <Link href="/project" passHref> */}
+                <Link href="/project">Project</Link>
+                {/* project */}
+                {/* </Link> */}
               </DropdownItem>
-              <DropdownItem>
-                Option 2
-              </DropdownItem>
+              <DropdownItem>Option 2</DropdownItem>
               <DropdownItem divider />
-              <DropdownItem>
-                Reset
-              </DropdownItem>
+              <DropdownItem>Reset</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
           <UncontrolledDropdown nav inNavbar>
@@ -109,34 +79,22 @@ const Link = ({ children, href }) => {
             </DropdownToggle>
             <DropdownMenu right>
               <DropdownItem>
-                <NavLink href="/magazine">
-                  Magazine
-                </NavLink>
+                <Link href="/magazine">Magazine</Link>
               </DropdownItem>
-              <DropdownItem>
-                Option 2
-              </DropdownItem>
+              <DropdownItem>Option 2</DropdownItem>
               <DropdownItem divider />
-              <DropdownItem>
-                Reset
-              </DropdownItem>
+              <DropdownItem>Reset</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
           <NavItem>
-            <NavLink href="/about">
-              About
-            </NavLink>
+            <Link href="/about">About</Link>
           </NavItem>
           <NavItem>
-            <NavLink href="/contact">
-              Contact
-            </NavLink>
+            <Link href="/contact">Contact</Link>
           </NavItem>
         </Nav>
       </Collapse>
-      <Authentication/>
+      <Authentication />
     </Navbar>
-  </div>
   );
 }
-
