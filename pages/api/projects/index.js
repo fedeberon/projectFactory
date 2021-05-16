@@ -6,7 +6,7 @@ export default async (req, res) => {
   const session = await getSession({ req });
 
   if (req.method === 'POST') {
-    const project = await setProject(project, session.accessToken);
+    const project = await setProject(req.body, session.accessToken);
     return res.status(200).json(project);
   }
 
@@ -21,8 +21,8 @@ export default async (req, res) => {
 
   if (session) {
     token = session.accessToken;
-    const projects = await findAll(page, size, token);
-    return res.status(200).json(projects);
+    const json = await findAll(page, size, token);
+    return res.status(200).json(json);
   }
   return res.status(401).json({ message: `Unauthorized` });
 };

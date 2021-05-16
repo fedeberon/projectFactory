@@ -6,8 +6,7 @@ export default async (req, res) => {
   const session = await getSession({ req });
 
   if (req.method === 'POST') {
-    const professional = req.body;
-    const setProfessional2 = await setProfessional(professional, session.accessToken);
+    const professional = await setProfessional(req.body, session.accessToken);
     return res.status(200).json(professional);
   }
 
