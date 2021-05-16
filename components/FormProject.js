@@ -34,7 +34,7 @@ const FormProject = ({ onAddProject }) => {
       website,
       year,
     };
-    onAddProject();
+    onAddProject(data);
     event.target.reset();
   };
 
