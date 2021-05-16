@@ -9,17 +9,26 @@ import Header from "../../components/Header";
 import FormProject from "../../components/FormProject";
 
 // services
-import { getProjects } from "../_clientServices";
+import { addProject, getProjects } from "../_clientServices";
 
 const Project = () => {
   const [session, loading] = useSession();
   const [data, setData] = useState();
+  const [isLoading, setLoading] = useState(false);
 
   const { t, lang } = useTranslation("common");
 
   const updateProjectList = async () => {
+    setLoading(true);
     const projects = await getProjects();
     setData(projects);
+    setLoading(false);
+  };
+
+  const onAddProject = async (data) => {
+    setLoading(true);
+    await addProject(data, session);
+    await updateProjectList();
   };
 
   useEffect(async () => {
@@ -30,9 +39,11 @@ const Project = () => {
     <Container fluid>
       <Header lang={lang} />
       <h1>Project</h1>
-      <FormProject updateProjectList={updateProjectList} />
+      <FormProject onAddProject={onAddProject} />
 
-      {!data ? (
+      {isLoading ? (
+        <h1>Loading...</h1>
+      ) : !data ? (
         <h1>{data}</h1>
       ) : (
         data.map((project) => (

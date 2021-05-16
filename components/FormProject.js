@@ -1,5 +1,5 @@
+import React from "react";
 import { useSession } from "next-auth/client";
-import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Button,
@@ -12,11 +12,9 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import { addProject } from "../pages/_clientServices";
 
-const FormProject = ({ updateProjectList }) => {
+const FormProject = ({ onAddProject }) => {
   const [session, loading] = useSession();
-  // const [data, setData] = useState();
 
   const {
     register,
@@ -36,8 +34,7 @@ const FormProject = ({ updateProjectList }) => {
       website,
       year,
     };
-    const project = await addProject(data, session);
-    updateProjectList();
+    onAddProject();
     event.target.reset();
   };
 
