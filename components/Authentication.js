@@ -23,8 +23,8 @@ const Authentication = () => {
       )}
       {session && (
         <>
-          Signed in as {session.user.email} <br />
-          <Button color="primary" onClick={() => signOut()}>Sign out</Button>
+          {t("Signed in as")} {session.user.email} <br />
+          <Button color="primary" onClick={() => signOut()}>{t("Sign out")}</Button>
         </>
       )}
     </>

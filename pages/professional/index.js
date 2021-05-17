@@ -5,6 +5,7 @@ import { Container } from "reactstrap";
 import FormProfessional from "../../components/FormProfessional";
 import { useSession } from "next-auth/client";
 import { getProfessionals, addProfessional } from "../_clientServices";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Professional = () => {
   const [session] = useSession();
@@ -33,26 +34,32 @@ const Professional = () => {
   return (
     <Container fluid>
       <Header lang={lang} />
-      <h1>Professional</h1>
+      <h1>{t("Professional")}</h1>
       <FormProfessional
         onAddProfessional={onAddProfessional}
       />
 
       {isLoading ? (
-        <h1>Loading...</h1>
+        <h1>{t("Loading")}...</h1>
       ) : !data ? (
         <h1>{data}</h1>
       ) : (
         data.map((project) => (
           <div key={project.id}>
-            <p>Name: {project.firstName}</p>
-            <p>Description: {project.lastName}</p>
-            <p>Total Area: {project.email}</p>
+            <p>{t("Name")}: {project.firstName}</p>
+            <p>{t("Description")}: {project.lastName}</p>
+            <p>{t("Email")}: {project.email}</p>
           </div>
         ))
       )}
     </Container>
   );
 };
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["common"])),
+  },
+});
 
 export default Professional;

@@ -12,9 +12,12 @@ import {
   Label,
   Row,
 } from "reactstrap";
+import { useTranslation } from "react-i18next";
 
 const FormProject = ({ onAddProject }) => {
   const [session, loading] = useSession();
+
+  const { t, lang } = useTranslation("common");
 
   const {
     register,
@@ -43,21 +46,21 @@ const FormProject = ({ onAddProject }) => {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col>
-            <h3 className="form-header">FORM PROJECT</h3>
+            <h3 className="form-header">{t("FORM PROJECT")}</h3>
           </Col>
         </Row>
         <FormGroup>
-          <Label for="name">Name</Label>
+          <Label for="name">{t("Name")}</Label>
           <Input
             type="text"
             name="name"
             id="name"
-            placeholder="write the name here please"
+            placeholder={t("Write the name here please")}
             {...register("name", {
-              required: { value: true, message: "Name is required" },
+              required: { value: true, message: `${t("Name is required")}` },
               minLength: {
                 value: 3,
-                message: "Name cannot be less than 3 character",
+                message: `${t("Name cannot be less than 3 character")}`,
               },
             })}
             className={"form-field" + (errors.name ? " has-error" : "")}
@@ -67,17 +70,17 @@ const FormProject = ({ onAddProject }) => {
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="description">Description</Label>
+          <Label for="description">{t("Description")}</Label>
           <Input
             type="text"
             name="description"
             id="description"
-            placeholder="write the description here please"
+            placeholder={t("Write the description here please")}
             {...register("description", {
-              required: { value: true, message: "Description is required" },
+              required: { value: true, message: `${t("Description is required")}` },
               minLength: {
                 value: 3,
-                message: "Description cannot be less than 3 character",
+                message: `${t("Description cannot be less than 3 character")}`,
               },
             })}
             className={"form-field" + (errors.description ? " has-error" : "")}
@@ -89,17 +92,17 @@ const FormProject = ({ onAddProject }) => {
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="totalArea">TotalArea</Label>
+          <Label for="totalArea">{t("Total Area")}</Label>
           <Input
             type="number"
             name="totalArea"
             id="totalArea"
-            placeholder="write the totalArea here please"
+            placeholder={t("Write the Total Area here please")}
             {...register("totalArea", {
-              required: { value: true, message: "TotalArea is required" },
+              required: { value: true, message: `${t("Total Area is required")}` },
               minLength: {
                 value: 3,
-                message: "TotalArea cannot be less than 3 character",
+                message: `${t("Total Area cannot be less than 3 character")}`,
               },
             })}
             className={"form-field" + (errors.totalArea ? " has-error" : "")}
@@ -111,17 +114,17 @@ const FormProject = ({ onAddProject }) => {
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="email">Email</Label>
+          <Label for="email">{t("Email")}</Label>
           <Input
             type="email"
             name="website"
             id="email"
-            placeholder="with a placeholder"
+            placeholder={t("Write the email here please")}
             {...register("website", {
-              required: { value: true, message: "Email is required" },
+              required: { value: true, message: `${t("Email is required")}` },
               minLength: {
                 value: 3,
-                message: "Email cannot be less than 3 character",
+                message: `${t("Email cannot be less than 3 character")}`,
               },
             })}
             className={"form-field" + (errors.website ? " has-error" : "")}
@@ -133,17 +136,17 @@ const FormProject = ({ onAddProject }) => {
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="year">Year</Label>
+          <Label for="year">{t("Year")}</Label>
           <Input
             type="number"
             name="year"
             id="year"
-            placeholder="write the Year here please"
+            placeholder={t("Write the Year here please")}
             {...register("year", {
-              required: { value: true, message: "Year is required" },
+              required: { value: true, message: `${t("Year is required")}` },
               minLength: {
                 value: 3,
-                message: "Year cannot be less than 3 character",
+                message: `${t("Year cannot be less than 3 character")}`,
               },
             })}
             className={"form-field" + (errors.year ? " has-error" : "")}
@@ -153,7 +156,7 @@ const FormProject = ({ onAddProject }) => {
           )}
         </FormGroup>
         <Button type="submit" color="primary">
-          Enviar
+          {t("Send")}
         </Button>
       </Form>
     </Container>

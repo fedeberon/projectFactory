@@ -1,10 +1,10 @@
 export const getProjects = async () => {
   try {
-    const res = await fetch("/api/projects");
-    if (!res.ok) {
-      throw new Error(`An error: ${res.status}`);
+    const response = await fetch("/api/projects");
+    if (!response.ok) {
+      throw new Error(`An error: ${response.status}`);
     }
-    const json = await res.json();
+    const json = await response.json();
     return json;
   } catch (error) {
     console.error(error);
@@ -13,7 +13,7 @@ export const getProjects = async () => {
 
 export const addProject = async (data, session) => {
   try {
-    const res = await fetch("/api/projects", {
+    const response = await fetch("/api/projects", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -21,10 +21,10 @@ export const addProject = async (data, session) => {
       },
       body: JSON.stringify(data),
     });
-    if (!res.ok) {
-      throw new Error(`An error: ${res.status}`);
+    if (!response.ok) {
+      throw new Error(`An error: ${response.status}`);
     }
-    return await res.json();
+    return await response.json();
   } catch (error) {
     console.error(error);
   }
@@ -32,11 +32,11 @@ export const addProject = async (data, session) => {
 
 export const getProfessionals = async () => {
   try {
-    const res = await fetch("/api/professionals");
-    if (!res.ok) {
-      throw new Error(`An error: ${res.status}`);
+    const response = await fetch("/api/professionals");
+    if (!response.ok) {
+      throw new Error(`An error: ${response.status}`);
     }
-    const json = await res.json();
+    const json = await response.json();
     return json;
   } catch (error) {
     console.error(error);
@@ -45,16 +45,16 @@ export const getProfessionals = async () => {
 
 export const addProfessional = async (data, session) => {
   try {
-    const res = await fetch("/api/professionals", {
+    const response = await fetch("/api/professionals", {
       method: "POST",
       mode: "cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    if (!res.ok) {
-      throw new Error(`An error: ${res.status}`);
+    if (!response.ok) {
+      throw new Error(`An error: ${response.status}`);
     }
-    return await res.json();
+    return await response.json();
   } catch (error) {
     console.error(error);
   }

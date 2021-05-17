@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import Authentication from "./Authentication";
 import { useRouter } from "next/dist/client/router";
+import { useTranslation } from "react-i18next";
 
 const Link = ({ children, href }) => {
   const router = useRouter();
@@ -38,19 +39,21 @@ export default function Header() {
 
   const toggle = () => setDropdown((dropdown) => !dropdown);
 
+  const { t, lang } = useTranslation("common");
+
   return (
     <Navbar color="light" light expand="md">
-      <Link href="/"> Home</Link>
+      <Link href="/"> {t("Home")}</Link>
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={dropdown} navbar>
         <Nav navbar>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
-              Professional
+              {t("Professional")}
             </DropdownToggle>
             <DropdownMenu>
               <DropdownItem>
-                <Link href="/professional">Professional</Link>
+                <Link href="/professional">{t("Professional")}</Link>
               </DropdownItem>
               <DropdownItem>Option 2</DropdownItem>
               <DropdownItem divider />
@@ -59,14 +62,11 @@ export default function Header() {
           </UncontrolledDropdown>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
-              Project
+              {t("Project")}
             </DropdownToggle>
             <DropdownMenu>
               <DropdownItem>
-                {/* <Link href="/project" passHref> */}
-                <Link href="/project">Project</Link>
-                {/* project */}
-                {/* </Link> */}
+                <Link href="/project">{t("Project")}</Link>
               </DropdownItem>
               <DropdownItem>Option 2</DropdownItem>
               <DropdownItem divider />
@@ -75,11 +75,11 @@ export default function Header() {
           </UncontrolledDropdown>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
-              Magazine
+              {t("Magazine")}
             </DropdownToggle>
             <DropdownMenu right>
               <DropdownItem>
-                <Link href="/magazine">Magazine</Link>
+                <Link href="/magazine">{t("Magazine")}</Link>
               </DropdownItem>
               <DropdownItem>Option 2</DropdownItem>
               <DropdownItem divider />
@@ -87,10 +87,10 @@ export default function Header() {
             </DropdownMenu>
           </UncontrolledDropdown>
           <NavItem>
-            <Link href="/about">About</Link>
+            <Link href="/about">{t("About Us")}</Link>
           </NavItem>
           <NavItem>
-            <Link href="/contact">Contact</Link>
+            <Link href="/contact">{t("Contact")}</Link>
           </NavItem>
         </Nav>
       </Collapse>

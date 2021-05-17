@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import {
   Button,
   Col,
@@ -13,6 +14,8 @@ import {
 } from "reactstrap";
 
 const FormProfessional = ({onAddProfessional}) => {
+
+  const { t, lang } = useTranslation("common");
 
   const {
     register,
@@ -36,21 +39,21 @@ const FormProfessional = ({onAddProfessional}) => {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col>
-            <h3 className="form-header">FORM PROFESSIONAL</h3>
+            <h3 className="form-header">{t("FORM PROFESSIONAL")}</h3>
           </Col>
         </Row>
         <FormGroup>
-          <Label for="firstName">FirstName</Label>
+          <Label for="firstName">{t("FirstName")}</Label>
           <Input
             type="text"
             name="firstName"
             id="firstName"
-            placeholder="write the name here please"
+            placeholder={t("Write the name here please")}
             {...register("firstName", {
-              required: { value: true, message: "FirstName is required" },
+              required: { value: true, message: `${t("FirstName is required")}` },
               minLength: {
                 value: 3,
-                message: "FirstName cannot be less than 3 character",
+                message: `${t("FirstName cannot be less than 3 character")}`,
               },
             })}
             className={"form-field" + (errors.firstName ? " has-error" : "")}
@@ -62,17 +65,17 @@ const FormProfessional = ({onAddProfessional}) => {
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="lastName">LastName</Label>
+          <Label for="lastName">{t("LastName")}</Label>
           <Input
             type="text"
             name="lastName"
             id="lastName"
-            placeholder="write the LastName here please"
+            placeholder={t("Write the LastName here please")}
             {...register("lastName", {
-              required: { value: true, message: "LastName is required" },
+              required: { value: true, message: `${t("LastName is required")}` },
               minLength: {
                 value: 3,
-                message: "LastName cannot be less than 3 character",
+                message: `${t("LastName cannot be less than 3 character")}`,
               },
             })}
             className={"form-field" + (errors.lastName ? " has-error" : "")}
@@ -84,17 +87,17 @@ const FormProfessional = ({onAddProfessional}) => {
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="email">Email</Label>
+          <Label for="email">{t("Email")}</Label>
           <Input
             type="email"
             name="email"
             id="email"
-            placeholder="with a placeholder"
+            placeholder={t("Write the email here please")}
             {...register("email", {
-              required: { value: true, message: "Email is required" },
+              required: { value: true, message: `${t("Email is required")}` },
               minLength: {
                 value: 3,
-                message: "Email cannot be less than 3 character",
+                message: `${t("Email cannot be less than 3 character")}`,
               },
             })}
             className={"form-field" + (errors.email ? " has-error" : "")}
@@ -104,7 +107,7 @@ const FormProfessional = ({onAddProfessional}) => {
           )}
         </FormGroup>
         <Button type="submit" color="primary">
-          Enviar
+          {t("Send")}
         </Button>
       </Form>
     </Container>
