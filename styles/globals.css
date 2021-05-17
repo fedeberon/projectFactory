@@ -19,3 +19,51 @@ a {
 .inlineCode::after {
   content: '`';
 }
+
+.sidenav {
+  height: 100%;
+  width: 0; 
+  position: fixed; 
+  z-index: 1; 
+  top: 0;
+  left: 0;
+  background-color: #f2f2f2; 
+  overflow-x: hidden; 
+  padding-top: 60px;
+  transition: 0.5s;
+}
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  font-size: 25px;
+  display: block;
+  transition: 0.3s;
+  text-decoration: none;
+  color: #212529;
+}
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+.topnav {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+.topnav a:hover {
+  background-color: #ddd;
+  color: rgb(220, 82, 82);
+}
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+.textDark a {
+  color:#212529  !important; 
+}

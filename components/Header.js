@@ -1,27 +1,25 @@
-import React from "react";
-import { useRouter } from "next/router";
-// import Link from "next/link";
-
-export default function Header() {
-  return (
-    <div>
-      <Link href="/">Home</Link>
-      <Link href="/professional">Professional</Link>
-      <Link href="/professional/12-details" as="/">Professional/12-details</Link>
-      <Link href="/project">Project</Link>
-      <Link href="/project/21" as="/project/sarasa">Project/21-sarasa</Link>
-      <Link href="/magazine">Magazine</Link>
-      <Link href="/magazine/31" as="/magazine/sarasa3">Magazine/31-sarasa</Link>
-      <Link href="/about">About</Link>
-      <Link href="/contact">Contact</Link>
-    </div>
-  );
-}
+import React, { useState } from "react";
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
+import Authentication from "./Authentication";
+import { useRouter } from "next/dist/client/router";
+import { useTranslation } from "react-i18next";
 
 const Link = ({ children, href }) => {
   const router = useRouter();
   return (
-    <a
+    <NavLink
       href="#"
       onClick={(e) => {
         e.preventDefault();
@@ -32,11 +30,71 @@ const Link = ({ children, href }) => {
       }}
     >
       {children}
-      <style jsx>{`
-        a {
-          margin-right: 10px;
-        }
-      `}</style>
-    </a>
+    </NavLink>
   );
 };
+
+export default function Header() {
+  const [dropdown, setDropdown] = useState(false);
+
+  const toggle = () => setDropdown((dropdown) => !dropdown);
+
+  const { t, lang } = useTranslation("common");
+
+  return (
+    <Navbar color="light" light expand="md">
+      <Link href="/"> {t("Home")}</Link>
+      <NavbarToggler onClick={toggle} />
+      <Collapse isOpen={dropdown} navbar>
+        <Nav navbar>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle nav caret>
+              {t("Professional")}
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>
+                <Link href="/professional">{t("Professional")}</Link>
+              </DropdownItem>
+              <DropdownItem>Option 2</DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>Reset</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle nav caret>
+              {t("Project")}
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>
+                <Link href="/project">{t("Project")}</Link>
+              </DropdownItem>
+              <DropdownItem>Option 2</DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>Reset</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle nav caret>
+              {t("Magazine")}
+            </DropdownToggle>
+            <DropdownMenu right>
+              <DropdownItem>
+                <Link href="/magazine">{t("Magazine")}</Link>
+              </DropdownItem>
+              <DropdownItem>Option 2</DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>Reset</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+          <NavItem>
+            <Link href="/about">{t("About Us")}</Link>
+          </NavItem>
+          <NavItem>
+            <Link href="/contact">{t("Contact")}</Link>
+          </NavItem>
+        </Nav>
+      </Collapse>
+      <Authentication />
+    </Navbar>
+  );
+}
