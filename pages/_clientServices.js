@@ -59,3 +59,16 @@ export const addProfessional = async (data, session) => {
     console.error(error);
   }
 };
+
+export const getProfessionalById = async (id) => {
+  try {
+    const response = await fetch(`/api/prefessionals/${id}`);
+    if (!response.ok) {
+      throw new Error(`An error: ${response.status}`);
+    }
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    console.log(error);
+  }
+}

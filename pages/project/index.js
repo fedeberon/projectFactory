@@ -10,7 +10,7 @@ import Header from "../../components/Header";
 import FormProject from "../../components/FormProject";
 
 // services
-import { addProject, getProjects } from "../_clientServices";
+import { addProject, getProfessionals, getProjects } from "../_clientServices";
 
 const Project = () => {
   const [session, loading] = useSession();
@@ -26,6 +26,11 @@ const Project = () => {
     setLoading(false);
   };
 
+  const getAllProfessionals = async () => {
+    const professionals = await getProfessionals();
+    return professionals;
+  }
+
   const onAddProject = async (data) => {
     setLoading(true);
     await addProject(data, session);
@@ -40,7 +45,7 @@ const Project = () => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Project")}</h1>
-      <FormProject onAddProject={onAddProject} />
+      <FormProject onAddProject={onAddProject} getAllProfessionals={getAllProfessionals} />
 
       {isLoading ? (
         <h1>{t("Loading")}...</h1>
@@ -48,7 +53,7 @@ const Project = () => {
         <h1>{data}</h1>
       ) : (
         data.map((project) => (
-          <div key={project.id}>
+          <div key={project.id} >
             <p>{t("Name")}: {project.name}</p>
             <p>{t("Description")}: {project.description}</p>
             <p>{t("Total Area")}: {project.totalArea}</p>

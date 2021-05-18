@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import {
   Button,
   Col,
@@ -10,16 +10,28 @@ import {
   FormText,
   Input,
   Label,
-  Row,
+  Row
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
+import Select from "react-select";
 
-const FormProject = ({ onAddProject }) => {
+const FormProject = ({ onAddProject, getAllProfessionals }) => {
   const [session, loading] = useSession();
+  const [options, setOptions] = useState([]);
 
   const { t, lang } = useTranslation("common");
 
+  useEffect(async () => {
+    const professionals = await getAllProfessionals();
+    console.log("FORM_PROFESSIONALS: \n", professionals);
+
+    if (professionals) {
+      setOptions(professionals);
+    }
+  }, [session]);
+
   const {
+    control,
     register,
     formState: { errors },
     handleSubmit,
@@ -66,7 +78,9 @@ const FormProject = ({ onAddProject }) => {
             className={"form-field" + (errors.name ? " has-error" : "")}
           />
           {errors.name && (
-            <FormText className="invalid error-label">{errors.name.message}</FormText>
+            <FormText className="invalid error-label">
+              {errors.name.message}
+            </FormText>
           )}
         </FormGroup>
         <FormGroup>
@@ -77,7 +91,10 @@ const FormProject = ({ onAddProject }) => {
             id="description"
             placeholder={t("Write the description here please")}
             {...register("description", {
-              required: { value: true, message: `${t("Description is required")}` },
+              required: {
+                value: true,
+                message: `${t("Description is required")}`,
+              },
               minLength: {
                 value: 3,
                 message: `${t("Description cannot be less than 3 character")}`,
@@ -99,7 +116,10 @@ const FormProject = ({ onAddProject }) => {
             id="totalArea"
             placeholder={t("Write the Total Area here please")}
             {...register("totalArea", {
-              required: { value: true, message: `${t("Total Area is required")}` },
+              required: {
+                value: true,
+                message: `${t("Total Area is required")}`,
+              },
               minLength: {
                 value: 3,
                 message: `${t("Total Area cannot be less than 3 character")}`,
@@ -153,6 +173,35 @@ const FormProject = ({ onAddProject }) => {
           />
           {errors.year && (
             <FormText className="error-label">{errors.year.message}</FormText>
+          )}
+        </FormGroup>
+        <FormGroup>
+          <Controller
+            name="professionalsSelect"
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: `${t("professionalsSelect is required")}`,
+              },
+            }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                inputId={"professionalsSelect"}
+                options={options}
+                getOptionLabel={(option) =>
+                  `${option?.firstName} ${option?.lastName}`
+                }
+                getOptionValue={(option) => `${option?.id}`}
+                isClearable
+              />
+            )}
+          />
+          {errors.professionalsSelect && (
+            <FormText className="error-label">
+              {errors.professionalsSelect.message}
+            </FormText>
           )}
         </FormGroup>
         <Button type="submit" color="primary">
