@@ -11,9 +11,9 @@ export const getProjects = async () => {
   }
 };
 
-export const addProject = async (data, session) => {
+export const addProject = async (data, id) => {
   try {
-    const response = await fetch("/api/projects", {
+    const response = await fetch(`/api/projects/${id}`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -69,6 +69,6 @@ export const getProfessionalById = async (id) => {
     const json = await response.json();
     return json;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }

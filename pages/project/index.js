@@ -31,9 +31,9 @@ const Project = () => {
     return professionals;
   }
 
-  const onAddProject = async (data) => {
+  const onAddProject = async (data, id) => {
     setLoading(true);
-    await addProject(data, session);
+    await addProject(data, id);
     await updateProjectList();
   };
 

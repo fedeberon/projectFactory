@@ -10,7 +10,7 @@ import {
   FormText,
   Input,
   Label,
-  Row
+  Row,
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
@@ -23,8 +23,6 @@ const FormProject = ({ onAddProject, getAllProfessionals }) => {
 
   useEffect(async () => {
     const professionals = await getAllProfessionals();
-    console.log("FORM_PROFESSIONALS: \n", professionals);
-
     if (professionals) {
       setOptions(professionals);
     }
@@ -38,10 +36,10 @@ const FormProject = ({ onAddProject, getAllProfessionals }) => {
   } = useForm();
 
   const onSubmit = async (
-    { name, description, totalArea, website, year },
+    { name, description, totalArea, website, year, professionalsSelected },
     event
   ) => {
-    // You should handle login logic with name, description, totalArea, website and year form data
+    // You should handle login logic with name, description, totalArea, website, year and professionalsSelected form data
     let data = {
       name,
       description,
@@ -49,7 +47,8 @@ const FormProject = ({ onAddProject, getAllProfessionals }) => {
       website,
       year,
     };
-    onAddProject(data);
+    let id = professionalsSelected.id
+    onAddProject(data, id);
     event.target.reset();
   };
 
@@ -177,18 +176,18 @@ const FormProject = ({ onAddProject, getAllProfessionals }) => {
         </FormGroup>
         <FormGroup>
           <Controller
-            name="professionalsSelect"
+            name="professionalsSelected"
             control={control}
             rules={{
               required: {
                 value: true,
-                message: `${t("professionalsSelect is required")}`,
+                message: `${t("professionalsSelected is required")}`,
               },
             }}
             render={({ field }) => (
               <Select
                 {...field}
-                inputId={"professionalsSelect"}
+                inputId={"professionalsSelected"}
                 options={options}
                 getOptionLabel={(option) =>
                   `${option?.firstName} ${option?.lastName}`
@@ -198,9 +197,9 @@ const FormProject = ({ onAddProject, getAllProfessionals }) => {
               />
             )}
           />
-          {errors.professionalsSelect && (
+          {errors.professionalsSelected && (
             <FormText className="error-label">
-              {errors.professionalsSelect.message}
+              {errors.professionalsSelected.message}
             </FormText>
           )}
         </FormGroup>
