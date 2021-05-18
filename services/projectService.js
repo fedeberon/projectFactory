@@ -14,3 +14,8 @@ export const setProject = async (project, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.post(`/projects`, project);
 };
+
+export const downloadProject = async (id, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.get(`/projects/${id}/download`);
+};
