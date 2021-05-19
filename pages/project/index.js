@@ -2,7 +2,15 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSession } from "next-auth/client";
-import { Container } from "reactstrap";
+import {
+  CardDeck,
+  Container,
+  Col,
+  Row,
+  Card,
+  CardText,
+  CardBody,
+} from "reactstrap";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 // components
@@ -11,6 +19,7 @@ import FormProject from "../../components/FormProject";
 
 // services
 import { addProject, getProjects } from "../_clientServices";
+import ModalFormProject from "../../components/ModalFormProject";
 
 const Project = () => {
   const [session, loading] = useSession();
@@ -40,23 +49,43 @@ const Project = () => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Project")}</h1>
-      <FormProject onAddProject={onAddProject} />
+      <ModalFormProject onAddProject={onAddProject}  buttonLabel={"+"} className={"Button"} />
 
-      {isLoading ? (
-        <h1>{t("Loading")}...</h1>
-      ) : !data ? (
-        <h1>{data}</h1>
-      ) : (
-        data.map((project) => (
-          <div key={project.id}>
-            <p>{t("Name")}: {project.name}</p>
-            <p>{t("Description")}: {project.description}</p>
-            <p>{t("Total Area")}: {project.totalArea}</p>
-            <p>{t("Year")}: {project.year}</p>
-            <p>{t("WebSite")}: {project.website}</p>
-          </div>
-        ))
-      )}
+      <Row>
+        {isLoading ? (
+          <h1>{t("Loading")}...</h1>
+        ) : !data ? (
+          <h1>{data}</h1>
+        ) : (
+          data.map((project) => (
+            <Col md="4">
+              <div key={project.id}>
+                <CardDeck>
+                  <Card>
+                    <CardBody>
+                      <CardText>
+                        {t("Name")}: {project.name}
+                      </CardText>
+                      <CardText>
+                        {t("Description")}: {project.description}
+                      </CardText>
+                      <CardText>
+                        {t("Total Area")}: {project.totalArea}
+                      </CardText>
+                      <CardText>
+                        {t("Year")}: {project.year}
+                      </CardText>
+                      <CardText>
+                        {t("WebSite")}: {project.website}
+                      </CardText>
+                    </CardBody>
+                  </Card>
+                </CardDeck>
+              </div>
+            </Col>
+          ))
+        )}
+      </Row>
     </Container>
   );
 };
