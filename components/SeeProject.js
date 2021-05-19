@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import FormBuyProject from "../components/FormBuyProject";
 import FormTwoFactorAuthentication from "../components/FormTwoFactorAuthentication";
+import SeeProjectImages from "../components/SeeProjectImages";
 
 
 const SeeProject = ({ getProject }) => {
@@ -71,6 +72,9 @@ const SeeProject = ({ getProject }) => {
         </div>
         <div hidden id="two-factor">
             <FormTwoFactorAuthentication projectId={id}/>
+        </div>
+        <div>
+            <SeeProjectImages projectId={id}/>
         </div>
     </>
     );

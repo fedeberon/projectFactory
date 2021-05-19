@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import { loginWith2FA } from '../services/userService.js';
-import { downloadProject } from '../services/projectService.js';
+import { download } from '../services/projectService.js';
 
 const FormTwoFactorAuthentication = ({ projectId }) => {
     const router = useRouter();
@@ -20,7 +20,7 @@ const FormTwoFactorAuthentication = ({ projectId }) => {
             const response = await loginWith2FA({"code":code},session.accessToken);
             validCode.hidden = false;
             const token = response.token;
-            await downloadProject(projectId,token);
+            download(projectId, token);
         } catch(e){
             wrongCode.hidden = false;
         }
