@@ -14,3 +14,19 @@ export const setProfessional = async (professional, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.post(`/professionals`, professional);
 };
+
+export const addPreviewImage = async (image, professionalId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const imageData = new FormData();
+  imageData.append('imageFile', image);
+  imageData.append('professional',professionalId);
+  return await API.post(`/images/professional/preview`, imageData);
+};
+
+export const addBackgroundImage = async (image, professionalId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const imageData = new FormData();
+  imageData.append('imageFile', image);
+  imageData.append('professional',professionalId);
+  return await API.post(`/images/professional/background`, imageData);
+};

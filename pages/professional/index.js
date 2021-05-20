@@ -20,6 +20,7 @@ import { useSession } from "next-auth/client";
 import { getProfessionals, addProfessional } from "../_clientServices";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ModalFormProfessional from "../../components/ModalFormProfessional";
+import { addPreviewImage, addBackgroundImage } from "../../services/professionalService";
 
 const Professional = () => {
   const [session] = useSession();
@@ -37,8 +38,23 @@ const Professional = () => {
 
   const onAddProfessional = async (data) => {
     setLoading(true);
-    await addProfessional(data, session);
-    await updateProfessionalList();
+    const previewImage = data.previewImage;
+    const backgroundImage = data.backgroundImage;
+    const professional = await addProfessional(data, session);
+
+    if (professional?.id) {
+      if (previewImage) {
+        await addPreviewImage(previewImage, professional.id, session.accessToken);
+      }
+      
+      if (backgroundImage) {
+        await addBackgroundImage(backgroundImage, professional.id, session.accessToken);
+      }
+      await updateProfessionalList();
+    } else {
+      throw new Error(`Email already exists`);
+    }
+    
   };
 
   useEffect(async () => {
@@ -56,9 +72,9 @@ const Professional = () => {
         ) : !data ? (
           <h1>{data}</h1>
         ) : (
-          data.map((professionals) => (
-            <Col md="4">
-              <div class="mt-3" key={professionals.id}>
+          data.map((professionals, index) => (
+            <Col key={index} md="4">
+              <div className="mt-3" key={professionals.id}>
                 <CardDeck>
                   <Card>
                     <CardBody>
