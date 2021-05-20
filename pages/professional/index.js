@@ -7,29 +7,35 @@ import { getSession, useSession } from "next-auth/client";
 import { getProfessionals, addProfessional } from "../_clientServices";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { findAll } from "../../services/professionalService";
-import {useDispatch, useSelector} from 'react-redux';
-import { useRouter } from 'next/router'
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { professionalActions } from "../../store";
 
 const Professional = ({ data }) => {
   const [session] = useSession();
+
   const [isLoading, setLoading] = useState(false);
+
   const dispatch = useDispatch();
   const router = useRouter();
-  const professionals = useSelector(state => Object.values(state.professionals.items));
+  const professionals = useSelector((state) =>
+    Object.values(state.professionals.items)
+  );
+
   const { t, lang } = useTranslation("common");
 
-
-   useEffect(() => {
+  useEffect(() => {
     dispatch(professionalActions.store(data));
-  }, [data])
+  }, [data]);
 
   const onAddProfessional = async (data) => {
     setLoading(true);
     await addProfessional(data, session);
+    setLoading(false);
   };
 
   if (router.isFallback) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   return (
@@ -43,16 +49,16 @@ const Professional = ({ data }) => {
       ) : !professionals ? (
         <h1>No se encontraron profesionales</h1>
       ) : (
-          professionals.map((project) => (
-          <div key={project.id}>
+        professionals.map((professional) => (
+          <div key={professional.id}>
             <p>
-              {t("Name")}: {project.firstName}
+              {t("Name")}: {professional.firstName}
             </p>
             <p>
-              {t("Description")}: {project.lastName}
+              {t("Description")}: {professional.lastName}
             </p>
             <p>
-              {t("Email")}: {project.email}
+              {t("Email")}: {professional.email}
             </p>
           </div>
         ))
@@ -65,8 +71,8 @@ export async function getServerSideProps({ params, req, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
 
-  let token = session.accessToken;
-  let professionals;
+  let token;
+  let professionals = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -80,12 +86,13 @@ export async function getServerSideProps({ params, req, res, locale }) {
     token = session.accessToken;
     professionals = await findAll(page, size, token);
     console.log("FindAll: ", professionals);
+
   }
 
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
-      professionals
+      data: professionals,
     },
   };
 }

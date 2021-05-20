@@ -1,9 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-import { professionalReducer as professional } from './professionals';
+import { professionalReducer as professionals } from './professionals';
 
 const reducer = combineReducers({
-    professional
+    professionals
 });
 
 export { professionalActions } from './professionals';

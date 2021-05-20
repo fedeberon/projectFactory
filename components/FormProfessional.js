@@ -13,8 +13,7 @@ import {
   Row,
 } from "reactstrap";
 
-const FormProfessional = ({onAddProfessional}) => {
-
+const FormProfessional = ({ onAddProfessional }) => {
   const { t, lang } = useTranslation("common");
 
   const {
@@ -50,7 +49,10 @@ const FormProfessional = ({onAddProfessional}) => {
             id="firstName"
             placeholder={t("Write the name here please")}
             {...register("firstName", {
-              required: { value: true, message: `${t("FirstName is required")}` },
+              required: {
+                value: true,
+                message: `${t("FirstName is required")}`,
+              },
               minLength: {
                 value: 3,
                 message: `${t("FirstName cannot be less than 3 character")}`,
@@ -72,7 +74,10 @@ const FormProfessional = ({onAddProfessional}) => {
             id="lastName"
             placeholder={t("Write the LastName here please")}
             {...register("lastName", {
-              required: { value: true, message: `${t("LastName is required")}` },
+              required: {
+                value: true,
+                message: `${t("LastName is required")}`,
+              },
               minLength: {
                 value: 3,
                 message: `${t("LastName cannot be less than 3 character")}`,
