@@ -7,32 +7,30 @@ import { getSession, useSession } from "next-auth/client";
 import { getProfessionals, addProfessional } from "../_clientServices";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { findAll } from "../../services/professionalService";
+import {useDispatch, useSelector} from 'react-redux';
+import { useRouter } from 'next/router'
 
-const Professional = ({ professionals }) => {
+const Professional = ({ data }) => {
   const [session] = useSession();
-  const [data, setData] = useState();
   const [isLoading, setLoading] = useState(false);
-
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const professionals = useSelector(state => Object.values(state.professionals.items));
   const { t, lang } = useTranslation("common");
 
-  const updateProfessionalList = async () => {
-    setLoading(true);
-    // const professionals = await getProfessionals();
-    if (professionals) {
-      setData(professionals);
-    }
-    setLoading(false);
-  };
+
+   useEffect(() => {
+    dispatch(professionalActions.store(data));
+  }, [data])
 
   const onAddProfessional = async (data) => {
     setLoading(true);
     await addProfessional(data, session);
-    await updateProfessionalList();
   };
 
-  useEffect(async () => {
-    await updateProfessionalList();
-  }, [session]);
+  if (router.isFallback) {
+    return <div>Loading...</div>
+  }
 
   return (
     <Container fluid>
@@ -42,10 +40,10 @@ const Professional = ({ professionals }) => {
 
       {isLoading ? (
         <h1>{t("Loading")}...</h1>
-      ) : !data ? (
-        <h1>{data}</h1>
+      ) : !professionals ? (
+        <h1>No se encontraron profesionales</h1>
       ) : (
-        data.map((project) => (
+          professionals.map((project) => (
           <div key={project.id}>
             <p>
               {t("Name")}: {project.firstName}
@@ -87,7 +85,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
-      professionals,
+      professionals
     },
   };
 }
