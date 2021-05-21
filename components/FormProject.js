@@ -19,6 +19,8 @@ import { useSelector } from "react-redux";
 const FormProject = ({ onAddProject }) => {
   const [session, loading] = useSession();
   const [options, setOptions] = useState([]);
+  const [previewImage, setPreviewImage] = useState();
+  const [images, setImages] = useState();
 
   const { t, lang } = useTranslation("common");
 
@@ -32,6 +34,14 @@ const FormProject = ({ onAddProject }) => {
     }
   }, [session]);
 
+  const getPreviewImage = (event) => {
+    setPreviewImage(event.target.files[0]);
+  }
+
+  const getImages = (event) => {
+    setImages(event.target.files);
+  }
+
   const {
     control,
     register,
@@ -43,13 +53,15 @@ const FormProject = ({ onAddProject }) => {
     { name, description, totalArea, website, year, professionalsSelected },
     event
   ) => {
-    // You should handle login logic with name, description, totalArea, website, year and professionalsSelected form data
+    // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image for form data
     let data = {
       name,
       description,
       totalArea,
       website,
       year,
+      previewImage,
+      images,
     };
     let id = professionalsSelected.id;
     onAddProject(data, id);
@@ -206,6 +218,31 @@ const FormProject = ({ onAddProject }) => {
               {errors.professionalsSelected.message}
             </FormText>
           )}
+        </FormGroup>
+        <FormGroup>
+          <Label for="filePreview">
+            {t("Select preview image for project")}
+          </Label>
+          <br></br>
+          <Input
+            type="file"
+            onChange={getPreviewImage}
+            name="filePreview"
+            id="filePreview"
+            accept="image/"
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for="uploadFiles">{t("Upload images")}</Label>
+          <br></br>
+          <Input
+            type="file"
+            multiple
+            onChange={getImages}
+            name="uploadFiles"
+            id="uploadFiles"
+            accept="image/"
+          />
         </FormGroup>
         <Button type="submit" color="primary">
           {t("Send")}

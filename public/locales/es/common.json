@@ -40,5 +40,9 @@
     "Total Area cannot be less than 3 character": "El Área Total no puede tener menos de 3 caracteres",
     "Write the Year here please": "Escribe el año aquí por favor",
     "Year is required": "El año es requerido",
-    "Year cannot be less than 3 character": "El año no puede tener menos de 3 caracteres"
+    "Year cannot be less than 3 character": "El año no puede tener menos de 3 caracteres",
+    "Select preview image for project": "Seleccione una imagen de previsualizacion para el proyecto",
+    "Upload images": "Subir imagenes",
+    "Write the website" : "Escriba el sitio web",
+    "Write the website here please" : "Escriba el sitio web aqui por favor"
 }

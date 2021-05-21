@@ -12,6 +12,8 @@ export const getProjects = async () => {
 };
 
 export const addProject = async (data, id) => {
+  data.previewImage = null;
+  data.images = null;
   try {
     const response = await fetch(`/api/projects/${id}`, {
       method: "POST",
@@ -71,4 +73,4 @@ export const getProfessionalById = async (id) => {
   } catch (error) {
     console.error(error);
   }
-}
+};

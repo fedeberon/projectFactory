@@ -31,7 +31,6 @@ const Professional = ({ data }) => {
     setLoading(true);
     const professional = await setProfessional(data, session?.accessToken);
     if (professional) {
-      console.log(professional);
       dispatch(professionalActions.addItem(professional));
       setLoading(false);
     }

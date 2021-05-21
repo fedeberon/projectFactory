@@ -11,6 +11,7 @@ import FormProject from "../../components/FormProject";
 
 // services
 import { addProject, getProjects } from "../_clientServices";
+import { addPreviewImage, addImages } from "../../services/projectService";
 
 const Project = () => {
   const [session, loading] = useSession();
@@ -28,13 +29,23 @@ const Project = () => {
 
   const onAddProject = async (data, id) => {
     setLoading(true);
-    await addProject(data, id);
+    const previewImage = data.previewImage;
+    const images = Array.from(data.images);
+    const project = await addProject(data, id);
+    if (project) {
+      if (previewImage) {
+        await addPreviewImage(previewImage, project.id, session.accessToken);
+      }
+
+      if (images) {
+        await addImages(images, project.id, session.accessToken)
+      }
+    }
     await updateProjectList();
   };
 
   useEffect(async () => {
     await updateProjectList();
-    // dispatch(professionalActions.store(data));
   }, [session]);
 
   return (
