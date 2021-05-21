@@ -4,9 +4,8 @@ import Header from "../../components/Header";
 import { Container } from "reactstrap";
 import FormProfessional from "../../components/FormProfessional";
 import { getSession, useSession } from "next-auth/client";
-import { getProfessionals, addProfessional } from "../_clientServices";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { findAll } from "../../services/professionalService";
+import { findAll, setProfessional } from "../../services/professionalService";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { professionalActions } from "../../store";
@@ -30,8 +29,12 @@ const Professional = ({ data }) => {
 
   const onAddProfessional = async (data) => {
     setLoading(true);
-    await addProfessional(data, session);
-    setLoading(false);
+    const professional = await setProfessional(data, session?.accessToken);
+    if (professional) {
+      console.log(professional);
+      dispatch(professionalActions.addItem(professional));
+      setLoading(false);
+    }
   };
 
   if (router.isFallback) {
@@ -85,8 +88,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (session) {
     token = session.accessToken;
     professionals = await findAll(page, size, token);
-    console.log("FindAll: ", professionals);
-
   }
 
   return {

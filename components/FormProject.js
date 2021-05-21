@@ -14,15 +14,19 @@ import {
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
+import { useSelector } from "react-redux";
 
-const FormProject = ({ onAddProject, getAllProfessionals }) => {
+const FormProject = ({ onAddProject }) => {
   const [session, loading] = useSession();
   const [options, setOptions] = useState([]);
 
   const { t, lang } = useTranslation("common");
 
+  const professionals = useSelector((state) =>
+    Object.values(state.professionals.items)
+  );
+
   useEffect(async () => {
-    const professionals = await getAllProfessionals();
     if (professionals) {
       setOptions(professionals);
     }
@@ -47,7 +51,7 @@ const FormProject = ({ onAddProject, getAllProfessionals }) => {
       website,
       year,
     };
-    let id = professionalsSelected.id
+    let id = professionalsSelected.id;
     onAddProject(data, id);
     event.target.reset();
   };

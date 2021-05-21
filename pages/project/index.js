@@ -10,7 +10,7 @@ import Header from "../../components/Header";
 import FormProject from "../../components/FormProject";
 
 // services
-import { addProject, getProfessionals, getProjects } from "../_clientServices";
+import { addProject, getProjects } from "../_clientServices";
 
 const Project = () => {
   const [session, loading] = useSession();
@@ -26,11 +26,6 @@ const Project = () => {
     setLoading(false);
   };
 
-  const getAllProfessionals = async () => {
-    const professionals = await getProfessionals();
-    return professionals;
-  }
-
   const onAddProject = async (data, id) => {
     setLoading(true);
     await addProject(data, id);
@@ -39,13 +34,16 @@ const Project = () => {
 
   useEffect(async () => {
     await updateProjectList();
+    // dispatch(professionalActions.store(data));
   }, [session]);
 
   return (
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Project")}</h1>
-      <FormProject onAddProject={onAddProject} getAllProfessionals={getAllProfessionals} />
+      <FormProject
+        onAddProject={onAddProject}
+      />
 
       {isLoading ? (
         <h1>{t("Loading")}...</h1>
@@ -53,12 +51,22 @@ const Project = () => {
         <h1>{data}</h1>
       ) : (
         data.map((project) => (
-          <div key={project.id} >
-            <p>{t("Name")}: {project.name}</p>
-            <p>{t("Description")}: {project.description}</p>
-            <p>{t("Total Area")}: {project.totalArea}</p>
-            <p>{t("Year")}: {project.year}</p>
-            <p>{t("WebSite")}: {project.website}</p>
+          <div key={project.id}>
+            <p>
+              {t("Name")}: {project.name}
+            </p>
+            <p>
+              {t("Description")}: {project.description}
+            </p>
+            <p>
+              {t("Total Area")}: {project.totalArea}
+            </p>
+            <p>
+              {t("Year")}: {project.year}
+            </p>
+            <p>
+              {t("WebSite")}: {project.website}
+            </p>
           </div>
         ))
       )}
