@@ -56,6 +56,7 @@ const SeeProject = ({ getProject }) => {
 
     return(
     <>
+        <img src={project.previewImage} alt="preview-image"></img>
         <div id="project-data">
             <span>name: {project.name}</span> <br></br>
             <span>description: {project.description}</span><br></br>

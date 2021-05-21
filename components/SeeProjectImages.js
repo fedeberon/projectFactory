@@ -15,7 +15,6 @@ const SeeProjectImages = ({ projectId }) => {
         const fetchData = async () => {
             setLoading(true);
             const images = await getImages(projectId,session.accessToken,0,5);
-            console.log(images)
             setImages(images);
             setLoading(false);
         }
