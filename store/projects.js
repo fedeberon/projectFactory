@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const { reducer, actions } = createSlice({
-  name: "professionals",
+  name: "projects",
   initialState: {
     items: [],
     selectedId: null,
-    professional: null,
+    project: null,
   },
 
   reducers: {
@@ -19,18 +19,21 @@ const { reducer, actions } = createSlice({
       state.prefessional = action.payload;
     },
     addItems(state, action) {
-      const professionals = action.payload;
-      professionals.forEach((item) => state.items.push(item));
+      const projects = action.payload;
+      projects.forEach((item) => state.items.push(item));
     },
     addItem(state, action) {
-      const professional = action.payload;
-      let found = state.items.includes(professional);
+      console.log("state----",state);
+      console.log("action----",action);
+      const project = action.payload;
+      let found = state.items.includes(project);
+      console.log(found);
       if (!found) {
-          state.items.push(professional);
+        state.items.push(project);
       }
     },
   },
 });
 
-export { actions as professionalActions };
-export { reducer as professionalReducer };
+export { actions as projectActions };
+export { reducer as projectReducer };

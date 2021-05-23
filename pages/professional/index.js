@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../../components/Header";
 import { Container } from "reactstrap";
 import FormProfessional from "../../components/FormProfessional";
 import { getSession, useSession } from "next-auth/client";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { findAll, setProfessional } from "../../services/professionalService";
+import { findAll, addProfessional } from "../../services/professionalService";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { professionalActions } from "../../store";
@@ -23,13 +23,14 @@ const Professional = ({ data }) => {
 
   const { t, lang } = useTranslation("common");
 
+
   useEffect(() => {
     dispatch(professionalActions.store(data));
   }, [data]);
 
   const onAddProfessional = async (data) => {
     setLoading(true);
-    const professional = await setProfessional(data, session?.accessToken);
+    const professional = await addProfessional(data, session?.accessToken);
     if (professional) {
       dispatch(professionalActions.addItem(professional));
       setLoading(false);
@@ -51,8 +52,8 @@ const Professional = ({ data }) => {
       ) : !professionals ? (
         <h1>No se encontraron profesionales</h1>
       ) : (
-        professionals.map((professional) => (
-          <div key={professional.id}>
+        professionals.map((professional, index) => (
+          <div key={index}>
             <p>
               {t("Name")}: {professional.firstName}
             </p>

@@ -10,7 +10,9 @@ export const getById = async (id, token) => {
   return await API.get(`/projects/${id}`);
 };
 
-export const setProject = async (project, token, id) => {
+export const addProject = async (project, token, id) => {
+  project.previewImage = null;
+  project.images = null;
   API.defaults.headers.common["Authorization"] = token;
   return await API.post(`/projects?professional=${id}`, project);
 };
