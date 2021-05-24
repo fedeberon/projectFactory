@@ -13,40 +13,37 @@ const SeeProject = ({ getProject }) => {
     const [project, setProject] = useState({});
     const [professional, setProfessional] = useState({});
     const [session, loading] = useSession();
+
+    const fetchData = async () => {
+        const project = await getProject(id);
+        setProfessional(project.professional)
+        setProject(project);
+    }
+
+    const asignEvents = () => {
+        const btnShowBuyProject = document.querySelector("#btn-show-buy-project");
+        const btnDownloadProject = document.querySelector("#btn-show-2FA");
+        const div2FA = document.querySelector("#two-factor");
+        const formBuyProject = document.querySelector("#form-buy-project");
+        const projectData = document.querySelector("#project-data");
+
+        const showBuyProject = () => {
+            formBuyProject.hidden = false;
+            projectData.hidden = true;
+        };
+
+        const show2FA = () => {
+            div2FA.hidden = false;
+            projectData.hidden = true;
+        };
+
+        btnShowBuyProject.addEventListener("click", showBuyProject);
+        btnDownloadProject.addEventListener("click", show2FA);
+    }
     
     useEffect(() => {
-        const fetchData = async () => {
-            const project = await getProject(id);
-            setProfessional(project.professional)
-            setProject(project);
-        }
-
-        const asignEvents = () => {
-            const btnShowBuyProject = document.querySelector("#btn-show-buy-project");
-            const btnDownloadProject = document.querySelector("#btn-show-2FA");
-            const div2FA = document.querySelector("#two-factor");
-            const formBuyProject = document.querySelector("#form-buy-project");
-            const projectData = document.querySelector("#project-data");
-
-            const showBuyProject = () => {
-                formBuyProject.hidden = false;
-                projectData.hidden = true;
-            };
-
-            const show2FA = () => {
-                div2FA.hidden = false;
-                projectData.hidden = true;
-            };
-
-            btnShowBuyProject.addEventListener("click", showBuyProject);
-            btnDownloadProject.addEventListener("click", show2FA);
-        }
-        
-
         if (id != undefined && session != undefined) {
             fetchData();
-            window.Mercadopago.setPublishableKey("TEST-28b1a53c-2241-4f9d-b262-b6ebfa87984e");
-            window.Mercadopago.getIdentificationTypes();
             asignEvents();
         }
         

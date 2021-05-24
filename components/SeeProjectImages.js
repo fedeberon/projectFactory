@@ -11,18 +11,17 @@ const SeeProjectImages = ({ projectId }) => {
     const [session, loading] = useSession();
     const [isLoading, setLoading] = useState(false);
     
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            const images = await getImages(projectId,session.accessToken,0,5);
-            setImages(images);
-            setLoading(false);
-        }
+    const fetchData = async () => {
+        setLoading(true);
+        const images = await getImages(projectId,session.accessToken,0,5);
+        setImages(images);
+        setLoading(false);
+    }
 
+    useEffect(() => {
         if (id != undefined && session != undefined) {
             fetchData();
         }
-        
     }, [router,session])
 
     return(
