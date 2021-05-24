@@ -2,7 +2,16 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getSession, useSession } from "next-auth/client";
-import { Container } from "reactstrap";
+import {
+  CardDeck,
+  Container,
+  Col,
+  Row,
+  Card,
+  CardText,
+  CardBody,
+} from "reactstrap";
+
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
@@ -10,11 +19,14 @@ import { useRouter } from "next/router";
 // components
 import Header from "../../components/Header";
 import FormProject from "../../components/FormProject";
+import ModalFormProject from "../../components/ModalFormProject";
 
 // services
 import { addPreviewImage, addImages } from "../../services/projectService";
 import { findAll, addProject } from "../../services/projectService";
 import { projectActions } from "../../store";
+
+
 
 const Project = ({ data }) => {
   const [session, loading] = useSession();
@@ -58,33 +70,43 @@ const Project = ({ data }) => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Project")}</h1>
-      <FormProject onAddProject={onAddProject} />
+      <ModalFormProject onAddProject={onAddProject}  buttonLabel={"+"} className={"Button"} />
 
-      {isLoading ? (
-        <h1>{t("Loading")}...</h1>
-      ) : !projects ? (
-        <h1>{projects}</h1>
-      ) : (
-        projects.map((project) => (
-          <div key={project.id}>
-            <p>
-              {t("Name")}: {project.name}
-            </p>
-            <p>
-              {t("Description")}: {project.description}
-            </p>
-            <p>
-              {t("Total Area")}: {project.totalArea}
-            </p>
-            <p>
-              {t("Year")}: {project.year}
-            </p>
-            <p>
-              {t("WebSite")}: {project.website}
-            </p>
-          </div>
-        ))
-      )}
+      <Row>
+        {isLoading ? (
+          <h1>{t("Loading")}...</h1>
+        ) : !projects ? (
+          <h1>{projects}</h1>
+        ) : (
+          projects.map((project) => (
+            <Col md="4">
+              <div key={project.id}>
+                <CardDeck>
+                  <Card>
+                    <CardBody>
+                      <CardText>
+                        {t("Name")}: {project.name}
+                      </CardText>
+                      <CardText>
+                        {t("Description")}: {project.description}
+                      </CardText>
+                      <CardText>
+                        {t("Total Area")}: {project.totalArea}
+                      </CardText>
+                      <CardText>
+                        {t("Year")}: {project.year}
+                      </CardText>
+                      <CardText>
+                        {t("WebSite")}: {project.website}
+                      </CardText>
+                    </CardBody>
+                  </Card>
+                </CardDeck>
+              </div>
+            </Col>
+          ))
+        )}
+      </Row>
     </Container>
   );
 };

@@ -12,6 +12,7 @@ import {
   Label,
   Row,
 } from "reactstrap";
+import ModalFormProfessional from "./ModalFormProfessional";
 
 const FormProfessional = ({ onAddProfessional }) => {
   const { t, lang } = useTranslation("common");
@@ -34,7 +35,8 @@ const FormProfessional = ({ onAddProfessional }) => {
   };
 
   return (
-    <Container fluid="sm">
+    <div>
+    <Container fluid="sm"> 
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col>
@@ -111,11 +113,12 @@ const FormProfessional = ({ onAddProfessional }) => {
             <FormText className="error-label">{errors.email.message}</FormText>
           )}
         </FormGroup>
-        <Button type="submit" color="primary">
+        <Button type="submit" color="primary mt-1">
           {t("Send")}
         </Button>
       </Form>
     </Container>
+    </div>
   );
 };
 

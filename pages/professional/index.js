@@ -1,7 +1,20 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../../components/Header";
-import { Container } from "reactstrap";
+import {
+  Col,
+  Container,
+  Row,
+  Card,
+  Button,
+  CardImg,
+  CardTitle,
+  CardText,
+  CardGroup,
+  CardSubtitle,
+  CardBody,
+  CardDeck,
+} from "reactstrap";
 import FormProfessional from "../../components/FormProfessional";
 import { getSession, useSession } from "next-auth/client";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -9,6 +22,8 @@ import { findAll, addProfessional } from "../../services/professionalService";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { professionalActions } from "../../store";
+import ModalFormProfessional from "../../components/ModalFormProfessional";
+
 
 const Professional = ({ data }) => {
   const [session] = useSession();
@@ -20,7 +35,7 @@ const Professional = ({ data }) => {
   const professionals = useSelector((state) =>
     Object.values(state.professionals.items)
   );
-
+  
   const { t, lang } = useTranslation("common");
 
 
@@ -30,6 +45,7 @@ const Professional = ({ data }) => {
 
   const onAddProfessional = async (data) => {
     setLoading(true);
+
     const professional = await addProfessional(data, session?.accessToken);
     if (professional) {
       dispatch(professionalActions.addItem(professional));
@@ -45,27 +61,36 @@ const Professional = ({ data }) => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Professional")}</h1>
-      <FormProfessional onAddProfessional={onAddProfessional} />
-
-      {isLoading ? (
-        <h1>{t("Loading")}...</h1>
-      ) : !professionals ? (
-        <h1>No se encontraron profesionales</h1>
-      ) : (
-        professionals.map((professional, index) => (
-          <div key={index}>
-            <p>
-              {t("Name")}: {professional.firstName}
-            </p>
-            <p>
-              {t("Description")}: {professional.lastName}
-            </p>
-            <p>
-              {t("Email")}: {professional.email}
-            </p>
-          </div>
-        ))
-      )}
+      <ModalFormProfessional onAddProfessional={onAddProfessional}  buttonLabel={"+"} className={"Button mt-50"}/>
+      <Row>
+        {isLoading ? (
+          <h1>{t("Loading")}...</h1>
+        ) : !professionals ? (
+          <h1>{professionals}</h1>
+        ) : (
+          professionals.map((professional) => (
+            <Col md="4">
+              <div class="mt-3" key={professional.id}>
+                <CardDeck>
+                  <Card>
+                    <CardBody>
+                      <CardText>
+                        {t("Name")}: {professional.firstName}
+                      </CardText>
+                      <CardText>
+                        {t("Description")}: {professional.lastName}
+                      </CardText>
+                      <CardText>
+                        {t("Email")}: {professional.email}
+                      </CardText>
+                    </CardBody>
+                  </Card>
+                </CardDeck>
+              </div>
+            </Col>
+          ))
+        )}
+      </Row>
     </Container>
   );
 };
