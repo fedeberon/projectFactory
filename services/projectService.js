@@ -8,7 +8,7 @@ export const findAll = async (page, size, token) => {
 export const getById = async (id, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const project = await API.get(`/projects/${id}`)
-  project.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/${project.previewImage}`;
+  project.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/projects/${project.id}/${project.previewImage}`;
   return project;
 };
 
