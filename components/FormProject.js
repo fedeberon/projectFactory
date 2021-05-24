@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import {
   Button,
   Col,
@@ -13,31 +13,58 @@ import {
   Row,
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
+import Select from "react-select";
+import { useSelector } from "react-redux";
 
 const FormProject = ({ onAddProject }) => {
   const [session, loading] = useSession();
+  const [options, setOptions] = useState([]);
+  const [previewImage, setPreviewImage] = useState();
+  const [images, setImages] = useState();
 
   const { t, lang } = useTranslation("common");
 
+  const professionals = useSelector((state) =>
+    Object.values(state.professionals.items)
+  );
+
+  useEffect(async () => {
+    if (professionals) {
+      setOptions(professionals);
+    }
+  }, [session]);
+
+  const getPreviewImage = (event) => {
+    setPreviewImage(event.target.files[0]);
+  }
+
+  const getImages = (event) => {
+    setImages(event.target.files);
+  }
+
   const {
+    control,
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
   const onSubmit = async (
-    { name, description, totalArea, website, year },
+    { name, description, totalArea, website, year, professionalsSelected },
     event
   ) => {
-    // You should handle login logic with name, description, totalArea, website and year form data
+    // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image for form data
     let data = {
       name,
       description,
       totalArea,
       website,
       year,
+      previewImage,
+      images,
     };
-    onAddProject(data);
+    let id = professionalsSelected.id;
+    onAddProject(data, id);
     event.target.reset();
   };
 
@@ -66,7 +93,9 @@ const FormProject = ({ onAddProject }) => {
             className={"form-field" + (errors.name ? " has-error" : "")}
           />
           {errors.name && (
-            <FormText className="invalid error-label">{errors.name.message}</FormText>
+            <FormText className="invalid error-label">
+              {errors.name.message}
+            </FormText>
           )}
         </FormGroup>
         <FormGroup>
@@ -77,7 +106,10 @@ const FormProject = ({ onAddProject }) => {
             id="description"
             placeholder={t("Write the description here please")}
             {...register("description", {
-              required: { value: true, message: `${t("Description is required")}` },
+              required: {
+                value: true,
+                message: `${t("Description is required")}`,
+              },
               minLength: {
                 value: 3,
                 message: `${t("Description cannot be less than 3 character")}`,
@@ -99,7 +131,10 @@ const FormProject = ({ onAddProject }) => {
             id="totalArea"
             placeholder={t("Write the Total Area here please")}
             {...register("totalArea", {
-              required: { value: true, message: `${t("Total Area is required")}` },
+              required: {
+                value: true,
+                message: `${t("Total Area is required")}`,
+              },
               minLength: {
                 value: 3,
                 message: `${t("Total Area cannot be less than 3 character")}`,
@@ -154,6 +189,60 @@ const FormProject = ({ onAddProject }) => {
           {errors.year && (
             <FormText className="error-label">{errors.year.message}</FormText>
           )}
+        </FormGroup>
+        <FormGroup>
+          <Controller
+            name="professionalsSelected"
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: `${t("professionalsSelected is required")}`,
+              },
+            }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                inputId={"professionalsSelected"}
+                options={options}
+                getOptionLabel={(option) =>
+                  `${option?.firstName} ${option?.lastName}`
+                }
+                getOptionValue={(option) => `${option?.id}`}
+                isClearable
+              />
+            )}
+          />
+          {errors.professionalsSelected && (
+            <FormText className="error-label">
+              {errors.professionalsSelected.message}
+            </FormText>
+          )}
+        </FormGroup>
+        <FormGroup>
+          <Label for="filePreview">
+            {t("Select preview image for project")}
+          </Label>
+          <br></br>
+          <Input
+            type="file"
+            onChange={getPreviewImage}
+            name="filePreview"
+            id="filePreview"
+            accept="image/"
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label for="uploadFiles">{t("Upload images")}</Label>
+          <br></br>
+          <Input
+            type="file"
+            multiple
+            onChange={getImages}
+            name="uploadFiles"
+            id="uploadFiles"
+            accept="image/"
+          />
         </FormGroup>
         <Button type="submit" color="primary">
           {t("Send")}

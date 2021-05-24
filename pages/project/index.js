@@ -1,7 +1,7 @@
 // frameworks
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSession } from "next-auth/client";
+import { getSession, useSession } from "next-auth/client";
 import {
   CardDeck,
   Container,
@@ -11,39 +11,60 @@ import {
   CardText,
   CardBody,
 } from "reactstrap";
+
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 // components
 import Header from "../../components/Header";
 import FormProject from "../../components/FormProject";
-
-// services
-import { addProject, getProjects } from "../_clientServices";
 import ModalFormProject from "../../components/ModalFormProject";
 
-const Project = () => {
+// services
+import { addPreviewImage, addImages } from "../../services/projectService";
+import { findAll, addProject } from "../../services/projectService";
+import { projectActions } from "../../store";
+
+
+
+const Project = ({ data }) => {
   const [session, loading] = useSession();
-  const [data, setData] = useState();
   const [isLoading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const projects = useSelector((state) => Object.values(state.projects.items));
 
   const { t, lang } = useTranslation("common");
 
-  const updateProjectList = async () => {
+  const onAddProject = async (data, id) => {
     setLoading(true);
-    const projects = await getProjects();
-    setData(projects);
+    const previewImage = data.previewImage;
+    let images;
+    if (data.images) {
+      images = Array.from(data.images);
+    }
+    const project = await addProject(data, session?.accessToken, id);
+    if (project) {
+      dispatch(projectActions.addItem(project));
+      if (previewImage) {
+        await addPreviewImage(previewImage, project?.id, session?.accessToken);
+      }
+      if (images) {
+        await addImages(images, project?.id, session?.accessToken);
+      }
+    }
     setLoading(false);
   };
 
-  const onAddProject = async (data) => {
-    setLoading(true);
-    await addProject(data, session);
-    await updateProjectList();
-  };
+  useEffect(() => {
+    dispatch(projectActions.store(data));
+  }, [data]);
 
-  useEffect(async () => {
-    await updateProjectList();
-  }, [session]);
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Container fluid>
@@ -54,10 +75,10 @@ const Project = () => {
       <Row>
         {isLoading ? (
           <h1>{t("Loading")}...</h1>
-        ) : !data ? (
-          <h1>{data}</h1>
+        ) : !projects ? (
+          <h1>{projects}</h1>
         ) : (
-          data.map((project) => (
+          projects.map((project) => (
             <Col md="4">
               <div key={project.id}>
                 <CardDeck>
@@ -90,10 +111,32 @@ const Project = () => {
   );
 };
 
-export const getStaticProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale, ["common"])),
-  },
-});
+export async function getServerSideProps({ params, req, res, locale }) {
+  // Get the user's session based on the request
+  const session = await getSession({ req });
+
+  let token;
+  let projects = [];
+  let { page, size } = req.__NEXT_INIT_QUERY;
+
+  if (!page || page <= 0) {
+    page = 0;
+  }
+  if (!size || size <= 0) {
+    size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
+  }
+
+  if (session) {
+    token = session.accessToken;
+    projects = await findAll(page, size, token);
+  }
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+      data: projects,
+    },
+  };
+}
 
 export default Project;
