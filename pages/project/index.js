@@ -18,15 +18,12 @@ import { useRouter } from "next/router";
 
 // components
 import Header from "../../components/Header";
-import FormProject from "../../components/FormProject";
 import ModalFormProject from "../../components/ModalFormProject";
 
 // services
 import { addPreviewImage, addImages } from "../../services/projectService";
 import { findAll, addProject } from "../../services/projectService";
 import { projectActions } from "../../store";
-
-
 
 const Project = ({ data }) => {
   const [session, loading] = useSession();
@@ -70,7 +67,11 @@ const Project = ({ data }) => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Project")}</h1>
-      <ModalFormProject onAddProject={onAddProject}  buttonLabel={"+"} className={"Button"} />
+      <ModalFormProject
+        onAddProject={onAddProject}
+        buttonLabel={"+"}
+        className={"Button"}
+      />
 
       <Row>
         {isLoading ? (
@@ -78,31 +79,29 @@ const Project = ({ data }) => {
         ) : !projects ? (
           <h1>{projects}</h1>
         ) : (
-          projects.map((project) => (
-            <Col md="4">
-              <div key={project.id}>
-                <CardDeck>
-                  <Card>
-                    <CardBody>
-                      <CardText>
-                        {t("Name")}: {project.name}
-                      </CardText>
-                      <CardText>
-                        {t("Description")}: {project.description}
-                      </CardText>
-                      <CardText>
-                        {t("Total Area")}: {project.totalArea}
-                      </CardText>
-                      <CardText>
-                        {t("Year")}: {project.year}
-                      </CardText>
-                      <CardText>
-                        {t("WebSite")}: {project.website}
-                      </CardText>
-                    </CardBody>
-                  </Card>
-                </CardDeck>
-              </div>
+          projects.map((project, index) => (
+            <Col md="4" key={index}>
+              <CardDeck>
+                <Card>
+                  <CardBody>
+                    <CardText>
+                      {t("Name")}: {project.name}
+                    </CardText>
+                    <CardText>
+                      {t("Description")}: {project.description}
+                    </CardText>
+                    <CardText>
+                      {t("Total Area")}: {project.totalArea}
+                    </CardText>
+                    <CardText>
+                      {t("Year")}: {project.year}
+                    </CardText>
+                    <CardText>
+                      {t("WebSite")}: {project.website}
+                    </CardText>
+                  </CardBody>
+                </Card>
+              </CardDeck>
             </Col>
           ))
         )}

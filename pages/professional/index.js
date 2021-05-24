@@ -24,7 +24,6 @@ import { useRouter } from "next/router";
 import { professionalActions } from "../../store";
 import ModalFormProfessional from "../../components/ModalFormProfessional";
 
-
 const Professional = ({ data }) => {
   const [session] = useSession();
 
@@ -35,9 +34,8 @@ const Professional = ({ data }) => {
   const professionals = useSelector((state) =>
     Object.values(state.professionals.items)
   );
-  
-  const { t, lang } = useTranslation("common");
 
+  const { t, lang } = useTranslation("common");
 
   useEffect(() => {
     dispatch(professionalActions.store(data));
@@ -61,32 +59,34 @@ const Professional = ({ data }) => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Professional")}</h1>
-      <ModalFormProfessional onAddProfessional={onAddProfessional}  buttonLabel={"+"} className={"Button mt-50"}/>
+      <ModalFormProfessional
+        onAddProfessional={onAddProfessional}
+        buttonLabel={"+"}
+        className={"Button mt-50"}
+      />
       <Row>
         {isLoading ? (
           <h1>{t("Loading")}...</h1>
         ) : !professionals ? (
           <h1>{professionals}</h1>
         ) : (
-          professionals.map((professional) => (
-            <Col md="4">
-              <div class="mt-3" key={professional.id}>
-                <CardDeck>
-                  <Card>
-                    <CardBody>
-                      <CardText>
-                        {t("Name")}: {professional.firstName}
-                      </CardText>
-                      <CardText>
-                        {t("Description")}: {professional.lastName}
-                      </CardText>
-                      <CardText>
-                        {t("Email")}: {professional.email}
-                      </CardText>
-                    </CardBody>
-                  </Card>
-                </CardDeck>
-              </div>
+          professionals.map((professional, index) => (
+            <Col md="4" key={index}>
+              <CardDeck>
+                <Card>
+                  <CardBody>
+                    <CardText>
+                      {t("Name")}: {professional.firstName}
+                    </CardText>
+                    <CardText>
+                      {t("Description")}: {professional.lastName}
+                    </CardText>
+                    <CardText>
+                      {t("Email")}: {professional.email}
+                    </CardText>
+                  </CardBody>
+                </Card>
+              </CardDeck>
             </Col>
           ))
         )}

@@ -23,11 +23,8 @@ const { reducer, actions } = createSlice({
       projects.forEach((item) => state.items.push(item));
     },
     addItem(state, action) {
-      console.log("state----",state);
-      console.log("action----",action);
       const project = action.payload;
       let found = state.items.includes(project);
-      console.log(found);
       if (!found) {
         state.items.push(project);
       }
