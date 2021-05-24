@@ -4,8 +4,8 @@ export const findAll = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const professionals = await API.get(`/professionals?page=${page}&size=${size}`);
   professionals.forEach((professional) => {
-    professional.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/${professional.previewImage}`;
-    professional.backgroundImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/${professional.backgroundImage}`;
+    professional.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${professional.id}/${professional.previewImage}`;
+    professional.backgroundImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${professional.id}/${professional.backgroundImage}`;
   });
   return professionals;
 };
