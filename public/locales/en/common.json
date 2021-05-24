@@ -42,6 +42,10 @@
     "Year is required": "Year is required",
     "Year cannot be less than 3 character": "Year cannot be less than 3 character",
     "Select profile picture": "Select profile picture",
-    "Select background picture": "Select background picture"
+    "Select background picture": "Select background picture",
+    "Select preview image for project": "Select preview image for project",
+    "Upload images": "Upload images",
+    "Write the website": "Write the website",
+    "Write the website here please" : "Write the website here please"
 
 }

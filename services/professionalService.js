@@ -2,7 +2,12 @@ import API from "./api";
 
 export const findAll = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  return await API.get(`/professionals?page=${page}&size=${size}`);
+  const professionals = await API.get(`/professionals?page=${page}&size=${size}`);
+  professionals.forEach((professional) => {
+    professional.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/${professional.previewImage}`;
+    professional.backgroundImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/${professional.backgroundImage}`;
+  });
+  return professionals;
 };
 
 export const getById = async (id, token) => {
@@ -10,7 +15,9 @@ export const getById = async (id, token) => {
   return await API.get(`/professionals/${id}`);
 };
 
-export const setProfessional = async (professional, token) => {
+export const addProfessional = async (professional, token) => {
+  professional.previewImage = null;
+  professional.backgroundImage = null;
   API.defaults.headers.common["Authorization"] = token;
   return await API.post(`/professionals`, professional);
 };

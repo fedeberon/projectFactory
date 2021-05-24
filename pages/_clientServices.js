@@ -11,9 +11,11 @@ export const getProjects = async () => {
   }
 };
 
-export const addProject = async (data, session) => {
+export const addProject = async (data, id) => {
+  data.previewImage = null;
+  data.images = null;
   try {
-    const response = await fetch("/api/projects", {
+    const response = await fetch(`/api/projects/${id}`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -57,6 +59,19 @@ export const addProfessional = async (data, session) => {
       throw new Error(`An error: ${response.status}`);
     }
     return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getProfessionalById = async (id) => {
+  try {
+    const response = await fetch(`/api/prefessionals/${id}`);
+    if (!response.ok) {
+      throw new Error(`An error: ${response.status}`);
+    }
+    const json = await response.json();
+    return json;
   } catch (error) {
     console.error(error);
   }

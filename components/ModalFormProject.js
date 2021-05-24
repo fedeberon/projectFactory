@@ -7,7 +7,7 @@ const ModalFormProject = (props) => {
     const {
         buttonLabel,
         className,
-        onAddProfessional
+        onAddProject
       } = props;
     
     const [modal, setModal] = useState(false);
@@ -20,7 +20,7 @@ const ModalFormProject = (props) => {
           <Modal isOpen={modal} toggle={toggle} className={className}>
             <ModalHeader toggle={toggle}>Modal title</ModalHeader>
             <ModalBody>
-                <FormProject onAddProfessional={onAddProfessional} />
+                <FormProject onAddProject={onAddProject} />
             </ModalBody>
             <ModalFooter>
               <Button color="primary" onClick={toggle}>Do Something</Button>{' '}
