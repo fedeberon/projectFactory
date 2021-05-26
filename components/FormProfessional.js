@@ -14,7 +14,8 @@ import {
 } from "reactstrap";
 import ModalFormProfessional from "./ModalFormProfessional";
 
-const FormProfessional = ({ onAddProfessional }) => {
+const FormProfessional = ({onAddProfessional, toggle}) => {
+
   const { t, lang } = useTranslation("common");
   const [previewImage, setPreviewImage] = useState();
   const [backgroundImage, setBackgroundImage] = useState();
@@ -134,7 +135,7 @@ const FormProfessional = ({ onAddProfessional }) => {
           <Label for="file">{t("Select background picture")}</Label>
           <Input type="file" onChange={getBackgroundImage} name="file" id="file" accept="image/*"/>
         </FormGroup>
-        <Button type="submit" color="primary mt-1">
+        <Button type="submit" color="primary mt-1" onClick={toggle}>
           {t("Send")}
         </Button>
       </Form>
