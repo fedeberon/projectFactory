@@ -44,5 +44,9 @@
     "Select preview image for project": "Seleccione una imagen de previsualizacion para el proyecto",
     "Upload images": "Subir imagenes",
     "Write the website" : "Escriba el sitio web",
-    "Write the website here please" : "Escriba el sitio web aqui por favor"
+    "Write the website here please" : "Escriba el sitio web aqui por favor",
+    "Add project" : "Agregar proyecto",
+    "Edit project" : "Editar proyecto",
+    "WebSite is required" : "Sitio web requerido",
+    "WebSite cannot be less than 3 character" : "El Sitio web no puede tener menos de 3 caracteres"
 }

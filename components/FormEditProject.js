@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/client";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Button,
   Col,
@@ -13,26 +12,12 @@ import {
   Row,
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
-import Select from "react-select";
-import { useSelector } from "react-redux";
 
-const FormProject = ({ onAddProject }) => {
-  const [session, loading] = useSession();
-  const [options, setOptions] = useState([]);
+const FormEditProject = ({ project, onEdit }) => {
   const [previewImage, setPreviewImage] = useState();
   const [images, setImages] = useState();
 
   const { t, lang } = useTranslation("common");
-
-  const professionals = useSelector((state) =>
-    Object.values(state.professionals.items)
-  );
-
-  useEffect(async () => {
-    if (professionals) {
-      setOptions(professionals);
-    }
-  }, [session]);
 
   const getPreviewImage = (event) => {
     setPreviewImage(event.target.files[0]);
@@ -50,7 +35,7 @@ const FormProject = ({ onAddProject }) => {
   } = useForm();
 
   const onSubmit = async (
-    { name, description, totalArea, website, year, professionalsSelected },
+    { name, description, totalArea, website, year },
     event
   ) => {
     // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image for form data
@@ -62,14 +47,14 @@ const FormProject = ({ onAddProject }) => {
       year,
       previewImage,
       images,
+      "id" : project.id
     };
-    let id = professionalsSelected.id;
-    onAddProject(data, id);
+    onEdit(data);
     event.target.reset();
   };
 
   return (
-    <Container fluid="sm">
+      <Container fluid="sm">
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col>
@@ -82,6 +67,7 @@ const FormProject = ({ onAddProject }) => {
             type="text"
             name="name"
             id="name"
+            defaultValue={project.name}
             placeholder={t("Write the name here please")}
             {...register("name", {
               required: { value: true, message: `${t("Name is required")}` },
@@ -103,6 +89,7 @@ const FormProject = ({ onAddProject }) => {
           <Input
             type="text"
             name="description"
+            defaultValue={project.description}
             id="description"
             placeholder={t("Write the description here please")}
             {...register("description", {
@@ -128,6 +115,7 @@ const FormProject = ({ onAddProject }) => {
           <Input
             type="number"
             name="totalArea"
+            defaultValue={project.totalArea}
             id="totalArea"
             placeholder={t("Write the Total Area here please")}
             {...register("totalArea", {
@@ -153,6 +141,7 @@ const FormProject = ({ onAddProject }) => {
           <Input
             type="email"
             name="website"
+            defaultValue={project.website}
             id="email"
             placeholder={t("Write the website here please")}
             {...register("website", {
@@ -175,6 +164,7 @@ const FormProject = ({ onAddProject }) => {
           <Input
             type="number"
             name="year"
+            defaultValue={project.year}
             id="year"
             placeholder={t("Write the Year here please")}
             {...register("year", {
@@ -188,35 +178,6 @@ const FormProject = ({ onAddProject }) => {
           />
           {errors.year && (
             <FormText className="error-label">{errors.year.message}</FormText>
-          )}
-        </FormGroup>
-        <FormGroup>
-          <Controller
-            name="professionalsSelected"
-            control={control}
-            rules={{
-              required: {
-                value: true,
-                message: `${t("professionalsSelected is required")}`,
-              },
-            }}
-            render={({ field }) => (
-              <Select
-                {...field}
-                inputId={"professionalsSelected"}
-                options={options}
-                getOptionLabel={(option) =>
-                  `${option?.firstName} ${option?.lastName}`
-                }
-                getOptionValue={(option) => `${option?.id}`}
-                isClearable
-              />
-            )}
-          />
-          {errors.professionalsSelected && (
-            <FormText className="error-label">
-              {errors.professionalsSelected.message}
-            </FormText>
           )}
         </FormGroup>
         <FormGroup>
@@ -252,4 +213,4 @@ const FormProject = ({ onAddProject }) => {
   );
 };
 
-export default FormProject;
+export default FormEditProject;

@@ -22,10 +22,11 @@ import { findAll, addProfessional } from "../../services/professionalService";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { professionalActions } from "../../store";
-import ModalFormProfessional from "../../components/ModalFormProfessional";
+import ModalForm from "../../components/ModalForm";
 
 const Professional = ({ data }) => {
   const [session] = useSession();
+  const [modalOpen, setModalOpen] = useState(false);
 
   const [isLoading, setLoading] = useState(false);
 
@@ -36,6 +37,8 @@ const Professional = ({ data }) => {
   );
 
   const { t, lang } = useTranslation("common");
+
+  const toggleModal = () => setModalOpen(!modalOpen);
 
   useEffect(() => {
     dispatch(professionalActions.store(data));
@@ -59,10 +62,12 @@ const Professional = ({ data }) => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Professional")}</h1>
-      <ModalFormProfessional
-        onAddProfessional={onAddProfessional}
+      <Button className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex" color="danger" onClick={toggleModal}>+</Button>
+      <ModalForm
         buttonLabel={"+"}
         className={"Button mt-50"}
+        formBody={(<FormProfessional onAddProfessional={onAddProfessional} />)}
+        modalOpen={{"open" : modalOpen,"function":setModalOpen}}
       />
       <Row>
         {isLoading ? (
