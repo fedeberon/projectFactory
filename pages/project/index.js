@@ -21,7 +21,7 @@ import Header from "../../components/Header";
 import ModalFormProject from "../../components/ModalFormProject";
 
 // services
-import { addPreviewImage, addImages } from "../../services/projectService";
+import { addPreviewImage, addImages, addFile } from "../../services/projectService";
 import { findAll, addProject } from "../../services/projectService";
 import { projectActions } from "../../store";
 
@@ -38,19 +38,23 @@ const Project = ({ data }) => {
   const onAddProject = async (data, id) => {
     setLoading(true);
     const previewImage = data.previewImage;
-    let images;
-    if (data.images) {
+    let images = [];
+    let file = data.file;
+    if (data.images.length > 0) {
       images = Array.from(data.images);
     }
-    const project = await addProject(data, session?.accessToken, id);
+    const project = await addProject(data, session.accessToken, id);
     if (project) {
+      if (previewImage.length > 0) {
+        await addPreviewImage(previewImage[0], project.id, session.accessToken);
+      }
+      if (images.length > 0) {
+        await addImages(images, project.id, session.accessToken);
+      }
+      if (file.length > 0) {
+        await addFile(file[0], project.id, session.accessToken);
+      }
       dispatch(projectActions.addItem(project));
-      if (previewImage) {
-        await addPreviewImage(previewImage, project?.id, session?.accessToken);
-      }
-      if (images) {
-        await addImages(images, project?.id, session?.accessToken);
-      }
     }
     setLoading(false);
   };
