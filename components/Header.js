@@ -11,6 +11,9 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Col,
+  Row,
+  NavbarText,
 } from "reactstrap";
 import Authentication from "./Authentication";
 import { useRouter } from "next/dist/client/router";
@@ -46,7 +49,7 @@ export default function Header() {
       <Link href="/"> {t("Home")}</Link>
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={dropdown} navbar>
-        <Nav navbar>
+        <Nav className="me-auto" navbar>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
               {t("Professional")}
@@ -93,8 +96,15 @@ export default function Header() {
             <Link href="/contact">{t("Contact")}</Link>
           </NavItem>
         </Nav>
+        <Row className="justify-content-center align-items-center">
+          <Col lg="auto ps-0" sm="12">
+            <Link href="/profile">Perfil</Link>
+          </Col>
+          <Col lg="auto" sm="12">
+            <Authentication />
+          </Col>
+        </Row>
       </Collapse>
-      <Authentication />
     </Navbar>
   );
 }
