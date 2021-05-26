@@ -10,7 +10,7 @@ export const getById = async (id, token) => {
   return await API.get(`/professionals/${id}`);
 };
 
-export const setProfessional = async (professional, token) => {
+export const addProfessional = async (professional, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.post(`/professionals`, professional);
 };

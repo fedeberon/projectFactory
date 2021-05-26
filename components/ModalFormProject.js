@@ -7,7 +7,7 @@ const ModalFormProject = (props) => {
     const {
         buttonLabel,
         className,
-        onAddProfessional
+        onAddProject
       } = props;
     
     const [modal, setModal] = useState(false);
