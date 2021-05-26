@@ -8,6 +8,7 @@ import {
   Col,
   Row,
   Card,
+  CardImg,
   CardText,
   CardBody,
 } from "reactstrap";
@@ -79,29 +80,32 @@ const Project = ({ data }) => {
         ) : !projects ? (
           <h1>{projects}</h1>
         ) : (
-          projects.map((project, index) => (
-            <Col md="4" key={index}>
-              <CardDeck>
-                <Card>
-                  <CardBody>
-                    <CardText>
-                      {t("Name")}: {project.name}
-                    </CardText>
-                    <CardText>
-                      {t("Description")}: {project.description}
-                    </CardText>
-                    <CardText>
-                      {t("Total Area")}: {project.totalArea}
-                    </CardText>
-                    <CardText>
-                      {t("Year")}: {project.year}
-                    </CardText>
-                    <CardText>
-                      {t("WebSite")}: {project.website}
-                    </CardText>
-                  </CardBody>
-                </Card>
-              </CardDeck>
+          projects.map((project) => (
+            <Col key={project.id} md="4">
+              <div key={project.id}>
+                <CardDeck>
+                  <Card>
+                    <CardImg top width="100%" src={project.previewImage} alt="Card image cap" />
+                    <CardBody>
+                      <CardText>
+                        {t("Name")}: {project.name}
+                      </CardText>
+                      <CardText>
+                        {t("Description")}: {project.description}
+                      </CardText>
+                      <CardText>
+                        {t("Total Area")}: {project.totalArea}
+                      </CardText>
+                      <CardText>
+                        {t("Year")}: {project.year}
+                      </CardText>
+                      <CardText>
+                        {t("WebSite")}: {project.website}
+                      </CardText>
+                    </CardBody>
+                  </Card>
+                </CardDeck>
+              </div>
             </Col>
           ))
         )}

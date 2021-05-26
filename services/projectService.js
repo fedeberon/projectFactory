@@ -2,7 +2,11 @@ import API from "./api";
 
 export const findAll = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  return await API.get(`/projects?page=${page}&size=${size}`);
+  const projects = await API.get(`/projects?page=${page}&size=${size}`);
+  projects.forEach((project) => {
+    project.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/projects/${project.id}/${project.previewImage}`;
+  });
+  return projects;
 };
 
 export const getById = async (id, token) => {
