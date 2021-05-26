@@ -48,3 +48,8 @@ export const isUnique = async (email, session) => {
   API.defaults.headers.common["Authorization"] = session.accessToken;
   return await API.post(`/users/email`, { email });
 };
+
+export const loginWith2FA = async (code, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.post(`/users/2FA/login`,code);
+};
