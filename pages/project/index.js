@@ -19,15 +19,12 @@ import { useRouter } from "next/router";
 
 // components
 import Header from "../../components/Header";
-import FormProject from "../../components/FormProject";
 import ModalFormProject from "../../components/ModalFormProject";
 
 // services
 import { addPreviewImage, addImages } from "../../services/projectService";
 import { findAll, addProject } from "../../services/projectService";
 import { projectActions } from "../../store";
-
-
 
 const Project = ({ data }) => {
   const [session, loading] = useSession();
@@ -71,7 +68,11 @@ const Project = ({ data }) => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Project")}</h1>
-      <ModalFormProject onAddProject={onAddProject}  buttonLabel={"+"} className={"Button"} />
+      <ModalFormProject
+        onAddProject={onAddProject}
+        buttonLabel={"+"}
+        className={"Button"}
+      />
 
       <Row>
         {isLoading ? (

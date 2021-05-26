@@ -25,7 +25,6 @@ import { professionalActions } from "../../store";
 import ModalFormProfessional from "../../components/ModalFormProfessional";
 import { addPreviewImage, addBackgroundImage } from "../../services/professionalService";
 
-
 const Professional = ({ data }) => {
   const [session] = useSession();
 
@@ -36,9 +35,8 @@ const Professional = ({ data }) => {
   const professionals = useSelector((state) =>
     Object.values(state.professionals.items)
   );
-  
-  const { t, lang } = useTranslation("common");
 
+  const { t, lang } = useTranslation("common");
 
   useEffect(() => {
     dispatch(professionalActions.store(data));
@@ -73,7 +71,11 @@ const Professional = ({ data }) => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Professional")}</h1>
-      <ModalFormProfessional onAddProfessional={onAddProfessional}  buttonLabel={"+"} className={"Button mt-50"}/>
+      <ModalFormProfessional
+        onAddProfessional={onAddProfessional}
+        buttonLabel={"+"}
+        className={"Button mt-50"}
+      />
       <Row>
         {isLoading ? (
           <h1>{t("Loading")}...</h1>
