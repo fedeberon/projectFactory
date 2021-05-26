@@ -42,5 +42,11 @@
     "Year is required": "El año es requerido",
     "Year cannot be less than 3 character": "El año no puede tener menos de 3 caracteres",
     "Without session": "Sin sesión",
-    "Profile":"Perfil"
+    "Profile":"Perfil",
+    "Select profile picture": "Seleccione la imagen de perfil",
+    "Select background picture": "Seleccione la imagen de fondo",
+    "Select preview image for project": "Seleccione una imagen de previsualizacion para el proyecto",
+    "Upload images": "Subir imagenes",
+    "Write the website" : "Escriba el sitio web",
+    "Write the website here please" : "Escriba el sitio web aqui por favor"
 }

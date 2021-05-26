@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   if (session) {
     const { id } = req.query;
 
-    const json = await getById(id, session);
+    const json = await getById(id, session.accessToken);
     return res.status(200).json(json);
   }
   return res.status(401).json({ message: `Unauthorized` });
