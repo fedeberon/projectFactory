@@ -149,7 +149,7 @@ const FormProject = ({ onAddProject, toggle }) => {
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="email">{t("Email")}</Label>
+          <Label for="email">{t("Write the website")}</Label>
           <Input
             type="email"
             name="website"
