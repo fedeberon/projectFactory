@@ -98,7 +98,7 @@ export default function Header() {
         </Nav>
         <Row className="justify-content-center align-items-center">
           <Col lg="auto ps-0" sm="12">
-            <Link href="/profile">Perfil</Link>
+            <Link href="/profile">{t("Profile")}</Link>
           </Col>
           <Col lg="auto" sm="12">
             <Authentication />
