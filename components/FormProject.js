@@ -14,7 +14,7 @@ import {
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
 
-const FormProject = ({ onAddProject }) => {
+const FormProject = ({ onAddProject, toggle }) => {
   const [session, loading] = useSession();
 
   const { t, lang } = useTranslation("common");
@@ -155,7 +155,7 @@ const FormProject = ({ onAddProject }) => {
             <FormText className="error-label">{errors.year.message}</FormText>
           )}
         </FormGroup>
-        <Button type="submit" color="primary">
+        <Button type="submit" color="primary mt-1" onClick={toggle}>
           {t("Send")}
         </Button>
       </Form>

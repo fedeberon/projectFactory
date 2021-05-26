@@ -20,7 +20,7 @@ const ModalFormProfessional = (props) => {
           <Modal isOpen={modal} toggle={toggle} className={className}>
             <ModalHeader toggle={toggle}>Modal title</ModalHeader>
             <ModalBody>
-                <FormProfessional onAddProfessional={onAddProfessional} />
+                <FormProfessional onAddProfessional={onAddProfessional}  toggle={toggle} />
             </ModalBody>
             <ModalFooter>
             </ModalFooter>

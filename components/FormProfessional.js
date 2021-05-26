@@ -14,7 +14,7 @@ import {
 } from "reactstrap";
 import ModalFormProfessional from "./ModalFormProfessional";
 
-const FormProfessional = ({onAddProfessional}) => {
+const FormProfessional = ({onAddProfessional, toggle}) => {
 
   const { t, lang } = useTranslation("common");
 
@@ -108,7 +108,7 @@ const FormProfessional = ({onAddProfessional}) => {
             <FormText className="error-label">{errors.email.message}</FormText>
           )}
         </FormGroup>
-        <Button type="submit" color="primary mt-1">
+        <Button type="submit" color="primary mt-1" onClick={toggle}>
           {t("Send")}
         </Button>
       </Form>
