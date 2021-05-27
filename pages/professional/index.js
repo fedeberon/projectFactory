@@ -77,9 +77,9 @@ const Professional = ({ data }) => {
       <h1>{t("Professional")}</h1>
       <Button className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex" color="danger" onClick={toggleModal}>+</Button>
       <ModalForm
-        buttonLabel={"+"}
+        modalTitle={t("FORM PROFESSIONAL")}
         className={"Button mt-50"}
-        formBody={(<FormProfessional onAddProfessional={onAddProfessional} />)}
+        formBody={(<FormProfessional onAddProfessional={onAddProfessional} toggle={toggleModal}/>)}
         modalOpen={{"open" : modalOpen,"function":setModalOpen}}
       />
       <Row>

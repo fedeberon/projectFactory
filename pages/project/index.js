@@ -88,8 +88,8 @@ const Project = ({ data }) => {
       <Button className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex" color="danger" onClick={toggleModal}>+</Button>
       <ModalFormProject
         className={"Button"}
-        modalTitle={t("Add project")}
-        formBody={(<FormProject onAddProject={onAddProject} />)}
+        modalTitle={t("FORM PROJECT")}
+        formBody={(<FormProject onAddProject={onAddProject} toggle={toggleModal}/>)}
         modalOpen={{"open" : modalOpen,"function":setModalOpen}}
       />
 

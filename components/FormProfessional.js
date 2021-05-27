@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
   Button,
-  Col,
   Container,
   Form,
   FormGroup,
@@ -38,6 +37,7 @@ const FormProfessional = ({onAddProfessional, toggle}) => {
     setPreviewImage(null);
     setBackgroundImage(null);
     event.target.reset();
+    toggle();
   };
 
   const getPreviewImage = (event) => {
@@ -51,11 +51,6 @@ const FormProfessional = ({onAddProfessional, toggle}) => {
     <div>
     <Container fluid="sm"> 
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Row>
-          <Col>
-            <h3 className="form-header">{t("FORM PROFESSIONAL")}</h3>
-          </Col>
-        </Row>
         <FormGroup>
           <Label for="firstName">{t("FirstName")}</Label>
           <Input
@@ -134,7 +129,7 @@ const FormProfessional = ({onAddProfessional, toggle}) => {
           <Label for="file">{t("Select background picture")}</Label>
           <Input type="file" onChange={getBackgroundImage} name="file" id="file" accept="image/*"/>
         </FormGroup>
-        <Button type="submit" color="primary mt-1" onClick={toggle}>
+        <Button type="submit" color="primary mt-1">
           {t("Send")}
         </Button>
       </Form>

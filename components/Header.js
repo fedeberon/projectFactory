@@ -14,10 +14,14 @@ import {
   Col,
   Row,
   NavbarText,
+  ButtonDropdown,
+  Dropdown,
 } from "reactstrap";
 import Authentication from "./Authentication";
 import { useRouter } from "next/dist/client/router";
 import { useTranslation } from "react-i18next";
+import { useSession } from "next-auth/client";
+import { PersonCircle } from "react-bootstrap-icons";
 
 const Link = ({ children, href }) => {
   const router = useRouter();
@@ -39,8 +43,11 @@ const Link = ({ children, href }) => {
 
 export default function Header() {
   const [dropdown, setDropdown] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [session, loading] = useSession();
 
   const toggle = () => setDropdown((dropdown) => !dropdown);
+  const toggle2 = () => setDropdownOpen((dropdownOpen) => !dropdownOpen);
 
   const { t, lang } = useTranslation("common");
 
@@ -49,7 +56,7 @@ export default function Header() {
       <Link href="/"> {t("Home")}</Link>
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={dropdown} navbar>
-        <Nav className="me-auto" navbar>
+        <Nav className="w-100" navbar>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
               {t("Professional")}
@@ -97,11 +104,22 @@ export default function Header() {
           </NavItem>
         </Nav>
         <Row className="justify-content-center align-items-center">
-          <Col lg="auto ps-0" sm="12">
-            <Link href="/profile">{t("Profile")}</Link>
-          </Col>
-          <Col lg="auto" sm="12">
-            <Authentication />
+          <Col>
+            <Dropdown isOpen={dropdownOpen} toggle={toggle2}>
+            <DropdownToggle color="light" caret>
+                  {session?.user?.name}
+                  <PersonCircle className="ms-1" size={25} />
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem>
+                  <Link href="/profile">{t("Profile")}</Link>
+                </DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem >
+                  <Authentication/>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </Col>
         </Row>
       </Collapse>

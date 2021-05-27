@@ -45,17 +45,7 @@ const FormProject = ({ onAddProject, toggle }) => {
   } = useForm();
 
   const onSubmit = async (
-    {
-      name,
-      description,
-      totalArea,
-      website,
-      year,
-      professionalsSelected,
-      // previewImage,
-      // images,
-      // file,
-    },
+    { name, description, totalArea, website, year, professionalsSelected },
     event
   ) => {
     // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image for form data
@@ -72,6 +62,7 @@ const FormProject = ({ onAddProject, toggle }) => {
     let id = professionalsSelected.id;
     onAddProject(data, id);
     event.target.reset();
+    toggle();
   };
 
   return (
@@ -238,37 +229,20 @@ const FormProject = ({ onAddProject, toggle }) => {
           )}
         </FormGroup>
         <FormGroup>
-          {/* <Label for="filePreview">
+          <Label for="filePreview">
             {t("Select preview image for project")}
           </Label>
-          <br></br>
-          <Input
-            type="file"
-            onChange={getPreviewImage}
-            name="filePreview"
-            id="filePreview"
-            accept="image/"
-          />
-          {JSON.stringify(previewImage, null, 2)} */}
+
           <Dropzone
             setFile={setPreviewImage}
-            // setFile={getPreviewImage2}
             accept={"image/*"}
             multiple={false}
             name={"previewImage"}
           />
         </FormGroup>
         <FormGroup>
-          {/* <Label for="uploadFiles">{t("Upload images")}</Label>
-          <br></br>
-          <Input
-            type="file"
-            multiple
-            onChange={getImages}
-            name="uploadFiles"
-            id="uploadFiles"
-            accept="image/"
-          /> */}
+          <Label for="uploadFiles">{t("Upload images")}</Label>
+
           <Dropzone
             setFile={setImages}
             accept={"image/*"}
@@ -286,7 +260,7 @@ const FormProject = ({ onAddProject, toggle }) => {
             name={"file"}
           />
         </FormGroup>
-        <Button type="submit" color="primary mt-1" onClick={toggle}>
+        <Button type="submit" color="primary mt-1">
           {t("Send")}
         </Button>
       </Form>
