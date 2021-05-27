@@ -48,6 +48,11 @@
     "Select preview image for project": "Select preview image for project",
     "Upload images": "Upload images",
     "Write the website": "Write the website",
-    "Write the website here please" : "Write the website here please"
+    "Write the website here please" : "Write the website here please",
+    "Add project" : "Add project",
+    "Edit project" : "Edit project",
+    "WebSite is required" : "WebSite is required",
+    "WebSite cannot be less than 3 character" : "Year cannot be less than 3 character",
+    "remove" : "remove"
 
 }

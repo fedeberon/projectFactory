@@ -122,12 +122,12 @@ const FormProject = ({ onAddProject, toggle }) => {
             type="email"
             name="website"
             id="email"
-            placeholder={t("Write the email here please")}
+            placeholder={t("Write the website here please")}
             {...register("website", {
-              required: { value: true, message: `${t("Email is required")}` },
+              required: { value: true, message: `${t("WebSite is required")}` },
               minLength: {
                 value: 3,
-                message: `${t("Email cannot be less than 3 character")}`,
+                message: `${t("WebSite cannot be less than 3 character")}`,
               },
             })}
             className={"form-field" + (errors.website ? " has-error" : "")}
