@@ -3,36 +3,17 @@ import { useEffect } from 'react';
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import { getImages } from '../services/imageService.js';
+import { useTranslation } from "react-i18next";
 
-const SeeProjectImages = ({ projectId }) => {
-    const router = useRouter();
-    const { id } = router.query;
-    const [images, setImages] = useState([]);
-    const [session, loading] = useSession();
-    const [isLoading, setLoading] = useState(false);
-    
-    const fetchData = async () => {
-        setLoading(true);
-        const images = await getImages(projectId,session.accessToken,0,5);
-        setImages(images);
-        setLoading(false);
-    }
-
+const SeeProjectImages = ({ images }) => {
     useEffect(() => {
-        if (id != undefined && session != undefined) {
-            fetchData();
-        }
-    }, [router,session])
+    }, [images])
 
     return(
     <>
-        {isLoading ? (
-        <h1>{t("Loading")}...</h1>
-      ) : (
-        images.map((image,index) => (
+        {images?.map((image,index) => (
             <img key={index} src={image.path}></img>
-        )
-      ))}
+        ))}
     </>
     );
 }

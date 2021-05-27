@@ -1,25 +1,20 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import ModalForm from "./ModalForm";
+import { useTranslation } from "react-i18next";
+import FormEditProject from '../components/FormEditProject';
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/client";
-import FormBuyProject from "../components/FormBuyProject";
-import FormTwoFactorAuthentication from "../components/FormTwoFactorAuthentication";
-import SeeProjectImages from "../components/SeeProjectImages";
+import FormBuyProject from "../components/FormBuyProject"
+import FormTwoFactorAuthentication from "../components/FormTwoFactorAuthentication"
+import SeeProjectImages from "../components/SeeProjectImages"
 
-
-const SeeProject = ({ getProject }) => {
+const SeeProject = ({ project, onEditProject }) => {
+    const [modalOpen, setModalOpen] = useState(false);
+    const { t, lang } = useTranslation("common");
     const router = useRouter();
     const { id } = router.query;
-    const [project, setProject] = useState({});
-    const [professional, setProfessional] = useState({});
-    const [session, loading] = useSession();
 
-    const fetchData = async () => {
-        const project = await getProject(id);
-        setProfessional(project.professional)
-        setProject(project);
-    }
-
+    const toggleModal = () => setModalOpen(!modalOpen);
+    
     const asignEvents = () => {
         const btnShowBuyProject = document.querySelector("#btn-show-buy-project");
         const btnDownloadProject = document.querySelector("#btn-show-2FA");
@@ -40,19 +35,21 @@ const SeeProject = ({ getProject }) => {
         btnShowBuyProject.addEventListener("click", showBuyProject);
         btnDownloadProject.addEventListener("click", show2FA);
     }
-    
+
     useEffect(() => {
-        if (id != undefined && session != undefined) {
-            fetchData();
-            asignEvents();
-        }
-        
-    }, [router,session])
-    
+        asignEvents();
+    }, [project])
+
 
 
     return(
     <>
+        <ModalForm
+            className={"Button"}
+            modalTitle={t("Edit project")}
+            formBody={(<FormEditProject project={project} onEdit={onEditProject} />)}
+            modalOpen={{"open" : modalOpen,"function":setModalOpen}}
+        />
         <img src={project.previewImage} alt="preview-image"></img>
         <div id="project-data">
             <span>name: {project.name}</span> <br></br>
@@ -60,11 +57,12 @@ const SeeProject = ({ getProject }) => {
             <span>total area: {project.totalArea}</span><br></br>
             <span>year: {project.year}</span><br></br>
             <span>website: {project.website}</span><br></br>
-            <span>Professional name: {professional.firstName}</span><br></br>
-            <span>Professional last name: {professional.firstName}</span><br></br>
-            <span>Professional email: {professional.firstName}</span><br></br>
+            <span>Professional name: {project.professional?.firstName}</span><br></br>
+            <span>Professional last name: {project.professional?.firstName}</span><br></br>
+            <span>Professional email: {project.professional?.firstName}</span><br></br>
             <button id="btn-show-buy-project">Buy project</button><button id="btn-show-2FA">Download project</button>
         </div>
+        <button onClick={toggleModal}>Edit</button>
         <div hidden id="form-buy-project">
             <FormBuyProject projectId={id}/>
         </div>
@@ -72,10 +70,11 @@ const SeeProject = ({ getProject }) => {
             <FormTwoFactorAuthentication projectId={id}/>
         </div>
         <div>
-            <SeeProjectImages projectId={id}/>
+            <SeeProjectImages images={project.images}/>
         </div>
+        
     </>
     );
 }
 
-export default SeeProject;
+export default SeeProject; 

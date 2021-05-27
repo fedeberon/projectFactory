@@ -44,12 +44,40 @@ export const addImages = async (images, projectId, token) => {
   });
 };
 
+export const edit = async (project, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const id = project.id;
+  const previewImage = project.previewImage;
+  let images;
+  if (project.imagesEdited) {
+    images = Array.from(project.imagesEdited);
+  }
+  
+  project.previewImage = null;
+  project.id = null;
+  project.images = null;
+  const projectEdited = await API.put(`/projects/${id}`, project);
+  
+  if (previewImage) {
+    await addPreviewImage(previewImage, id, token);
+  }
+  
+  if (images) {
+    const newImages = await removeAndAddImages(images, id, token);
+    projectEdited.images = newImages;
+  }
+  
+  projectEdited.previewImage = previewImage;
+  return projectEdited;
+}
+
 export const addFile = async (file, projectId, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const fileData = new FormData();
   fileData.append("file", file);
   return await API.post(`/projects/${projectId}/upload`, fileData);
 };
+
 export const download = (id, token) => {
   token = token.split(" ")[1];
   const link = document.createElement("a");
@@ -59,3 +87,25 @@ export const download = (id, token) => {
   link.setAttribute("download", true);
   link.click();
 };
+
+const removeAndAddImages = async (images, id, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  let newImages = new Array();
+  images.forEach(async (img) => {
+    if (img.added && img.remove) {
+      await API.delete(`/images/projects/${id}/${img.name}`);
+    } else if (!img.added) {
+      const imageData = new FormData();
+      imageData.append('imageFile', img);
+      imageData.append('project',id);
+      imageData.append('tags',[]);
+      const response = await API.post(`/images`, imageData);
+      const path = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/projects/${id}/${response.path}`;
+      newImages.push({path})
+    } else {
+      newImages.push({"path":img.path})
+    }
+  });
+
+  return newImages;
+}
