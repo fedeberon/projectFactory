@@ -2,14 +2,19 @@ import React, { useState, useEffect } from 'react';
 import ModalForm from "./ModalForm";
 import { useTranslation } from "react-i18next";
 import FormEditProject from '../components/FormEditProject';
+import { useRouter } from "next/router";
+import FormBuyProject from "../components/FormBuyProject"
+import FormTwoFactorAuthentication from "../components/FormTwoFactorAuthentication"
+import SeeProjectImages from "../components/SeeProjectImages"
 
-
-const SeeProject = ({ project, professional, onEditProject }) => {
+const SeeProject = ({ project, onEditProject }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const { t, lang } = useTranslation("common");
+    const router = useRouter();
+    const { id } = router.query;
 
     const toggleModal = () => setModalOpen(!modalOpen);
-
+    
     const asignEvents = () => {
         const btnShowBuyProject = document.querySelector("#btn-show-buy-project");
         const btnDownloadProject = document.querySelector("#btn-show-2FA");
@@ -33,7 +38,7 @@ const SeeProject = ({ project, professional, onEditProject }) => {
 
     useEffect(() => {
         asignEvents();
-    }, [])
+    }, [project])
 
 
 
@@ -52,12 +57,22 @@ const SeeProject = ({ project, professional, onEditProject }) => {
             <span>total area: {project.totalArea}</span><br></br>
             <span>year: {project.year}</span><br></br>
             <span>website: {project.website}</span><br></br>
-            <span>Professional name: {professional.firstName}</span><br></br>
-            <span>Professional last name: {professional.firstName}</span><br></br>
-            <span>Professional email: {professional.firstName}</span><br></br>
+            <span>Professional name: {project.professional?.firstName}</span><br></br>
+            <span>Professional last name: {project.professional?.firstName}</span><br></br>
+            <span>Professional email: {project.professional?.firstName}</span><br></br>
             <button id="btn-show-buy-project">Buy project</button><button id="btn-show-2FA">Download project</button>
         </div>
         <button onClick={toggleModal}>Edit</button>
+        <div hidden id="form-buy-project">
+            <FormBuyProject projectId={id}/>
+        </div>
+        <div hidden id="two-factor">
+            <FormTwoFactorAuthentication projectId={id}/>
+        </div>
+        <div>
+            <SeeProjectImages images={project.images}/>
+        </div>
+        
     </>
     );
 }

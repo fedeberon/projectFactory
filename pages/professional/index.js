@@ -18,7 +18,7 @@ import {
 import FormProfessional from "../../components/FormProfessional";
 import { getSession, useSession } from "next-auth/client";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { findAll, addProfessional } from "../../services/professionalService";
+import * as professionalService from "../../services/professionalService";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { professionalActions } from "../../store";
@@ -46,11 +46,24 @@ const Professional = ({ data }) => {
 
   const onAddProfessional = async (data) => {
     setLoading(true);
+    const previewImage = data.previewImage;
+    const backgroundImage = data.backgroundImage;
+    const professional = await professionalService.addProfessional(data, session?.accessToken);
 
-    const professional = await addProfessional(data, session?.accessToken);
-    if (professional) {
+    if (professional?.id) {
+      if (previewImage) {
+        await professionalService.addPreviewImage(previewImage, professional.id, session.accessToken);
+        professional.previewImage = URL.createObjectURL(previewImage);
+      }
+      
+      if (backgroundImage) {
+        await professionalService.addBackgroundImage(backgroundImage, professional.id, session.accessToken);
+        professional.backgroundImage = URL.createObjectURL(backgroundImage);
+      }
       dispatch(professionalActions.addItem(professional));
       setLoading(false);
+    } else {
+      throw new Error(`Email already exists`);
     }
   };
 
@@ -75,23 +88,26 @@ const Professional = ({ data }) => {
         ) : !professionals ? (
           <h1>{professionals}</h1>
         ) : (
-          professionals.map((professional, index) => (
-            <Col md="4" key={index}>
-              <CardDeck>
-                <Card>
-                  <CardBody>
-                    <CardText>
-                      {t("Name")}: {professional.firstName}
-                    </CardText>
-                    <CardText>
-                      {t("Description")}: {professional.lastName}
-                    </CardText>
-                    <CardText>
-                      {t("Email")}: {professional.email}
-                    </CardText>
-                  </CardBody>
-                </Card>
-              </CardDeck>
+          professionals.map((professional) => (
+            <Col key={professional.id} md="4">
+              <div className="mt-3" key={professional.id}>
+                <CardDeck>
+                  <Card>
+                    <CardImg top width="100%" src={professional.previewImage} alt="Professional preview" />
+                    <CardBody>
+                      <CardText>
+                        {t("Name")}: {professional.firstName}
+                      </CardText>
+                      <CardText>
+                        {t("Description")}: {professional.lastName}
+                      </CardText>
+                      <CardText>
+                        {t("Email")}: {professional.email}
+                      </CardText>
+                    </CardBody>
+                  </Card>
+                </CardDeck>
+              </div>
             </Col>
           ))
         )}
@@ -117,7 +133,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   if (session) {
     token = session.accessToken;
-    professionals = await findAll(page, size, token);
+    professionals = await professionalService.findAll(page, size, token);
   }
 
   return {

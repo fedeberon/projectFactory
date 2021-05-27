@@ -12,19 +12,23 @@ import {
   Row,
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
+import InputImages from "../components/InputImages";
 
 const FormEditProject = ({ project, onEdit }) => {
   const [previewImage, setPreviewImage] = useState();
-  const [images, setImages] = useState();
+  const [images, setImages] = useState([]);
+  const [imagesEdited, setImagesEdited] = useState([]);
+
+  useEffect(() => {
+    if (project) {
+      setImages(Array.from(project.images));
+    }
+  }, [project]);
 
   const { t, lang } = useTranslation("common");
 
   const getPreviewImage = (event) => {
     setPreviewImage(event.target.files[0]);
-  }
-
-  const getImages = (event) => {
-    setImages(event.target.files);
   }
 
   const {
@@ -46,7 +50,7 @@ const FormEditProject = ({ project, onEdit }) => {
       website,
       year,
       previewImage,
-      images,
+      imagesEdited,
       "id" : project.id
     };
     onEdit(data);
@@ -196,14 +200,7 @@ const FormEditProject = ({ project, onEdit }) => {
         <FormGroup>
           <Label for="uploadFiles">{t("Upload images")}</Label>
           <br></br>
-          <Input
-            type="file"
-            multiple
-            onChange={getImages}
-            name="uploadFiles"
-            id="uploadFiles"
-            accept="image/"
-          />
+          <InputImages setImages={setImages} images={images} accept={"image/*"} multiple={true} imagesEdited={setImagesEdited}/>
         </FormGroup>
         <Button type="submit" color="primary">
           {t("Send")}
