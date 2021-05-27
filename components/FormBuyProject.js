@@ -7,8 +7,10 @@ const FormBuyProject = ({ projectId }) => {
     const [session, loading] = useSession();
 
     useEffect(() => {
-        window.Mercadopago.setPublishableKey(process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY);
-        window.Mercadopago.getIdentificationTypes();
+        if (window.Mercadopago) {
+            window.Mercadopago.setPublishableKey(process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY);
+            window.Mercadopago.getIdentificationTypes();
+        }
     }, []);
 
     const onChangeCardNumber = () => {

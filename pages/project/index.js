@@ -11,6 +11,8 @@ import {
   CardImg,
   CardText,
   CardBody,
+  CardFooter,
+  Button,
 } from "reactstrap";
 
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -22,9 +24,14 @@ import Header from "../../components/Header";
 import ModalFormProject from "../../components/ModalFormProject";
 
 // services
-import { addPreviewImage, addImages, addFile } from "../../services/projectService";
+import {
+  addPreviewImage,
+  addImages,
+  addFile,
+} from "../../services/projectService";
 import { findAll, addProject } from "../../services/projectService";
 import { projectActions } from "../../store";
+import Link from "next/link";
 
 const Project = ({ data }) => {
   const [session, loading] = useSession();
@@ -89,7 +96,12 @@ const Project = ({ data }) => {
               <div key={project.id}>
                 <CardDeck>
                   <Card>
-                    <CardImg top width="100%" src={project.previewImage} alt="Card image cap" />
+                    <CardImg
+                      top
+                      width="100%"
+                      src={project.previewImage}
+                      alt="Card image cap"
+                    />
                     <CardBody>
                       <CardText>
                         {t("Name")}: {project.name}
@@ -107,6 +119,14 @@ const Project = ({ data }) => {
                         {t("WebSite")}: {project.website}
                       </CardText>
                     </CardBody>
+                    <CardFooter className="d-flex justify-content-end">
+                      <Link
+                        href={`/project/${project.id}`}
+                        as={`/project/${project.name}`}
+                      >
+                        <Button color={"primary"}>{t("Ver más")}</Button>
+                      </Link>
+                    </CardFooter>
                   </Card>
                 </CardDeck>
               </div>
