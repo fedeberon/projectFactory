@@ -17,7 +17,7 @@ import Select from "react-select";
 import { useSelector } from "react-redux";
 import Dropzone from "./Dropzone";
 
-const FormProject = ({ onAddProject }) => {
+const FormProject = ({ onAddProject, toggle }) => {
   const [session, loading] = useSession();
   const [options, setOptions] = useState([]);
 
@@ -126,7 +126,7 @@ const FormProject = ({ onAddProject }) => {
         </FormGroup>
 
         <FormGroup>
-          <Label for="email">{t("Email")}</Label>
+          <Label for="email">{t("Write the website")}</Label>
           <Input
             type="email"
             name="website"
@@ -286,7 +286,7 @@ const FormProject = ({ onAddProject }) => {
             name={"file"}
           />
         </FormGroup>
-        <Button type="submit" color="primary">
+        <Button type="submit" color="primary mt-1" onClick={toggle}>
           {t("Send")}
         </Button>
       </Form>

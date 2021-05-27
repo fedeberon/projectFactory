@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
@@ -14,8 +14,11 @@ import {
 } from "reactstrap";
 import ModalFormProfessional from "./ModalFormProfessional";
 
-const FormProfessional = ({ onAddProfessional }) => {
+const FormProfessional = ({onAddProfessional, toggle}) => {
+
   const { t, lang } = useTranslation("common");
+  const [previewImage, setPreviewImage] = useState();
+  const [backgroundImage, setBackgroundImage] = useState();
 
   const {
     register,
@@ -24,16 +27,27 @@ const FormProfessional = ({ onAddProfessional }) => {
   } = useForm();
 
   const onSubmit = async ({ firstName, lastName, email }, event) => {
-    // You should handle login logic with firstName, lastName and email form data
+    // You should handle login logic with firstName, lastName, email, preview and background images and form data
     let data = {
       firstName,
       lastName,
       email,
+      previewImage,
+      backgroundImage,
     };
     await onAddProfessional(data);
+    setPreviewImage(null);
+    setBackgroundImage(null);
     event.target.reset();
   };
 
+  const getPreviewImage = (event) => {
+    setPreviewImage(event.target.files[0]);
+  }
+
+  const getBackgroundImage = (event) => {
+    setBackgroundImage(event.target.files[0]);
+  }
   return (
     <div>
     <Container fluid="sm"> 
@@ -113,7 +127,15 @@ const FormProfessional = ({ onAddProfessional }) => {
             <FormText className="error-label">{errors.email.message}</FormText>
           )}
         </FormGroup>
-        <Button type="submit" color="primary mt-1">
+        <FormGroup>
+          <Label for="file">{t("Select profile picture")}</Label>
+          <Input type="file" onChange={getPreviewImage} name="file" id="file" accept="image/*"/>
+        </FormGroup>
+        <FormGroup>
+          <Label for="file">{t("Select background picture")}</Label>
+          <Input type="file" onChange={getBackgroundImage} name="file" id="file" accept="image/*"/>
+        </FormGroup>
+        <Button type="submit" color="primary mt-1" onClick={toggle}>
           {t("Send")}
         </Button>
       </Form>

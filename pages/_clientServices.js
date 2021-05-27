@@ -47,6 +47,8 @@ export const getProfessionals = async () => {
 
 export const addProfessional = async (data, session) => {
   try {
+    data.previewImage = null;
+    data.backgroundImage = null;
     const response = await fetch("/api/professionals", {
       method: "POST",
       mode: "cors",
