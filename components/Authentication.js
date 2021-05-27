@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/client";
 import { useTranslation } from "react-i18next";
-import { Button } from "reactstrap";
-
+import {
+  NavLink,
+} from "reactstrap";
 
 /**
  * Login and logout component when user wants to use Facebook or Instagram or Google account.
  * @returns template html with login and logout.
  */
-const Authentication = () => {
+const Authentication = (props) => {
   const [session, loading] = useSession();
+  const [dropdownOpen, setOpen] = useState(false);
+
+  const toggle = () => setOpen(!dropdownOpen);
 
   const { t, lang } = useTranslation("common");
 
@@ -17,20 +21,20 @@ const Authentication = () => {
     <>
       {!session && (
         <>
-          <br />
-          <Button color="primary" onClick={() => signIn()}>{t("Sign in")}</Button>
+          <NavLink onClick={() => signIn()}>
+            {t("Sign in")}
+          </NavLink>
         </>
       )}
       {session && (
         <>
-          {session.user.name}
-          <Button color="primary" onClick={() => signOut()}>{t("Sign out")}</Button>
+          <NavLink onClick={() => signOut()}>
+            {t("Sign out")}
+          </NavLink>
         </>
       )}
     </>
   );
 };
-
-
 
 export default Authentication;

@@ -24,15 +24,9 @@ const ModalFormProject = (props) => {
       <Modal isOpen={modal} toggle={toggle} className={className} size={"lg"}>
         <ModalHeader toggle={toggle}>{t("FORM PROJECT")}</ModalHeader>
         <ModalBody>
-          <FormProject onAddProject={onAddProject} />
+          <FormProject onAddProject={onAddProject} toggle={toggle} />
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={toggle}>
-            Do Something
-          </Button>{" "}
-          <Button color="secondary" onClick={toggle}>
-            Cancel
-          </Button>
         </ModalFooter>
       </Modal>
     </div>
