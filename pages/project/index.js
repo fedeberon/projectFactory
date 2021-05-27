@@ -5,6 +5,7 @@ import { getSession, useSession } from "next-auth/client";
 import {
   CardDeck,
   Container,
+  Button,
   Col,
   Row,
   Card,
@@ -21,7 +22,8 @@ import { useRouter } from "next/router";
 
 // components
 import Header from "../../components/Header";
-import ModalFormProject from "../../components/ModalFormProject";
+import ModalFormProject from "../../components/ModalForm";
+import FormProject from '../../components/FormProject';
 
 // services
 import {
@@ -36,13 +38,14 @@ import Link from "next/link";
 const Project = ({ data }) => {
   const [session, loading] = useSession();
   const [isLoading, setLoading] = useState(false);
-
+  const [modalOpen, setModalOpen] = useState(false);
+  
   const dispatch = useDispatch();
   const router = useRouter();
   const projects = useSelector((state) => Object.values(state.projects.items));
-
+  
   const { t, lang } = useTranslation("common");
-
+  
   const onAddProject = async (data, id) => {
     setLoading(true);
     const previewImage = data.previewImage;
@@ -55,6 +58,7 @@ const Project = ({ data }) => {
     if (project) {
       if (previewImage.length > 0) {
         await addPreviewImage(previewImage[0], project.id, session.accessToken);
+        project.previewImage = URL.createObjectURL(previewImage[0]);
       }
       if (images.length > 0) {
         await addImages(images, project.id, session.accessToken);
@@ -66,6 +70,8 @@ const Project = ({ data }) => {
     }
     setLoading(false);
   };
+  
+  const toggleModal = () => setModalOpen(!modalOpen);
 
   useEffect(() => {
     dispatch(projectActions.store(data));
@@ -79,10 +85,12 @@ const Project = ({ data }) => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Project")}</h1>
+      <Button className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex" color="danger" onClick={toggleModal}>+</Button>
       <ModalFormProject
-        onAddProject={onAddProject}
-        buttonLabel={"+"}
         className={"Button"}
+        modalTitle={t("Add project")}
+        formBody={(<FormProject onAddProject={onAddProject} />)}
+        modalOpen={{"open" : modalOpen,"function":setModalOpen}}
       />
 
       <Row>

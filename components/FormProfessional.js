@@ -12,7 +12,6 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import ModalFormProfessional from "./ModalFormProfessional";
 
 const FormProfessional = ({onAddProfessional, toggle}) => {
 
