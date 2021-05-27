@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import {
   ListGroupItem,
   ListGroup,
-  Button,
   Container,
   Row,
   Col,
@@ -15,7 +14,7 @@ const ProfileData = (props) => {
   const { t, lang } = useTranslation("common");
 
   useEffect(() => {
-    console.log("profileData", session);
+
   }, [session]);
 
   return (

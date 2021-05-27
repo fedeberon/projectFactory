@@ -15,12 +15,15 @@ import {
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
 import { useSelector } from "react-redux";
+import Dropzone from "./Dropzone";
 
 const FormProject = ({ onAddProject, toggle }) => {
   const [session, loading] = useSession();
   const [options, setOptions] = useState([]);
-  const [previewImage, setPreviewImage] = useState();
-  const [images, setImages] = useState();
+
+  const [previewImage, setPreviewImage] = useState([]);
+  const [images, setImages] = useState([]);
+  const [file, setFile] = useState([]);
 
   const { t, lang } = useTranslation("common");
 
@@ -34,14 +37,6 @@ const FormProject = ({ onAddProject, toggle }) => {
     }
   }, [session]);
 
-  const getPreviewImage = (event) => {
-    setPreviewImage(event.target.files[0]);
-  }
-
-  const getImages = (event) => {
-    setImages(event.target.files);
-  }
-
   const {
     control,
     register,
@@ -50,7 +45,17 @@ const FormProject = ({ onAddProject, toggle }) => {
   } = useForm();
 
   const onSubmit = async (
-    { name, description, totalArea, website, year, professionalsSelected },
+    {
+      name,
+      description,
+      totalArea,
+      website,
+      year,
+      professionalsSelected,
+      // previewImage,
+      // images,
+      // file,
+    },
     event
   ) => {
     // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image for form data
@@ -62,6 +67,7 @@ const FormProject = ({ onAddProject, toggle }) => {
       year,
       previewImage,
       images,
+      file,
     };
     let id = professionalsSelected.id;
     onAddProject(data, id);
@@ -71,11 +77,6 @@ const FormProject = ({ onAddProject, toggle }) => {
   return (
     <Container fluid="sm">
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Row>
-          <Col>
-            <h3 className="form-header">{t("FORM PROJECT")}</h3>
-          </Col>
-        </Row>
         <FormGroup>
           <Label for="name">{t("Name")}</Label>
           <Input
@@ -123,31 +124,7 @@ const FormProject = ({ onAddProject, toggle }) => {
             </FormText>
           )}
         </FormGroup>
-        <FormGroup>
-          <Label for="totalArea">{t("Total Area")}</Label>
-          <Input
-            type="number"
-            name="totalArea"
-            id="totalArea"
-            placeholder={t("Write the Total Area here please")}
-            {...register("totalArea", {
-              required: {
-                value: true,
-                message: `${t("Total Area is required")}`,
-              },
-              minLength: {
-                value: 3,
-                message: `${t("Total Area cannot be less than 3 character")}`,
-              },
-            })}
-            className={"form-field" + (errors.totalArea ? " has-error" : "")}
-          />
-          {errors.totalArea && (
-            <FormText className="error-label">
-              {errors.totalArea.message}
-            </FormText>
-          )}
-        </FormGroup>
+
         <FormGroup>
           <Label for="email">{t("Write the website")}</Label>
           <Input
@@ -170,26 +147,67 @@ const FormProject = ({ onAddProject, toggle }) => {
             </FormText>
           )}
         </FormGroup>
-        <FormGroup>
-          <Label for="year">{t("Year")}</Label>
-          <Input
-            type="number"
-            name="year"
-            id="year"
-            placeholder={t("Write the Year here please")}
-            {...register("year", {
-              required: { value: true, message: `${t("Year is required")}` },
-              minLength: {
-                value: 3,
-                message: `${t("Year cannot be less than 3 character")}`,
-              },
-            })}
-            className={"form-field" + (errors.year ? " has-error" : "")}
-          />
-          {errors.year && (
-            <FormText className="error-label">{errors.year.message}</FormText>
-          )}
-        </FormGroup>
+        <Row>
+          <Col xs={6}>
+            <FormGroup>
+              <Label for="totalArea">{t("Total Area")}</Label>
+              <Input
+                type="number"
+                name="totalArea"
+                id="totalArea"
+                placeholder={t("Write the Total Area here please")}
+                {...register("totalArea", {
+                  required: {
+                    value: true,
+                    message: `${t("Total Area is required")}`,
+                  },
+                  minLength: {
+                    value: 3,
+                    message: `${t(
+                      "Total Area cannot be less than 3 character"
+                    )}`,
+                  },
+                })}
+                className={
+                  "form-field" + (errors.totalArea ? " has-error" : "")
+                }
+              />
+              {errors.totalArea && (
+                <FormText className="error-label">
+                  {errors.totalArea.message}
+                </FormText>
+              )}
+            </FormGroup>
+          </Col>
+          <Col xs={6}>
+            <FormGroup>
+              <Label for="year">{t("Year")}</Label>
+              <Input
+                type="number"
+                name="year"
+                id="year"
+                placeholder={t("Write the Year here please")}
+                {...register("year", {
+                  required: {
+                    value: true,
+                    message: `${t("Year is required")}`,
+                  },
+                  minLength: {
+                    value: 3,
+                    message: `${t("Year cannot be less than 3 character")}`,
+                  },
+                })}
+                className={"form-field" + (errors.year ? " has-error" : "")}
+              />
+              {errors.year && (
+                <FormText className="error-label">
+                  {errors.year.message}
+                </FormText>
+              )}
+            </FormGroup>
+          </Col>
+        </Row>
+
         <FormGroup>
           <Controller
             name="professionalsSelected"
@@ -220,7 +238,7 @@ const FormProject = ({ onAddProject, toggle }) => {
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="filePreview">
+          {/* <Label for="filePreview">
             {t("Select preview image for project")}
           </Label>
           <br></br>
@@ -231,9 +249,17 @@ const FormProject = ({ onAddProject, toggle }) => {
             id="filePreview"
             accept="image/"
           />
+          {JSON.stringify(previewImage, null, 2)} */}
+          <Dropzone
+            setFile={setPreviewImage}
+            // setFile={getPreviewImage2}
+            accept={"image/*"}
+            multiple={false}
+            name={"previewImage"}
+          />
         </FormGroup>
         <FormGroup>
-          <Label for="uploadFiles">{t("Upload images")}</Label>
+          {/* <Label for="uploadFiles">{t("Upload images")}</Label>
           <br></br>
           <Input
             type="file"
@@ -242,6 +268,22 @@ const FormProject = ({ onAddProject, toggle }) => {
             name="uploadFiles"
             id="uploadFiles"
             accept="image/"
+          /> */}
+          <Dropzone
+            setFile={setImages}
+            accept={"image/*"}
+            multiple={true}
+            name={"images"}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label>Upload Files</Label>
+          <br></br>
+          <Dropzone
+            setFile={setFile}
+            accept={"application/x-zip-compressed, application/zip"}
+            multiple={false}
+            name={"file"}
           />
         </FormGroup>
         <Button type="submit" color="primary mt-1" onClick={toggle}>
