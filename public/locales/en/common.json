@@ -54,6 +54,7 @@
     "WebSite is required" : "WebSite is required",
     "WebSite cannot be less than 3 character" : "Year cannot be less than 3 character",
     "remove" : "remove",
-    "FormBuyProject" : "Buy project"
+    "FormBuyProject" : "Buy project",
+    "EmailAlreadyExists" : "Email already exists"
 
 }

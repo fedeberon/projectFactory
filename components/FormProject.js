@@ -17,7 +17,7 @@ import Select from "react-select";
 import { useSelector } from "react-redux";
 import Dropzone from "./Dropzone";
 
-const FormProject = ({ onAddProject, toggle }) => {
+const FormProject = ({ onAddProject, professionals, toggle }) => {
   const [session, loading] = useSession();
   const [options, setOptions] = useState([]);
 
@@ -27,15 +27,9 @@ const FormProject = ({ onAddProject, toggle }) => {
 
   const { t, lang } = useTranslation("common");
 
-  const professionals = useSelector((state) =>
-    Object.values(state.professionals.items)
-  );
-
   useEffect(async () => {
-    if (professionals) {
-      setOptions(professionals);
-    }
-  }, [session]);
+    setOptions(professionals);
+  }, [professionals]);
 
   const {
     control,

@@ -30,11 +30,12 @@ import {
   addImages,
   addFile,
 } from "../../services/projectService";
+import * as professionalService from '../../services/professionalService';
 import { findAll, addProject } from "../../services/projectService";
 import { projectActions } from "../../store";
 import Link from "next/link";
 
-const Project = ({ data }) => {
+const Project = ({ data, professionals }) => {
   const [session, loading] = useSession();
   const [isLoading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -88,7 +89,7 @@ const Project = ({ data }) => {
       <ModalForm
         className={"Button"}
         modalTitle={t("FORM PROJECT")}
-        formBody={(<FormProject onAddProject={onAddProject} toggle={toggleModal}/>)}
+        formBody={(<FormProject onAddProject={onAddProject} professionals={professionals} toggle={toggleModal}/>)}
         modalOpen={{"open" : modalOpen,"function":setModalOpen}}
       />
 
@@ -150,6 +151,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   const session = await getSession({ req });
 
   let token;
+  let response = [];
   let projects = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
@@ -159,16 +161,17 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (!size || size <= 0) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
-
   if (session) {
     token = session.accessToken;
     projects = await findAll(page, size, token);
+    response = await professionalService.findAll(page, size, token);
   }
 
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
       data: projects,
+      professionals: response
     },
   };
 }

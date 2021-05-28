@@ -48,23 +48,30 @@ const Professional = ({ data }) => {
     setLoading(true);
     const previewImage = data.previewImage;
     const backgroundImage = data.backgroundImage;
-    const professional = await professionalService.addProfessional(data, session?.accessToken);
+    try {
+      const professional = await professionalService.addProfessional(data, session?.accessToken);
 
-    if (professional?.id) {
-      if (previewImage) {
-        await professionalService.addPreviewImage(previewImage, professional.id, session.accessToken);
-        professional.previewImage = URL.createObjectURL(previewImage);
+      if (professional?.id) {
+        if (previewImage) {
+          await professionalService.addPreviewImage(previewImage, professional.id, session.accessToken);
+          professional.previewImage = URL.createObjectURL(previewImage);
+        }
+        
+        if (backgroundImage) {
+          await professionalService.addBackgroundImage(backgroundImage, professional.id, session.accessToken);
+          professional.backgroundImage = URL.createObjectURL(backgroundImage);
+        }
+        dispatch(professionalActions.addItem(professional));
+        setLoading(false);
+      } else {
+        throw new Error(`Email already exists`);
       }
-      
-      if (backgroundImage) {
-        await professionalService.addBackgroundImage(backgroundImage, professional.id, session.accessToken);
-        professional.backgroundImage = URL.createObjectURL(backgroundImage);
-      }
-      dispatch(professionalActions.addItem(professional));
+    } catch (e) {
       setLoading(false);
-    } else {
-      throw new Error(`Email already exists`);
+      alert(t("EmailAlreadyExists"))
     }
+
+    
   };
 
   if (router.isFallback) {
