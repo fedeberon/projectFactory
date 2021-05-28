@@ -11,7 +11,9 @@ export const findAll = async (page, size, token) => {
 
 export const getById = async (id, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  const project = await API.get(`/projects/${id}`)
+  const project = await API.get(`/projects/${id}`);
+  let purchased = await isPurchased(project, token);
+  project.purchased = purchased != undefined; 
   project.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/projects/${project.id}/${project.previewImage}`;
   return project;
 };
@@ -108,4 +110,15 @@ const removeAndAddImages = async (images, id, token) => {
   });
 
   return newImages;
-}
+};
+
+export const getPurchasedProjects = async (token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.get(`/projects/purchased?page=0&size=99`);
+};
+
+export const isPurchased = async (project, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const purchasedProjects = await getPurchasedProjects(token);
+  return purchasedProjects.find(purchased => purchased.id == project.id);
+};
