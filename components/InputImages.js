@@ -18,6 +18,17 @@ const baseStyle = {
   outline: "none",
   transition: "border .24s ease-in-out",
 };
+const activeStyle = {
+  borderColor: "#2196f3",
+};
+
+const acceptStyle = {
+  borderColor: "#00e676",
+};
+
+const rejectStyle = {
+  borderColor: "#ff1744",
+};
 
 function Dropzone(props) {
   const { setImages, images, accept, multiple, imagesEdited } = props;
@@ -93,7 +104,7 @@ function Dropzone(props) {
     imagesEdited(newFiles);
   };
 
-  const thumbs = files.filter((file) => !file.remove).map((file) => (
+  const thumbs = files.filter((file) => !file.remove).map((file, index) => (
     <div
       style={{
         position: "relative",
@@ -107,7 +118,7 @@ function Dropzone(props) {
         padding: 4,
         boxSizing: "border-box"
       }}
-      key={file.name}
+      key={index}
     >
       <div
         style={{

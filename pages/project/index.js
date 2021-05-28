@@ -13,7 +13,6 @@ import {
   CardText,
   CardBody,
   CardFooter,
-  Button,
 } from "reactstrap";
 
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -130,7 +129,7 @@ const Project = ({ data }) => {
                     <CardFooter className="d-flex justify-content-end">
                       <Link
                         href={`/project/${project.id}`}
-                        as={`/project/${project.name}`}
+                        // as={`/project/${project.name}`}
                       >
                         <Button color={"primary"}>{t("Ver más")}</Button>
                       </Link>

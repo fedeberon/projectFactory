@@ -13,9 +13,10 @@ import {
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import InputImages from "../components/InputImages";
+import Dropzone from "../components/Dropzone";
 
-const FormEditProject = ({ project, onEdit }) => {
-  const [previewImage, setPreviewImage] = useState();
+const FormEditProject = ({ project, onEdit, toggle }) => {
+  const [previewImage, setPreviewImage] = useState([]);
   const [images, setImages] = useState([]);
   const [imagesEdited, setImagesEdited] = useState([]);
 
@@ -26,10 +27,6 @@ const FormEditProject = ({ project, onEdit }) => {
   }, [project]);
 
   const { t, lang } = useTranslation("common");
-
-  const getPreviewImage = (event) => {
-    setPreviewImage(event.target.files[0]);
-  }
 
   const {
     control,
@@ -43,22 +40,25 @@ const FormEditProject = ({ project, onEdit }) => {
     event
   ) => {
     // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image for form data
+    let image;
+    previewImage.length == 0 ? image= undefined : image = previewImage[0];
     let data = {
       name,
       description,
       totalArea,
       website,
       year,
-      previewImage,
+      previewImage: image,
       imagesEdited,
-      "id" : project.id
+      id: project.id,
     };
     onEdit(data);
     event.target.reset();
+    toggle();
   };
 
   return (
-      <Container fluid="sm">
+    <Container fluid="sm">
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col>
@@ -189,18 +189,23 @@ const FormEditProject = ({ project, onEdit }) => {
             {t("Select preview image for project")}
           </Label>
           <br></br>
-          <Input
-            type="file"
-            onChange={getPreviewImage}
-            name="filePreview"
-            id="filePreview"
-            accept="image/"
+          <Dropzone
+            setFile={setPreviewImage}
+            accept={"image/*"}
+            multiple={false}
+            name={"filePreview"}
           />
         </FormGroup>
         <FormGroup>
           <Label for="uploadFiles">{t("Upload images")}</Label>
           <br></br>
-          <InputImages setImages={setImages} images={images} accept={"image/*"} multiple={true} imagesEdited={setImagesEdited}/>
+          <InputImages
+            setImages={setImages}
+            images={images}
+            accept={"image/*"}
+            multiple={true}
+            imagesEdited={setImagesEdited}
+          />
         </FormGroup>
         <Button type="submit" color="primary">
           {t("Send")}
