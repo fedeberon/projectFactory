@@ -50,6 +50,7 @@ function Dropzone(props) {
       img.remove = false;
     });
     setFiles(currentImages);
+    imagesEdited(currentImages);
   }, [images] );
 
   const {

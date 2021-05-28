@@ -96,10 +96,10 @@ const Professional = ({ data }) => {
                     <CardImg top width="100%" src={professional.previewImage} alt="Professional preview" />
                     <CardBody>
                       <CardText>
-                        {t("Name")}: {professional.firstName}
+                        {t("FirstName")}: {professional.firstName}
                       </CardText>
                       <CardText>
-                        {t("Description")}: {professional.lastName}
+                        {t("LastName")}: {professional.lastName}
                       </CardText>
                       <CardText>
                         {t("Email")}: {professional.email}

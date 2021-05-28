@@ -6,15 +6,17 @@ import { Button, Col, Form, Input, Label, Row } from "reactstrap";
 
 const FormBuyProject = ({ projectId }) => {
   const [session, loading] = useSession();
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
-    if (window.Mercadopago) {
+    if (window.Mercadopago && !active) {
       window.Mercadopago.setPublishableKey(
         process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY
       );
       window.Mercadopago.getIdentificationTypes();
+      setActive(true);
     }
-  }, []);
+  }, [projectId]);
 
   const onChangeCardNumber = () => {
     const cardNumber = document.getElementById("cardNumber");

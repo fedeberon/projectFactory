@@ -53,5 +53,6 @@
     "Edit project" : "Editar proyecto",
     "WebSite is required" : "Sitio web requerido",
     "WebSite cannot be less than 3 character" : "El Sitio web no puede tener menos de 3 caracteres",
-    "remove" : "Eliminar"
+    "remove" : "Eliminar",
+    "FormBuyProject" : "Comprar proyecto"
 }

@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
 
 // components
 import Header from "../../components/Header";
-import ModalFormProject from "../../components/ModalForm";
+import ModalForm from "../../components/ModalForm";
 import FormProject from '../../components/FormProject';
 
 // services
@@ -85,7 +85,7 @@ const Project = ({ data }) => {
       <Header lang={lang} />
       <h1>{t("Project")}</h1>
       <Button className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex" color="danger" onClick={toggleModal}>+</Button>
-      <ModalFormProject
+      <ModalForm
         className={"Button"}
         modalTitle={t("FORM PROJECT")}
         formBody={(<FormProject onAddProject={onAddProject} toggle={toggleModal}/>)}

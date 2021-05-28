@@ -50,7 +50,6 @@ const SeeProject = ({ project, onEditProject }) => {
 
   useEffect(() => {
     asignEvents();
-    console.log("useEffect-----",project);
   }, [project]);
 
   return (
