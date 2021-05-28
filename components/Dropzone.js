@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useDropzone } from "react-dropzone";
 import { CloudArrowUp } from "react-bootstrap-icons";
 import { Container } from "reactstrap";
@@ -32,7 +32,7 @@ const rejectStyle = {
 };
 
 function Dropzone(props) {
-  const { setFile, accept, multiple, name } = props;
+  const { newFiles, setFile, accept, multiple, name } = props;
 
   const {
     acceptedFiles,
@@ -49,7 +49,9 @@ function Dropzone(props) {
           preview: URL.createObjectURL(file),
         });
       });
-      setFile(acceptedFiles);
+      multiple
+        ? setFile(newFiles.concat(acceptedFiles))
+        : setFile(acceptedFiles);
     },
     multiple: multiple,
   });
@@ -64,8 +66,8 @@ function Dropzone(props) {
     [isDragActive, isDragReject, isDragAccept]
   );
 
-  const files = acceptedFiles.map((file) => (
-    <li key={file.name}>
+  const files = newFiles?.map((file, index) => (
+    <li key={index}>
       {file.name} - {file.size} bytes
     </li>
   ));

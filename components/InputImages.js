@@ -30,7 +30,7 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
-function Dropzone(props) {
+function InputImages(props) {
   const { setImages, images, accept, multiple, imagesEdited } = props;
   const [files, setFiles] = useState([]);
   const { t, lang } = useTranslation("common");
@@ -42,7 +42,7 @@ function Dropzone(props) {
     [files]
   );
 
-  useEffect( () => {
+  useEffect(() => {
     const currentImages = Array.from(images);
     currentImages.forEach((img) => {
       img.preview = img.path;
@@ -51,7 +51,7 @@ function Dropzone(props) {
     });
     setFiles(currentImages);
     imagesEdited(currentImages);
-  }, [images] );
+  }, [images]);
 
   const {
     acceptedFiles,
@@ -67,7 +67,7 @@ function Dropzone(props) {
         Object.assign(file, {
           preview: URL.createObjectURL(file),
           added: false,
-          remove: false
+          remove: false,
         });
       });
       const newFiles = files.concat(acceptedFiles);
@@ -105,56 +105,58 @@ function Dropzone(props) {
     imagesEdited(newFiles);
   };
 
-  const thumbs = files.filter((file) => !file.remove).map((file, index) => (
-    <div
-      style={{
-        position: "relative",
-        display: "inline-flex",
-        borderRadius: 2,
-        border: "1px solid #eaeaea",
-        marginBottom: 8,
-        marginRight: 8,
-        width: 100,
-        height: 100,
-        padding: 4,
-        boxSizing: "border-box"
-      }}
-      key={index}
-    >
+  const thumbs = files
+    .filter((file) => !file.remove)
+    .map((file, index) => (
       <div
         style={{
-          display: "flex",
-          minWidth: 0,
-          overflow: "hidden"
+          position: "relative",
+          display: "inline-flex",
+          borderRadius: 2,
+          border: "1px solid #eaeaea",
+          marginBottom: 8,
+          marginRight: 8,
+          width: 100,
+          height: 100,
+          padding: 4,
+          boxSizing: "border-box",
         }}
+        key={index}
       >
-        <img
-          src={file.preview}
+        <div
           style={{
-            display: "block",
-            width: "auto",
-            height: "100%",
+            display: "flex",
+            minWidth: 0,
+            overflow: "hidden",
           }}
-        />
-      </div>
-
-      <button
-        style={{
-          position: "absolute",
-          right: 10,
-          bottom: 10,
-          background: "rgba(0,0,0,.8)",
-          color: "#fff",
-          border: 0,
-          borderRadius: ".325em",
-          cursor: "pointer"
-        }}
-        onClick={() => removeImage(file) }
         >
-        {t("remove")}
-      </button>
-    </div>
-  ));
+          <img
+            src={file.preview}
+            style={{
+              display: "block",
+              width: "auto",
+              height: "100%",
+            }}
+          />
+        </div>
+
+        <button
+          style={{
+            position: "absolute",
+            right: 10,
+            bottom: 10,
+            background: "rgba(0,0,0,.8)",
+            color: "#fff",
+            border: 0,
+            borderRadius: ".325em",
+            cursor: "pointer",
+          }}
+          onClick={() => removeImage(file)}
+        >
+          {t("remove")}
+        </button>
+      </div>
+    ));
 
   return (
     <section className="container">
@@ -177,4 +179,4 @@ function Dropzone(props) {
   );
 }
 
-export default Dropzone;
+export default InputImages;

@@ -224,6 +224,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
             {t("Select preview image for project")}
           </Label>
           <Dropzone
+            newFiles={previewImage}
             setFile={setPreviewImage}
             accept={"image/*"}
             multiple={false}
@@ -233,6 +234,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         <FormGroup>
           <Label for="uploadFiles">{t("Upload images")}</Label>
           <Dropzone
+            newFiles={images}
             setFile={setImages}
             accept={"image/*"}
             multiple={true}
@@ -243,6 +245,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
           <Label>{t("Upload Files")}</Label>
           <br></br>
           <Dropzone
+            newFiles={file}
             setFile={setFile}
             accept={"application/x-zip-compressed, application/zip"}
             multiple={false}
