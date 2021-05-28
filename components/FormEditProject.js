@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import {
   Button,
   Col,
@@ -20,20 +20,27 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
   const [images, setImages] = useState([]);
   const [imagesEdited, setImagesEdited] = useState([]);
 
+  const { t, lang } = useTranslation("common");
+
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm({
+    defaultValues: {
+      name: project.name,
+      description: project.description,
+      totalArea: project.totalArea,
+      website: project.website,
+      year: project.year,
+    },
+  });
+
   useEffect(() => {
     if (project) {
       setImages(Array.from(project.images));
     }
   }, [project]);
-
-  const { t, lang } = useTranslation("common");
-
-  const {
-    control,
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
 
   const onSubmit = async (
     { name, description, totalArea, website, year },
@@ -41,7 +48,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
   ) => {
     // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image for form data
     let image;
-    previewImage.length == 0 ? image= undefined : image = previewImage[0];
+    previewImage.length == 0 ? (image = undefined) : (image = previewImage[0]);
     let data = {
       name,
       description,
@@ -67,20 +74,29 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
         </Row>
         <FormGroup>
           <Label for="name">{t("Name")}</Label>
-          <Input
-            type="text"
+          <Controller
             name="name"
-            id="name"
-            defaultValue={project.name}
-            placeholder={t("Write the name here please")}
-            {...register("name", {
-              required: { value: true, message: `${t("Name is required")}` },
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: `${t("Name is required")}`,
+              },
               minLength: {
                 value: 3,
                 message: `${t("Name cannot be less than 3 character")}`,
               },
-            })}
-            className={"form-field" + (errors.name ? " has-error" : "")}
+            }}
+            defaultValue=""
+            render={({ field }) => (
+              <Input
+                {...field}
+                type="text"
+                id="name"
+                placeholder={t("Write the name here please")}
+                className={"form-field" + (errors.name ? " has-error" : "")}
+              />
+            )}
           />
           {errors.name && (
             <FormText className="invalid error-label">
@@ -90,13 +106,10 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
         </FormGroup>
         <FormGroup>
           <Label for="description">{t("Description")}</Label>
-          <Input
-            type="text"
+          <Controller
             name="description"
-            defaultValue={project.description}
-            id="description"
-            placeholder={t("Write the description here please")}
-            {...register("description", {
+            control={control}
+            rules={{
               required: {
                 value: true,
                 message: `${t("Description is required")}`,
@@ -105,8 +118,19 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 value: 3,
                 message: `${t("Description cannot be less than 3 character")}`,
               },
-            })}
-            className={"form-field" + (errors.description ? " has-error" : "")}
+            }}
+            defaultValue=""
+            render={({ field }) => (
+              <Input
+                {...field}
+                type="text"
+                id="description"
+                placeholder={t("Write the description here please")}
+                className={
+                  "form-field" + (errors.description ? " has-error" : "")
+                }
+              />
+            )}
           />
           {errors.description && (
             <FormText className="error-label">
@@ -116,13 +140,10 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
         </FormGroup>
         <FormGroup>
           <Label for="totalArea">{t("Total Area")}</Label>
-          <Input
-            type="number"
+          <Controller
             name="totalArea"
-            defaultValue={project.totalArea}
-            id="totalArea"
-            placeholder={t("Write the Total Area here please")}
-            {...register("totalArea", {
+            control={control}
+            rules={{
               required: {
                 value: true,
                 message: `${t("Total Area is required")}`,
@@ -131,8 +152,19 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 value: 3,
                 message: `${t("Total Area cannot be less than 3 character")}`,
               },
-            })}
-            className={"form-field" + (errors.totalArea ? " has-error" : "")}
+            }}
+            defaultValue=""
+            render={({ field }) => (
+              <Input
+                {...field}
+                type="number"
+                id="totalArea"
+                placeholder={t("Write the Total Area here please")}
+                className={
+                  "form-field" + (errors.totalArea ? " has-error" : "")
+                }
+              />
+            )}
           />
           {errors.totalArea && (
             <FormText className="error-label">
@@ -142,20 +174,26 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
         </FormGroup>
         <FormGroup>
           <Label for="email">{t("WebSite")}</Label>
-          <Input
-            type="email"
+          <Controller
             name="website"
-            defaultValue={project.website}
-            id="email"
-            placeholder={t("Write the website here please")}
-            {...register("website", {
+            control={control}
+            rules={{
               required: { value: true, message: `${t("WebSite is required")}` },
               minLength: {
                 value: 3,
                 message: `${t("WebSite cannot be less than 3 character")}`,
               },
-            })}
-            className={"form-field" + (errors.website ? " has-error" : "")}
+            }}
+            defaultValue=""
+            render={({ field }) => (
+              <Input
+                {...field}
+                type="email"
+                id="email"
+                placeholder={t("Write the website here please")}
+                className={"form-field" + (errors.website ? " has-error" : "")}
+              />
+            )}
           />
           {errors.website && (
             <FormText className="error-label">
@@ -165,20 +203,26 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
         </FormGroup>
         <FormGroup>
           <Label for="year">{t("Year")}</Label>
-          <Input
-            type="number"
+          <Controller
             name="year"
-            defaultValue={project.year}
-            id="year"
-            placeholder={t("Write the Year here please")}
-            {...register("year", {
+            control={control}
+            rules={{
               required: { value: true, message: `${t("Year is required")}` },
               minLength: {
                 value: 3,
                 message: `${t("Year cannot be less than 3 character")}`,
               },
-            })}
-            className={"form-field" + (errors.year ? " has-error" : "")}
+            }}
+            defaultValue=""
+            render={({ field }) => (
+              <Input
+                {...field}
+                type="number"
+                id="year"
+                placeholder={t("Write the Year here please")}
+                className={"form-field" + (errors.year ? " has-error" : "")}
+              />
+            )}
           />
           {errors.year && (
             <FormText className="error-label">{errors.year.message}</FormText>

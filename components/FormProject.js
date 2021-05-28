@@ -14,7 +14,6 @@ import {
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
-import { useSelector } from "react-redux";
 import Dropzone from "./Dropzone";
 
 const FormProject = ({ onAddProject, professionals, toggle }) => {
@@ -27,16 +26,16 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
 
   const { t, lang } = useTranslation("common");
 
-  useEffect(async () => {
-    setOptions(professionals);
-  }, [professionals]);
-
   const {
     control,
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
+
+  useEffect(async () => {
+    setOptions(professionals);
+  }, [professionals]);
 
   const onSubmit = async (
     { name, description, totalArea, website, year, professionalsSelected },
@@ -66,11 +65,13 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
           <Label for="name">{t("Name")}</Label>
           <Input
             type="text"
-            name="name"
             id="name"
             placeholder={t("Write the name here please")}
             {...register("name", {
-              required: { value: true, message: `${t("Name is required")}` },
+              required: {
+                value: true,
+                message: `${t("Name is required")}`,
+              },
               minLength: {
                 value: 3,
                 message: `${t("Name cannot be less than 3 character")}`,
@@ -88,7 +89,6 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
           <Label for="description">{t("Description")}</Label>
           <Input
             type="text"
-            name="description"
             id="description"
             placeholder={t("Write the description here please")}
             {...register("description", {
@@ -114,7 +114,6 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
           <Label for="email">{t("Write the website")}</Label>
           <Input
             type="email"
-            name="website"
             id="email"
             placeholder={t("Write the website here please")}
             {...register("website", {
@@ -138,7 +137,6 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
               <Label for="totalArea">{t("Total Area")}</Label>
               <Input
                 type="number"
-                name="totalArea"
                 id="totalArea"
                 placeholder={t("Write the Total Area here please")}
                 {...register("totalArea", {
@@ -169,7 +167,6 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
               <Label for="year">{t("Year")}</Label>
               <Input
                 type="number"
-                name="year"
                 id="year"
                 placeholder={t("Write the Year here please")}
                 {...register("year", {
@@ -226,7 +223,6 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
           <Label for="filePreview">
             {t("Select preview image for project")}
           </Label>
-
           <Dropzone
             setFile={setPreviewImage}
             accept={"image/*"}
@@ -236,7 +232,6 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         </FormGroup>
         <FormGroup>
           <Label for="uploadFiles">{t("Upload images")}</Label>
-
           <Dropzone
             setFile={setImages}
             accept={"image/*"}
@@ -245,7 +240,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
           />
         </FormGroup>
         <FormGroup>
-          <Label>Upload Files</Label>
+          <Label>{t("Upload Files")}</Label>
           <br></br>
           <Dropzone
             setFile={setFile}

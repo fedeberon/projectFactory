@@ -55,6 +55,7 @@
     "WebSite cannot be less than 3 character" : "Year cannot be less than 3 character",
     "remove" : "remove",
     "FormBuyProject" : "Buy project",
-    "EmailAlreadyExists" : "Email already exists"
+    "EmailAlreadyExists" : "Email already exists",
+    "Upload Files": "Upload Files"
 
 }

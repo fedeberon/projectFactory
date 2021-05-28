@@ -18,12 +18,22 @@ import {
   Label,
   Row,
 } from "reactstrap";
+// import { useDispatch, useSelector } from "react-redux";
 
 const SeeProject = ({ project, onEditProject }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { t, lang } = useTranslation("common");
   const router = useRouter();
   const { id } = router.query;
+
+  // const dispatch = useDispatch();
+  // const projects = useSelector((state) => Object.values(state.projects.items));
+  // for (const proj of projects) {
+  //   if (proj.id == project.id) {
+  //     console.log(proj); 
+  //     // project = proj;
+  //   }
+  // }
 
   const toggleModal = () => setModalOpen(!modalOpen);
 
@@ -87,11 +97,11 @@ const SeeProject = ({ project, onEditProject }) => {
                       </Col>
                       <Col>
                         <Label>Professional last name: </Label>
-                        <p>{project.professional?.firstName}</p>
+                        <p>{project.professional?.lastName}</p>
                       </Col>
                       <Col>
                         <Label>Professional email:</Label>
-                        <p>{project.professional?.firstName}</p>
+                        <p>{project.professional?.email}</p>
                       </Col>
                     </Row>
                   </div>

@@ -55,5 +55,6 @@
     "WebSite cannot be less than 3 character" : "El Sitio web no puede tener menos de 3 caracteres",
     "remove" : "Eliminar",
     "FormBuyProject" : "Comprar proyecto",
-    "EmailAlreadyExists" : "Correo electronico ya existe"
+    "EmailAlreadyExists" : "Correo electronico ya existe",
+    "Upload Files": "Subir archivos"
 }
