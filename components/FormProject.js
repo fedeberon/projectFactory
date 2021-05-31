@@ -15,6 +15,7 @@ import {
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
 import Dropzone from "./Dropzone";
+import * as youtubeService from '../services/youtubeService';
 
 const FormProject = ({ onAddProject, professionals, toggle }) => {
   const [session, loading] = useSession();
@@ -29,6 +30,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
   const {
     control,
     register,
+    setError,
     formState: { errors },
     handleSubmit,
   } = useForm();
@@ -38,24 +40,32 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
   }, [professionals]);
 
   const onSubmit = async (
-    { name, description, totalArea, website, year, professionalsSelected },
+    { name, description, totalArea, website, year, professionalsSelected, videoPath },
     event
   ) => {
-    // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image for form data
-    let data = {
-      name,
-      description,
-      totalArea,
-      website,
-      year,
-      previewImage,
-      images,
-      file,
-    };
-    let id = professionalsSelected.id;
-    onAddProject(data, id);
-    event.target.reset();
-    toggle();
+    if (youtubeService.isValidVideo(videoPath)) {
+      // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image, video path for form data
+      let data = {
+        name,
+        description,
+        totalArea,
+        website,
+        year,
+        previewImage,
+        images,
+        file,
+        videoPath,
+      };
+      let id = professionalsSelected.id;
+      onAddProject(data, id);
+      event.target.reset();
+      toggle();
+    } else {
+      setError("videoPath",{
+        type: "manual",
+        message: t("InvalidLink")
+      });
+    }
   };
 
   return (
@@ -189,6 +199,29 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
             </FormGroup>
           </Col>
         </Row>
+        
+        <FormGroup>
+          <Label for="videoPath">{t("WriteVideoPath")}</Label>
+          <Input
+            type="text"
+            name="videoPath"
+            id="videoPath"
+            placeholder={t("WriteVideoPathPlease")}
+            {...register("videoPath", {
+              required: { value: true, message: `${t("VideoPathIsRequired")}` },
+              minLength: {
+                value: 3,
+                message: `${t("VideoPathInvalid")}`,
+              },
+            })}
+            className={"form-field" + (errors.videoPath ? " has-error" : "")}
+          />
+          {errors.videoPath && (
+            <FormText className="error-label">
+              {errors.videoPath.message}
+            </FormText>
+          )}
+        </FormGroup>
 
         <FormGroup>
           <Controller

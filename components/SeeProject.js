@@ -26,48 +26,32 @@ const SeeProject = ({ project, onEditProject }) => {
   const router = useRouter();
   const { id } = router.query;
 
-  // const dispatch = useDispatch();
-  // const projects = useSelector((state) => Object.values(state.projects.items));
-  // for (const proj of projects) {
-  //   if (proj.id == project.id) {
-  //     console.log(proj); 
-  //     // project = proj;
-  //   }
-  // }
-
   const toggleModal = () => setModalOpen(!modalOpen);
 
-  const asignEvents = () => {
-    const btnShowBuyProject = document.querySelector("#btn-show-buy-project");
-    const btnDownloadProject = document.querySelector("#btn-show-2FA");
-    const div2FA = document.querySelector("#two-factor");
-    const formBuyProject = document.querySelector("#form-buy-project");
-    const projectData = document.querySelector("#project-data");
-
-    const showBuyProject = () => {
-      formBuyProject.hidden = false;
-      projectData.hidden = true;
-    };
-
-    const show2FA = () => {
-      div2FA.hidden = false;
-      projectData.hidden = true;
-    };
-
-    btnShowBuyProject.addEventListener("click", showBuyProject);
-    btnDownloadProject.addEventListener("click", show2FA);
+  const showBuyProject = () => {
+    document.querySelector("#form-buy-project").hidden = false;
+    document.querySelector("#project-data").hidden = true;
   };
 
-  useEffect(() => {
-    asignEvents();
-  }, [project]);
+  const show2FA = () => {
+    document.querySelector("#two-factor").hidden = false;
+    document.querySelector("#project-data").hidden = true;
+  };
+
+  useEffect(() => {}, [project]);
 
   return (
     <>
       <ModalForm
         className={"Button"}
         modalTitle={t("Edit project")}
-        formBody={<FormEditProject project={project} onEdit={onEditProject} toggle={toggleModal} />}
+        formBody={
+          <FormEditProject
+            project={project}
+            onEdit={onEditProject}
+            toggle={toggleModal}
+          />
+        }
         modalOpen={{ open: modalOpen, function: setModalOpen }}
       />
       <Container>
@@ -116,13 +100,26 @@ const SeeProject = ({ project, onEditProject }) => {
             </Card>
             <Row className="my-2">
               <Col>
-                <Button className="mx-1" color={"success"} id="btn-show-buy-project">
-                  Buy project
-                </Button>
-                <Button color={"primary"} id="btn-show-2FA">
-                  Download project
-                </Button>
-                <Button className="mx-1" color={"warning"} onClick={toggleModal}>
+                {!project.purchased && (
+                  <Button
+                    className="mx-1"
+                    color={"success"}
+                    id="btn-show-buy-project"
+                    onClick={showBuyProject}
+                  >
+                    Buy project
+                  </Button>
+                )}
+                {project.purchased && (
+                  <Button color={"primary"} id="btn-show-2FA" onClick={show2FA}>
+                    Download project
+                  </Button>
+                )}
+                <Button
+                  className="mx-1"
+                  color={"warning"}
+                  onClick={toggleModal}
+                >
                   Edit
                 </Button>
               </Col>
@@ -136,6 +133,15 @@ const SeeProject = ({ project, onEditProject }) => {
             <div>
               <SeeProjectImages images={project.images} />
             </div>
+            <iframe
+              width="560"
+              height="315"
+              src={`https://www.youtube.com/embed/${project.videoPath}`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>{" "}
           </Col>
         </Row>
       </Container>

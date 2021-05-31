@@ -56,5 +56,10 @@
     "remove" : "Eliminar",
     "FormBuyProject" : "Comprar proyecto",
     "EmailAlreadyExists" : "Correo electronico ya existe",
-    "Upload Files": "Subir archivos"
+    "Upload Files": "Subir archivos",
+    "WriteVideoPath" : "Escriba el enlace al video",
+    "WriteVideoPathPlease": "Escriba el enlace al video aqui por favor",
+    "VideoPathIsRequired": "El enlace al video es requerido",
+    "VideoPathInvalid": "El enlace al video no puede tener menos de 3 caracteres",
+    "InvalidLink" : "El link es invalido"
 }

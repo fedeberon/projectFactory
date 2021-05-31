@@ -1,4 +1,5 @@
 import API from "./api";
+import * as youtubeService from '../services/youtubeService';
 
 export const findAll = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -12,16 +13,23 @@ export const findAll = async (page, size, token) => {
 export const getById = async (id, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const project = await API.get(`/projects/${id}`);
+  let purchased = await isPurchased(project, token);
+  project.purchased = purchased != undefined; 
   project.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/projects/${project.id}/${project.previewImage}`;
   return project;
 };
 
 export const addProject = async (project, token, id) => {
-  project.previewImage = null;
-  project.images = null;
-  project.files = null;
-  API.defaults.headers.common["Authorization"] = token;
-  return await API.post(`/projects?professional=${id}`, project);
+  delete project.previewImage;
+  delete project.images;
+  delete project.files;
+  try {
+    project.videoPath = youtubeService.getIdVideo(project.videoPath);
+    API.defaults.headers.common["Authorization"] = token;
+    return await API.post(`/projects?professional=${id}`, project);
+  } catch (err) {
+    throw new Error(`Error, link to video invalid: ${err}`);
+  }
 };
 
 export const addPreviewImage = async (image, projectId, token) => {
@@ -105,4 +113,15 @@ const removeAndAddImages = async (images, id, token) => {
     }
   };
   return newImages;
+};
+
+export const getPurchasedProjects = async (token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.get(`/projects/purchased?page=0&size=99`);
+};
+
+export const isPurchased = async (project, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const purchasedProjects = await getPurchasedProjects(token);
+  return purchasedProjects.find(purchased => purchased.id == project.id);
 };
