@@ -56,28 +56,24 @@ export const edit = async (project, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const id = project.id;
   const previewImage = project.previewImage;
-  let images;
-  if (project.imagesEdited) {
-    images = Array.from(project.imagesEdited);
-  }
-  
-  project.previewImage = null;
-  project.id = null;
-  project.images = null;
-  const projectEdited = await API.put(`/projects/${id}`, project);
-  
+  const images = Array.from(project.imagesEdited);
+
+  delete project.previewImage;
+  delete project.id;
+  delete project.images;
+  let projectEdited = await API.put(`/projects/${id}`, project);
+  projectEdited.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/projects/${id}/${projectEdited.previewImage}`;
   if (previewImage) {
     await addPreviewImage(previewImage, id, token);
+    projectEdited.previewImage = URL.createObjectURL(previewImage);
   }
   
   if (images) {
     const newImages = await removeAndAddImages(images, id, token);
     projectEdited.images = newImages;
   }
-  
-  projectEdited.previewImage = previewImage;
   return projectEdited;
-}
+};
 
 export const addFile = async (file, projectId, token) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -98,23 +94,24 @@ export const download = (id, token) => {
 
 const removeAndAddImages = async (images, id, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  let newImages = new Array();
-  images.forEach(async (img) => {
+  let newImages = [];
+  
+  for (let i = 0; i < images.length; i++) {
+    let img = images[i];
     if (img.added && img.remove) {
       await API.delete(`/images/projects/${id}/${img.name}`);
     } else if (!img.added) {
       const imageData = new FormData();
-      imageData.append('imageFile', img);
-      imageData.append('project',id);
-      imageData.append('tags',[]);
-      const response = await API.post(`/images`, imageData);
-      const path = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/projects/${id}/${response.path}`;
-      newImages.push({path})
+      imageData.append("imageFile", img);
+      imageData.append("project", id);
+      imageData.append("tags", []);
+      await API.post(`/images`, imageData);
+      const path = URL.createObjectURL(img);
+      newImages.push({ path });
     } else {
-      newImages.push({"path":img.path})
+      newImages.push({ path: img.path });
     }
-  });
-
+  };
   return newImages;
 };
 

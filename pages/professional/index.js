@@ -48,23 +48,30 @@ const Professional = ({ data }) => {
     setLoading(true);
     const previewImage = data.previewImage;
     const backgroundImage = data.backgroundImage;
-    const professional = await professionalService.addProfessional(data, session?.accessToken);
+    try {
+      const professional = await professionalService.addProfessional(data, session?.accessToken);
 
-    if (professional?.id) {
-      if (previewImage) {
-        await professionalService.addPreviewImage(previewImage, professional.id, session.accessToken);
-        professional.previewImage = URL.createObjectURL(previewImage);
+      if (professional?.id) {
+        if (previewImage) {
+          await professionalService.addPreviewImage(previewImage, professional.id, session.accessToken);
+          professional.previewImage = URL.createObjectURL(previewImage);
+        }
+        
+        if (backgroundImage) {
+          await professionalService.addBackgroundImage(backgroundImage, professional.id, session.accessToken);
+          professional.backgroundImage = URL.createObjectURL(backgroundImage);
+        }
+        dispatch(professionalActions.addItem(professional));
+        setLoading(false);
+      } else {
+        throw new Error(`Email already exists`);
       }
-      
-      if (backgroundImage) {
-        await professionalService.addBackgroundImage(backgroundImage, professional.id, session.accessToken);
-        professional.backgroundImage = URL.createObjectURL(backgroundImage);
-      }
-      dispatch(professionalActions.addItem(professional));
+    } catch (e) {
       setLoading(false);
-    } else {
-      throw new Error(`Email already exists`);
+      alert(t("EmailAlreadyExists"))
     }
+
+    
   };
 
   if (router.isFallback) {
@@ -96,10 +103,10 @@ const Professional = ({ data }) => {
                     <CardImg top width="100%" src={professional.previewImage} alt="Professional preview" />
                     <CardBody>
                       <CardText>
-                        {t("Name")}: {professional.firstName}
+                        {t("FirstName")}: {professional.firstName}
                       </CardText>
                       <CardText>
-                        {t("Description")}: {professional.lastName}
+                        {t("LastName")}: {professional.lastName}
                       </CardText>
                       <CardText>
                         {t("Email")}: {professional.email}
