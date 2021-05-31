@@ -53,6 +53,11 @@
     "Edit project" : "Edit project",
     "WebSite is required" : "WebSite is required",
     "WebSite cannot be less than 3 character" : "Year cannot be less than 3 character",
-    "remove" : "remove"
+    "remove" : "remove",
+    "WriteVideoPath" : "Write the link to video",
+    "WriteVideoPathPlease": "Write the link to video here please",
+    "VideoPathIsRequired": "Link to video is required",
+    "VideoPathInvalid": "Link to video cannot be less than 3 character",
+    "InvalidLink" : "Invalid link"
 
 }
