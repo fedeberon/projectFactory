@@ -14,6 +14,7 @@ import {
 import { useTranslation } from "react-i18next";
 import InputImages from "../components/InputImages";
 import Dropzone from "../components/Dropzone";
+import * as youtubeService from "../services/youtubeService";
 
 const FormEditProject = ({ project, onEdit, toggle }) => {
   const [previewImage, setPreviewImage] = useState([]);
@@ -33,6 +34,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
       totalArea: project.totalArea,
       website: project.website,
       year: project.year,
+      videoPath: youtubeService.getLinkToId(project.videoPath)
     },
   });
 
@@ -43,25 +45,33 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
   }, [project]);
 
   const onSubmit = async (
-    { name, description, totalArea, website, year },
+    { name, description, totalArea, website, year, videoPath },
     event
   ) => {
-    // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image for form data
-    let image;
-    previewImage.length == 0 ? (image = undefined) : (image = previewImage[0]);
-    let data = {
-      name,
-      description,
-      totalArea,
-      website,
-      year,
-      previewImage: image,
-      imagesEdited,
-      id: project.id,
-    };
-    onEdit(data);
-    event.target.reset();
-    toggle();
+    if (youtubeService.isValidVideo(videoPath)) {
+      // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image for form data
+      let image;
+      previewImage.length == 0 ? (image = undefined) : (image = previewImage[0]);
+      let data = {
+        name,
+        description,
+        totalArea,
+        website,
+        year,
+        previewImage: image,
+        imagesEdited,
+        videoPath,
+        id: project.id,
+      };
+      onEdit(data);
+      event.target.reset();
+      toggle();
+    } else {
+      setError("videoPath",{
+        type: "manual",
+        message: t("InvalidLink")
+      });
+    }
   };
 
   return (
@@ -226,6 +236,38 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           />
           {errors.year && (
             <FormText className="error-label">{errors.year.message}</FormText>
+          )}
+        </FormGroup>
+        <FormGroup>
+        <Label for="videoPath">{t("WriteVideoPath")}</Label>
+          <Controller
+            name="videoPath"
+            control={control}
+            rules={{
+              required: {
+                value: true,
+                message: `${t("VideoPathIsRequired")}`,
+              },
+              minLength: {
+                value: 3,
+                message: `${t("VideoPathInvalid")}`,
+              },
+            }}
+            defaultValue=""
+            render={({ field }) => (
+              <Input
+                {...field}
+                type="text"
+                id="videoPath"
+                placeholder={t("WriteVideoPathPlease")}
+                className={"form-field" + (errors.videoPath ? " has-error" : "")}
+              />
+            )}
+          />
+          {errors.videoPath && (
+            <FormText className="invalid error-label">
+              {errors.videoPath.message}
+            </FormText>
           )}
         </FormGroup>
         <FormGroup>

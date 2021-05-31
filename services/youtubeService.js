@@ -10,3 +10,7 @@ export const isValidVideo = (url) => {
 export const getIdVideo = (videoPath) => {
     return videoPath.split("?v=")[1].split("&")[0];
 };
+
+export const getLinkToId = (id) => {
+  return `https://www.youtube.com/watch?v=${id}`;
+};

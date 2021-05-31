@@ -54,6 +54,7 @@ export const addImages = async (images, projectId, token) => {
 
 export const edit = async (project, token) => {
   API.defaults.headers.common["Authorization"] = token;
+  project.videoPath = youtubeService.getIdVideo(project.videoPath);
   const id = project.id;
   const previewImage = project.previewImage;
   const images = Array.from(project.imagesEdited);
