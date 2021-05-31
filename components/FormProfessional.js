@@ -119,6 +119,7 @@ const FormProfessional = ({ onAddProfessional, toggle }) => {
           <FormGroup>
             <Label for="file">{t("Select profile picture")}</Label>
             <Dropzone
+              newFiles={previewImage}
               setFile={setPreviewImage}
               accept={"image/*"}
               multiple={false}
@@ -128,6 +129,7 @@ const FormProfessional = ({ onAddProfessional, toggle }) => {
           <FormGroup>
             <Label for="file">{t("Select background picture")}</Label>
             <Dropzone
+              newFiles={backgroundImage}
               setFile={setBackgroundImage}
               accept={"image/*"}
               multiple={false}
