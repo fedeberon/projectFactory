@@ -15,30 +15,17 @@ const SeeProject = ({ project, onEditProject }) => {
 
     const toggleModal = () => setModalOpen(!modalOpen);
     
-    const asignEvents = () => {
-        const btnShowBuyProject = document.querySelector("#btn-show-buy-project");
-        const btnDownloadProject = document.querySelector("#btn-show-2FA");
-        const div2FA = document.querySelector("#two-factor");
-        const formBuyProject = document.querySelector("#form-buy-project");
-        const projectData = document.querySelector("#project-data");
+    const showBuyProject = () => {
+        document.querySelector("#form-buy-project").hidden = false;
+        document.querySelector("#project-data").hidden = true;
+    };
+    
+    const show2FA = () => {
+        document.querySelector("#two-factor").hidden = false;
+        document.querySelector("#project-data").hidden = true;
+    };
 
-        const showBuyProject = () => {
-            formBuyProject.hidden = false;
-            projectData.hidden = true;
-        };
-
-        const show2FA = () => {
-            div2FA.hidden = false;
-            projectData.hidden = true;
-        };
-
-        btnShowBuyProject.addEventListener("click", showBuyProject);
-        btnDownloadProject.addEventListener("click", show2FA);
-    }
-
-    useEffect(() => {
-        asignEvents();
-    }, [project])
+    useEffect(() => {}, [project])
 
 
 
@@ -60,7 +47,8 @@ const SeeProject = ({ project, onEditProject }) => {
             <span>Professional name: {project.professional?.firstName}</span><br></br>
             <span>Professional last name: {project.professional?.firstName}</span><br></br>
             <span>Professional email: {project.professional?.firstName}</span><br></br>
-            <button id="btn-show-buy-project">Buy project</button><button id="btn-show-2FA">Download project</button>
+            {!project.purchased && <button onClick={showBuyProject}>Buy project</button>}
+            {project.purchased && <button onClick={show2FA}>Download project</button>}
         </div>
         <button onClick={toggleModal}>Edit</button>
         <div hidden id="form-buy-project">
