@@ -3,10 +3,12 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/client";
 import * as mercadopagoService from "../services/mercadopagoService.js";
 import { Button, Col, Form, Input, Label, Row } from "reactstrap";
+import { useTranslation } from "react-i18next";
 
 const FormBuyProject = ({ projectId }) => {
   const [session, loading] = useSession();
   const [active, setActive] = useState(false);
+  const { t, lang } = useTranslation("common");
 
   useEffect(() => {
     if (window.Mercadopago && !active) {
@@ -24,12 +26,15 @@ const FormBuyProject = ({ projectId }) => {
     const issuerSelect = document.getElementById("issuer");
     const transactionAmount = document.getElementById("transactionAmount");
     const installments = document.getElementById("installments");
+    const imgCard = document.querySelector("#card-img");
+    
     const elements = {
       cardNumber,
       paymentMethodId,
       issuerSelect,
       transactionAmount,
       installments,
+      imgCard,
     };
     mercadopagoService.completeElements(elements);
   };
@@ -71,59 +76,57 @@ const FormBuyProject = ({ projectId }) => {
   return (
     <>
       <Form
-        action="http://localhost:8082/project-factory/api/v1/mercadopago/process_payment"
         method="post"
         id="paymentForm"
       >
-        <h3>Detalles del comprador</h3>
-        <p>Use this card number for test payment: 5031-7557-3453-0604</p>
-        <Row>
-          <Col>
-            <Label htmlFor="email">E-mail</Label>
+        <Row className="my-3">
+          <Col xs={4}>
+            <Label htmlFor="email">{t("Email")}</Label>
             <Input
               id="email"
               name="email"
               type="text"
-              defaultValue="test@test.com"
+              placeholder={t("Email")}
             />
           </Col>
-          <Col>
-            <Label htmlFor="docType">Tipo de documento</Label>
+        </Row>
+        <Row>
+          <Col xs={2}>
+            <Label htmlFor="docType">{t("DocType")}</Label><br></br>
             <select
               id="docType"
               name="docType"
               data-checkout="docType"
               type="text"
+              className="form-select"
             ></select>
           </Col>
-          <Col>
-            <Label htmlFor="docNumber">Número de documento</Label>
+          <Col xs={2}>
+            <Label htmlFor="docNumber">{t("DocNumber")}</Label>
             <Input
               id="docNumber"
-              defaultValue="41999064"
+              placeholder={t("DocNumber")}
               name="docNumber"
               data-checkout="docNumber"
               type="text"
             />
           </Col>
         </Row>
-        <h3>Detalles de la tarjeta</h3>
-        <Row>
-          <Col>
-            <Label htmlFor="cardholderName">Titular de la tarjeta</Label>
+        <Row className="my-3">
+          <Col xs={4}>
+            <Label htmlFor="cardholderName">{t("CardholderName")}</Label>
             <Input
               id="cardholderName"
-              defaultValue="Tomas Arras"
+              placeholder={t("CardholderName")}
               data-checkout="cardholderName"
               type="text"
             ></Input>
           </Col>
-          <Row>
-            <Label htmlFor="">Fecha de vencimiento</Label>
+          <Row className="my-3">
+            <Label htmlFor="cardExpirationMonth">{t("DueDate")}</Label>
             <Col xs={1}>
               <Input
                 type="text"
-                defaultValue="11"
                 placeholder="MM"
                 id="cardExpirationMonth"
                 data-checkout="cardExpirationMonth"
@@ -136,7 +139,6 @@ const FormBuyProject = ({ projectId }) => {
             <Col xs={1}>
               <Input
                 type="text"
-                defaultValue="25"
                 placeholder="YY"
                 id="cardExpirationYear"
                 data-checkout="cardExpirationYear"
@@ -144,49 +146,65 @@ const FormBuyProject = ({ projectId }) => {
               ></Input>
             </Col>
           </Row>
-          <Col>
-            <Label htmlFor="cardNumber">Número de la tarjeta</Label>
-            <Input
-              type="text"
-              id="cardNumber"
-              data-checkout="cardNumber"
-              onChange={onChangeCardNumber}
-              autoComplete="off"
-            ></Input>
-          </Col>
-          <Col>
-            <Label htmlFor="securityCode">Código de seguridad</Label>
-            <Input
-              id="securityCode"
-              defaultValue="123"
-              data-checkout="securityCode"
-              type="text"
-              autoComplete="off"
-            ></Input>
-          </Col>
-          <Col id="issuerInput">
-            <Label htmlFor="issuer">Banco emisor</Label>
-            <select id="issuer" name="issuer" data-checkout="issuer"></select>
-          </Col>
-          <Col>
-            <Label htmlFor="installments">Cuotas</Label>
-            <select type="text" id="installments" name="installments"></select>
-          </Col>
-          <Col>
-            <Input
-              type="hidden"
-              name="transactionAmount"
-              id="transactionAmount"
-              defaultValue="100"
-            ></Input>
-            <Input
-              type="hidden"
-              name="paymentMethodId"
-              id="paymentMethodId"
-            ></Input>
-            <Input type="hidden" name="description" id="description"></Input>
-            <br></br>
-          </Col>
+          <Row>
+          <Col xs={3}>
+              <Label htmlFor="cardNumber">{t("CardNumber")}</Label>
+              <Input
+                type="number"
+                placeholder={t("CardNumber")}
+                id="cardNumber"
+                data-checkout="cardNumber"
+                onChange={onChangeCardNumber}
+                autoComplete="off"
+              ></Input>
+            </Col>
+            <Col xs={1}>
+              <br></br>
+              <img hidden id="card-img"></img>
+            </Col>
+          </Row>
+          <Row>
+            <Col className="my-3" xs={2}>
+              <Label htmlFor="securityCode">{t("SecurityCode")}</Label>
+              <Input
+                className="w-50"
+                id="securityCode"
+                placeholder={t("SecurityCode")}
+                data-checkout="securityCode"
+                type="text"
+                autoComplete="off"
+              ></Input>
+            </Col>
+          </Row>
+          <Row>
+            <Col id="issuerInput" xs={4}>
+              <Label htmlFor="issuer">{t("IssuerBank")}</Label><br></br>
+              <select id="issuer" name="issuer" data-checkout="issuer" className="form-select"></select>
+            </Col>
+          </Row>
+          <Row className="my-3">
+            <Col xs={4}>
+              <Label htmlFor="installments">{t("Installments")}</Label><br></br>
+              <select type="text" id="installments" name="installments" className="form-select"></select>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Input
+                type="hidden"
+                name="transactionAmount"
+                id="transactionAmount"
+                defaultValue="100"
+              ></Input>
+              <Input
+                type="hidden"
+                name="paymentMethodId"
+                id="paymentMethodId"
+              ></Input>
+              <Input type="hidden" name="description" id="description"></Input>
+              <br></br>
+            </Col>
+          </Row>
         </Row>
         <Row>
           <Col>
@@ -200,14 +218,15 @@ const FormBuyProject = ({ projectId }) => {
               onClick={onClickBuyProject}
               className="w-100"
             >
-              Buy project
+              {t("BuyProject")}
             </Button>
             <br></br>
+            <br></br>
             <span hidden id="successful" style={{ color: "green" }}>
-              You have purchased this project
+              {t("ProjectPurchased")}
             </span>
             <span hidden id="error" style={{ color: "red" }}>
-              Error
+              {t("InvalidCard")}
             </span>
           </Col>
         </Row>

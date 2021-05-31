@@ -32,10 +32,14 @@ export const completeElements = (elements) => {
 
 const setPaymentMethod = (status, response, elements) => {
   if (status == 200) {
-      const paymentMethod = response[0];
-      elements.paymentMethodId.value = paymentMethod.id;
+    const imgCard = elements.imgCard;
+    imgCard.hidden = false;
+    imgCard.src = response[0].thumbnail;
 
-      getIssuers(paymentMethod.id, elements);
+    const paymentMethod = response[0];
+    elements.paymentMethodId.value = paymentMethod.id;
+
+    getIssuers(paymentMethod.id, elements);
   } else {
       alert(`payment method info error: ${response}`);
   }

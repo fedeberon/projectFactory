@@ -107,12 +107,12 @@ const SeeProject = ({ project, onEditProject }) => {
                     id="btn-show-buy-project"
                     onClick={showBuyProject}
                   >
-                    Buy project
+                     {t("BuyProject")}
                   </Button>
                 )}
                 {project.purchased && (
                   <Button color={"primary"} id="btn-show-2FA" onClick={show2FA}>
-                    Download project
+                    {t("DownloadProject")}
                   </Button>
                 )}
                 <Button
@@ -120,7 +120,7 @@ const SeeProject = ({ project, onEditProject }) => {
                   color={"warning"}
                   onClick={toggleModal}
                 >
-                  Edit
+                  {t("Edit project")}
                 </Button>
               </Col>
             </Row>

@@ -61,6 +61,19 @@
     "WriteVideoPathPlease": "Write the link to video here please",
     "VideoPathIsRequired": "Link to video is required",
     "VideoPathInvalid": "Link to video cannot be less than 3 character",
-    "InvalidLink" : "Invalid link"
+    "InvalidLink" : "Invalid link",
+    "DocType" : "Doc type",
+    "DocNumber" : "Doc number",
+    "CardholderName": "Cardholder",
+    "DueDate": "Due date",
+    "CardNumber" : "Card number",
+    "SecurityCode" : "Security code",
+    "IssuerBank" : "Issuer bank",
+    "Installments" : "Installments",
+    "BuyProject" : "Buy project",
+    "ProjectPurchased" : "You have purchased this project",
+    "InvalidCard" : "Invalid card number",
+    "DownloadProject" : "Download project",
+    "Download" : "Download"
 
 }

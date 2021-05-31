@@ -61,5 +61,18 @@
     "WriteVideoPathPlease": "Escriba el enlace al video aqui por favor",
     "VideoPathIsRequired": "El enlace al video es requerido",
     "VideoPathInvalid": "El enlace al video no puede tener menos de 3 caracteres",
-    "InvalidLink" : "El link es invalido"
+    "InvalidLink" : "El link es invalido",
+    "DocType" : "Tipo de documento",
+    "DocNumber" : "Número de documento",
+    "CardholderName": "Titular de la tarjeta",
+    "DueDate": "Fecha de vencimiento",
+    "CardNumber" : "Número de la tarjeta",
+    "SecurityCode" : "Código de seguridad",
+    "IssuerBank" : "Banco emisor",
+    "Installments" : "Cuotas",
+    "BuyProject" : "Comprar proyecto",
+    "ProjectPurchased" : "Has comprado este proyecto",
+    "InvalidCard" : "Numero de tarjeta invalido",
+    "DownloadProject" : "Descargar proyecto",
+    "Download" : "Descargar"
 }

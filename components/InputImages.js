@@ -151,7 +151,10 @@ function InputImages(props) {
             borderRadius: ".325em",
             cursor: "pointer",
           }}
-          onClick={() => removeImage(file)}
+          onClick={(event) => {
+            event.preventDefault();
+            removeImage(file);
+          }}
         >
           {t("remove")}
         </button>
