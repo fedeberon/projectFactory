@@ -21,7 +21,9 @@ const ProjectDetail = ({ data }) => {
   };
 
   useEffect(() => {
-    setProject(data);
+    if (data) {
+      setProject(data);
+    }
   }, [session]);
 
   return (
