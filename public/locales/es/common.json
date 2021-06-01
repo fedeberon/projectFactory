@@ -74,5 +74,12 @@
     "ProjectPurchased" : "Has comprado este proyecto",
     "InvalidCard" : "Numero de tarjeta invalido",
     "DownloadProject" : "Descargar proyecto",
-    "Download" : "Descargar"
+    "Download" : "Descargar",
+    "TwoFactorAuthentication" : "Doble factor de autentificacion",
+    "EnterCode" : "Ingresa el codigo de doble factor de autentificacion",
+    "WrongCode" : "Codigo invalido",
+    "ValidCode" : "Codigo valido",
+    "ProfessionalFirstName" : "Correo del profesional",
+    "ProfessionalLastName" : "Nombre del profesional",
+    "ProfessionalEmail" : "Apellido del profesional"
 }

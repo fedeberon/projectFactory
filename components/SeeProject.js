@@ -64,27 +64,27 @@ const SeeProject = ({ project, onEditProject }) => {
                   <div id="project-data">
                     <Row>
                       <Col>
-                        <Label>Professional name:</Label>
+                        <Label>{t("ProfessionalFirstName")}:</Label>
                         <p>{project.professional?.firstName}</p>
                       </Col>
                       <Col>
-                        <Label>total area:</Label>
+                        <Label>{t("Total Area")}:</Label>
                         <p>{project.totalArea}</p>
                       </Col>
                       <Col>
-                        <Label>year:</Label>
+                        <Label>{t("Year")}:</Label>
                         <p>{project.year}</p>
                       </Col>
                       <Col>
-                        <Label>website:</Label>
+                        <Label>{t("WebSite")}:</Label>
                         <p>{project.website}</p>
                       </Col>
                       <Col>
-                        <Label>Professional last name: </Label>
+                        <Label>{t("ProfessionalLastName")}: </Label>
                         <p>{project.professional?.lastName}</p>
                       </Col>
                       <Col>
-                        <Label>Professional email:</Label>
+                      <Label>{t("ProfessionalEmail")}:</Label>
                         <p>{project.professional?.email}</p>
                       </Col>
                     </Row>

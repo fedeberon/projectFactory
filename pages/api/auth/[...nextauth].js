@@ -34,6 +34,12 @@ export default NextAuth({
      *                           Return `string` to redirect to (eg.: "/unauthorized")
      */
     async signIn(user, account, profile) {
+      if (account.accessToken == null || account.accessToken == undefined)
+        account.accessToken = "";
+      if (user.name == null || user.name == undefined)
+        user.name = "";
+      if (user.email == null || user.email == undefined)
+        user.email = "";
       const token = await signInCallBack(user, account, profile);
       user.token = token;
 

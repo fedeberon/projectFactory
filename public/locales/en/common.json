@@ -74,6 +74,13 @@
     "ProjectPurchased" : "You have purchased this project",
     "InvalidCard" : "Invalid card number",
     "DownloadProject" : "Download project",
-    "Download" : "Download"
+    "Download" : "Download",
+    "TwoFactorAuthentication" : "Two factor authentication",
+    "EnterCode" : "Enter the code of two factor authentication",
+    "WrongCode" : "Wrong code",
+    "ValidCode" : "Valid code",
+    "ProfessionalFirstName" : "Professional firstname",
+    "ProfessionalLastName" : "Professional lastname",
+    "ProfessionalEmail" : "Professional email"
 
 }

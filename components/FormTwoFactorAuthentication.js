@@ -4,9 +4,11 @@ import { loginWith2FA } from "../services/userService.js";
 import { download } from "../services/projectService.js";
 import { Button, Col, Container, Input, Row } from "reactstrap";
 import { Download } from "react-bootstrap-icons";
+import { useTranslation } from "react-i18next";
 
 const FormTwoFactorAuthentication = ({ projectId }) => {
   const [session, loading] = useSession();
+  const { t, lang } = useTranslation("common");
 
   const checkTwoFactorAuthenticationCode = async () => {
     const code = document.querySelector("#code").value;
@@ -27,8 +29,8 @@ const FormTwoFactorAuthentication = ({ projectId }) => {
       <Container className="my-2">
         <Row>
           <Col>
-            <h1>Two factor authentication</h1>
-            <h2>Enter the code of two factor authentication</h2>
+            <h1>{t("TwoFactorAuthentication")}</h1>
+            <h2>{t("EnterCode")}</h2>
             <Row>
               <Col xs={10}>
                 <Input id="code" type="number"></Input>
@@ -39,13 +41,14 @@ const FormTwoFactorAuthentication = ({ projectId }) => {
                   color={"success"}
                   onClick={checkTwoFactorAuthenticationCode}
                 >
-                  <Download size={20} className="me-1"/> Download
+                  <Download size={20} className="me-1"/> {t("Download")}
                 </Button>
+                <br></br>
                 <span hidden style={{ color: "red" }} id="wrong-code">
-                  Wrong code
+                  {t("WrongCode")}
                 </span>
                 <span hidden style={{ color: "green" }} id="valid-code">
-                  Valid code
+                  {t("ValidCode")}
                 </span>
               </Col>
             </Row>
