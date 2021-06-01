@@ -5,7 +5,6 @@ import FormEditProject from "../components/FormEditProject";
 import { useRouter } from "next/router";
 import FormBuyProject from "../components/FormBuyProject";
 import FormTwoFactorAuthentication from "../components/FormTwoFactorAuthentication";
-import SeeProjectImages from "../components/SeeProjectImages";
 import {
   Button,
   Card,
@@ -18,7 +17,8 @@ import {
   Label,
   Row,
 } from "reactstrap";
-// import { useDispatch, useSelector } from "react-redux";
+import CarouselProject from "./CarouselProject";
+
 
 const SeeProject = ({ project, onEditProject }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -84,7 +84,7 @@ const SeeProject = ({ project, onEditProject }) => {
                         <p>{project.professional?.lastName}</p>
                       </Col>
                       <Col>
-                      <Label>{t("ProfessionalEmail")}:</Label>
+                        <Label>{t("ProfessionalEmail")}:</Label>
                         <p>{project.professional?.email}</p>
                       </Col>
                     </Row>
@@ -107,7 +107,7 @@ const SeeProject = ({ project, onEditProject }) => {
                     id="btn-show-buy-project"
                     onClick={showBuyProject}
                   >
-                     {t("BuyProject")}
+                    {t("BuyProject")}
                   </Button>
                 )}
                 {project.purchased && (
@@ -131,7 +131,7 @@ const SeeProject = ({ project, onEditProject }) => {
               <FormTwoFactorAuthentication projectId={id} />
             </div>
             <div>
-              <SeeProjectImages images={project.images} />
+              <CarouselProject images={project.images} />
             </div>
             <iframe
               width="560"
