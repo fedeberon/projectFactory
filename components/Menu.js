@@ -17,13 +17,13 @@ import{ Dropdown, DropdownItem, DropdownMenu, DropdownToggle, nav} from 'reactst
             setDropdownDos (!dropdown);
         }
     return (
-        <nav class="navbar navbar-light bg-light navbar-expand-md border border-dark">
-            <button class="navbar-toggler navbar-toggler-rigth" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+        <nav className="navbar navbar-light bg-light navbar-expand-md border border-dark">
+            <button className="navbar-toggler navbar-toggler-rigth" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarTogglerDemo01">
-                <div class="navbar-nav mr-auto textDark">
-                    <a class="nav-item nav-link" href="#">Home</a>
+            <div className="collapse navbar-collapse d-flex justify-content-between" id="navbarTogglerDemo01">
+                <div className="navbar-nav mr-auto textDark">
+                    <a className="nav-item nav-link" href="#">Home</a>
                     <Dropdown isOpen={dropdown} toggle={openCloseDropdown}>
                         <DropdownToggle nav caret tag="span">
                             Professional
@@ -54,10 +54,10 @@ import{ Dropdown, DropdownItem, DropdownMenu, DropdownToggle, nav} from 'reactst
                             <DropdownItem>Acion 3</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
-                                        <a class="nav-item nav-link" href="#">About</a>
-                    <a class="nav-item nav-link" href="#">Contact</a>
+                                        <a className="nav-item nav-link" href="#">About</a>
+                    <a className="nav-item nav-link" href="#">Contact</a>
                 </div>
-                <div class="d-flex mx-3">
+                <div className="d-flex mx-3">
                     <Authentication class/>
                 </div>
                 
