@@ -1,7 +1,7 @@
 import React from "react";
 import { useSession } from "next-auth/client";
-import { loginWith2FA } from "../services/userService.js";
-import { download } from "../services/projectService.js";
+import * as userService from "../services/userService.js";
+import * as projectService from "../services/projectService.js";
 import { Button, Col, Container, Input, Row } from "reactstrap";
 import { Download } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
@@ -15,10 +15,10 @@ const FormTwoFactorAuthentication = ({ projectId }) => {
     const wrongCode = document.querySelector("#wrong-code");
     const validCode = document.querySelector("#valid-code");
     try {
-      const response = await loginWith2FA({ code: code }, session.accessToken);
+      const response = await userService.loginWith2FA({ code: code }, session.accessToken);
       validCode.hidden = false;
       const token = response.token;
-      download(projectId, token);
+      projectService.download(projectId, token);
     } catch (e) {
       wrongCode.hidden = false;
     }
