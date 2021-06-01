@@ -9,3 +9,5 @@ export const getImages = async (id, token,page,size) => {
     });
     return images;
 };
+
+export default {getImages}

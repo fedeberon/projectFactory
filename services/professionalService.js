@@ -37,3 +37,5 @@ export const addBackgroundImage = async (image, professionalId, token) => {
   imageData.append('professional',professionalId);
   return await API.post(`/images/professional/background`, imageData);
 };
+
+export { addBackgroundImage, addPreviewImage, addProfessional, getById, findAll };

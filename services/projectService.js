@@ -10,6 +10,7 @@ export const findAll = async (page, size, token) => {
   return projects;
 };
 
+
 export const getById = async (id, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const project = await API.get(`/projects/${id}`);
@@ -42,7 +43,7 @@ export const addPreviewImage = async (image, projectId, token) => {
 
 export const addImages = async (images, projectId, token) => {
   API.defaults.headers.common["Authorization"] = token;
-
+  
   images.forEach(async (image) => {
     const imageData = new FormData();
     imageData.append("imageFile", image);
@@ -58,7 +59,7 @@ export const edit = async (project, token) => {
   const id = project.id;
   const previewImage = project.previewImage;
   const images = Array.from(project.imagesEdited);
-
+  
   delete project.previewImage;
   delete project.id;
   delete project.images;
@@ -126,3 +127,5 @@ export const isPurchased = async (project, token) => {
   const purchasedProjects = await getPurchasedProjects(token);
   return purchasedProjects.find(purchased => purchased.id == project.id);
 };
+
+export default {findAll, getById, addProject, addPreviewImage, addImages, edit, addFile, download, removeAndAddImages,getPurchasedProjects, isPurchased}
