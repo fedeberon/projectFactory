@@ -13,8 +13,12 @@ import {
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
 
-const TagList = ({ tags }) => {
-
+const TagList = ({ tags, onDeleteTag }) => {
+  
+  const handleDeleteTag = (event, tag) => {
+    event.preventDefault();
+    onDeleteTag(tag);
+  };
 
   return (
     <ul style={{
@@ -48,6 +52,7 @@ const TagList = ({ tags }) => {
                 fontWeight: 500,
               }}>{tag.name}</span>
               <button
+              onClick={(event) => handleDeleteTag(event, tag)}
               style={{
                 all:"unset",
                 fontSize: "0.9rem",

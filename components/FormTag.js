@@ -59,7 +59,7 @@ const FormTag = ({ toggle, image }) => {
   return (
     <Container fluid="sm">
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <img src={image.preview} alt="image-selected"></img>
+        <img className="w-100" src={image.preview} alt="image-selected"></img>
         <FormGroup>
           <Label for="tag">{t("Tag")}</Label>
           <Row>
@@ -93,7 +93,7 @@ const FormTag = ({ toggle, image }) => {
           )}
         </FormGroup>
 
-        <TagList tags={tags} />
+        <TagList tags={tags} onDeleteTag={removeTag} />
 
         <Button type="submit" color="primary mt-1">
           {t("AddTags")}
