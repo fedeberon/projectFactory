@@ -16,6 +16,9 @@ import { useTranslation } from "react-i18next";
 import Select from "react-select";
 import Dropzone from "./Dropzone";
 import * as youtubeService from '../services/youtubeService';
+import InputImages from "../components/InputImages";
+import FormTag from "../components/FormTag";
+import ModalForm from "../components/ModalForm";
 
 const FormProject = ({ onAddProject, professionals, toggle }) => {
   const [session, loading] = useSession();
@@ -24,6 +27,8 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
   const [previewImage, setPreviewImage] = useState([]);
   const [images, setImages] = useState([]);
   const [file, setFile] = useState([]);
+  const [modalTagOpen, setModalTagOpen] = useState(false);
+  const [currentImageTag, setCurrentImageTag] = useState({});
 
   const { t, lang } = useTranslation("common");
 
@@ -38,6 +43,12 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
   useEffect(async () => {
     setOptions(professionals);
   }, [professionals]);
+
+  const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
+  const showTagModal = (img) => {
+    setModalTagOpen(true);
+    setCurrentImageTag(img);
+  };
 
   const onSubmit = async (
     { name, description, totalArea, website, year, professionalsSelected, videoPath },
@@ -266,12 +277,11 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         </FormGroup>
         <FormGroup>
           <Label for="uploadFiles">{t("Upload images")}</Label>
-          <Dropzone
-            newFiles={images}
-            setFile={setImages}
+          <InputImages
             accept={"image/*"}
             multiple={true}
-            name={"images"}
+            imagesEdited={setImages}
+            onAddTag={showTagModal}
           />
         </FormGroup>
         <FormGroup>
@@ -289,6 +299,19 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
           {t("Send")}
         </Button>
       </Form>
+
+      <ModalForm
+        className={"Button"}
+        modalTitle={t("AddTags")}
+        formBody={
+          <FormTag
+            image={currentImageTag}
+            toggle={toggleTagModal}
+          />
+        }
+        modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
+      />
+
     </Container>
   );
 };

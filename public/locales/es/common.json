@@ -81,5 +81,11 @@
     "ValidCode" : "Codigo valido",
     "ProfessionalFirstName" : "Correo del profesional",
     "ProfessionalLastName" : "Nombre del profesional",
-    "ProfessionalEmail" : "Apellido del profesional"
+    "ProfessionalEmail" : "Apellido del profesional",
+    "AddTags" : "Agregar Tags",
+    "AddTag" : "Agregar tag",
+    "Tag" : "Tag",
+    "WriteTagHere" : "Escriba el tag aqui por favor",
+    "TagIsRequired" : "Tag requerido",
+    "TagCannotBe3OrLess" : "El tag no puede tener menos de 3 caracteres"
 }

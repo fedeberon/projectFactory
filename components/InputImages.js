@@ -31,7 +31,13 @@ const rejectStyle = {
 };
 
 function InputImages(props) {
-  const { setImages, images, accept, multiple, imagesEdited } = props;
+  const { 
+    images,       // Current images in the input
+    accept,       // Type of images in the input
+    multiple,     // False if accept only one image or true if accept more than one
+    imagesEdited, // Function to set new images
+    onAddTag      // Function on click to add tag in image
+   } = props;
   const [files, setFiles] = useState([]);
   const { t, lang } = useTranslation("common");
   useEffect(
@@ -43,14 +49,16 @@ function InputImages(props) {
   );
 
   useEffect(() => {
-    const currentImages = Array.from(images);
-    currentImages.forEach((img) => {
-      img.preview = img.path;
-      img.added = true;
-      img.remove = false;
-    });
-    setFiles(currentImages);
-    imagesEdited(currentImages);
+    if (images) {
+      const currentImages = Array.from(images);
+      currentImages.forEach((img) => {
+        img.preview = img.path;
+        img.added = true;
+        img.remove = false;
+      });
+      setFiles(currentImages);
+      imagesEdited(currentImages);
+    }
   }, [images]);
 
   const {
@@ -139,6 +147,25 @@ function InputImages(props) {
             }}
           />
         </div>
+        
+        <button
+          style={{
+            position: "absolute",
+            right: -5,
+            top: -5,
+            background: "rgba(0,0,0,.8)",
+            color: "#fff",
+            border: 0,
+            borderRadius: ".325em",
+            cursor: "pointer",
+          }}
+          onClick={(event) => {
+            event.preventDefault();
+            removeImage(file);
+          }}
+        >
+          X
+        </button>
 
         <button
           style={{
@@ -153,10 +180,10 @@ function InputImages(props) {
           }}
           onClick={(event) => {
             event.preventDefault();
-            removeImage(file);
+            onAddTag(file);
           }}
         >
-          {t("remove")}
+          {t("AddTags")}
         </button>
       </div>
     ));

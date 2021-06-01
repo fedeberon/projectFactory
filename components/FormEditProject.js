@@ -286,7 +286,6 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           <Label for="uploadFiles">{t("Upload images")}</Label>
           <br></br>
           <InputImages
-            setImages={setImages}
             images={images}
             accept={"image/*"}
             multiple={true}
