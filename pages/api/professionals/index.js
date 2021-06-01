@@ -1,12 +1,12 @@
 import { getSession } from "next-auth/client";
-import { findAll, setProfessional } from "../../../services/professionalService";
+import { findAll, addProfessional } from "../../../services/professionalService";
 
 export default async (req, res) => {
   let token;
   const session = await getSession({ req });
 
   if (req.method === 'POST') {
-    const professional = await setProfessional(req.body, session.accessToken);
+    const professional = await addProfessional(req.body, session.accessToken);
     return res.status(200).json(professional);
   }
 

@@ -1,12 +1,12 @@
 import { getSession } from "next-auth/client";
-import { findAll, setProject } from "../../../services/projectService";
+import { findAll, addProject } from "../../../services/projectService";
 
 export default async (req, res) => {
   let token;
   const session = await getSession({ req });
 
   if (req.method === 'POST') {
-    const project = await setProject(req.body, session.accessToken);
+    const project = await addProject(req.body, session.accessToken);
     return res.status(200).json(project);
   }
 
