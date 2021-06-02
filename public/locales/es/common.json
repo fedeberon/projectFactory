@@ -87,5 +87,6 @@
     "Tag" : "Tag",
     "WriteTagHere" : "Escriba el tag aqui por favor",
     "TagIsRequired" : "Tag requerido",
-    "TagCannotBe3OrLess" : "El tag no puede tener menos de 3 caracteres"
+    "TagCannotBe3OrLess" : "El tag no puede tener menos de 3 caracteres",
+    "InsertTag" : "Ingrese el tag aqui por favor"
 }

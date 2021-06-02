@@ -12,7 +12,7 @@ import {
   Row,
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
-import InputImages from "../components/InputImages";
+import InputImages from "../components/InputImages/InputImages";
 import Dropzone from "../components/Dropzone";
 import * as youtubeService from "../services/youtubeService";
 

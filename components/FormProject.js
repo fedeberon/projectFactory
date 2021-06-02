@@ -16,8 +16,8 @@ import { useTranslation } from "react-i18next";
 import Select from "react-select";
 import Dropzone from "./Dropzone";
 import * as youtubeService from '../services/youtubeService';
-import InputImages from "../components/InputImages";
-import FormTag from "../components/FormTag";
+import InputImages from "../components/InputImages/InputImages";
+import FormTag from "../components/FormTag/FormTag";
 import ModalForm from "../components/ModalForm";
 
 const FormProject = ({ onAddProject, professionals, toggle }) => {

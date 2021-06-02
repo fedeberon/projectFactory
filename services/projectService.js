@@ -40,14 +40,14 @@ export const addPreviewImage = async (image, projectId, token) => {
   return await API.post(`/images/project/preview`, imageData);
 };
 
-export const addImages = async (images, projectId, token) => {
+export const addImages = async (images, projectId, tags, token) => {
   API.defaults.headers.common["Authorization"] = token;
 
   images.forEach(async (image) => {
     const imageData = new FormData();
     imageData.append("imageFile", image);
     imageData.append("project", projectId);
-    imageData.append("tags", []);
+    imageData.append("tags", tags);
     await API.post(`/images`, imageData);
   });
 };

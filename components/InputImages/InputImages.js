@@ -2,6 +2,7 @@ import React, { useMemo, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { CloudArrowUp } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
+import inputStyles from "./InputImages.module.css";
 
 const baseStyle = {
   flex: 1,
@@ -116,49 +117,13 @@ function InputImages(props) {
   const thumbs = files
     .filter((file) => !file.remove)
     .map((file, index) => (
-      <div
-        style={{
-          position: "relative",
-          display: "inline-flex",
-          borderRadius: 2,
-          border: "1px solid #eaeaea",
-          marginBottom: 8,
-          marginRight: 8,
-          width: 100,
-          height: 100,
-          padding: 4,
-          boxSizing: "border-box",
-        }}
-        key={index}
-      >
-        <div
-          style={{
-            display: "flex",
-            minWidth: 0,
-            overflow: "hidden",
-          }}
-        >
-          <img
-            src={file.preview}
-            style={{
-              display: "block",
-              width: "auto",
-              height: "100%",
-            }}
-          />
+      <div key={index} className={inputStyles.container}>
+
+        <div className={inputStyles.divImg}>
+          <img src={file.preview} className={inputStyles.img}/>
         </div>
         
-        <button
-          style={{
-            position: "absolute",
-            right: -5,
-            top: -5,
-            background: "rgba(0,0,0,.8)",
-            color: "#fff",
-            border: 0,
-            borderRadius: ".325em",
-            cursor: "pointer",
-          }}
+        <button className={inputStyles.buttonClose}
           onClick={(event) => {
             event.preventDefault();
             removeImage(file);
@@ -167,17 +132,7 @@ function InputImages(props) {
           X
         </button>
 
-        <button
-          style={{
-            position: "absolute",
-            right: 10,
-            bottom: 10,
-            background: "rgba(0,0,0,.8)",
-            color: "#fff",
-            border: 0,
-            borderRadius: ".325em",
-            cursor: "pointer",
-          }}
+        <button className={inputStyles.buttonTags}
           onClick={(event) => {
             event.preventDefault();
             onAddTag(file);
@@ -196,12 +151,7 @@ function InputImages(props) {
         <p>Drag 'n' drop some files here, or click to select files</p>
       </div>
       <aside
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          marginTop: 16,
-        }}
+        className={inputStyles.aside}
       >
         {thumbs}
       </aside>

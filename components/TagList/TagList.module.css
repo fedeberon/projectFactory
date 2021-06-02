@@ -1,0 +1,41 @@
+.ul {
+    padding: 0;
+    float: left;
+    width: 100%;
+    margin: 0;
+}
+
+.li {
+    background: #1f9fd6;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 3px;
+    padding: 4px 16px 4px 8px;
+    margin: 0 2px 2px 0;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.span {
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.closeBtn {
+    all: unset;
+    font-size: 0.9rem;
+    position: absolute;
+    top: 0;
+    right: 3px;
+    color: #fff;
+    display: block;
+    text-decoration: none;
+    padding-left: 2px;
+    padding-top: 3px;
+    line-height: 0.5;
+}

@@ -50,10 +50,15 @@ const Project = ({ data, professionals }) => {
     setLoading(true);
     const previewImage = data.previewImage;
     let images = [];
+    const tags = [];
     let file = data.file;
     if (data.images.length > 0) {
       images = Array.from(data.images);
+      images.map((img) => {
+        tags.push(img.tags);
+      });
     }
+    
     const project = await addProject(data, session.accessToken, id);
     if (project) {
       if (previewImage.length > 0) {
@@ -61,7 +66,7 @@ const Project = ({ data, professionals }) => {
         project.previewImage = URL.createObjectURL(previewImage[0]);
       }
       if (images.length > 0) {
-        await addImages(images, project.id, session.accessToken);
+        await addImages(images, project.id, tags, session.accessToken);
       }
       if (file.length > 0) {
         await addFile(file[0], project.id, session.accessToken);
