@@ -105,19 +105,19 @@ const Project = ({ data, professionals }) => {
         modalOpen={{ open: modalOpen, function: setModalOpen }}
       />
 
-      <Row>
+      <Row className="row-cols-md-3 g-4">
         {isLoading ? (
           <h1>{t("Loading")}...</h1>
         ) : !projects ? (
           <h1>{projects}</h1>
         ) : (
           projects.map((project) => (
-            <Col key={project.id} md="4">
+            <Col key={project.id}>
               <CardDeck>
                 <Card>
                   <CardImg
                     top
-                    width="100%"
+                    className="img-fluid"
                     src={project.previewImage}
                     alt="Card image cap"
                   />
