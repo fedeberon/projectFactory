@@ -22,7 +22,7 @@ import { useRouter } from "next/router";
 // components
 import Header from "../../components/Header";
 import ModalForm from "../../components/ModalForm";
-import FormProject from '../../components/FormProject';
+import FormProject from "../../components/FormProject";
 
 // services
 import {
@@ -30,7 +30,7 @@ import {
   addImages,
   addFile,
 } from "../../services/projectService";
-import * as professionalService from '../../services/professionalService';
+import * as professionalService from "../../services/professionalService";
 import { findAll, addProject } from "../../services/projectService";
 import { projectActions } from "../../store";
 import Link from "next/link";
@@ -39,13 +39,13 @@ const Project = ({ data, professionals }) => {
   const [session, loading] = useSession();
   const [isLoading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  
+
   const dispatch = useDispatch();
   const router = useRouter();
   const projects = useSelector((state) => Object.values(state.projects.items));
-  
+
   const { t, lang } = useTranslation("common");
-  
+
   const onAddProject = async (data, id) => {
     setLoading(true);
     const previewImage = data.previewImage;
@@ -70,7 +70,7 @@ const Project = ({ data, professionals }) => {
     }
     setLoading(false);
   };
-  
+
   const toggleModal = () => setModalOpen(!modalOpen);
 
   useEffect(() => {
@@ -85,59 +85,70 @@ const Project = ({ data, professionals }) => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Project")}</h1>
-      <Button className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex" color="danger" onClick={toggleModal}>+</Button>
+      <Button
+        className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"
+        color="danger"
+        onClick={toggleModal}
+      >
+        +
+      </Button>
       <ModalForm
         className={"Button"}
         modalTitle={t("FORM PROJECT")}
-        formBody={(<FormProject onAddProject={onAddProject} professionals={professionals} toggle={toggleModal}/>)}
-        modalOpen={{"open" : modalOpen,"function":setModalOpen}}
+        formBody={
+          <FormProject
+            onAddProject={onAddProject}
+            professionals={professionals}
+            toggle={toggleModal}
+          />
+        }
+        modalOpen={{ open: modalOpen, function: setModalOpen }}
       />
 
-      <Row>
+      <Row className="row-cols-md-3 g-4">
         {isLoading ? (
           <h1>{t("Loading")}...</h1>
         ) : !projects ? (
           <h1>{projects}</h1>
         ) : (
           projects.map((project) => (
-            <Col key={project.id} md="4">
-              <div key={project.id}>
-                <CardDeck>
-                  <Card>
-                    <CardImg
-                      top
-                      width="100%"
-                      src={project.previewImage}
-                      alt="Card image cap"
-                    />
-                    <CardBody>
-                      <CardText>
-                        {t("Name")}: {project.name}
-                      </CardText>
-                      <CardText>
-                        {t("Description")}: {project.description}
-                      </CardText>
-                      <CardText>
-                        {t("Total Area")}: {project.totalArea}
-                      </CardText>
-                      <CardText>
-                        {t("Year")}: {project.year}
-                      </CardText>
-                      <CardText>
-                        {t("WebSite")}: {project.website}
-                      </CardText>
-                    </CardBody>
-                    <CardFooter className="d-flex justify-content-end">
-                      <Link
-                        href={`/project/${project.id}`}
-                        // as={`/project/${project.name}`}
-                      >
-                        <Button color={"primary"}>{t("Ver más")}</Button>
-                      </Link>
-                    </CardFooter>
-                  </Card>
-                </CardDeck>
-              </div>
+            <Col key={project.id}>
+              <CardDeck>
+                <Card>
+                  <CardImg
+                    top
+                    className="img-fluid"
+                    src={project.previewImage}
+                    alt="Card image cap"
+                  />
+                  <CardBody>
+                    <CardText>
+                      {t("Name")}: {project.name}
+                    </CardText>
+                    <CardText>
+                      {t("Description")}: {project.description}
+                    </CardText>
+                    <CardText>
+                      {t("Total Area")}: {project.totalArea}
+                    </CardText>
+                    <CardText>
+                      {t("Year")}: {project.year}
+                    </CardText>
+                    <CardText>
+                      {t("WebSite")}: {project.website}
+                    </CardText>
+                  </CardBody>
+                  <CardFooter className="d-flex justify-content-end">
+                    <Link
+                      href={`/project/[id]`}
+                      as={`/project/${project.name}-ID-${project.id}`}
+                      passHref
+                    >
+                      <Button color={"primary"}>{t("Ver más")}</Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </CardDeck>
             </Col>
           ))
         )}
@@ -171,7 +182,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
       data: projects,
-      professionals: response
+      professionals: response,
     },
   };
 }

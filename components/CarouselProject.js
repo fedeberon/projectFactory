@@ -16,7 +16,6 @@ const CarouselProject = (props) => {
 
   useEffect(() => {
     if (images) {
-      console.log(images);
       const imagesCarousel = images.map((item, index) => {
         return (
           <CarouselItem
