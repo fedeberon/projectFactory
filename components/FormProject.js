@@ -62,9 +62,9 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         totalArea,
         website,
         year,
-        previewImage,
+        previewImage: previewImage[0],
         images,
-        file,
+        file: file[0],
         videoPath,
       };
       let id = professionalsSelected.id;

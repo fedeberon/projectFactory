@@ -1,4 +1,5 @@
 import API from "./api";
+import * as tagService from './tagService';
 
 export const findAll = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -32,7 +33,7 @@ export const addPreviewImage = async (image, professionalId, token) => {
 
 export const addImage = async (image, professionalId, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  const tags = getTags(image.tags);
+  const tags = tagService.getTags(image.tags);
   const imageData = new FormData();
   imageData.append('image', image);
   imageData.append('tags', tags);
@@ -43,15 +44,6 @@ export const addImages = async (images, professionalId, token) => {
   images.forEach(async image => {
     await addImage(image, professionalId, token);
   });
-};
-
-const getTags = tags => {
-  const rawTags = [];
-  tags.forEach(tag => {
-    rawTags.push(tag.tag);
-  });
-
-  return rawTags;
 };
 
 export const addBackgroundImage = async (image, professionalId, token) => {

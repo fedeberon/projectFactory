@@ -31,7 +31,7 @@ import {
   addFile,
 } from "../../services/projectService";
 import * as professionalService from "../../services/professionalService";
-import { findAll, addProject } from "../../services/projectService";
+import * as projectService from "../../services/projectService";
 import { projectActions } from "../../store";
 import Link from "next/link";
 
@@ -48,31 +48,8 @@ const Project = ({ data, professionals }) => {
 
   const onAddProject = async (data, id) => {
     setLoading(true);
-    const previewImage = data.previewImage;
-    let images = [];
-    const tags = [];
-    let file = data.file;
-    if (data.images.length > 0) {
-      images = Array.from(data.images);
-      images.map((img) => {
-        tags.push(img.tags);
-      });
-    }
-    
-    const project = await addProject(data, session.accessToken, id);
-    if (project) {
-      if (previewImage.length > 0) {
-        await addPreviewImage(previewImage[0], project.id, session.accessToken);
-        project.previewImage = URL.createObjectURL(previewImage[0]);
-      }
-      if (images.length > 0) {
-        await addImages(images, project.id, tags, session.accessToken);
-      }
-      if (file.length > 0) {
-        await addFile(file[0], project.id, session.accessToken);
-      }
-      dispatch(projectActions.addItem(project));
-    }
+    const project = await projectService.addProject(data, id, session.accessToken);
+    dispatch(projectActions.addItem(project));
     setLoading(false);
   };
 
@@ -179,7 +156,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   }
   if (session) {
     token = session.accessToken;
-    projects = await findAll(page, size, token);
+    projects = await projectService.findAll(page, size, token);
     response = await professionalService.findAll(page, size, token);
   }
 
