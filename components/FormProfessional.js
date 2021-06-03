@@ -11,12 +11,18 @@ import {
   Label,
   Row,
 } from "reactstrap";
+import InputImages from "../components/InputImages/InputImages";
 import Dropzone from "../components/Dropzone";
+import ModalForm from "../components/ModalForm";
+import FormTag from "../components/FormTag/FormTag";
 
 const FormProfessional = ({ onAddProfessional, toggle }) => {
   const { t, lang } = useTranslation("common");
   const [previewImage, setPreviewImage] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState([]);
+  const [images, setImages] = useState([]);
+  const [modalTagOpen, setModalTagOpen] = useState(false);
+  const [currentImageTag, setCurrentImageTag] = useState({});
 
   const {
     register,
@@ -30,6 +36,7 @@ const FormProfessional = ({ onAddProfessional, toggle }) => {
       firstName,
       lastName,
       email,
+      images,
       previewImage: previewImage[0],
       backgroundImage: backgroundImage[0],
     };
@@ -38,6 +45,13 @@ const FormProfessional = ({ onAddProfessional, toggle }) => {
     setBackgroundImage(null);
     event.target.reset();
     toggle();
+  };
+
+  const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
+
+  const showTagModal = (img) => {
+    setModalTagOpen(true);
+    setCurrentImageTag(img);
   };
 
   return (
@@ -136,10 +150,31 @@ const FormProfessional = ({ onAddProfessional, toggle }) => {
               name={"images"}
             />
           </FormGroup>
+          <FormGroup>
+            <Label for="uploadFiles">{t("Upload images")}</Label>
+            <InputImages
+              accept={"image/*"}
+              multiple={true}
+              imagesEdited={setImages}
+              onAddTag={showTagModal}
+            />
+          </FormGroup>
           <Button type="submit" color="primary mt-1">
             {t("Send")}
           </Button>
         </Form>
+
+        <ModalForm
+          className={"Button"}
+          modalTitle={t("AddTags")}
+          formBody={
+            <FormTag
+              image={currentImageTag}
+              toggle={toggleTagModal}
+            />
+          }
+          modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
+        />
       </Container>
     </div>
   );

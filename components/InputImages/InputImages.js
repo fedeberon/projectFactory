@@ -56,6 +56,9 @@ function InputImages(props) {
         img.preview = img.path;
         img.added = true;
         img.remove = false;
+        if (img.tags === undefined) {
+          img.tags = [];
+        }
       });
       setFiles(currentImages);
       imagesEdited(currentImages);
@@ -77,6 +80,7 @@ function InputImages(props) {
           preview: URL.createObjectURL(file),
           added: false,
           remove: false,
+          tags: []
         });
       });
       const newFiles = files.concat(acceptedFiles);

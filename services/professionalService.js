@@ -30,6 +30,30 @@ export const addPreviewImage = async (image, professionalId, token) => {
   return await API.post(`/images/professional/preview`, imageData);
 };
 
+export const addImage = async (image, professionalId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const tags = getTags(image.tags);
+  const imageData = new FormData();
+  imageData.append('image', image);
+  imageData.append('tags', tags);
+  return await API.post(`/images/professionals/${professionalId}`, imageData);
+};
+
+export const addImages = async (images, professionalId, token) => {
+  images.forEach(async image => {
+    await addImage(image, professionalId, token);
+  });
+};
+
+const getTags = tags => {
+  const rawTags = [];
+  tags.forEach(tag => {
+    rawTags.push(tag.tag);
+  });
+
+  return rawTags;
+};
+
 export const addBackgroundImage = async (image, professionalId, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const imageData = new FormData();

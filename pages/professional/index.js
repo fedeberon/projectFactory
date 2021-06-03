@@ -48,9 +48,10 @@ const Professional = ({ data }) => {
     setLoading(true);
     const previewImage = data.previewImage;
     const backgroundImage = data.backgroundImage;
+    const images = data.images;
+    const professional = await professionalService.addProfessional(data, session?.accessToken);
+    
     try {
-      const professional = await professionalService.addProfessional(data, session?.accessToken);
-
       if (professional?.id) {
         if (previewImage) {
           await professionalService.addPreviewImage(previewImage, professional.id, session.accessToken);
@@ -61,6 +62,11 @@ const Professional = ({ data }) => {
           await professionalService.addBackgroundImage(backgroundImage, professional.id, session.accessToken);
           professional.backgroundImage = URL.createObjectURL(backgroundImage);
         }
+
+        if (images.length > 0) {
+          await professionalService.addImages(images, professional.id, session.accessToken);
+        }
+
         dispatch(professionalActions.addItem(professional));
         setLoading(false);
       } else {
@@ -70,8 +76,6 @@ const Professional = ({ data }) => {
       setLoading(false);
       alert(t("EmailAlreadyExists"))
     }
-
-    
   };
 
   if (router.isFallback) {
