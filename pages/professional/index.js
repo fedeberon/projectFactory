@@ -49,17 +49,29 @@ const Professional = ({ data }) => {
     const previewImage = data.previewImage;
     const backgroundImage = data.backgroundImage;
     const images = data.images;
-    const professional = await professionalService.addProfessional(data, session?.accessToken);
     
     try {
+      const professional = await professionalService.addProfessional(
+        data,
+        session?.accessToken
+      );
+
       if (professional?.id) {
         if (previewImage) {
-          await professionalService.addPreviewImage(previewImage, professional.id, session.accessToken);
+          await professionalService.addPreviewImage(
+            previewImage,
+            professional.id,
+            session.accessToken
+          );
           professional.previewImage = URL.createObjectURL(previewImage);
         }
-        
+
         if (backgroundImage) {
-          await professionalService.addBackgroundImage(backgroundImage, professional.id, session.accessToken);
+          await professionalService.addBackgroundImage(
+            backgroundImage,
+            professional.id,
+            session.accessToken
+          );
           professional.backgroundImage = URL.createObjectURL(backgroundImage);
         }
 
@@ -74,7 +86,7 @@ const Professional = ({ data }) => {
       }
     } catch (e) {
       setLoading(false);
-      alert(t("EmailAlreadyExists"))
+      alert(t("EmailAlreadyExists"));
     }
   };
 
@@ -86,39 +98,53 @@ const Professional = ({ data }) => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Professional")}</h1>
-      <Button className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex" color="danger" onClick={toggleModal}>+</Button>
+      <Button
+        className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"
+        color="danger"
+        onClick={toggleModal}
+      >
+        +
+      </Button>
       <ModalForm
         modalTitle={t("FORM PROFESSIONAL")}
         className={"Button mt-50"}
-        formBody={(<FormProfessional onAddProfessional={onAddProfessional} toggle={toggleModal}/>)}
-        modalOpen={{"open" : modalOpen,"function":setModalOpen}}
+        formBody={
+          <FormProfessional
+            onAddProfessional={onAddProfessional}
+            toggle={toggleModal}
+          />
+        }
+        modalOpen={{ open: modalOpen, function: setModalOpen }}
       />
-      <Row>
+      <Row className="row-cols-md-3 g-4">
         {isLoading ? (
           <h1>{t("Loading")}...</h1>
         ) : !professionals ? (
           <h1>{professionals}</h1>
         ) : (
           professionals.map((professional) => (
-            <Col key={professional.id} md="4">
-              <div className="mt-3" key={professional.id}>
-                <CardDeck>
-                  <Card>
-                    <CardImg top width="100%" src={professional.previewImage} alt="Professional preview" />
-                    <CardBody>
-                      <CardText>
-                        {t("FirstName")}: {professional.firstName}
-                      </CardText>
-                      <CardText>
-                        {t("LastName")}: {professional.lastName}
-                      </CardText>
-                      <CardText>
-                        {t("Email")}: {professional.email}
-                      </CardText>
-                    </CardBody>
-                  </Card>
-                </CardDeck>
-              </div>
+            <Col key={professional.id}>
+              <CardDeck>
+                <Card>
+                  <CardImg
+                    className="img-fluid"
+                    top
+                    src={professional.previewImage}
+                    alt="Professional preview"
+                  />
+                  <CardBody>
+                    <CardText>
+                      {t("FirstName")}: {professional.firstName}
+                    </CardText>
+                    <CardText>
+                      {t("LastName")}: {professional.lastName}
+                    </CardText>
+                    <CardText>
+                      {t("Email")}: {professional.email}
+                    </CardText>
+                  </CardBody>
+                </Card>
+              </CardDeck>
             </Col>
           ))
         )}

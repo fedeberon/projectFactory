@@ -21,7 +21,9 @@ const ProjectDetail = ({ data }) => {
   };
 
   useEffect(() => {
-    setProject(data);
+    if (data) {
+      setProject(data);
+    }
   }, [session]);
 
   return (
@@ -40,6 +42,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   let project = {};
   let { page, size } = req.__NEXT_INIT_QUERY;
   let { id } = params; // params is necessary in case you reload the page from the url
+  let idSplit = id.split("ID-")[1];
 
   if (!page || page <= 0) {
     page = 0;
@@ -50,7 +53,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   if (session) {
     token = session.accessToken;
-    project = await projectService.getById(id, token);
+    project = await projectService.getById(idSplit, token);
     const dataImages = await imageService.getImages(
       project.id,
       token,
