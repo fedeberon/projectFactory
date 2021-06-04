@@ -9,11 +9,11 @@ import {
   FormText,
   Input,
   Label,
-  Row,
 } from "reactstrap";
 import Dropzone from "../components/Dropzone";
+import Error from "./Error";
 
-const FormProfessional = ({ onAddProfessional, toggle }) => {
+const FormProfessional = ({ onAddProfessional, toggle, error, setError }) => {
   const { t, lang } = useTranslation("common");
   const [previewImage, setPreviewImage] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState([]);
@@ -33,11 +33,15 @@ const FormProfessional = ({ onAddProfessional, toggle }) => {
       previewImage: previewImage[0],
       backgroundImage: backgroundImage[0],
     };
-    await onAddProfessional(data);
-    setPreviewImage(null);
-    setBackgroundImage(null);
-    event.target.reset();
-    toggle();
+    const professional = await onAddProfessional(data);
+
+    if (professional != null) {
+      setPreviewImage(null);
+      setBackgroundImage(null);
+      event.target.reset();
+      toggle();
+      setError("");
+    }
   };
 
   return (
@@ -140,6 +144,7 @@ const FormProfessional = ({ onAddProfessional, toggle }) => {
             {t("Send")}
           </Button>
         </Form>
+        {error && <Error error={error} />}
       </Container>
     </div>
   );

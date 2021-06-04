@@ -81,6 +81,7 @@
     "ValidCode" : "Valid code",
     "ProfessionalFirstName" : "Professional firstname",
     "ProfessionalLastName" : "Professional lastname",
-    "ProfessionalEmail" : "Professional email"
+    "ProfessionalEmail" : "Professional email",
+    "EmailIsAlreadyExistPleaseWriteAnotherOne": "Email is already exist, please write another one"
 
 }
