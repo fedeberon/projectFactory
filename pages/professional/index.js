@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../../components/Header";
 import {
@@ -8,10 +8,7 @@ import {
   Card,
   Button,
   CardImg,
-  CardTitle,
   CardText,
-  CardGroup,
-  CardSubtitle,
   CardBody,
   CardDeck,
 } from "reactstrap";
@@ -29,6 +26,7 @@ const Professional = ({ data }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -44,50 +42,80 @@ const Professional = ({ data }) => {
     dispatch(professionalActions.store(data));
   }, [data]);
 
-  const onAddProfessional = async (data) => {
-    setLoading(true);
-    const previewImage = data.previewImage;
-    const backgroundImage = data.backgroundImage;
-    const images = data.images;
-    
+  const saveProfessional = async (data) => {
     try {
       const professional = await professionalService.addProfessional(
         data,
         session?.accessToken
       );
-
-      if (professional?.id) {
-        if (previewImage) {
-          await professionalService.addPreviewImage(
-            previewImage,
-            professional.id,
-            session.accessToken
-          );
-          professional.previewImage = URL.createObjectURL(previewImage);
-        }
-
-        if (backgroundImage) {
-          await professionalService.addBackgroundImage(
-            backgroundImage,
-            professional.id,
-            session.accessToken
-          );
-          professional.backgroundImage = URL.createObjectURL(backgroundImage);
-        }
-
-        if (images.length > 0) {
-          await professionalService.addImages(images, professional.id, session.accessToken);
-        }
-
-        dispatch(professionalActions.addItem(professional));
-        setLoading(false);
-      } else {
-        throw new Error(`Email already exists`);
-      }
-    } catch (e) {
-      setLoading(false);
-      alert(t("EmailAlreadyExists"));
+      return professional;
+    } catch (error) {
+      console.error(error);
+      setError(`${t("EmailIsAlreadyExistPleaseWriteAnotherOne")}`);
+      return null;
     }
+  };
+
+  const savePreviewImage = async (professional, previewImage) => {
+    try {
+      await professionalService.addPreviewImage(
+        previewImage,
+        professional.id,
+        session.accessToken
+      );
+      professional.previewImage = URL.createObjectURL(previewImage);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const saveImages = async (images, professional) => {
+    try {
+      await professionalService.addImages(
+        images,
+        professional.id,
+        session.accessToken
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const saveBackgroundImage = async (professional, backgroundImage) => {
+    try {
+      await professionalService.addBackgroundImage(
+        backgroundImage,
+        professional.id,
+        session.accessToken
+      );
+      professional.backgroundImage = URL.createObjectURL(backgroundImage);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onAddProfessional = async (data) => {
+    setLoading(true);
+    const previewImage = data.previewImage;
+    const backgroundImage = data.backgroundImage;
+    const images = data.images;
+
+    const professional = await saveProfessional(data);
+
+    if (professional != null) {
+      if (previewImage) {
+        await savePreviewImage(professional, previewImage);
+      }
+      if (backgroundImage) {
+        await saveBackgroundImage(professional, backgroundImage);
+      }
+      if (images.length > 0) {
+        await saveImages(images, professional);
+      }
+      dispatch(professionalActions.addItem(professional));
+    }
+    setLoading(false);
+    return professional;
   };
 
   if (router.isFallback) {
@@ -98,13 +126,15 @@ const Professional = ({ data }) => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Professional")}</h1>
-      <Button
-        className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"
-        color="danger"
-        onClick={toggleModal}
-      >
-        +
-      </Button>
+      {session && (
+        <Button
+          className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"
+          color="danger"
+          onClick={toggleModal}
+        >
+          +
+        </Button>
+      )}
       <ModalForm
         modalTitle={t("FORM PROFESSIONAL")}
         className={"Button mt-50"}
@@ -112,6 +142,8 @@ const Professional = ({ data }) => {
           <FormProfessional
             onAddProfessional={onAddProfessional}
             toggle={toggleModal}
+            error={error}
+            setError={setError}
           />
         }
         modalOpen={{ open: modalOpen, function: setModalOpen }}
@@ -119,11 +151,9 @@ const Professional = ({ data }) => {
       <Row className="row-cols-md-3 g-4">
         {isLoading ? (
           <h1>{t("Loading")}...</h1>
-        ) : !professionals ? (
-          <h1>{professionals}</h1>
         ) : (
-          professionals.map((professional) => (
-            <Col key={professional.id}>
+          professionals.map((professional, index) => (
+            <Col key={index}>
               <CardDeck>
                 <Card>
                   <CardImg
