@@ -1,5 +1,6 @@
 import API from "./api";
 import * as youtubeService from '../services/youtubeService';
+import * as tagService from './tagService';
 
 export const findAll = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -19,17 +20,33 @@ export const getById = async (id, token) => {
   return project;
 };
 
-export const addProject = async (project, token, id) => {
-  delete project.previewImage;
-  delete project.images;
-  delete project.files;
+export const addProject = async (project, id, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const copyProject = Object.assign({}, project);
+  delete copyProject.previewImage;
+  delete copyProject.images;
+  delete copyProject.file;
   try {
-    project.videoPath = youtubeService.getIdVideo(project.videoPath);
-    API.defaults.headers.common["Authorization"] = token;
-    return await API.post(`/projects?professional=${id}`, project);
+    copyProject.videoPath = youtubeService.getIdVideo(project.videoPath);
   } catch (err) {
     throw new Error(`Error, link to video invalid: ${err}`);
   }
+
+  const projectUploaded = await API.post(`/projects?professional=${id}`, copyProject);
+  
+  if (project.previewImage) {
+    await addPreviewImage(project.previewImage, projectUploaded.id, token);
+    projectUploaded.previewImage = URL.createObjectURL(project.previewImage);
+  }
+  
+  if (project.images.length > 0) {
+    await addImages(project.images, projectUploaded.id, token);
+  }
+    
+  if (project.file)
+    await addFile(project.file, projectUploaded.id, token);
+    
+  return projectUploaded;
 };
 
 export const addPreviewImage = async (image, projectId, token) => {
@@ -44,8 +61,9 @@ export const addImages = async (images, projectId, token) => {
 
   images.forEach(async (image) => {
     const imageData = new FormData();
+    const tags = tagService.getTags(image.tags);
     imageData.append("imageFile", image);
-    imageData.append("tags", []);
+    imageData.append("tags", tags);
     await API.post(`/images/projects/${projectId}`, imageData);
   });
 };

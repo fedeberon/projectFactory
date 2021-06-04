@@ -10,13 +10,19 @@ import {
   Input,
   Label,
 } from "reactstrap";
+import InputImages from "../components/InputImages/InputImages";
 import Dropzone from "../components/Dropzone";
+import ModalForm from "../components/ModalForm";
+import FormTag from "../components/FormTag/FormTag";
 import Error from "./Error";
 
 const FormProfessional = ({ onAddProfessional, toggle, error, setError }) => {
   const { t, lang } = useTranslation("common");
   const [previewImage, setPreviewImage] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState([]);
+  const [images, setImages] = useState([]);
+  const [modalTagOpen, setModalTagOpen] = useState(false);
+  const [currentImageTag, setCurrentImageTag] = useState({});
 
   const {
     register,
@@ -30,6 +36,7 @@ const FormProfessional = ({ onAddProfessional, toggle, error, setError }) => {
       firstName,
       lastName,
       email,
+      images,
       previewImage: previewImage[0],
       backgroundImage: backgroundImage[0],
     };
@@ -42,6 +49,13 @@ const FormProfessional = ({ onAddProfessional, toggle, error, setError }) => {
       toggle();
       setError("");
     }
+  };
+
+  const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
+
+  const showTagModal = (img) => {
+    setModalTagOpen(true);
+    setCurrentImageTag(img);
   };
 
   return (
@@ -140,10 +154,31 @@ const FormProfessional = ({ onAddProfessional, toggle, error, setError }) => {
               name={"images"}
             />
           </FormGroup>
+          <FormGroup>
+            <Label for="uploadFiles">{t("Upload images")}</Label>
+            <InputImages
+              accept={"image/*"}
+              multiple={true}
+              imagesEdited={setImages}
+              onAddTag={showTagModal}
+            />
+          </FormGroup>
           <Button type="submit" color="primary mt-1">
             {t("Send")}
           </Button>
         </Form>
+
+        <ModalForm
+          className={"Button"}
+          modalTitle={t("AddTags")}
+          formBody={
+            <FormTag
+              image={currentImageTag}
+              toggle={toggleTagModal}
+            />
+          }
+          modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
+        />
         {error && <Error error={error} />}
       </Container>
     </div>

@@ -82,6 +82,13 @@
     "ProfessionalFirstName" : "Professional firstname",
     "ProfessionalLastName" : "Professional lastname",
     "ProfessionalEmail" : "Professional email",
+    "AddTags" : "Add tags",
+    "AddTag" : "Add tag",
+    "Tag" : "Tag",
+    "WriteTagHere" : "Write tag here please",
+    "TagIsRequired" : "Tag is required",
+    "TagCannotBe3OrLess" : "Tag cannot be less than 3 character",
+    "InsertTag" : "Insert tag here please",
     "EmailIsAlreadyExistPleaseWriteAnotherOne": "Email is already exist, please write another one"
 
 }

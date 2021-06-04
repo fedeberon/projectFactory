@@ -12,7 +12,7 @@ import {
   Row,
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
-import InputImages from "../components/InputImages";
+import InputImages from "../components/InputImages/InputImages";
 import Dropzone from "../components/Dropzone";
 import * as youtubeService from "../services/youtubeService";
 
@@ -286,7 +286,6 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           <Label for="uploadFiles">{t("Upload images")}</Label>
           <br></br>
           <InputImages
-            setImages={setImages}
             images={images}
             accept={"image/*"}
             multiple={true}

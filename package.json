@@ -17,13 +17,18 @@
     "next-auth": "^3.19.3",
     "next-i18next": "^8.2.0",
     "react": "^17.0.2",
+    "react-autosuggest": "^10.1.0",
     "react-bootstrap-icons": "^1.5.0",
     "react-dom": "^17.0.2",
     "react-dropzone": "^11.3.2",
     "react-hook-form": "^7.5.3",
     "react-redux": "^7.2.4",
     "react-select": "^4.3.1",
+    "react-themeable": "^1.1.0",
     "reactstrap": "^8.9.0",
     "redux": "^4.1.0"
+  },
+  "devDependencies": {
+    "css-loader": "^5.2.6"
   }
 }

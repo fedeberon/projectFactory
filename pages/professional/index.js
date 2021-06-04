@@ -69,6 +69,18 @@ const Professional = ({ data }) => {
     }
   };
 
+  const saveImages = async (images, professional) => {
+    try {
+      await professionalService.addImages(
+        images,
+        professional.id,
+        session.accessToken
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const saveBackgroundImage = async (professional, backgroundImage) => {
     try {
       await professionalService.addBackgroundImage(
@@ -86,6 +98,7 @@ const Professional = ({ data }) => {
     setLoading(true);
     const previewImage = data.previewImage;
     const backgroundImage = data.backgroundImage;
+    const images = data.images;
 
     const professional = await saveProfessional(data);
 
@@ -95,6 +108,9 @@ const Professional = ({ data }) => {
       }
       if (backgroundImage) {
         await saveBackgroundImage(professional, backgroundImage);
+      }
+      if (images.length > 0) {
+        await saveImages(images, professional);
       }
       dispatch(professionalActions.addItem(professional));
     }
