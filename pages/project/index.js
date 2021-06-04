@@ -85,13 +85,15 @@ const Project = ({ data, professionals }) => {
     <Container fluid>
       <Header lang={lang} />
       <h1>{t("Project")}</h1>
-      <Button
-        className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"
-        color="danger"
-        onClick={toggleModal}
-      >
-        +
-      </Button>
+      {session && (
+        <Button
+          className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"
+          color="danger"
+          onClick={toggleModal}
+        >
+          +
+        </Button>
+      )}
       <ModalForm
         className={"Button"}
         modalTitle={t("FORM PROJECT")}
@@ -108,8 +110,6 @@ const Project = ({ data, professionals }) => {
       <Row className="row-cols-md-3 g-4">
         {isLoading ? (
           <h1>{t("Loading")}...</h1>
-        ) : !projects ? (
-          <h1>{projects}</h1>
         ) : (
           projects.map((project) => (
             <Col key={project.id}>

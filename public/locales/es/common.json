@@ -81,5 +81,6 @@
     "ValidCode" : "Codigo valido",
     "ProfessionalFirstName" : "Correo del profesional",
     "ProfessionalLastName" : "Nombre del profesional",
-    "ProfessionalEmail" : "Apellido del profesional"
+    "ProfessionalEmail" : "Apellido del profesional",
+    "EmailIsAlreadyExistPleaseWriteAnotherOne": "El email ya existe, por favor ingrese otro"
 }
