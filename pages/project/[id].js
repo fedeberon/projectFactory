@@ -54,7 +54,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (session) {
     token = session.accessToken;
     project = await projectService.getById(idSplit, token);
-    const dataImages = await imageService.getImages(
+    const dataImages = await imageService.getProjectImages(
       project.id,
       token,
       page,

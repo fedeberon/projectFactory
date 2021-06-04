@@ -89,5 +89,6 @@
     "TagIsRequired" : "Tag requerido",
     "TagCannotBe3OrLess" : "El tag no puede tener menos de 3 caracteres",
     "InsertTag" : "Ingrese el tag aqui por favor",
-    "EmailIsAlreadyExistPleaseWriteAnotherOne": "El email ya existe, por favor ingrese otro"
+    "EmailIsAlreadyExistPleaseWriteAnotherOne": "El email ya existe, por favor ingrese otro",
+    "Filters" : "Filtros"
 }

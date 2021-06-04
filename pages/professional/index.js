@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { professionalActions } from "../../store";
+import { getSession, useSession } from "next-auth/client";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
-import Header from "../../components/Header";
 import {
   Col,
   Container,
@@ -12,19 +16,28 @@ import {
   CardBody,
   CardDeck,
 } from "reactstrap";
-import FormProfessional from "../../components/FormProfessional";
-import { getSession, useSession } from "next-auth/client";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import * as professionalService from "../../services/professionalService";
-import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/router";
-import { professionalActions } from "../../store";
-import ModalForm from "../../components/ModalForm";
 
-const Professional = ({ data }) => {
+// Components
+import FormProfessional from "../../components/FormProfessional";
+import Header from "../../components/Header";
+import ModalForm from "../../components/ModalForm";
+import FilterList from "../../components/FilterList/FilterList";
+
+// Services
+import * as professionalService from "../../services/professionalService";
+import * as tagService from "../../services/tagService";
+import * as imageService from "../../services/imageService";
+
+// Styles
+import indexStyles from './index.module.css';
+import FilteredImages from "../../components/FilteredImages/FilteredImages";
+
+const Professional = ({ data, filters }) => {
   const [session] = useSession();
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [filteredImages, setFilteredImages] = useState([]);
+  const [appliedFilters, setAppliedFilters] = useState([]);
+  const [showProfessionals, setShowProfessionals] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -41,6 +54,15 @@ const Professional = ({ data }) => {
   useEffect(() => {
     dispatch(professionalActions.store(data));
   }, [data]);
+
+  useEffect(async () => {
+    if (appliedFilters.length > 0) {
+      let page = 0;
+      let size = 10;
+      const images = await imageService.getProfessionalImagesByTags(appliedFilters, page, size, session?.accessToken);
+      setFilteredImages(images);
+    }
+  }, [appliedFilters]);
 
   const saveProfessional = async (data) => {
     try {
@@ -148,37 +170,12 @@ const Professional = ({ data }) => {
         }
         modalOpen={{ open: modalOpen, function: setModalOpen }}
       />
-      <Row className="row-cols-md-3 g-4">
-        {isLoading ? (
-          <h1>{t("Loading")}...</h1>
-        ) : (
-          professionals.map((professional, index) => (
-            <Col key={index}>
-              <CardDeck>
-                <Card>
-                  <CardImg
-                    className="img-fluid"
-                    top
-                    src={professional.previewImage}
-                    alt="Professional preview"
-                  />
-                  <CardBody>
-                    <CardText>
-                      {t("FirstName")}: {professional.firstName}
-                    </CardText>
-                    <CardText>
-                      {t("LastName")}: {professional.lastName}
-                    </CardText>
-                    <CardText>
-                      {t("Email")}: {professional.email}
-                    </CardText>
-                  </CardBody>
-                </Card>
-              </CardDeck>
-            </Col>
-          ))
-        )}
-      </Row>
+
+      <aside className={indexStyles.aside}>
+        <FilterList filters={filters} appliedFilters={appliedFilters} setAppliedFilters={setAppliedFilters}/>
+      </aside>
+
+      <FilteredImages images={filteredImages}/>
     </Container>
   );
 };
@@ -189,6 +186,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   let token;
   let professionals = [];
+  let filters = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -201,12 +199,14 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (session) {
     token = session.accessToken;
     professionals = await professionalService.findAll(page, size, token);
+    filters = await tagService.findAll(token);
   }
 
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
       data: professionals,
+      filters : filters,
     },
   };
 }
