@@ -13,3 +13,8 @@ export const getTags = tags => {
 
   return rawTags;
 };
+
+export const findAll = async (token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.get(`/tags`);
+};
