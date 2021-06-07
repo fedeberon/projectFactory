@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { getSession, useSession } from "next-auth/client";
 import {
   CardDeck,
-  Container,
   Button,
   Col,
   Row,
@@ -23,17 +22,11 @@ import { useRouter } from "next/router";
 import indexStyles from "./index.module.css";
 
 // components
-import Header from "../../components/Header";
 import ModalForm from "../../components/ModalForm";
 import FormProject from "../../components/FormProject";
-import FilterList from "../../components/FilterList/FilterList";
+import Layout from "../../components/Layout";
 
 // services
-import {
-  addPreviewImage,
-  addImages,
-  addFile,
-} from "../../services/projectService";
 import * as professionalService from "../../services/professionalService";
 import * as tagService from "../../services/tagService";
 import * as projectService from "../../services/projectService";
@@ -107,8 +100,7 @@ const Project = ({ data, professionals, filters }) => {
   }
 
   return (
-    <Container fluid>
-      <Header lang={lang} />
+    <Layout>
       <h1>{t("Project")}</h1>
       {session && (
         <Button
@@ -178,7 +170,7 @@ const Project = ({ data, professionals, filters }) => {
           ))
         )}
       </Row>
-    </Container>
+    </Layout>
   );
 };
 

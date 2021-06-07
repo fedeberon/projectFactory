@@ -27,11 +27,11 @@ export const getProfessionalImagesByTags = async (tags, page, size, token) => {
         concatenatedTags = `${concatenatedTags}tags=${tag.tag}&`;
     });
     concatenatedTags = concatenatedTags.substring(0, concatenatedTags.length - 1);
-
+    
     const images = await API.get(`/images/professionals/tags?page=${page}&size=${size}&${concatenatedTags}`);
     images.forEach( (image) =>{
         image.name = image.path;
-        image.path = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${image.entityId}/images/${image.path}`;
+        image.path = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${image.entity.id}/images/${image.path}`;
     });
     return images;
 };
