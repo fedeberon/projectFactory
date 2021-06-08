@@ -1,3 +1,4 @@
+import { session } from "next-auth/client";
 import API from "./api";
 import * as tagService from './tagService';
 
@@ -23,31 +24,37 @@ export const addProfessional = async (professional, token) => {
   return await API.post(`/professionals`, professional);
 };
 
-export const addPreviewImage = async (image, professionalId, token) => {
+export const addPreviewImage = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const imageData = new FormData();
   imageData.append('imageFile', image);
-  return await API.post(`/images/professionals/${professionalId}/preview`, imageData);
+  return await API.post(`/images/professionals/preview`, imageData);
 };
 
-export const addImage = async (image, professionalId, token) => {
+export const addImage = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const tags = tagService.getTags(image.tags);
   const imageData = new FormData();
   imageData.append('image', image);
   imageData.append('tags', tags);
-  return await API.post(`/images/professionals/${professionalId}`, imageData);
+  return await API.post(`/images/professionals`, imageData);
 };
 
-export const addImages = async (images, professionalId, token) => {
+export const addImages = async (images, token) => {
   images.forEach(async image => {
-    await addImage(image, professionalId, token);
+    await addImage(image, token);
   });
 };
 
-export const addBackgroundImage = async (image, professionalId, token) => {
+export const addBackgroundImage = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const imageData = new FormData();
   imageData.append('imageFile', image);
-  return await API.post(`/images/professionals/${professionalId}/background`, imageData);
+  return await API.post(`/images/professionals/background`, imageData);
+};
+
+export const become = async (professional, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const response = await API.post(`/professionals/become`, professional);
+  return response.token;
 };
