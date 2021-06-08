@@ -94,5 +94,6 @@
     "MagazineDetail": "Magazine Detail",
     "ProfessionalDetail": "Professional Detail",
     "ProjectDetail": "Project Detail",
-    "User": "User"
+    "User": "User",
+    "becomeProfessional" : "Become in a professional"
 }

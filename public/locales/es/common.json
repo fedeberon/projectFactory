@@ -94,5 +94,6 @@
     "MagazineDetail": "Detalle de Magazine",
     "ProfessionalDetail": "Detalle de Profesional",
     "ProjectDetail": "Detalle de Proyecto",
-    "User": "Usuario"
+    "User": "Usuario",
+    "becomeProfessional" : "Convertirse en un profesional"
 }

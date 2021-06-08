@@ -25,7 +25,7 @@ const Professional = ({ data }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  
   const dispatch = useDispatch();
   const professionals = useSelector((state) =>
     Object.values(state.professionals.items)
@@ -33,7 +33,7 @@ const Professional = ({ data }) => {
 
   const { t, lang } = useTranslation("common");
 
-  const toggleModal = () => setModalOpen(!modalOpen);
+  
 
   useEffect(() => {
     dispatch(professionalActions.store(data));
@@ -117,28 +117,6 @@ const Professional = ({ data }) => {
 
   return (
     <Layout title={`${t("Professional")}`}>
-      {session && (
-        <Button
-          className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"
-          color="danger"
-          onClick={toggleModal}
-        >
-          +
-        </Button>
-      )}
-      <ModalForm
-        modalTitle={t("FORM PROFESSIONAL")}
-        className={"Button mt-50"}
-        formBody={
-          <FormProfessional
-            onAddProfessional={onAddProfessional}
-            toggle={toggleModal}
-            error={error}
-            setError={setError}
-          />
-        }
-        modalOpen={{ open: modalOpen, function: setModalOpen }}
-      />
       <Row className="row-cols-md-3 g-4">
         {isLoading ? (
           <h1>{t("Loading")}...</h1>
