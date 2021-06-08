@@ -30,16 +30,6 @@ const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
     }
   };
 
-  useEffect(() => {
-    /*
-        if (appliedFilters.length > 0) {
-          setShowProjects(false);
-        } else {
-          setShowProjects(true);
-        }
-        */
-  }, [appliedFilters]);
-
   return (
     <ListGroup>
       <ListGroupItem disabled className="bg-warning">
