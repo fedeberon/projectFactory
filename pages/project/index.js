@@ -100,8 +100,7 @@ const Project = ({ data, professionals, filters }) => {
   }
 
   return (
-    <Layout>
-      <h1>{t("Project")}</h1>
+    <Layout title={t("Project")}>
       {session && (
         <Button
           className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"

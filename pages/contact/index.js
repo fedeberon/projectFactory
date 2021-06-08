@@ -6,11 +6,7 @@ import Layout from "../../components/Layout";
 const ContactUs = () => {
   const { t, lang } = useTranslation("common");
 
-  return (
-    <Layout>
-      <h1>{t("Contact")}</h1>
-    </Layout>
-  );
+  return <Layout title={`${t("Contact")}`}></Layout>;
 };
 
 export const getStaticProps = async ({ locale }) => ({

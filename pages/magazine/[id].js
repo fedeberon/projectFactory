@@ -10,8 +10,7 @@ const MagazineDetail = () => {
   const { id } = router.query;
 
   return (
-    <Layout>
-      <h1>MagazineDetail</h1>
+    <Layout title={`${t("MagazineDetail")}`}>
       <p>Post: {id}</p>
     </Layout>
   );

@@ -26,7 +26,7 @@ const ProjectDetail = ({ data }) => {
   }, [session]);
 
   return (
-    <Layout>
+    <Layout title={`${t("ProjectDetail")}`}>
       <SeeProject project={project} onEditProject={editProject} />
     </Layout>
   );

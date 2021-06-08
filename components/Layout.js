@@ -29,7 +29,7 @@ const Layout = ({ children, title, footer = true }) => {
       <Header />
       <main className="container py-4">
         {/* Title */}
-        {title && <h1 className="text-center text-light">{title}</h1>}
+        {title && <h1 className="text-center">{title}</h1>}
 
         {/* Content */}
         {children}

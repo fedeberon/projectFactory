@@ -96,7 +96,7 @@ export default function Header() {
               </DropdownMenu>
             </UncontrolledDropdown>
             <NavItem>
-              <Link href="/about">{t("About Us")}</Link>
+              <Link href="/about">{t("AboutUs")}</Link>
             </NavItem>
             <NavItem>
               <Link href="/contact">{t("Contact")}</Link>

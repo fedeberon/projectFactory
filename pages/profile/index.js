@@ -9,8 +9,7 @@ const Profile = () => {
   const { t, lang } = useTranslation("common");
 
   return (
-    <Layout>
-      <h1>{t("Profile")}</h1>
+    <Layout title={`${t("Profile")}`}>
       <ProfileData/>
     </Layout>
   );

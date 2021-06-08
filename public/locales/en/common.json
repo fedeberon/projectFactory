@@ -3,9 +3,9 @@
     "Professional": "Professional",
     "Project": "Project",
     "Magazine": "Magazine",
-    "About Us": "About Us",
+    "AboutUs": "About Us",
     "Contact" : "Contact",
-    "Welcome": "Welcome",
+    "WelcomeTo": "Welcome to",
     "Sign in": "Sign in",
     "Sign out": "Sign out",
     "Signed in as": "Signed in as",
@@ -90,5 +90,9 @@
     "TagCannotBe3OrLess" : "Tag cannot be less than 3 character",
     "InsertTag" : "Insert tag here please",
     "EmailIsAlreadyExistPleaseWriteAnotherOne": "Email is already exist, please write another one",
-    "Filters" : "Filters"
+    "Filters" : "Filters",
+    "MagazineDetail": "Magazine Detail",
+    "ProfessionalDetail": "Professional Detail",
+    "ProjectDetail": "Project Detail",
+    "User": "User"
 }

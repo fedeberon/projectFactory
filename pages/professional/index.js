@@ -35,7 +35,9 @@ const Professional = ({ filters }) => {
 
   useEffect(async () => {
     const images = await getProfessionalsByTags();
-    setFilteredImages(images);
+    if (images) {
+      setFilteredImages(images);
+    }
   }, [appliedFilters]);
 
   const getProfessionalsByTags = async () => {
@@ -127,8 +129,7 @@ const Professional = ({ filters }) => {
   };
 
   return (
-    <Layout>
-      <h1>{t("Professional")}</h1>
+    <Layout title={`${t("Professional")}`}>
       {session && (
         <Button
           className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"

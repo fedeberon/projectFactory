@@ -10,8 +10,7 @@ const ProfessionalDetail = () => {
   const { id } = router.query;
 
   return (
-    <Layout>
-      <h1>Professional ID</h1>
+    <Layout title={`${t("ProfessionalDetail")}`}>
       <p>Post: {id}</p>
     </Layout>
   );

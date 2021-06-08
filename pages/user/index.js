@@ -13,8 +13,7 @@ const Users = () => {
   }, []);
 
   return (
-    <Layout>
-      <h1>Users</h1>
+    <Layout title={t("User")}>
       <ul>
         {users.map((user, index) => {
           return <li key={index}>{user}</li>;
