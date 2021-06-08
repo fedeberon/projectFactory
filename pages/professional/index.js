@@ -36,7 +36,6 @@ const Professional = ({ data }) => {
   const toggleModal = () => setModalOpen(!modalOpen);
 
   useEffect(() => {
-    console.log("DATA", data);
     dispatch(professionalActions.store(data));
   }, [data]);
 
