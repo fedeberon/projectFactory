@@ -1,18 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Header from "../../components/Header";
-import { Container } from "reactstrap";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Layout from "../../components/Layout";
 
 const ContactUs = () => {
   const { t, lang } = useTranslation("common");
 
-  return (
-    <Container fluid>
-      <Header lang={lang} />
-      <h1>{t("Contact")}</h1>
-    </Container>
-  );
+  return <Layout title={`${t("Contact")}`}></Layout>;
 };
 
 export const getStaticProps = async ({ locale }) => ({

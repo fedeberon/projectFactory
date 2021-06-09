@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 const ShowProfessionals = ({ isLoading, professionals }) => {
+  const [showProfessionals, setShowProfessionals] = useState(false);
+
     return (
         <Row className="row-cols-md-3 g-4">
         {isLoading ? (

@@ -34,7 +34,7 @@ axiosInstance.interceptors.response.use(
     }
 
     // console.error("ERROR_API_AXIOS", error.response.data);
-    return Promise.reject(error.response.status);
+    return Promise.reject(error.response?.status);
   }
 );
 

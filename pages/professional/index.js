@@ -1,45 +1,32 @@
+// Frameworks
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
-import { professionalActions } from "../../store";
 import { getSession, useSession } from "next-auth/client";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
-import {
-  Col,
-  Container,
-  Row,
-  Card,
-  Button,
-  CardImg,
-  CardText,
-  CardBody,
-  CardDeck,
-} from "reactstrap";
+import { Button, Card, CardBody, CardDeck, CardImg, CardText, Col, Row } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
 
 // Components
 import FormProfessional from "../../components/FormProfessional";
-import Header from "../../components/Header";
 import ModalForm from "../../components/ModalForm";
-import FilterList from "../../components/FilterList/FilterList";
+import Layout from "../../components/Layout";
 
 // Services
 import * as professionalService from "../../services/professionalService";
-import * as tagService from "../../services/tagService";
-import * as imageService from "../../services/imageService";
+
+// Store
+import { professionalActions } from "../../store";
 
 // Styles
-import indexStyles from './index.module.css';
-import FilteredImages from "../../components/FilteredImages/FilteredImages";
+import indexStyles from "./index.module.css";
 
-const Professional = ({ data, filters }) => {
+const Professional = ({ data }) => {
   const [session] = useSession();
-  const [filteredImages, setFilteredImages] = useState([]);
-  const [appliedFilters, setAppliedFilters] = useState([]);
-  const [showProfessionals, setShowProfessionals] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   
   const dispatch = useDispatch();
-  const router = useRouter();
   const professionals = useSelector((state) =>
     Object.values(state.professionals.items)
   );
@@ -52,30 +39,116 @@ const Professional = ({ data, filters }) => {
     dispatch(professionalActions.store(data));
   }, [data]);
 
-  useEffect(async () => {
-    if (appliedFilters.length > 0) {
-      let page = 0;
-      let size = 10;
-      const images = await imageService.getProfessionalImagesByTags(appliedFilters, page, size, session?.accessToken);
-      setFilteredImages(images);
+  const saveProfessional = async (data) => {
+    try {
+      const professional = await professionalService.addProfessional(
+        data,
+        session?.accessToken
+      );
+      return professional;
+    } catch (error) {
+      console.error(error);
+      setError(`${t("EmailIsAlreadyExistPleaseWriteAnotherOne")}`);
+      return null;
     }
-  }, [appliedFilters]);
+  };
 
+  const savePreviewImage = async (professional, previewImage) => {
+    try {
+      await professionalService.addPreviewImage(
+        previewImage,
+        professional.id,
+        session.accessToken
+      );
+      professional.previewImage = URL.createObjectURL(previewImage);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  if (router.isFallback) {
-    return <div>Loading...</div>;
-  }
+  const saveImages = async (images, professional) => {
+    try {
+      await professionalService.addImages(
+        images,
+        professional.id,
+        session.accessToken
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const saveBackgroundImage = async (professional, backgroundImage) => {
+    try {
+      await professionalService.addBackgroundImage(
+        backgroundImage,
+        professional.id,
+        session.accessToken
+      );
+      professional.backgroundImage = URL.createObjectURL(backgroundImage);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onAddProfessional = async (data) => {
+    setLoading(true);
+    const previewImage = data.previewImage;
+    const backgroundImage = data.backgroundImage;
+    const images = data.images;
+
+    const professional = await saveProfessional(data);
+
+    if (professional != null) {
+      if (previewImage) {
+        await savePreviewImage(professional, previewImage);
+      }
+      if (backgroundImage) {
+        await saveBackgroundImage(professional, backgroundImage);
+      }
+      if (images.length > 0) {
+        await saveImages(images, professional);
+      }
+      dispatch(professionalActions.addItem(professional));
+    }
+    setLoading(false);
+    return professional;
+  };
 
   return (
-    <Container fluid>
-      <Header lang={lang} />
-      <h1>{t("Professional")}</h1>
-      <aside className={indexStyles.aside}>
-        <FilterList filters={filters} appliedFilters={appliedFilters} setAppliedFilters={setAppliedFilters}/>
-      </aside>
-
-      <FilteredImages images={filteredImages}/>
-    </Container>
+    <Layout title={`${t("Professional")}`}>
+      <Row className="row-cols-md-3 g-4">
+        {isLoading ? (
+          <h1>{t("Loading")}...</h1>
+        ) : (
+          professionals.map((professional, index) => (
+            <Col key={index}>
+              <CardDeck>
+                <Card>
+                  <CardImg
+                    className="img-fluid"
+                    top
+                    src={professional.previewImage}
+                    alt="Professional preview"
+                  />
+                  <CardBody>
+                    <CardText>
+                      {t("FirstName")}: {professional.firstName}
+                    </CardText>
+                    <CardText>
+                      {t("LastName")}: {professional.lastName}
+                    </CardText>
+                    <CardText>
+                      {t("Email")}: {professional.email}
+                    </CardText>
+                  </CardBody>
+                </Card>
+              </CardDeck>
+            </Col>
+          ))
+        )}
+      </Row>
+    </Layout>
   );
 };
 
@@ -85,7 +158,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   let token;
   let professionals = [];
-  let filters = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -98,16 +170,13 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (session) {
     token = session.accessToken;
     professionals = await professionalService.findAll(page, size, token);
-    filters = await tagService.findAll(token);
   }
 
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
       data: professionals,
-      filters : filters,
     },
   };
 }
-
 export default Professional;

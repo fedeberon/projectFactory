@@ -1,82 +1,204 @@
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import { useTranslation } from "next-i18next";
+// Frameworks
+import React, { useEffect, useState } from "react";
+import { getSession, useSession } from "next-auth/client";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import Header from "../components/Header";
-import { Container } from "reactstrap";
+import { useTranslation } from "react-i18next";
+import { Button, Col, Row } from "reactstrap";
+
+// Components
+import FilterList from "../components/FilterList/FilterList";
+import FilteredImages from "../components/FilteredImages/FilteredImages";
+import FormProfessional from "../components/FormProfessional";
+import ModalForm from "../components/ModalForm";
+import Layout from "../components/Layout";
+
+// Services
+import * as professionalService from "../services/professionalService";
+import * as tagService from "../services/tagService";
+import * as imageService from "../services/imageService";
+
+// Styles
+import styles from "../styles/Home.module.css";
 
 const Code = (p) => <code className={styles.inlineCode} {...p} />;
 
-const Home = () => {
-  const { t, lang } = useTranslation("common");
+const Home = ({filters}) => {
+  const [session] = useSession();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [filteredImages, setFilteredImages] = useState([]);
+  const [appliedFilters, setAppliedFilters] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
+
+  const [error, setError] = useState("");
+
+  const { t, i18n } = useTranslation("common");
+
+  const toggleModal = () => setModalOpen(!modalOpen);
+
+  useEffect(async () => {
+    const images = await getProfessionalsByTags();
+    if (images) {
+      setFilteredImages(images);
+    }
+  }, [appliedFilters]);
+
+  const getProfessionalsByTags = async () => {
+    try {
+      return await imageService.getProfessionalImagesByTags(
+        appliedFilters,
+        pageSize.page,
+        pageSize.size,
+        session?.accessToken
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const saveProfessional = async (data) => {
+    try {
+      const professional = await professionalService.addProfessional(
+        data,
+        session?.accessToken
+      );
+      return professional;
+    } catch (error) {
+      console.error(error);
+      setError(`${t("EmailIsAlreadyExistPleaseWriteAnotherOne")}`);
+      return null;
+    }
+  };
+
+  const savePreviewImage = async (professional, previewImage) => {
+    try {
+      await professionalService.addPreviewImage(
+        previewImage,
+        professional.id,
+        session.accessToken
+      );
+      professional.previewImage = URL.createObjectURL(previewImage);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const saveImages = async (images, professional) => {
+    try {
+      await professionalService.addImages(
+        images,
+        professional.id,
+        session.accessToken
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const saveBackgroundImage = async (professional, backgroundImage) => {
+    try {
+      await professionalService.addBackgroundImage(
+        backgroundImage,
+        professional.id,
+        session.accessToken
+      );
+      professional.backgroundImage = URL.createObjectURL(backgroundImage);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onAddProfessional = async (data) => {
+    setLoading(true);
+    const previewImage = data.previewImage;
+    const backgroundImage = data.backgroundImage;
+    const images = data.images;
+
+    const professional = await saveProfessional(data);
+
+    if (professional != null) {
+      if (previewImage) {
+        await savePreviewImage(professional, previewImage);
+      }
+      if (backgroundImage) {
+        await saveBackgroundImage(professional, backgroundImage);
+      }
+      if (images.length > 0) {
+        await saveImages(images, professional);
+      }
+    }
+    setLoading(false);
+    return professional;
+  };
 
   return (
-    <>
-      <Head>
-        <title>Home</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Container fluid>
-        <Header lang={lang} />
-        <main className={styles.main}>
-          <h1 className={styles.title}>
-            {t("Welcome")} to {process.env.NEXT_PUBLIC_PROJECT_NAME}
-          </h1>
-
-          <p className={styles.description}>
-            Get started by editing{" "}
-            <code className={styles.code}>pages/index.js</code>
-          </p>
-          <div className={styles.grid}>
-            <a href="https://nextjs.org/docs" className={styles.card}>
-              <h3>Documentation &rarr;</h3>
-              <p>Find in-depth information about Next.js features and API.</p>
-            </a>
-
-            <a href="https://nextjs.org/learn" className={styles.card}>
-              <h3>Learn &rarr;</h3>
-              <p>Learn about Next.js in an interactive course with quizzes!</p>
-            </a>
-
-            <a
-              href="https://github.com/vercel/next.js/tree/master/examples"
-              className={styles.card}
-            >
-              <h3>Examples &rarr;</h3>
-              <p>Discover and deploy boilerplate example Next.js projects.</p>
-            </a>
-
-            <a
-              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              className={styles.card}
-            >
-              <h3>Deploy &rarr;</h3>
-              <p>
-                Instantly deploy your Next.js site to a public URL with Vercel.
-              </p>
-            </a>
-          </div>
-        </main>
-
-        <footer className={styles.footer}>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Powered by{" "}
-            <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-          </a>
-        </footer>
-      </Container>
-    </>
+    <Layout title={`${t("WelcomeTo")} ${process.env.NEXT_PUBLIC_PROJECT_NAME}`}>
+      {session && (
+        <Button
+          className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"
+          color="danger"
+          onClick={toggleModal}
+        >
+          +
+        </Button>
+      )}
+      <ModalForm
+        modalTitle={t("FORM PROFESSIONAL")}
+        className={"Button mt-50"}
+        formBody={
+          <FormProfessional
+            onAddProfessional={onAddProfessional}
+            toggle={toggleModal}
+            error={error}
+            setError={setError}
+          />
+        }
+        modalOpen={{ open: modalOpen, function: setModalOpen }}
+      />
+      <Row>
+        <Col xs={12} md={3} xl={2}>
+          <aside>
+            <FilterList
+              filters={filters}
+              appliedFilters={appliedFilters}
+              setAppliedFilters={setAppliedFilters}
+            />
+          </aside>
+        </Col>
+        <Col xs={12} md={9} xl={10}>
+          <FilteredImages isLoading={isLoading} images={filteredImages} />
+        </Col>
+      </Row>
+    </Layout>
   );
 };
 
-export const getStaticProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale, ["common"])),
-  },
-});
+export async function getServerSideProps({ params, req, res, locale }) {
+  // Get the user's session based on the request
+  const session = await getSession({ req });
+
+  let token;
+  let filters = [];
+  let { page, size } = req.__NEXT_INIT_QUERY;
+
+  if (!page || page <= 0) {
+    page = 0;
+  }
+  if (!size || size <= 0) {
+    size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
+  }
+
+  if (session) {
+    token = session.accessToken;
+    filters = await tagService.findAll(token);
+  }
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+      filters: filters,
+    },
+  };
+}
 
 export default Home;
