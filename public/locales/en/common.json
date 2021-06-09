@@ -91,5 +91,6 @@
     "InsertTag" : "Insert tag here please",
     "EmailIsAlreadyExistPleaseWriteAnotherOne": "Email is already exist, please write another one",
     "Filters" : "Filters",
-    "Portfolio" : "My portfolio"
+    "Portfolio" : "My portfolio",
+    "becomeProfessional" : "Become in a professional"
 }
