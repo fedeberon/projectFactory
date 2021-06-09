@@ -80,5 +80,3 @@ export const become = async (professional, token) => {
   const response = await API.post(`/professionals/become`, professional);
   return response.token;
 };
-
-export { addBackgroundImage, addPreviewImage, addProfessional, getById, findAll };
