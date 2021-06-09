@@ -111,10 +111,18 @@ export default function Header() {
                   <PersonCircle className="ms-1" size={25} />
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem>
-                  <Link href="/profile">{t("Profile")}</Link>
-                </DropdownItem>
-                <DropdownItem divider />
+                {session && 
+                <>
+                  <DropdownItem>
+                    <Link href="/profile">{t("Profile")}</Link>
+                  </DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem>
+                    <Link href="/portfolio">{t("Portfolio")}</Link>
+                  </DropdownItem>
+                  <DropdownItem divider />
+                </>
+                }
                 <DropdownItem >
                   <Authentication/>
                 </DropdownItem>

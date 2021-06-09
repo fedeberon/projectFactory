@@ -90,5 +90,6 @@
     "TagCannotBe3OrLess" : "El tag no puede tener menos de 3 caracteres",
     "InsertTag" : "Ingrese el tag aqui por favor",
     "EmailIsAlreadyExistPleaseWriteAnotherOne": "El email ya existe, por favor ingrese otro",
-    "Filters" : "Filtros"
+    "Filters" : "Filtros",
+    "Portfolio" : "Mi portafolio"
 }
