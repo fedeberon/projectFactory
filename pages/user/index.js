@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Layout from "../../components/Layout";
 import { login } from "../../services/userService";
 
 const initialUsers = [];
@@ -12,14 +13,13 @@ const Users = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Users</h1>
+    <Layout title={t("User")}>
       <ul>
         {users.map((user, index) => {
           return <li key={index}>{user}</li>;
         })}
       </ul>
-    </div>
+    </Layout>
   );
 };
 

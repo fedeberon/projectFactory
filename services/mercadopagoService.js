@@ -90,3 +90,5 @@ const setInstallments = (status, response, elements) => {
       alert(`installments method info error: ${response}`);
   }
 }
+
+export default {processPayment, completeElements, getTokenAndPay}

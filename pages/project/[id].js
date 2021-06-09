@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Header from "../../components/Header";
 import { useTranslation } from "react-i18next";
 import { getSession, useSession } from "next-auth/client";
-import { Container } from "reactstrap";
 import SeeProject from "../../components/SeeProject";
 import * as projectService from "../../services/projectService";
 import * as imageService from "../../services/imageService";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Layout from "../../components/Layout";
 
 const ProjectDetail = ({ data }) => {
   const [session, loading] = useSession();
@@ -27,10 +26,9 @@ const ProjectDetail = ({ data }) => {
   }, [session]);
 
   return (
-    <Container fluid>
-      <Header lang={lang} />
+    <Layout title={`${t("ProjectDetail")}`}>
       <SeeProject project={project} onEditProject={editProject} />
-    </Container>
+    </Layout>
   );
 };
 
@@ -54,7 +52,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (session) {
     token = session.accessToken;
     project = await projectService.getById(idSplit, token);
-    const dataImages = await imageService.getImages(
+    const dataImages = await imageService.getProjectImages(
       project.id,
       token,
       page,

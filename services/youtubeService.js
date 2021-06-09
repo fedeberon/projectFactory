@@ -14,3 +14,5 @@ export const getIdVideo = (videoPath) => {
 export const getLinkToId = (id) => {
   return `https://www.youtube.com/watch?v=${id}`;
 };
+
+export default {isValidVideo,getIdVideo,getLinkToId}

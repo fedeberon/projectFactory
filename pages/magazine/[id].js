@@ -1,8 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import Header from "../../components/Header";
-import { Container } from "reactstrap";
+import Layout from "../../components/Layout";
 
 const MagazineDetail = () => {
   const { t, lang } = useTranslation("common");
@@ -11,11 +10,9 @@ const MagazineDetail = () => {
   const { id } = router.query;
 
   return (
-    <Container fluid>
-      <Header lang={lang} />
-      <h1>MagazineDetail</h1>
+    <Layout title={`${t("MagazineDetail")}`}>
       <p>Post: {id}</p>
-    </Container>
+    </Layout>
   );
 };
 

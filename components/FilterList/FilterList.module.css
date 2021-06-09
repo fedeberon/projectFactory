@@ -1,0 +1,18 @@
+.container {
+    border: 1px solid black;
+}
+
+.header {
+    border-bottom: 1px solid black;
+    padding: 5px 12px;
+    background-color: orange;
+}
+
+.ul {
+    padding: 5px 12px;
+    list-style-type: none;
+}
+
+.clickeable {
+    cursor: pointer;
+}
