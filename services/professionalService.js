@@ -1,6 +1,7 @@
 import { session } from "next-auth/client";
 import API from "./api";
 import * as tagService from './tagService';
+import * as imageService from './imageService';
 
 export const findAll = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -14,7 +15,28 @@ export const findAll = async (page, size, token) => {
 
 export const getById = async (id, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  return await API.get(`/professionals/${id}`);
+  const professional = await API.get(`/professionals/${id}`);
+  professional.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${id}/preview/${professional.previewImage}`;
+  professional.backgroundImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${id}/background/${professional.backgroundImage}`;
+  return professional;
+};
+
+export const getByIdWithImages = async (id, page, size, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const professional = await getById(id, token);
+  const images = await imageService.getProfessionalImages(id, page, size, token);
+
+  await Promise.all(images.map(async image => {
+    const imageInBytes = await fetch(image.path, {
+      "headers" : { "Authorization" : token }
+    });
+    const imageInBlob = await imageInBytes.blob();
+    const imageSrc = URL.createObjectURL(imageInBlob);
+    image.path = imageSrc;
+  }));
+
+  professional.images = images;
+  return professional;
 };
 
 export const addProfessional = async (professional, token) => {

@@ -35,3 +35,13 @@ export const getProfessionalImagesByTags = async (tags, page, size, token) => {
     });
     return images;
 };
+
+export const getProfessionalImages = async (id, page, size, token) => {
+    API.defaults.headers.common["Authorization"] = token;
+    const images = await API.get(`/images/professionals/${id}?page=${page}&size=${size}`);
+    images.forEach( image => {
+        image.name = image.path;
+        image.path = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${id}/images/${image.path}`;
+    });
+    return images;
+};
