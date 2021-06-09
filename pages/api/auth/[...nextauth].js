@@ -1,7 +1,12 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import { signInCallBack } from "../../../services/userService";
+import jwt_decode from "jwt-decode";
 
+const PREFIX = "Bearer ";
+const AUTHORITIES = "authorities";
+const ID = "jti";
+const USERNAME = "sub";
 /**
  * This implement is on site:
  * URL: https://next-auth.js.org/
@@ -71,6 +76,11 @@ export default NextAuth({
     async session(session, token) {
       // Add property to session, like an access_token from a provider.
       session.accessToken = token.accessToken;
+      const tokenWithoutPrefix = token.accessToken.split(PREFIX)[1];
+      const payload = jwt_decode(tokenWithoutPrefix);
+      session.authorities = payload[AUTHORITIES];
+      session.user.id = payload[ID];
+      session.user.username = payload[USERNAME];
       return session;
     },
   },
