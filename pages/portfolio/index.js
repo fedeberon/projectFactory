@@ -95,6 +95,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   if (session) {
     token = session.accessToken;
+    professionalId = session.user.id;
   }
 
   return {
