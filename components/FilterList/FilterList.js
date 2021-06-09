@@ -34,16 +34,6 @@ const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
         }
     };
 
-    useEffect(() => {
-        /*
-        if (appliedFilters.length > 0) {
-          setShowProjects(false);
-        } else {
-          setShowProjects(true);
-        }
-        */
-    }, [appliedFilters]);
-
     return (<>
         <div className={filterListStyles.container}>
             <div className={filterListStyles.header}>{t("Filters")}</div>
