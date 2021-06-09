@@ -4,8 +4,21 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Header from "../components/Header";
 import { Container } from "reactstrap";
+import CarouselBanner from "../components/CustomCarousel/CarouselBanner";
 
 const Code = (p) => <code className={styles.inlineCode} {...p} />;
+
+const items = [
+  {
+    path: 'https://i.pinimg.com/originals/82/22/cf/8222cfbd3f5c5b8cc8d6de8a83c275e1.jpg',
+    name: 'Slide 1',
+  },
+  {
+    path: 'https://images.adsttc.com/media/images/5128/abe0/b3fc/4b11/a700/4c79/newsletter/1285434474-house-in-menorca-dom-arquitectura----dom-arquitectura.jpg?1414370585',
+    name: 'Slide 2',
+  },
+];
+
 
 const Home = () => {
   const { t, lang } = useTranslation("common");
@@ -18,6 +31,7 @@ const Home = () => {
       </Head>
       <Container fluid>
         <Header lang={lang} />
+        <CarouselBanner images={items}/>
         <main className={styles.main}>
           <h1 className={styles.title}>
             {t("Welcome")} to {process.env.NEXT_PUBLIC_PROJECT_NAME}
@@ -27,35 +41,6 @@ const Home = () => {
             Get started by editing{" "}
             <code className={styles.code}>pages/index.js</code>
           </p>
-          <div className={styles.grid}>
-            <a href="https://nextjs.org/docs" className={styles.card}>
-              <h3>Documentation &rarr;</h3>
-              <p>Find in-depth information about Next.js features and API.</p>
-            </a>
-
-            <a href="https://nextjs.org/learn" className={styles.card}>
-              <h3>Learn &rarr;</h3>
-              <p>Learn about Next.js in an interactive course with quizzes!</p>
-            </a>
-
-            <a
-              href="https://github.com/vercel/next.js/tree/master/examples"
-              className={styles.card}
-            >
-              <h3>Examples &rarr;</h3>
-              <p>Discover and deploy boilerplate example Next.js projects.</p>
-            </a>
-
-            <a
-              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              className={styles.card}
-            >
-              <h3>Deploy &rarr;</h3>
-              <p>
-                Instantly deploy your Next.js site to a public URL with Vercel.
-              </p>
-            </a>
-          </div>
         </main>
 
         <footer className={styles.footer}>

@@ -130,8 +130,10 @@ const SeeProject = ({ project, onEditProject }) => {
             <div hidden id="two-factor">
               <FormTwoFactorAuthentication projectId={id} />
             </div>
-            <div>
-              <CarouselProject images={project.images} />
+            <div className="d-flex justify-content-center align-items-center my-3">
+              <Col md={"12"}>
+               <CarouselProject className="w-auto" images={project.images} />
+              </Col>
             </div>
             <iframe
               width="560"

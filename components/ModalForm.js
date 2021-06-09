@@ -10,7 +10,6 @@ const ModalForm = (props) => {
     } = props;
     
     const toggle = () => modalOpen.function(!modalOpen.open);
-
     return (
         <div>
           <Modal isOpen={modalOpen.open} toggle={toggle} className={className}>
