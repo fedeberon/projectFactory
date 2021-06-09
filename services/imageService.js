@@ -20,6 +20,7 @@ export const getProjectsImagesFiltered = async (token, page,size) => {
     return images;
 };
 
+
 export const getProfessionalImagesByTags = async (tags, page, size, token) => {
     API.defaults.headers.common["Authorization"] = token;
     let concatenatedTags = "";

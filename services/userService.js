@@ -13,13 +13,12 @@ export const signInCallBack = async (user, account, profile) => {
   const { token } = await API.post(`/users/signInCallBack`, data);
   return token;
 };
-
 export const login = async (username, password) => {
   const data = {
     username,
     password,
   };
-
+  
   const { token } = await API.post(`/users/login`, data);
   return token;
 };
@@ -38,7 +37,7 @@ export const add = async (username, password, session) => {
     username,
     password,
   };
-
+  
   API.defaults.headers.common["Authorization"] = session.accessToken;
   const { token } = await API.post(`/users/register`, data);
   return token;
@@ -53,3 +52,4 @@ export const loginWith2FA = async (code, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.post(`/users/2FA/login`,code);
 };
+export default {signInCallBack, login, findAll, getById, add, isUnique, loginWith2FA}
