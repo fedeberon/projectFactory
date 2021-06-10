@@ -27,9 +27,9 @@ const CarouselBanner = (props) => {
             <img
               className={CarouselBannerStyle.images}
               src={item.path}
-              alt={item.name}
+              alt={item.title}
             />
-            <CarouselCaption captionText={""} captionHeader={""} />
+            <CarouselCaption captionText={item.title} captionHeader={item.subTitle} />
           </CarouselItem>
         );
       });
