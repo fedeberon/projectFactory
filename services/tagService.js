@@ -18,8 +18,3 @@ export const findAll = async (token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.get(`/tags`);
 };
-
-export const addTag = async (tag, token) => {
-  API.defaults.headers.common["Authorization"] = token;
-  return await API.post(`/tags`, tag);
-};

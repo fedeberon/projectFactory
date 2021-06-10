@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import filterListStyles from "./FilterList.module.css";
 import { useTranslation } from "react-i18next";
 import { ListGroup, ListGroupItem } from "reactstrap";
-import TagCreator from "../TagCreator";
 
 const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
   const { t, lang } = useTranslation("common");
-  const [tags, setTags] = useState([]);
-
-  useEffect(() => setTags(filters), [filters]);
 
   const onClickFilter = (filter, event) => {
     event.target.classList.toggle("active");
@@ -39,7 +35,7 @@ const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
       <ListGroupItem disabled className="bg-warning">
         <h5 className="m-0">{t("Filters")}</h5>
       </ListGroupItem>
-      {tags.map((filter) => (
+      {filters.map((filter) => (
         <ListGroupItem
           tag="button"
           action
@@ -49,7 +45,6 @@ const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
           {filter.tag}
         </ListGroupItem>
       ))}
-      <TagCreator tags={tags} setTags={setTags} />
     </ListGroup>
   );
 };
