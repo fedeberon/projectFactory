@@ -20,6 +20,17 @@ export const getProjectsImagesFiltered = async (token, page,size) => {
     return images;
 };
 
+export const addCaroucelImages = async (images, token) => {
+    API.defaults.headers.common["Authorization"] = token;
+    await Promise.all(images.map(async image => {
+        const imageData = new FormData();
+        imageData.append('image', image);
+        imageData.append('title', image.title);
+        imageData.append('subTitle', image.subTitle);
+        await API.post(`/images/carousel`, imageData);
+    }));
+};
+
 export const getProfessionalImagesByTags = async (tags, page, size, token) => {
     API.defaults.headers.common["Authorization"] = token;
     let concatenatedTags = "";

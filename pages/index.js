@@ -19,6 +19,7 @@ import * as imageService from "../services/imageService";
 
 // Styles
 import styles from "../styles/Home.module.css";
+import CarouselImageCreator from "../components/CarouselImageCreator";
 
 const Code = (p) => <code className={styles.inlineCode} {...p} />;
 
@@ -142,6 +143,7 @@ const Home = ({filters}) => {
           +
         </Button>
       )}
+      <CarouselImageCreator/>
       <ModalForm
         modalTitle={t("FORM PROFESSIONAL")}
         className={"Button mt-50"}

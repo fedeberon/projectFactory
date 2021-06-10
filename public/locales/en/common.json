@@ -96,5 +96,12 @@
     "ProjectDetail": "Project Detail",
     "User": "User",
     "Portfolio" : "My portfolio",
-    "becomeProfessional" : "Become in a professional"
+    "becomeProfessional" : "Become in a professional",
+    "AddCarouselImage" : "Add carousel image",
+    "PleaseSelectCarouselImages" : "Please select one or more images to add in carousel",
+    "Images" : "Images",
+    "AddImages" : "Add images",
+    "AddTitle" : "Add title",
+    "Title" : "Title",
+    "SubTitle" : "SubTitle"
 }
