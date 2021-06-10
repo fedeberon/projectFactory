@@ -11,6 +11,7 @@ import FilteredImages from "../components/FilteredImages/FilteredImages";
 import FormProfessional from "../components/FormProfessional";
 import ModalForm from "../components/ModalForm";
 import Layout from "../components/Layout";
+import CarouselBanner from "../components/CustomCarousel/CarouselBanner";
 
 // Services
 import * as professionalService from "../services/professionalService";
@@ -22,6 +23,17 @@ import styles from "../styles/Home.module.css";
 import CarouselImageCreator from "../components/CarouselImageCreator";
 
 const Code = (p) => <code className={styles.inlineCode} {...p} />;
+
+const items = [
+  {
+    path: 'https://i.pinimg.com/originals/82/22/cf/8222cfbd3f5c5b8cc8d6de8a83c275e1.jpg',
+    name: 'Slide 1',
+  },
+  {
+    path: 'https://images.adsttc.com/media/images/5128/abe0/b3fc/4b11/a700/4c79/newsletter/1285434474-house-in-menorca-dom-arquitectura----dom-arquitectura.jpg?1414370585',
+    name: 'Slide 2',
+  },
+];
 
 const Home = ({filters}) => {
   const [session] = useSession();
@@ -157,6 +169,7 @@ const Home = ({filters}) => {
         }
         modalOpen={{ open: modalOpen, function: setModalOpen }}
       />
+      <CarouselBanner images={items}/>
       <Row>
         <Col xs={12} md={3} xl={2}>
           <aside>

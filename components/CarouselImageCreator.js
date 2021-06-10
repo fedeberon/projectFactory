@@ -41,7 +41,6 @@ const CarouselImageCreator = () => {
     const subTitle = document.querySelector("#input-subTitle").value;
     image.title = title;
     image.subTitle = subTitle;
-    console.log(session.authorities.includes("ROLE_ADMINISTRATOR"));
     setModalAddTitle(false);
   };
 
