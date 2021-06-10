@@ -96,5 +96,8 @@
     "ProjectDetail": "Detalle de Proyecto",
     "User": "Usuario",
     "Portfolio" : "Mi portafolio",
-    "becomeProfessional" : "Convertirse en un profesional"
+    "becomeProfessional" : "Convertirse en un profesional",
+    "AddAdministrator" : "Añadir administrador",
+    "Username" : "Nombre de usuario",
+    "InsertUsername" : "Ingrese el nombre de usuario"
 }

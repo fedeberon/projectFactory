@@ -20,6 +20,7 @@ import * as imageService from "../services/imageService";
 
 // Styles
 import styles from "../styles/Home.module.css";
+import AdministratorCreator from "../components/AdministratorCreator";
 
 const Code = (p) => <code className={styles.inlineCode} {...p} />;
 
@@ -168,6 +169,7 @@ const Home = ({filters}) => {
         modalOpen={{ open: modalOpen, function: setModalOpen }}
       />
       <CarouselBanner images={items}/>
+      <AdministratorCreator/>
       <Row>
         <Col xs={12} md={3} xl={2}>
           <aside>
