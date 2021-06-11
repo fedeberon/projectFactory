@@ -96,5 +96,17 @@
     "ProjectDetail": "Detalle de Proyecto",
     "User": "Usuario",
     "Portfolio" : "Mi portafolio",
-    "becomeProfessional" : "Convertirse en un profesional"
+    "becomeProfessional" : "Convertirse en un profesional",
+    "ThereAreNoMoreProfessionalsPending": "No hay más profesionales pendientes",
+    "Image": "Imagen",
+    "Actions": "Acciones",
+    "Accept": "Aceptar",
+    "Reject": "Rechazar",
+    "ListOf": "Lista de",
+    "Administrator": "Administrador",
+    "Pendings": "Pendientes",
+    "Approveds": "Aprobados",
+    "Disapproved": "Desaprobados"
+
+
 }
