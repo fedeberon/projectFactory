@@ -106,5 +106,6 @@
     "Administrator": "Administrator",
     "Pending": "Pending",
     "Approved": "Approved",
-    "Disapproved": "Disapproved"
+    "Disapproved": "Disapproved",
+    "OtherProjectsOfProfessional" : "Other projects of this professional"
 }
