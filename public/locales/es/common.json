@@ -96,5 +96,6 @@
     "ProjectDetail": "Detalle de Proyecto",
     "User": "Usuario",
     "Portfolio" : "Mi portafolio",
-    "becomeProfessional" : "Convertirse en un profesional"
+    "becomeProfessional" : "Convertirse en un profesional",
+    "OtherProjectsOfProfessional" : "Otros proyectos de este profesional"
 }
