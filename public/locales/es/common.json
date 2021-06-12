@@ -97,5 +97,15 @@
     "User": "Usuario",
     "Portfolio" : "Mi portafolio",
     "becomeProfessional" : "Convertirse en un profesional",
+    "ThereAreNotMoreProfessional": "No hay más profesionales",
+    "Image": "Imagen",
+    "Actions": "Acciones",
+    "Accept": "Aceptar",
+    "Reject": "Rechazar",
+    "ListOf": "Lista de",
+    "Administrator": "Administrador",
+    "Pending": "Pendientes",
+    "Approved": "Aprobados",
+    "Disapproved": "Desaprobados",
     "OtherProjectsOfProfessional" : "Otros proyectos de este profesional"
 }

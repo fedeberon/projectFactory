@@ -49,6 +49,12 @@ export default function Header() {
 
   const { t, lang } = useTranslation("common");
 
+  const isRole = (role) => {
+    if (session) {
+      return session.authorities.includes(role);
+    }
+  };
+
   return (
     <Navbar color="light" light expand="lg">
       <Container fluid="xl">
@@ -76,10 +82,6 @@ export default function Header() {
               <DropdownMenu>
                 <DropdownItem>
                   <Link href="/project">{t("Project")}</Link>
-                  {/* <DropdownMenu right>
-               
-                <DropdownItem >
-                  <Authentication/> */}
                 </DropdownItem>
                 <DropdownItem>Option 2</DropdownItem>
                 <DropdownItem divider />
@@ -105,6 +107,11 @@ export default function Header() {
             <NavItem>
               <Link href="/contact">{t("Contact")}</Link>
             </NavItem>
+            {isRole("ROLE_ADMINISTRATOR") && (
+              <NavItem>
+                <Link href="/admin">{t("Administrator")}</Link>
+              </NavItem>
+            )}
           </Nav>
           <Row className="justify-content-center align-items-center">
             <Col>
@@ -114,12 +121,17 @@ export default function Header() {
                   <PersonCircle className="ms-1" size={25} />
                 </DropdownToggle>
                 <DropdownMenu right>
-                  {session && (
+                  {isRole("ROLE_USER") && (
                     <>
                       <DropdownItem>
                         <Link href="/profile">{t("Profile")}</Link>
                       </DropdownItem>
                       <DropdownItem divider />
+                    </>
+                  )}
+                  <pre>{JSON.stringify(session?.authorities, null, 2)}</pre>
+                  {isRole("ROLE_PROFESSIONAL") && (
+                    <>
                       <DropdownItem>
                         <Link href="/portfolio">{t("Portfolio")}</Link>
                       </DropdownItem>
