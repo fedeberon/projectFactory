@@ -19,7 +19,6 @@ import {
 } from "reactstrap";
 import CarouselProject from "./CarouselProject";
 
-
 const SeeProject = ({ project, onEditProject }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { t, lang } = useTranslation("common");
@@ -39,6 +38,11 @@ const SeeProject = ({ project, onEditProject }) => {
   };
 
   useEffect(() => {}, [project]);
+
+  const projectsOfProfessionalList = project?.projectsOfProfessional?.map( project => {
+
+    return <img key={project.previewImage} src={project.previewImage}/>;
+  });
 
   return (
     <>
@@ -132,7 +136,7 @@ const SeeProject = ({ project, onEditProject }) => {
             </div>
             <div className="d-flex justify-content-center align-items-center my-3">
               <Col md={"12"}>
-               <CarouselProject className="w-auto" images={project.images} />
+                <CarouselProject className="w-auto" images={project.images} />
               </Col>
             </div>
             <iframe
@@ -143,7 +147,9 @@ const SeeProject = ({ project, onEditProject }) => {
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-            ></iframe>{" "}
+            ></iframe>
+            <h4>{t("OtherProjectsOfProfessional")}</h4>
+            {projectsOfProfessionalList}
           </Col>
         </Row>
       </Container>

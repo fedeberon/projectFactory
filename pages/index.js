@@ -24,18 +24,7 @@ import CarouselImageCreator from "../components/CarouselImageCreator";
 
 const Code = (p) => <code className={styles.inlineCode} {...p} />;
 
-const items = [
-  {
-    path: 'https://i.pinimg.com/originals/82/22/cf/8222cfbd3f5c5b8cc8d6de8a83c275e1.jpg',
-    name: 'Slide 1',
-  },
-  {
-    path: 'https://images.adsttc.com/media/images/5128/abe0/b3fc/4b11/a700/4c79/newsletter/1285434474-house-in-menorca-dom-arquitectura----dom-arquitectura.jpg?1414370585',
-    name: 'Slide 2',
-  },
-];
-
-const Home = ({filters}) => {
+const Home = ({ filters, carouselImages }) => {
   const [session] = useSession();
   const [modalOpen, setModalOpen] = useState(false);
   const [filteredImages, setFilteredImages] = useState([]);
@@ -169,7 +158,7 @@ const Home = ({filters}) => {
         }
         modalOpen={{ open: modalOpen, function: setModalOpen }}
       />
-      <CarouselBanner images={items}/>
+      <CarouselBanner images={carouselImages}/>
       <Row>
         <Col xs={12} md={3} xl={2}>
           <aside>
@@ -193,7 +182,8 @@ export async function getServerSideProps({ params, req, res, locale }) {
   const session = await getSession({ req });
 
   let token;
-  let filters = [];
+  const filters = await tagService.findAll();
+  const carouselImages = await imageService.findCarouselImages();
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -203,15 +193,11 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  if (session) {
-    token = session.accessToken;
-    filters = await tagService.findAll(token);
-  }
-
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
       filters: filters,
+      carouselImages,
     },
   };
 }

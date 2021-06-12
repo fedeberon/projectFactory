@@ -56,3 +56,11 @@ export const getProfessionalImages = async (id, page, size, token) => {
     });
     return images;
 };
+
+export const findCarouselImages = async () => {
+    let images = await API.get(`/images/carousel`);
+    images.forEach( image => {
+        image.path = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/carousel/${image.path}`;
+    });
+    return images;
+};

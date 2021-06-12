@@ -103,5 +103,16 @@
     "AddImages" : "Agregar imagenes",
     "AddTitle" : "Agregar titulo",
     "Title" : "Titulo",
-    "SubTitle" : "Subtitulo"
+    "SubTitle" : "Subtitulo",
+    "ThereAreNotMoreProfessional": "No hay más profesionales",
+    "Image": "Imagen",
+    "Actions": "Acciones",
+    "Accept": "Aceptar",
+    "Reject": "Rechazar",
+    "ListOf": "Lista de",
+    "Administrator": "Administrador",
+    "Pending": "Pendientes",
+    "Approved": "Aprobados",
+    "Disapproved": "Desaprobados",
+    "OtherProjectsOfProfessional" : "Otros proyectos de este profesional"
 }
