@@ -160,7 +160,8 @@ const FormProfessional = ({ onAddProfessional, toggle, error, setError }) => {
               accept={"image/*"}
               multiple={true}
               imagesEdited={setImages}
-              onAddTag={showTagModal}
+              withTags={true}
+              onAdd={showTagModal}
             />
           </FormGroup>
           <Button type="submit" color="primary mt-1">

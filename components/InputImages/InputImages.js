@@ -37,7 +37,8 @@ function InputImages(props) {
     accept,       // Type of images in the input
     multiple,     // False if accept only one image or true if accept more than one
     imagesEdited, // Function to set new images
-    onAddTag      // Function on click to add tag in image
+    onAdd,        // Function on click to add button
+    withTags      // Boolean, true to show button add tags or false to hidde the button of tags
    } = props;
   const [files, setFiles] = useState([]);
   const { t, lang } = useTranslation("common");
@@ -56,7 +57,7 @@ function InputImages(props) {
         img.preview = img.path;
         img.added = true;
         img.remove = false;
-        if (img.tags === undefined) {
+        if (withTags && img.tags === undefined) {
           img.tags = [];
         }
       });
@@ -79,9 +80,12 @@ function InputImages(props) {
         Object.assign(file, {
           preview: URL.createObjectURL(file),
           added: false,
-          remove: false,
-          tags: []
+          remove: false
         });
+
+        if (withTags) {
+          Object.assign(file, { tags : [] });
+        }
       });
       const newFiles = files.concat(acceptedFiles);
       setFiles(newFiles);
@@ -135,14 +139,16 @@ function InputImages(props) {
         >
           X
         </button>
-
-        <button className={inputStyles.buttonTags}
+        
+        
+        <button className={inputStyles.buttonAdd}
           onClick={(event) => {
             event.preventDefault();
-            onAddTag(file);
+            onAdd(file);
           }}
         >
-          {t("AddTags")}
+          {withTags  && t("AddTags")  }
+          {!withTags && t("AddTitle") }
         </button>
       </div>
     ));
