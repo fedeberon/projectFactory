@@ -99,5 +99,16 @@
     "becomeProfessional" : "Convertirse en un profesional",
     "AddAdministrator" : "Añadir administrador",
     "Username" : "Nombre de usuario",
-    "InsertUsername" : "Ingrese el nombre de usuario"
+    "InsertUsername" : "Ingrese el nombre de usuario",
+    "ThereAreNotMoreProfessional": "No hay más profesionales",
+    "Image": "Imagen",
+    "Actions": "Acciones",
+    "Accept": "Aceptar",
+    "Reject": "Rechazar",
+    "ListOf": "Lista de",
+    "Administrator": "Administrador",
+    "Pending": "Pendientes",
+    "Approved": "Aprobados",
+    "Disapproved": "Desaprobados",
+    "OtherProjectsOfProfessional" : "Otros proyectos de este profesional"
 }
