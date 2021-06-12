@@ -1,4 +1,3 @@
-import { session } from "next-auth/client";
 import API from "./api";
 import * as tagService from "./tagService";
 import * as imageService from "./imageService";
@@ -91,14 +90,14 @@ export const become = async (professional, token) => {
 };
 
 export const getProfessionalForApproved = async (
-  approved,
+  status,
   page,
   size,
   token
 ) => {
   API.defaults.headers.common["Authorization"] = token;
   const response = await API.get(
-    `/professionals/approved/${approved}?page=${page}&size=${size}`
+    `/professionals/status/${status}?page=${page}&size=${size}`
   );
   response.forEach((professional) => {
     professional.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${professional.id}/preview/${professional.previewImage}`;
@@ -107,10 +106,8 @@ export const getProfessionalForApproved = async (
   return response;
 };
 
-export const setEnebleProfessional = async (id, approved, token) => {
-  console.log("ID:", id, "APPROVED: ", approved, "TOKEN: ", token);
+export const setEnebleProfessional = async (id, status, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  const response = await API.put(`/professionals/${id}/approved/${approved}`);
-  // /professionals/{id}/approved/{approved} [PUT]
+  const response = await API.put(`/professionals/${id}/status/${status}`);
   return response;
 };

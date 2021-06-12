@@ -3,7 +3,7 @@ import { InfoCircleFill } from "react-bootstrap-icons";
 import { Alert, Table } from "reactstrap";
 import { useTranslation } from "react-i18next";
 
-const TableAdmin = ({ professionalList }) => {
+const TableAdmin = ({ professionalList, title }) => {
   const { t, lang } = useTranslation("common");
 
   return (
@@ -26,7 +26,7 @@ const TableAdmin = ({ professionalList }) => {
             <td colSpan="6" className="p-0">
               <Alert color="primary text-center">
                 <InfoCircleFill size={25} />
-                {t("ThereAreNoMoreProfessionalsPending")}
+                {`${t("ThereAreNotMoreProfessional")} ${title.toLowerCase()}`}
               </Alert>
             </td>
           </tr>

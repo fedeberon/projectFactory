@@ -97,15 +97,15 @@
     "User": "Usuario",
     "Portfolio" : "Mi portafolio",
     "becomeProfessional" : "Convertirse en un profesional",
-    "ThereAreNoMoreProfessionalsPending": "No hay más profesionales pendientes",
+    "ThereAreNotMoreProfessional": "No hay más profesionales",
     "Image": "Imagen",
     "Actions": "Acciones",
     "Accept": "Aceptar",
     "Reject": "Rechazar",
     "ListOf": "Lista de",
     "Administrator": "Administrador",
-    "Pendings": "Pendientes",
-    "Approveds": "Aprobados",
+    "Pending": "Pendientes",
+    "Approved": "Aprobados",
     "Disapproved": "Desaprobados"
 
 

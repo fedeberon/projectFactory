@@ -1,54 +1,153 @@
+// Frameworks
 import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
 import { Button, Col, Row } from "reactstrap";
+import { CheckCircle, XCircle } from "react-bootstrap-icons";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "react-i18next";
+
+// Components
 import Layout from "../../components/Layout";
+import Tabs from "../../components/Tabs/Tabs";
+import TableAdmin from "../../components/TableAdmin/TableAdmin";
+
+//Services
 import {
   getProfessionalForApproved,
   setEnebleProfessional,
 } from "../../services/professionalService";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { CheckCircle, XCircle } from "react-bootstrap-icons";
-import Tabs from "../../components/Tabs/Tabs";
-import TableAdmin from "../../components/TableAdmin/TableAdmin";
-import { useTranslation } from "react-i18next";
 
-const Admin = ({ professionalNotApproved, professionalApproved, session }) => {
+const Admin = ({
+  professionalNotApproved,
+  professionalApproved,
+  professionalRejected,
+  session,
+}) => {
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const [professionalListNotAppoved, setProfessionalListNotAppoved] = useState(
     []
   );
   const [professionalListAppoved, setProfessionalListAppoved] = useState([]);
+  const [professionalListRejected, setProfessionalListRejected] = useState([]);
 
   const { t, lang } = useTranslation("common");
 
+  /**
+   * Component button accept to add it to the table that requires it.
+   * @param {*} professionalId String necessary to identify the profesisonal
+   * in changeStateProfessional
+   * @returns A button armed with the functionality to change the state to Id
+   */
   const buttonAccept = (professionalId) => {
     return (
       <Button
         outline
         color={"success"}
-        onClick={() => changeStateProfessional(professionalId, true)}
+        onClick={() => changeStateProfessional(professionalId, "APPROVED")}
       >
         <CheckCircle size={25} /> {t("Accept")}
       </Button>
     );
   };
 
+  /**
+   * Component button reject to add it to the table that requires it.
+   * @param {*} professionalId String necessary to identify the profesisonal
+   * in changeStateProfessional
+   * @returns A button armed with the functionality to change the state to Id.
+   */
   const buttonReject = (professionalId) => {
     return (
       <Button
         outline
         color={"danger"}
-        onClick={() => changeStateProfessional2(professionalId, false)}
+        onClick={() => changeStateProfessional(professionalId, "REJECTED")}
       >
         <XCircle size={25} /> {t("Reject")}
       </Button>
     );
   };
 
-  const getProfessional = async (approved) => {
+  /**
+   * Funtionality to buttonAcept and buttonReject components
+   * to change the status of a professional in a tabs pending, approved and
+   * disapproved.
+   * @param {*} id String necessary to identify of a professional.
+   * @param {*} status String to show that you want it to see.
+   * The states are : PENDING APPROVED REJECTED DELETED
+   */
+  const changeStateProfessional = async (id, status) => {
+    const professionalChange = await saveChangeProfessional(id, status);
+    if (professionalChange) {
+      pendingTab();
+      approvedTab();
+      disapprovedTab();
+    }
+  };
+
+  /**
+   * Request "fetch" to the DB that changes the status of a professional.
+   * @param {*} id String is necessary to identify a professional
+   * @param {*} status String to show that you want it to see.
+   * The states are : PENDING APPROVED REJECTED DELETED
+   * @returns true or false to obtein if save change or not
+   */
+  const saveChangeProfessional = async (id, status) => {
+    try {
+      await setEnebleProfessional(id, status, session?.accessToken);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  /**
+   * Funtionality to refresh the pending tab when a professional is accepted.
+   */
+  const pendingTab = async () => {
+    const professionals = await getProfessional("PENDING");
+    const professionalsList = getList(professionals, [
+      (professionalId) => buttonAccept(professionalId),
+      (professionalId) => buttonReject(professionalId),
+    ]);
+    setProfessionalListNotAppoved(professionalsList);
+  };
+
+  /**
+   * Funcionality to refresh the approved tab when a professional is rejected.
+   */
+  const approvedTab = async () => {
+    const professionals = await getProfessional("APPROVED");
+    const professionalsList = getList(professionals, [
+      (professionalId) => buttonReject(professionalId),
+    ]);
+    setProfessionalListAppoved(professionalsList);
+  };
+
+  /**
+   * Funcionality to refresh the disapproved tab when you want to accept
+   * a professional again.
+   */
+  const disapprovedTab = async () => {
+    const professionals = await getProfessional("REJECTED");
+    const professionalsList = getList(professionals, [
+      (professionalId) => buttonAccept(professionalId),
+    ]);
+    setProfessionalListRejected(professionalsList);
+  };
+
+  /**
+   * Request "fetch" to obtain approved, disapproved, rejected or deleted
+   * professionals, depends on the "status" parameter and with error control.
+   * @param {*} status String to show that you want it to see.
+   * The states are: PENDING APPROVED REJECTED DELETED
+   * @returns arrangement of professionally limited for page.
+   */
+  const getProfessional = async (status) => {
     try {
       const professionalNotApproved = await getProfessionalForApproved(
-        approved,
+        status,
         pageSize.page,
         pageSize.size,
         session?.accessToken
@@ -59,41 +158,15 @@ const Admin = ({ professionalNotApproved, professionalApproved, session }) => {
     }
   };
 
-  const saveChangeProfessional = async (id, approved) => {
-    try {
-      await setEnebleProfessional(id, approved, session?.accessToken);
-      return true;
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
-  };
-
-  const changeStateProfessional = async (id, approved) => {
-    const professionalChange = await saveChangeProfessional(id, approved);
-    if (professionalChange) {
-      const professionals = await getProfessional(false);
-      const callback = (professionalId) => {
-        return buttonAccept(professionalId);
-      };
-      const professionalsList = getList(professionals, callback);
-      setProfessionalListNotAppoved(professionalsList);
-    }
-  };
-
-  const changeStateProfessional2 = async (id, approved) => {
-    const professionalChange = await saveChangeProfessional(id, approved);
-    if (professionalChange) {
-      const professionals = await getProfessional(true);
-      const callback = (professionalId) => {
-        return buttonReject(professionalId);
-      };
-      const professionalsList = getList(professionals, callback);
-      setProfessionalListAppoved(professionalsList);
-    }
-  };
-
-  const getList = (professionals, button) => {
+  /**
+   * Complete the body part of the table showing the result of the pending,
+   * approved or rejected professional consultations.
+   * @param {*} professionals these are the professionals who arrive
+   * from a request "fetch" from the BD
+   * @param {*} buttons is the buttons you want to display in the table as actions.
+   * @returns the body of the table.
+   */
+  const getList = (professionals, buttons) => {
     const professionalList = professionals.map((professional, index) => {
       return (
         <tr key={index} className="align-middle text-center">
@@ -110,43 +183,79 @@ const Admin = ({ professionalNotApproved, professionalApproved, session }) => {
           <td>{professional.firstName}</td>
           <td>{professional.lastName}</td>
           <td>{professional.email}</td>
-          <td>{button(professional.id)}</td>
+          <td>
+            {buttons.map((button, index) => {
+              return <div key={index}>{button(professional.id)}</div>;
+            })}
+          </td>
         </tr>
       );
     });
     return professionalList;
   };
 
+  /**
+   * This is for when using the SSR and loading the tableAdmin component properly
+   * with the list of pending proffesional.
+   */
   useEffect(async () => {
     if (professionalNotApproved) {
-      const callback = (professionalId) => {
-        return buttonAccept(professionalId);
-      };
-      const professionalList = getList(professionalNotApproved, callback);
+      const professionalList = getList(professionalNotApproved, [
+        (professionalId) => buttonAccept(professionalId),
+        (professionalId) => buttonReject(professionalId),
+      ]);
       setProfessionalListNotAppoved(professionalList);
     }
   }, [professionalNotApproved]);
 
+  /**
+   * This is for when using the SSR and loading the tableAdmin component properly
+   * with the list of approved proffesional.
+   */
   useEffect(async () => {
     if (professionalApproved) {
-      const callback = (professionalId) => {
-        return buttonReject(professionalId);
-      };
-      const professionalList = getList(professionalApproved, callback);
+      const professionalList = getList(professionalApproved, [
+        (professionalId) => buttonReject(professionalId),
+      ]);
       setProfessionalListAppoved(professionalList);
     }
   }, [professionalApproved]);
 
-  const titles = [t("Pendings"), t("Approveds"), t("Disapproved")];
+  /**
+   * This is for when using the SSR and loading the tableAdmin component properly
+   * with the list of disapproved proffesional.
+   */
+  useEffect(async () => {
+    if (professionalRejected) {
+      const professionalList = getList(professionalRejected, [
+        (professionalId) => buttonAccept(professionalId),
+      ]);
+      setProfessionalListRejected(professionalList);
+    }
+  }, [professionalRejected]);
+
+  /**
+   * These are the titles of the tabs needed to describe each other.
+   */
+  const titles = [t("Pending"), t("Approved"), t("Disapproved")];
 
   return (
     <Layout title={t("Administrator")}>
       <Row>
         <Col>
           <Tabs titles={titles}>
-            <TableAdmin professionalList={professionalListNotAppoved} />
-            <TableAdmin professionalList={professionalListAppoved} />
-            <TableAdmin professionalList={professionalListAppoved} />
+            <TableAdmin
+              professionalList={professionalListNotAppoved}
+              title={titles[0]}
+            />
+            <TableAdmin
+              professionalList={professionalListAppoved}
+              title={titles[1]}
+            />
+            <TableAdmin
+              professionalList={professionalListRejected}
+              title={titles[2]}
+            />
           </Tabs>
         </Col>
       </Row>
@@ -162,6 +271,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   let professionalNotApproved = [];
   let professionalApproved = [];
+  let professionalRejected = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -172,17 +282,24 @@ export async function getServerSideProps({ params, req, res, locale }) {
   }
 
   if (session) {
-    let approved = false;
+    let status = "PENDING";
     token = session.accessToken;
     professionalNotApproved = await getProfessionalForApproved(
-      approved,
+      status,
       page,
       size,
       token
     );
-    approved = true;
+    status = "APPROVED";
     professionalApproved = await getProfessionalForApproved(
-      approved,
+      status,
+      page,
+      size,
+      token
+    );
+    status = "REJECTED";
+    professionalRejected = await getProfessionalForApproved(
+      status,
       page,
       size,
       token
@@ -194,6 +311,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
       ...(await serverSideTranslations(locale, ["common"])),
       professionalNotApproved,
       professionalApproved,
+      professionalRejected,
       session,
     },
   };
