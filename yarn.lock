@@ -2144,6 +2144,11 @@
   "resolved" "https://registry.npmjs.org/normalize-path/-/normalize-path-3.0.0.tgz"
   "version" "3.0.0"
 
+"nprogress@^0.2.0":
+  "integrity" "sha1-y480xTIT2JVyP8urkH6UIq28r7E="
+  "resolved" "https://registry.npmjs.org/nprogress/-/nprogress-0.2.0.tgz"
+  "version" "0.2.0"
+
 "oauth@^0.9.15":
   "integrity" "sha1-vR/vr2hslrdUda7VGWQS/2DPucE="
   "resolved" "https://registry.npmjs.org/oauth/-/oauth-0.9.15.tgz"
