@@ -21,6 +21,7 @@ import * as imageService from "../services/imageService";
 // Styles
 import styles from "../styles/Home.module.css";
 import CarouselImageCreator from "../components/CarouselImageCreator";
+import AdministratorCreator from "../components/AdministratorCreator";
 
 const Code = (p) => <code className={styles.inlineCode} {...p} />;
 
@@ -159,6 +160,7 @@ const Home = ({ filters, carouselImages }) => {
         modalOpen={{ open: modalOpen, function: setModalOpen }}
       />
       <CarouselBanner images={carouselImages}/>
+      <AdministratorCreator/>
       <Row>
         <Col xs={12} md={3} xl={2}>
           <aside>
@@ -181,7 +183,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
 
-  let token;
   const filters = await tagService.findAll();
   const carouselImages = await imageService.findCarouselImages();
   let { page, size } = req.__NEXT_INIT_QUERY;
