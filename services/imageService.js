@@ -20,6 +20,16 @@ export const getProjectsImagesFiltered = async (token, page,size) => {
     return images;
 };
 
+export const addCaroucelImages = async (images, token) => {
+    API.defaults.headers.common["Authorization"] = token;
+    await Promise.all(images.map(async image => {
+        const imageData = new FormData();
+        imageData.append('image', image);
+        imageData.append('title', image.title);
+        imageData.append('subTitle', image.subTitle);
+        await API.post(`/images/carousel`, imageData);
+    }));
+};
 
 export const getProfessionalImagesByTags = async (tags, page, size, token) => {
     API.defaults.headers.common["Authorization"] = token;
@@ -52,4 +62,12 @@ export const uploadCompanyPreview = async (companyId, image, token) => {
     const imageData = new FormData();
     imageData.append("image", image);
     await API.post(`/images/companies/${companyId}/preview`, imageData);
+}
+
+export const findCarouselImages = async () => {
+    let images = await API.get(`/images/carousel`);
+    images.forEach( image => {
+        image.path = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/carousel/${image.path}`;
+    });
+    return images;
 };

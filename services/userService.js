@@ -52,4 +52,13 @@ export const loginWith2FA = async (code, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.post(`/users/2FA/login`,code);
 };
-export default {signInCallBack, login, findAll, getById, add, isUnique, loginWith2FA}
+
+export const getStartsWith = async (username, page, size, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.get(`/users/username/${username}?page=${page}&size=${size}`);
+};
+
+export const addAdministrator = async (user, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.post(`/users/administrator`, user);
+};

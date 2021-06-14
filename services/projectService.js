@@ -147,4 +147,13 @@ export const isPurchased = async (project, token) => {
   return purchasedProjects.find(purchased => purchased.id == project.id);
 };
 
+export const findAllByProfessionalId = async (professionalId, page, size, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const projects = await API.get(`/projects/professionals/${professionalId}?page=${page}&size=${size}`);
+  projects.forEach( project => {
+    project.previewImage = getPathToPreviewImage(project.id, project.previewImage);
+  });
+  return projects;
+};
+
 export default {findAll, getById, addProject, addPreviewImage, addImages, edit, addFile, download, removeAndAddImages,getPurchasedProjects, isPurchased}

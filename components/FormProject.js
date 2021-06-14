@@ -281,7 +281,8 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
             accept={"image/*"}
             multiple={true}
             imagesEdited={setImages}
-            onAddTag={showTagModal}
+            withTags={true}
+            onAdd={showTagModal}
           />
         </FormGroup>
         <FormGroup>
