@@ -289,6 +289,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             images={images}
             accept={"image/*"}
             multiple={true}
+            withTags={true}
             imagesEdited={setImagesEdited}
           />
         </FormGroup>

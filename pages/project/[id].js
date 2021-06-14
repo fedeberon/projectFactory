@@ -35,9 +35,7 @@ const ProjectDetail = ({ data }) => {
 export async function getServerSideProps({ params, req, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
-
-  let token;
-  let project = {};
+  const token = session.accessToken;
   let { page, size } = req.__NEXT_INIT_QUERY;
   let { id } = params; // params is necessary in case you reload the page from the url
   let idSplit = id.split("ID-")[1];
@@ -49,18 +47,21 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  if (session) {
-    token = session.accessToken;
-    project = await projectService.getById(idSplit, token);
-    const dataImages = await imageService.getProjectImages(
-      project.id,
-      token,
-      page,
-      size
-    );
-    project.images = dataImages;
-  }
-
+  const project = await projectService.getById(idSplit, token);
+  const dataImages = await imageService.getProjectImages(
+    project.id,
+    token,
+    page,
+    size
+  );
+  const projectsOfProfessional = await projectService.findAllByProfessionalId(
+    project.professional.id,
+    page,
+    size,
+    token
+  );
+  project.images = dataImages;
+  project.projectsOfProfessional = projectsOfProfessional.filter(p => p.id != project.id);
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
