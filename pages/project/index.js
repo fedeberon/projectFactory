@@ -24,7 +24,7 @@ import indexStyles from "./index.module.css";
 // components
 import ModalForm from "../../components/ModalForm";
 import FormProject from "../../components/FormProject";
-import Layout from "../../components/Layout";
+import Layout from "../../components/Layout/Layout";
 
 // services
 import * as professionalService from "../../services/professionalService";

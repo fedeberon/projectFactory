@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 // Components
 import FormProfessional from "../../components/FormProfessional";
 import ModalForm from "../../components/ModalForm";
-import Layout from "../../components/Layout";
+import Layout from "../../components/Layout/Layout";
 
 // Services
 import * as professionalService from "../../services/professionalService";

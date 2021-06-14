@@ -22,14 +22,14 @@ const Authentication = (props) => {
       {!session && (
         <>
           <NavLink onClick={() => signIn()}>
-            {t("Sign in")}
+            {t("Log in")}
           </NavLink>
         </>
       )}
       {session && (
         <>
           <NavLink onClick={() => signOut()}>
-            {t("Sign out")}
+            {t("Log out")}
           </NavLink>
         </>
       )}

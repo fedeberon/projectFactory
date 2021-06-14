@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import ProfileData from "../../components/ProfileData";
 import { useSession } from "next-auth/client";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import Layout from "../../components/Layout";
+import Layout from "../../components/Layout/Layout";
 
 // Services
 import * as professionalService from "../../services/professionalService";

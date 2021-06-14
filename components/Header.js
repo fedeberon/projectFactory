@@ -14,6 +14,7 @@ import {
   Row,
   Dropdown,
   Container,
+  Button,
 } from "reactstrap";
 import Authentication from "./Authentication";
 import { useRouter } from "next/dist/client/router";
@@ -133,6 +134,9 @@ export default function Header() {
               </Dropdown>
             </Col>
           </Row>
+          <Button color="warning" href="/SignIn">
+            {t("Sign in")}
+          </Button>
         </Collapse>
       </Container>
     </Navbar>
