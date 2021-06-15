@@ -117,5 +117,7 @@
     "Pending": "Pending",
     "Approved": "Approved",
     "Disapproved": "Disapproved",
-    "OtherProjectsOfProfessional" : "Other projects of this professional"
+    "OtherProjectsOfProfessional" : "Other projects of this professional",
+    "AcceptImages" : "Accept images",
+    "ImagesAccepted" : "Images accepted"
 }
