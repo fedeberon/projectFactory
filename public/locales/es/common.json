@@ -118,6 +118,8 @@
     "Approved": "Aprobados",
     "Disapproved": "Desaprobados",
     "OtherProjectsOfProfessional" : "Otros proyectos de este profesional",
+    "PleaseSelectAdministrator" : "Ingrese el nombre de usuario para agregarlo como administrador",
+    "PleaseSelectTag" : "Ingrese el nombre el nombre de un tag para agregarlo a la lista de tags",
     "InsertCompany": "Ingrese empresa",
     "Company": "Empresa",
     "WriteTheContactHerePlease": "Escriba el contacto aquí por favor",

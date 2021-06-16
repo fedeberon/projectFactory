@@ -70,27 +70,6 @@ const FormProfessional = ({
       province,
       location
     };
-    console.log(
-      "company:",
-      company,
-      "companySelected:",
-      companySelected,
-      "contact: ",
-      contact,
-      "email: ",
-      email,
-      "companyCategory: ",
-      companyCategory,
-      "contactLoad: ",
-      contactLoad,
-      "website: ",
-      website
-      // "province: ",
-      // province,
-      // "location: ",
-      // location
-    );
-    debugger;
     const professional = await onAddProfessional(data);
 
     if (professional != null) {
@@ -116,7 +95,6 @@ const FormProfessional = ({
   }, [data]);
 
   const seleccion = (value) => {
-    console.log(value);
     if (value) {
       setCategoryOptions(value.categories);
       setCompanySelected(value);
