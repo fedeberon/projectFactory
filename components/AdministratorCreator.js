@@ -92,7 +92,7 @@ const AdministratorCreator = () => {
   return (
     <>
       {session?.authorities?.includes("ROLE_ADMINISTRATOR") && (
-        <button onClick={toggle}>{t("AddAdministrator")}</button>
+        <Button onClick={toggle}>{t("AddAdministrator")}</Button>
       )}
 
       <ModalForm
@@ -100,6 +100,7 @@ const AdministratorCreator = () => {
         modalTitle={t("AddAdministrator")}
         formBody={
           <>
+            <h6>{t("PleaseSelectAdministrator")}</h6>
             <Label for="administrator">{t("Username")}</Label>
 
             <Autosuggest
@@ -113,9 +114,9 @@ const AdministratorCreator = () => {
               theme={autosuggestStyles}
             />
 
-            <button onClick={onAddAdministrator}>
+            <Button className="my-4" onClick={onAddAdministrator}>
               {t("AddAdministrator")}
-            </button>
+            </Button>
           </>
         }
         modalOpen={{

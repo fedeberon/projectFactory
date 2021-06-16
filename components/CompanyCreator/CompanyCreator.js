@@ -15,6 +15,7 @@ import ModalForm from "../ModalForm";
 import { useTranslation } from "react-i18next";
 import * as companyService from "../../services/companyService";
 import companyCreatorStyles from "./CompanyCreator.module.css";
+import TagList from "../TagList/TagList";
 
 const CompanyCreator = () => {
   const [modalCompany, setModalCompany] = useState(false);
@@ -22,7 +23,18 @@ const CompanyCreator = () => {
   const { t, lang } = useTranslation("common");
   const [imageSelected, setImageSelected] = useState({});
   const [imageBlob, setImageBlob] = useState(false);
+  const [tagsCategories, setTagsCategories] = useState([]);
 
+  const removeTagCategory = (tagCategory) => {
+    const newTagsCategories = Array.from(tagsCategories);
+    const index = newTagsCategories.indexOf(tagCategory);
+    if (index > -1) {
+      newTagsCategories.splice(index, 1);
+      setTagsCategories(newTagsCategories);
+    }
+  };
+
+  
   const toggle = () => setModalCompany(!modalCompany);
 
   const handleChangeImg = event => {
@@ -32,14 +44,23 @@ const CompanyCreator = () => {
 
   const onAddCompany = async () => {
     const name = document.querySelector("#input-company-name").value;
-    await companyService.create(name, imageSelected, session.accessToken);
+    await companyService.create(name, imageSelected, tagsCategories, session.accessToken);
     toggle();
   };
+
+  const AddCategory = () => {
+    const category = document.querySelector("#category").value;
+    const parse = {"tag" : category};
+    const newTagsCategories = Array.from(tagsCategories);
+    newTagsCategories.push(parse);
+    setTagsCategories(newTagsCategories);
+  }
+
 
   return (
     <>
       {session?.authorities?.includes("ROLE_ADMINISTRATOR") && (
-        <button onClick={toggle}>{t("AddCompany")}</button>
+        <Button onClick={toggle}>{t("AddCompany")}</Button>
       )}
 
       <ModalForm
@@ -47,16 +68,25 @@ const CompanyCreator = () => {
         modalTitle={t("AddCompany")}
         formBody={
           <>
-            <label>{t("CompanyName")}</label>
+            <label htmlFor="input-company-name">{t("CompanyName")}</label><br/>
             <input type="text" id="input-company-name"/>
             <br></br>
-            <label>{t("CompanyLogo")}</label><br/>
             {imageBlob && 
               <img className={companyCreatorStyles.img} src={imageBlob}/>
             }<br/>
-            <input type="file" onChange={handleChangeImg}/>
+            <label>{t("SelectCategoriesPlease")}</label><br/>
+
+            <input type="text" id="category"/><Button className="mx-4" onClick={AddCategory}>{t("AddCategory")}</Button>
+
+            <div className="my-3">
+              <TagList tags={tagsCategories} onDeleteTag={removeTagCategory} />
+            </div>
+            <label htmlFor="logo">{t("SelectLogo")}</label><br/>
+            <input type="file" id="logo" onChange={handleChangeImg}/>
             <br></br>
-            <button onClick={onAddCompany}>{t("AddCompany")}</button>
+            <div className="my-4">
+              <Button onClick={onAddCompany}>{t("AddCompany")}</Button>
+            </div>
           </>
         }
         modalOpen={{ open: modalCompany, function: setModalCompany }}
