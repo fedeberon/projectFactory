@@ -16,23 +16,23 @@ import { useTranslation } from "react-i18next";
 import { signIn } from "next-auth/client";
 import { Google, Facebook, Instagram } from "react-bootstrap-icons";
 
-const SignInForm = (props) => {
-  const { t, lang } = useTranslation("common");
+const LogInForm = (props) => {
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
+    const { t, lang } = useTranslation("common");
 
-  const onSubmit = async ({ name, email, password }, event) => {
-    let data = {
-      name,
-      email,
-      password,
+    const {
+      register,
+      formState: { errors },
+      handleSubmit,
+    } = useForm();
+  
+    const onSubmit = async ({ email, password }, event) => {
+      let data = {
+        email,
+        password,
+      };
     };
-  };
-
+  
   return (
     <Row className="d-flex justify-content-center">
       <Col xs={6}>
@@ -65,30 +65,6 @@ const SignInForm = (props) => {
                 )}
               </FormGroup>
               <FormGroup>
-                <Label for="name">{t("Name")}</Label>
-                <Input
-                  type="text"
-                  id="name"
-                  placeholder={t("Write the name here please")}
-                  {...register("name", {
-                    required: {
-                      value: true,
-                      message: `${t("Name is required")}`,
-                    },
-                    minLength: {
-                      value: 3,
-                      message: `${t("Name cannot be less than 3 character")}`,
-                    },
-                  })}
-                  className={"form-field" + (errors.name ? " has-error" : "")}
-                />
-                {errors.name && (
-                  <FormText className="error-label">
-                    {errors.name.message}
-                  </FormText>
-                )}
-              </FormGroup>
-              <FormGroup>
                 <Label for="password">{t("Password")}</Label>
                 <Input
                   type="password"
@@ -116,9 +92,9 @@ const SignInForm = (props) => {
                   </FormText>
                 )}
               </FormGroup>
-              <Button color="primary" className="mt-2">{t("Sign in")}</Button>
+              <Button color="primary" className="mt-2">{t("Log In")}</Button>
             </Form>
-            <Label for="Registrarse">Registrarse con:</Label>
+            <Label for="Registrarse">Ingresar con:</Label>
             <Button onClick={signIn} color="danger" className="mx-2" size={25}><Google/></Button>
             <Button onClick={signIn} color="primary" className="mx-2" size={25}><Facebook/></Button>
             <Button onClick={signIn} color="secondary" className="mx-2" size={25}><Instagram/></Button>
@@ -128,5 +104,6 @@ const SignInForm = (props) => {
     </Row>
   );
 };
+}
 
-export default SignInForm;
+export default LogInForm;
