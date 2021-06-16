@@ -10,7 +10,7 @@ import FilterList from "../components/FilterList/FilterList";
 import FilteredImages from "../components/FilteredImages/FilteredImages";
 import FormProfessional from "../components/FormProfessional/FormProfessional";
 import ModalForm from "../components/ModalForm";
-import Layout from "../components/Layout";
+import Layout from "../components/Layout/Layout";
 import CarouselBanner from "../components/CustomCarousel/CarouselBanner";
 
 // Services

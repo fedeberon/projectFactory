@@ -14,12 +14,15 @@ import {
   Row,
   Dropdown,
   Container,
+  Button,
 } from "reactstrap";
 import Authentication from "./Authentication";
 import { useRouter } from "next/dist/client/router";
 import { useTranslation } from "react-i18next";
 import { useSession } from "next-auth/client";
 import { PersonCircle } from "react-bootstrap-icons";
+
+import RolProfile from "./RolProfile";
 
 const Link = ({ children, href }) => {
   const router = useRouter();
@@ -116,10 +119,14 @@ export default function Header() {
           <Row className="justify-content-center align-items-center">
             <Col>
               <Dropdown isOpen={dropdownOpen} toggle={toggle2}>
-                <DropdownToggle color="light" caret>
-                  {session?.user?.name}
-                  <PersonCircle className="ms-1" size={25} />
-                </DropdownToggle>
+                {session && (
+                  <>
+                    <DropdownToggle color="light" caret>
+                      {session?.user?.name}
+                      <PersonCircle className="ms-1" size={25} />
+                    </DropdownToggle>
+                  </>
+                )}
                 <DropdownMenu right>
                   {isRole("ROLE_USER") && (
                     <>
@@ -129,7 +136,10 @@ export default function Header() {
                       <DropdownItem divider />
                     </>
                   )}
-                  <pre>{JSON.stringify(session?.authorities, null, 2)}</pre>
+                  <DropdownItem>
+                    <RolProfile />
+                  </DropdownItem>
+                  <DropdownItem divider />
                   {isRole("ROLE_PROFESSIONAL") && (
                     <>
                       <DropdownItem>
@@ -139,12 +149,17 @@ export default function Header() {
                     </>
                   )}
                   <DropdownItem>
-                    <Authentication />
+                  <Authentication className="mx-1" />
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </Col>
           </Row>
+          {!session && <Authentication className="mx-1" />}
+          {!session && 
+          <Button className="mx-1" color="warning" href="/SignIn">
+            {t("Sign in")}
+          </Button>}
         </Collapse>
       </Container>
     </Navbar>

@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import Layout from "../../components/Layout";
+import Layout from "../../components/Layout/Layout";
 
 const MagazineDetail = () => {
   const { t, lang } = useTranslation("common");

@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 
 // Components
 import ModalForm from "../components/ModalForm";
+import RolProfile from "./RolProfile";
 import FormProfessional from "../components/FormProfessional/FormProfessional";
 
 const ProfileData = (props) => {
@@ -21,10 +22,6 @@ const ProfileData = (props) => {
   const { onBecomeProfessional, error, setError, data } = props;
 
   const toggleModal = () => setModalOpen(!modalOpen);
-
-  const authorities = session?.authorities.map((authoritie) => {
-    return <ListGroupItem key={authoritie}>{authoritie}</ListGroupItem>;
-  });
 
   return (
     <Container>
@@ -48,7 +45,8 @@ const ProfileData = (props) => {
                 <h3>{t("Email")}</h3>
                 <ListGroupItem>{session.user.email}</ListGroupItem>
                 <h3>{t("Authorities")}</h3>
-                {authorities}
+                {/* {authorities} */}
+                <ListGroupItem><RolProfile/></ListGroupItem>
               </ListGroup>
             </Col>
           </Row>

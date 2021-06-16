@@ -5,7 +5,7 @@ import SeeProject from "../../components/SeeProject";
 import * as projectService from "../../services/projectService";
 import * as imageService from "../../services/imageService";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import Layout from "../../components/Layout";
+import Layout from "../../components/Layout/Layout";
 
 const ProjectDetail = ({ data }) => {
   const [session, loading] = useSession();

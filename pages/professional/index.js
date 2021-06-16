@@ -7,7 +7,10 @@ import { Button, Card, CardBody, CardDeck, CardImg, CardText, Col, Row } from "r
 import { useDispatch, useSelector } from "react-redux";
 
 // Components
-import Layout from "../../components/Layout";
+import FormProfessional from "../../components/FormProfessional/FormProfessional";
+import ModalForm from "../../components/ModalForm";
+import Layout from "../../components/Layout/Layout";
+
 
 // Services
 import * as professionalService from "../../services/professionalService";
