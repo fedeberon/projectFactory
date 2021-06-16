@@ -16,6 +16,7 @@ import {
   getProfessionalForApproved,
   setEnebleProfessional,
 } from "../../services/professionalService";
+import * as imageService from "../../services/imageService";
 
 const Admin = ({
   professionalNotApproved,
@@ -68,6 +69,33 @@ const Admin = ({
     );
   };
 
+   /**
+   * Component button that accept all images of one professional.
+   * @param {*} professionalId String necessary to identify the profesisonal
+   * in acceptImages
+   * @returns A button armed with the functionality to change the state to Id.
+   */
+  const buttonAcceptImages = (professionalId) => {
+    return (
+      <Button
+        outline
+        color={"success"}
+        onClick={ async () => changeStateImages(professionalId, true) }
+      >
+        <CheckCircle size={25} /> {t("AcceptImages")}
+      </Button>
+    );
+  };
+
+  const changeStateImages = async (id, approved) => {
+    await imageService.changeStateImagesByProfessionalId(id, approved, session.accessToken);
+    pendingTab();
+    approvedTab();
+    disapprovedTab();
+    alert(t("ImagesAccepted"))
+  };
+
+
   /**
    * Funtionality to buttonAcept and buttonReject components
    * to change the status of a professional in a tabs pending, approved and
@@ -110,6 +138,7 @@ const Admin = ({
     const professionalsList = getList(professionals, [
       (professionalId) => buttonAccept(professionalId),
       (professionalId) => buttonReject(professionalId),
+      (professionalId) => buttonAcceptImages(professionalId),
     ]);
     setProfessionalListNotAppoved(professionalsList);
   };
@@ -121,6 +150,7 @@ const Admin = ({
     const professionals = await getProfessional("APPROVED");
     const professionalsList = getList(professionals, [
       (professionalId) => buttonReject(professionalId),
+      (professionalId) => buttonAcceptImages(professionalId),
     ]);
     setProfessionalListAppoved(professionalsList);
   };
@@ -180,8 +210,8 @@ const Admin = ({
               />
             </figure>
           </td>
-          <td>{professional.firstName}</td>
-          <td>{professional.lastName}</td>
+          <td>{professional.contact}</td>
+          <td>{professional.company.name}</td>
           <td>{professional.email}</td>
           <td>
             {buttons.map((button, index) => {
@@ -203,11 +233,12 @@ const Admin = ({
       const professionalList = getList(professionalNotApproved, [
         (professionalId) => buttonAccept(professionalId),
         (professionalId) => buttonReject(professionalId),
+        (professionalId) => buttonAcceptImages(professionalId),
       ]);
       setProfessionalListNotAppoved(professionalList);
     }
   }, [professionalNotApproved]);
-
+  
   /**
    * This is for when using the SSR and loading the tableAdmin component properly
    * with the list of approved proffesional.
@@ -216,11 +247,12 @@ const Admin = ({
     if (professionalApproved) {
       const professionalList = getList(professionalApproved, [
         (professionalId) => buttonReject(professionalId),
+        (professionalId) => buttonAcceptImages(professionalId),
       ]);
       setProfessionalListAppoved(professionalList);
     }
   }, [professionalApproved]);
-
+  
   /**
    * This is for when using the SSR and loading the tableAdmin component properly
    * with the list of disapproved proffesional.

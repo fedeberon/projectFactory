@@ -64,3 +64,8 @@ export const findCarouselImages = async () => {
     });
     return images;
 };
+
+export const changeStateImagesByProfessionalId = async (professionalId, approved, token) => {
+    API.defaults.headers.common["Authorization"] = token;
+    await API.put(`/images/professionals/${professionalId}/approved/${approved}`);
+};

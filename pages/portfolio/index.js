@@ -68,7 +68,8 @@ const Portfolio = ({ professionalId, page, size }) => {
         </div>
         <div className={indexStyles.imagesDiv}>
           <div className="text-center">
-            <h1>{`${professional.firstName} ${professional.lastName}`}</h1>
+            <h1>{`${professional.contact}`}</h1>
+            <h1>{`${professional.company?.name}`}</h1>
           </div>
           <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
             {images}

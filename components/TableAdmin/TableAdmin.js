@@ -12,8 +12,8 @@ const TableAdmin = ({ professionalList, title }) => {
         <tr className="text-center">
           <th>#</th>
           <th>{t("Image")}</th>
-          <th>{t("FirstName")}</th>
-          <th>{t("LastName")}</th>
+          <th>{t("Contact")}</th>
+          <th>{t("Company")}</th>
           <th>{t("Email")}</th>
           <th>{t("Actions")}</th>
         </tr>
