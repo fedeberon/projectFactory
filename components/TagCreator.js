@@ -37,7 +37,7 @@ const TagCreator = ({ tags, setTags }) => {
   return (
     <>
       {session?.authorities?.includes("ROLE_ADMINISTRATOR") && (
-        <button onClick={toggle}>{t("AddTag")}</button>
+        <Button onClick={toggle}>{t("AddTag")}</Button>
       )}
 
       <ModalForm
@@ -45,11 +45,12 @@ const TagCreator = ({ tags, setTags }) => {
         modalTitle={t("AddTag")}
         formBody={
           <>
+            <h6>{t("PleaseSelectTag")}</h6>
             <label>{t("AddTag")}</label>
             <br></br>
             <input id="input-tag"/>
             <br></br>
-            <button onClick={onAddTag}>{t("AddTag")}</button>
+            <Button className="my-3" onClick={onAddTag}>{t("AddTag")}</Button>
           </>
         }
         modalOpen={{ open: modalTag, function: setModalTag }}
