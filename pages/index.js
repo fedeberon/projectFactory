@@ -8,7 +8,7 @@ import { Button, Col, Row } from "reactstrap";
 // Components
 import FilterList from "../components/FilterList/FilterList";
 import FilteredImages from "../components/FilteredImages/FilteredImages";
-import FormProfessional from "../components/FormProfessional";
+import FormProfessional from "../components/FormProfessional/FormProfessional";
 import ModalForm from "../components/ModalForm";
 import Layout from "../components/Layout";
 import CarouselBanner from "../components/CustomCarousel/CarouselBanner";
