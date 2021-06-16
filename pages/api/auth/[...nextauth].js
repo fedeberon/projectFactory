@@ -1,7 +1,12 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import { signInCallBack } from "../../../services/userService";
+import jwt_decode from "jwt-decode";
 
+const PREFIX = "Bearer ";
+const AUTHORITIES = "authorities";
+const ID = "jti";
+const USERNAME = "sub";
 /**
  * This implement is on site:
  * URL: https://next-auth.js.org/
@@ -34,12 +39,10 @@ export default NextAuth({
      *                           Return `string` to redirect to (eg.: "/unauthorized")
      */
     async signIn(user, account, profile) {
-      if (account.accessToken == null || account.accessToken == undefined)
-        account.accessToken = "";
-      if (user.name == null || user.name == undefined)
-        user.name = "";
-      if (user.email == null || user.email == undefined)
-        user.email = "";
+      if (account.provider === 'instagram') {
+        user.email = `${profile.username}@gmail.com`;
+      }
+      
       const token = await signInCallBack(user, account, profile);
       user.token = token;
 
@@ -71,6 +74,11 @@ export default NextAuth({
     async session(session, token) {
       // Add property to session, like an access_token from a provider.
       session.accessToken = token.accessToken;
+      const tokenWithoutPrefix = token.accessToken.split(PREFIX)[1];
+      const payload = jwt_decode(tokenWithoutPrefix);
+      session.authorities = payload[AUTHORITIES];
+      session.user.id = payload[ID];
+      session.user.username = payload[USERNAME];
       return session;
     },
   },

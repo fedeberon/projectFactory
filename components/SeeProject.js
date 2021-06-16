@@ -19,7 +19,6 @@ import {
 } from "reactstrap";
 import CarouselProject from "./CarouselProject";
 
-
 const SeeProject = ({ project, onEditProject }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { t, lang } = useTranslation("common");
@@ -39,6 +38,11 @@ const SeeProject = ({ project, onEditProject }) => {
   };
 
   useEffect(() => {}, [project]);
+
+  const projectsOfProfessionalList = project?.projectsOfProfessional?.map( project => {
+
+    return <img key={project.previewImage} src={project.previewImage}/>;
+  });
 
   return (
     <>
@@ -65,7 +69,7 @@ const SeeProject = ({ project, onEditProject }) => {
                     <Row>
                       <Col>
                         <Label>{t("ProfessionalFirstName")}:</Label>
-                        <p>{project.professional?.firstName}</p>
+                        <p>{project.professional?.contact}</p>
                       </Col>
                       <Col>
                         <Label>{t("Total Area")}:</Label>
@@ -81,7 +85,7 @@ const SeeProject = ({ project, onEditProject }) => {
                       </Col>
                       <Col>
                         <Label>{t("ProfessionalLastName")}: </Label>
-                        <p>{project.professional?.lastName}</p>
+                        <p>{project.professional?.province}</p>
                       </Col>
                       <Col>
                         <Label>{t("ProfessionalEmail")}:</Label>
@@ -130,10 +134,12 @@ const SeeProject = ({ project, onEditProject }) => {
             <div hidden id="two-factor">
               <FormTwoFactorAuthentication projectId={id} />
             </div>
-            <div>
-              <CarouselProject images={project.images} />
+            <div className="d-flex justify-content-center align-items-center my-3">
+              <Col md={"12"}>
+                <CarouselProject className="w-auto" images={project.images} />
+              </Col>
             </div>
-            <iframe
+            {/* <iframe
               width="560"
               height="315"
               src={`https://www.youtube.com/embed/${project.videoPath}`}
@@ -141,7 +147,9 @@ const SeeProject = ({ project, onEditProject }) => {
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-            ></iframe>{" "}
+            ></iframe> */}
+            <h4>{t("OtherProjectsOfProfessional")}</h4>
+            {projectsOfProfessionalList}
           </Col>
         </Row>
       </Container>

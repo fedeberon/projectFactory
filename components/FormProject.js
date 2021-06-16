@@ -14,8 +14,11 @@ import {
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
-import Dropzone from "./Dropzone";
-import * as youtubeService from '../services/youtubeService';
+import Dropzone from "./Dropzone/Dropzone";
+import * as youtubeService from "../services/youtubeService";
+import InputImages from "../components/InputImages/InputImages";
+import FormTag from "../components/FormTag/FormTag";
+import ModalForm from "../components/ModalForm";
 
 const FormProject = ({ onAddProject, professionals, toggle }) => {
   const [session, loading] = useSession();
@@ -24,6 +27,8 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
   const [previewImage, setPreviewImage] = useState([]);
   const [images, setImages] = useState([]);
   const [file, setFile] = useState([]);
+  const [modalTagOpen, setModalTagOpen] = useState(false);
+  const [currentImageTag, setCurrentImageTag] = useState({});
 
   const { t, lang } = useTranslation("common");
 
@@ -39,8 +44,22 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
     setOptions(professionals);
   }, [professionals]);
 
+  const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
+  const showTagModal = (img) => {
+    setModalTagOpen(true);
+    setCurrentImageTag(img);
+  };
+
   const onSubmit = async (
-    { name, description, totalArea, website, year, professionalsSelected, videoPath },
+    {
+      name,
+      description,
+      totalArea,
+      website,
+      year,
+      professionalsSelected,
+      videoPath,
+    },
     event
   ) => {
     if (youtubeService.isValidVideo(videoPath)) {
@@ -51,9 +70,9 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         totalArea,
         website,
         year,
-        previewImage,
+        previewImage: previewImage[0],
         images,
-        file,
+        file: file[0],
         videoPath,
       };
       let id = professionalsSelected.id;
@@ -61,9 +80,9 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
       event.target.reset();
       toggle();
     } else {
-      setError("videoPath",{
+      setError("videoPath", {
         type: "manual",
-        message: t("InvalidLink")
+        message: t("InvalidLink"),
       });
     }
   };
@@ -71,224 +90,254 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
   return (
     <Container fluid="sm">
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <FormGroup>
-          <Label for="name">{t("Name")}</Label>
-          <Input
-            type="text"
-            id="name"
-            placeholder={t("Write the name here please")}
-            {...register("name", {
-              required: {
-                value: true,
-                message: `${t("Name is required")}`,
-              },
-              minLength: {
-                value: 3,
-                message: `${t("Name cannot be less than 3 character")}`,
-              },
-            })}
-            className={"form-field" + (errors.name ? " has-error" : "")}
-          />
-          {errors.name && (
-            <FormText className="invalid error-label">
-              {errors.name.message}
-            </FormText>
-          )}
-        </FormGroup>
-        <FormGroup>
-          <Label for="description">{t("Description")}</Label>
-          <Input
-            type="text"
-            id="description"
-            placeholder={t("Write the description here please")}
-            {...register("description", {
-              required: {
-                value: true,
-                message: `${t("Description is required")}`,
-              },
-              minLength: {
-                value: 3,
-                message: `${t("Description cannot be less than 3 character")}`,
-              },
-            })}
-            className={"form-field" + (errors.description ? " has-error" : "")}
-          />
-          {errors.description && (
-            <FormText className="error-label">
-              {errors.description.message}
-            </FormText>
-          )}
-        </FormGroup>
-
-        <FormGroup>
-          <Label for="email">{t("Write the website")}</Label>
-          <Input
-            type="email"
-            id="email"
-            placeholder={t("Write the website here please")}
-            {...register("website", {
-              required: { value: true, message: `${t("WebSite is required")}` },
-              minLength: {
-                value: 3,
-                message: `${t("WebSite cannot be less than 3 character")}`,
-              },
-            })}
-            className={"form-field" + (errors.website ? " has-error" : "")}
-          />
-          {errors.website && (
-            <FormText className="error-label">
-              {errors.website.message}
-            </FormText>
-          )}
-        </FormGroup>
-        <Row>
-          <Col xs={6}>
+        <Row className="row-cols-1 row-cols-md-2 g-3">
+          <Col>
             <FormGroup>
-              <Label for="totalArea">{t("Total Area")}</Label>
+              <Label for="name">{t("Name")}</Label>
               <Input
-                type="number"
-                id="totalArea"
-                placeholder={t("Write the Total Area here please")}
-                {...register("totalArea", {
+                type="text"
+                id="name"
+                placeholder={t("Write the name here please")}
+                {...register("name", {
                   required: {
                     value: true,
-                    message: `${t("Total Area is required")}`,
+                    message: `${t("Name is required")}`,
+                  },
+                  minLength: {
+                    value: 3,
+                    message: `${t("Name cannot be less than 3 character")}`,
+                  },
+                })}
+                className={"form-field" + (errors.name ? " has-error" : "")}
+              />
+              {errors.name && (
+                <FormText className="invalid error-label">
+                  {errors.name.message}
+                </FormText>
+              )}
+            </FormGroup>
+            <FormGroup>
+              <Label for="description">{t("Description")}</Label>
+              <Input
+                type="text"
+                id="description"
+                placeholder={t("Write the description here please")}
+                {...register("description", {
+                  required: {
+                    value: true,
+                    message: `${t("Description is required")}`,
                   },
                   minLength: {
                     value: 3,
                     message: `${t(
-                      "Total Area cannot be less than 3 character"
+                      "Description cannot be less than 3 character"
                     )}`,
                   },
                 })}
                 className={
-                  "form-field" + (errors.totalArea ? " has-error" : "")
+                  "form-field" + (errors.description ? " has-error" : "")
                 }
               />
-              {errors.totalArea && (
+              {errors.description && (
                 <FormText className="error-label">
-                  {errors.totalArea.message}
+                  {errors.description.message}
                 </FormText>
               )}
             </FormGroup>
-          </Col>
-          <Col xs={6}>
+
             <FormGroup>
-              <Label for="year">{t("Year")}</Label>
+              <Label for="email">{t("Write the website")}</Label>
               <Input
-                type="number"
-                id="year"
-                placeholder={t("Write the Year here please")}
-                {...register("year", {
+                type="email"
+                id="email"
+                placeholder={t("Write the website here please")}
+                {...register("website", {
                   required: {
                     value: true,
-                    message: `${t("Year is required")}`,
+                    message: `${t("WebSite is required")}`,
                   },
                   minLength: {
                     value: 3,
-                    message: `${t("Year cannot be less than 3 character")}`,
+                    message: `${t("WebSite cannot be less than 3 character")}`,
                   },
                 })}
-                className={"form-field" + (errors.year ? " has-error" : "")}
+                className={"form-field" + (errors.website ? " has-error" : "")}
               />
-              {errors.year && (
+              {errors.website && (
                 <FormText className="error-label">
-                  {errors.year.message}
+                  {errors.website.message}
+                </FormText>
+              )}
+            </FormGroup>
+            <Row>
+              <Col xs={6}>
+                <FormGroup>
+                  <Label for="totalArea">{t("Total Area")}</Label>
+                  <Input
+                    type="number"
+                    id="totalArea"
+                    placeholder={t("Write the Total Area here please")}
+                    {...register("totalArea", {
+                      required: {
+                        value: true,
+                        message: `${t("Total Area is required")}`,
+                      },
+                      minLength: {
+                        value: 3,
+                        message: `${t(
+                          "Total Area cannot be less than 3 character"
+                        )}`,
+                      },
+                    })}
+                    className={
+                      "form-field" + (errors.totalArea ? " has-error" : "")
+                    }
+                  />
+                  {errors.totalArea && (
+                    <FormText className="error-label">
+                      {errors.totalArea.message}
+                    </FormText>
+                  )}
+                </FormGroup>
+              </Col>
+              <Col xs={6}>
+                <FormGroup>
+                  <Label for="year">{t("Year")}</Label>
+                  <Input
+                    type="number"
+                    id="year"
+                    placeholder={t("Write the Year here please")}
+                    {...register("year", {
+                      required: {
+                        value: true,
+                        message: `${t("Year is required")}`,
+                      },
+                      minLength: {
+                        value: 3,
+                        message: `${t("Year cannot be less than 3 character")}`,
+                      },
+                    })}
+                    className={"form-field" + (errors.year ? " has-error" : "")}
+                  />
+                  {errors.year && (
+                    <FormText className="error-label">
+                      {errors.year.message}
+                    </FormText>
+                  )}
+                </FormGroup>
+              </Col>
+            </Row>
+
+            <FormGroup>
+              <Label for="videoPath">{t("WriteVideoPath")}</Label>
+              <Input
+                type="text"
+                name="videoPath"
+                id="videoPath"
+                placeholder={t("WriteVideoPathPlease")}
+                {...register("videoPath", {
+                  required: {
+                    value: true,
+                    message: `${t("VideoPathIsRequired")}`,
+                  },
+                  minLength: {
+                    value: 3,
+                    message: `${t("VideoPathInvalid")}`,
+                  },
+                })}
+                className={
+                  "form-field" + (errors.videoPath ? " has-error" : "")
+                }
+              />
+              {errors.videoPath && (
+                <FormText className="error-label">
+                  {errors.videoPath.message}
+                </FormText>
+              )}
+            </FormGroup>
+
+            <FormGroup>
+              <Label for="professionalsSelected">
+                {t("ProfessionalsSelected")}
+              </Label>
+              <Controller
+                name="professionalsSelected"
+                control={control}
+                rules={{
+                  required: {
+                    value: true,
+                    message: `${t("professionalsSelected is required")}`,
+                  },
+                }}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    inputId={"professionalsSelected"}
+                    options={options}
+                    getOptionLabel={(option) => `${option?.contact}`}
+                    getOptionValue={(option) => `${option?.id}`}
+                    isClearable
+                  />
+                )}
+              />
+              {errors.professionalsSelected && (
+                <FormText className="error-label">
+                  {errors.professionalsSelected.message}
                 </FormText>
               )}
             </FormGroup>
           </Col>
+          <Col>
+            <FormGroup>
+              <Label for="filePreview">
+                {t("Select preview image for project")}
+              </Label>
+              <Dropzone
+                newFiles={previewImage}
+                setFile={setPreviewImage}
+                accept={"image/*"}
+                multiple={false}
+                name={"previewImage"}
+              />
+            </FormGroup>
+            <Col>
+              <FormGroup>
+                <Label>{t("Upload Files")}</Label>
+                <br></br>
+                <Dropzone
+                  newFiles={file}
+                  setFile={setFile}
+                  accept={"application/x-zip-compressed, application/zip"}
+                  multiple={false}
+                  name={"file"}
+                />
+              </FormGroup>
+            </Col>
+          </Col>
         </Row>
-        
-        <FormGroup>
-          <Label for="videoPath">{t("WriteVideoPath")}</Label>
-          <Input
-            type="text"
-            name="videoPath"
-            id="videoPath"
-            placeholder={t("WriteVideoPathPlease")}
-            {...register("videoPath", {
-              required: { value: true, message: `${t("VideoPathIsRequired")}` },
-              minLength: {
-                value: 3,
-                message: `${t("VideoPathInvalid")}`,
-              },
-            })}
-            className={"form-field" + (errors.videoPath ? " has-error" : "")}
-          />
-          {errors.videoPath && (
-            <FormText className="error-label">
-              {errors.videoPath.message}
-            </FormText>
-          )}
-        </FormGroup>
 
         <FormGroup>
-          <Controller
-            name="professionalsSelected"
-            control={control}
-            rules={{
-              required: {
-                value: true,
-                message: `${t("professionalsSelected is required")}`,
-              },
-            }}
-            render={({ field }) => (
-              <Select
-                {...field}
-                inputId={"professionalsSelected"}
-                options={options}
-                getOptionLabel={(option) =>
-                  `${option?.firstName} ${option?.lastName}`
-                }
-                getOptionValue={(option) => `${option?.id}`}
-                isClearable
-              />
-            )}
-          />
-          {errors.professionalsSelected && (
-            <FormText className="error-label">
-              {errors.professionalsSelected.message}
-            </FormText>
-          )}
-        </FormGroup>
-        <FormGroup>
-          <Label for="filePreview">
-            {t("Select preview image for project")}
-          </Label>
-          <Dropzone
-            newFiles={previewImage}
-            setFile={setPreviewImage}
-            accept={"image/*"}
-            multiple={false}
-            name={"previewImage"}
-          />
-        </FormGroup>
-        <FormGroup>
           <Label for="uploadFiles">{t("Upload images")}</Label>
-          <Dropzone
-            newFiles={images}
-            setFile={setImages}
+          <InputImages
             accept={"image/*"}
             multiple={true}
-            name={"images"}
+            imagesEdited={setImages}
+            withTags={true}
+            onAdd={showTagModal}
           />
         </FormGroup>
-        <FormGroup>
-          <Label>{t("Upload Files")}</Label>
-          <br></br>
-          <Dropzone
-            newFiles={file}
-            setFile={setFile}
-            accept={"application/x-zip-compressed, application/zip"}
-            multiple={false}
-            name={"file"}
-          />
-        </FormGroup>
+
         <Button type="submit" color="primary mt-1">
           {t("Send")}
         </Button>
       </Form>
+
+      <ModalForm
+        className={"Button"}
+        modalTitle={t("AddTags")}
+        formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}
+        modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
+      />
     </Container>
   );
 };

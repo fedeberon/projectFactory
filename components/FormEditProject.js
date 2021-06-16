@@ -12,8 +12,8 @@ import {
   Row,
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
-import InputImages from "../components/InputImages";
-import Dropzone from "../components/Dropzone";
+import InputImages from "../components/InputImages/InputImages";
+import Dropzone from "../components/Dropzone/Dropzone";
 import * as youtubeService from "../services/youtubeService";
 
 const FormEditProject = ({ project, onEdit, toggle }) => {
@@ -276,6 +276,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           </Label>
           <br></br>
           <Dropzone
+            newFiles={previewImage}
             setFile={setPreviewImage}
             accept={"image/*"}
             multiple={false}
@@ -286,10 +287,10 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           <Label for="uploadFiles">{t("Upload images")}</Label>
           <br></br>
           <InputImages
-            setImages={setImages}
             images={images}
             accept={"image/*"}
             multiple={true}
+            withTags={true}
             imagesEdited={setImagesEdited}
           />
         </FormGroup>

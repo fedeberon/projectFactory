@@ -5,18 +5,31 @@ import {
   CarouselControl,
   CarouselIndicators,
   CarouselCaption,
+  Button,
 } from "reactstrap";
+import ModalImage from "./ModalImage/ModalImage";
+
 
 const CarouselProject = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [slides, setSlides] = useState([]);
+  const [modalImage, showModalImage] = useState(false);
+  const [selectImage, setSelectImage] = useState("");
 
-  const { images } = props;
+  const { images, imageOpen } = props;
+
+  const toggle = () => {
+    showModalImage(!modalImage);
+  };
+
+  const verImagen = (event) => {
+    setSelectImage(event.target.src);
+    toggle();
+  }
 
   useEffect(() => {
     if (images) {
-      console.log(images);
       const imagesCarousel = images.map((item, index) => {
         return (
           <CarouselItem
@@ -28,6 +41,7 @@ const CarouselProject = (props) => {
               className="img-fluid w-100 h-100"
               src={item.path}
               alt={item.name}
+              onClick={(event)=>{verImagen(event)}}
             />
             <CarouselCaption captionText={""} captionHeader={""} />
           </CarouselItem>
@@ -56,24 +70,27 @@ const CarouselProject = (props) => {
   };
 
   return (
-    <Carousel activeIndex={activeIndex} next={next} previous={previous}>
-      <CarouselIndicators
-        items={slides}
-        activeIndex={activeIndex}
-        onClickHandler={goToIndex}
-      />
-      {slides}
-      <CarouselControl
-        direction="prev"
-        directionText="Previous"
-        onClickHandler={previous}
-      />
-      <CarouselControl
-        direction="next"
-        directionText="Next"
-        onClickHandler={next}
-      />
-    </Carousel>
+    <>
+      <ModalImage toggle={toggle} isOpen={modalImage} selectImage={selectImage} className={"modal-fullscreen-xxl-down"+" bg-transparent"} />
+      <Carousel activeIndex={activeIndex} next={next} previous={previous}>
+        <CarouselIndicators
+          items={slides}
+          activeIndex={activeIndex}
+          onClickHandler={goToIndex}
+        />
+        {slides}
+        <CarouselControl
+          direction="prev"
+          directionText="Previous"
+          onClickHandler={previous}
+        />
+        <CarouselControl
+          direction="next"
+          directionText="Next"
+          onClickHandler={next}
+        />
+      </Carousel>
+    </>
   );
 };
 

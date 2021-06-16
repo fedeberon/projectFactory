@@ -2,6 +2,7 @@ import React, { useMemo, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { CloudArrowUp } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
+import inputStyles from "./InputImages.module.css";
 
 const baseStyle = {
   flex: 1,
@@ -31,26 +32,41 @@ const rejectStyle = {
 };
 
 function InputImages(props) {
-  const { setImages, images, accept, multiple, imagesEdited } = props;
+  const {
+    images, // Current images in the input
+    accept, // Type of images in the input
+    multiple, // False if accept only one image or true if accept more than one
+    imagesEdited, // Function to set new images
+    onAdd, // Function on click to add button
+    withTags, // Boolean, true to show button add tags or false to hidde the button of tags
+  } = props;
   const [files, setFiles] = useState([]);
   const { t, lang } = useTranslation("common");
   useEffect(
     () => () => {
       // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach((file) => URL.revokeObjectURL(file.preview));
+      files.forEach((file) => {
+        if (file.remove)
+          URL.revokeObjectURL(file.preview)
+      });
     },
     [files]
   );
 
   useEffect(() => {
-    const currentImages = Array.from(images);
-    currentImages.forEach((img) => {
-      img.preview = img.path;
-      img.added = true;
-      img.remove = false;
-    });
-    setFiles(currentImages);
-    imagesEdited(currentImages);
+    if (images) {
+      const currentImages = Array.from(images);
+      currentImages.forEach((img) => {
+        img.preview = img.path;
+        img.added = true;
+        img.remove = false;
+        if (withTags && img.tags === undefined) {
+          img.tags = [];
+        }
+      });
+      setFiles(currentImages);
+      imagesEdited(currentImages);
+    }
   }, [images]);
 
   const {
@@ -69,6 +85,10 @@ function InputImages(props) {
           added: false,
           remove: false,
         });
+
+        if (withTags) {
+          Object.assign(file, { tags: [] });
+        }
       });
       const newFiles = files.concat(acceptedFiles);
       setFiles(newFiles);
@@ -108,55 +128,30 @@ function InputImages(props) {
   const thumbs = files
     .filter((file) => !file.remove)
     .map((file, index) => (
-      <div
-        style={{
-          position: "relative",
-          display: "inline-flex",
-          borderRadius: 2,
-          border: "1px solid #eaeaea",
-          marginBottom: 8,
-          marginRight: 8,
-          width: 100,
-          height: 100,
-          padding: 4,
-          boxSizing: "border-box",
-        }}
-        key={index}
-      >
-        <div
-          style={{
-            display: "flex",
-            minWidth: 0,
-            overflow: "hidden",
-          }}
-        >
-          <img
-            src={file.preview}
-            style={{
-              display: "block",
-              width: "auto",
-              height: "100%",
-            }}
-          />
+      <div key={index} className={inputStyles.container}>
+        <div className={inputStyles.divImg}>
+          <img src={file.preview} className={inputStyles.img} />
         </div>
 
         <button
-          style={{
-            position: "absolute",
-            right: 10,
-            bottom: 10,
-            background: "rgba(0,0,0,.8)",
-            color: "#fff",
-            border: 0,
-            borderRadius: ".325em",
-            cursor: "pointer",
-          }}
+          className={inputStyles.buttonClose}
           onClick={(event) => {
             event.preventDefault();
             removeImage(file);
           }}
         >
-          {t("remove")}
+          X
+        </button>
+
+        <button
+          className={inputStyles.buttonAdd}
+          onClick={(event) => {
+            event.preventDefault();
+            onAdd(file);
+          }}
+        >
+          {withTags && t("AddTags")}
+          {!withTags && t("AddTitle")}
         </button>
       </div>
     ));
@@ -166,18 +161,9 @@ function InputImages(props) {
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <CloudArrowUp size={45} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>{`${t("DragAndDropSomeFilesHereOrClickToSelectFiles")}`}</p>
       </div>
-      <aside
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          marginTop: 16,
-        }}
-      >
-        {thumbs}
-      </aside>
+      <aside className={inputStyles.aside}>{thumbs}</aside>
     </section>
   );
 }
