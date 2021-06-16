@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import InputImages from "../components/InputImages/InputImages";
-import Dropzone from "../components/Dropzone";
+import Dropzone from "../components/Dropzone/Dropzone";
 import * as youtubeService from "../services/youtubeService";
 
 const FormEditProject = ({ project, onEdit, toggle }) => {
@@ -276,6 +276,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           </Label>
           <br></br>
           <Dropzone
+            newFiles={previewImage}
             setFile={setPreviewImage}
             accept={"image/*"}
             multiple={false}

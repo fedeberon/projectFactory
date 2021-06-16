@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { ListGroupItem, ListGroup, Container, Row, Col } from "reactstrap";
-import { getSession, useSession } from "next-auth/client";
+import React, { useState } from "react";
+import {
+  ListGroupItem,
+  ListGroup,
+  Container,
+  Row,
+  Col,
+  Button,
+} from "reactstrap";
+import { useSession } from "next-auth/client";
 import { useTranslation } from "react-i18next";
 
 // Components
 import ModalForm from "../components/ModalForm";
-import FormProfessional from "../components/FormProfessional";
+import FormProfessional from "../components/FormProfessional/FormProfessional";
 
 const ProfileData = (props) => {
   const [session] = useSession();
   const [modalOpen, setModalOpen] = useState(false);
   const { t, lang } = useTranslation("common");
-  const { onBecomeProfessional, error, setError } = props;
+  const { onBecomeProfessional, error, setError, data } = props;
 
   const toggleModal = () => setModalOpen(!modalOpen);
 
@@ -23,20 +30,26 @@ const ProfileData = (props) => {
     <Container>
       {session ? (
         <>
-          <button onClick={toggleModal}>{t("becomeProfessional")}</button>
-          <Row>
+          <Row className="row-cols-1 g-2">
+            <Col>
+              <Button color="primary" onClick={toggleModal}>
+                {t("becomeProfessional")}
+              </Button>
+            </Col>
             <Col>
               <img src={session.user.image}></img>
             </Col>
+            <Col>
+              <ListGroup>
+                <h3>{t("Name")}</h3>
+                <ListGroupItem>{session.user.name}</ListGroupItem>
+                <h3>{t("Email")}</h3>
+                <ListGroupItem>{session.user.email}</ListGroupItem>
+                <h3>{t("Authorities")}</h3>
+                {authorities}
+              </ListGroup>
+            </Col>
           </Row>
-          <ListGroup>
-            <h3>{t("Name")}</h3>
-            <ListGroupItem>{session.user.name}</ListGroupItem>
-            <h3>{t("Email")}</h3>
-            <ListGroupItem>{session.user.email}</ListGroupItem>
-            <h3>{t("Authorities")}</h3>
-            {authorities}
-          </ListGroup>
         </>
       ) : (
         <h1>{t("Without session")}</h1>
@@ -51,6 +64,7 @@ const ProfileData = (props) => {
             toggle={toggleModal}
             error={error}
             setError={setError}
+            data={data}
           />
         }
         modalOpen={{ open: modalOpen, function: setModalOpen }}
