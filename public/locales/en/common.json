@@ -102,6 +102,9 @@
     "User": "User",
     "Portfolio" : "My portfolio",
     "becomeProfessional" : "Become in a professional",
+    "AddCompany" : "Add company",
+    "CompanyName" : "Company name",
+    "CompanyLogo" : "Company logo",
     "AddCarouselImage" : "Add carousel image",
     "PleaseSelectCarouselImages" : "Please select one or more images to add in carousel",
     "Images" : "Images",
@@ -151,5 +154,8 @@
     "DragAndDropSomeFilesHereOrClickToSelectFiles":"Drag 'n' drop some files here, or click to select files",
     "LocationOfTheCompany": "Location of the company",
     "ProfessionalProfile": "Professional profile",
-    "AllRightsReserved": "All rights reserved"
+    "AllRightsReserved": "All rights reserved",
+    "SelectLogo" : "Select logo please",
+    "SelectCategoriesPlease" : "Select categories please",
+    "AddCategory" : "Add category"
 }

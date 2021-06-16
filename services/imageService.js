@@ -57,6 +57,13 @@ export const getProfessionalImages = async (id, page, size, token) => {
     return images;
 };
 
+export const uploadCompanyPreview = async (companyId, image, token) => {
+    API.defaults.headers.common["Authorization"] = token;
+    const imageData = new FormData();
+    imageData.append("image", image);
+    await API.post(`/images/companies/${companyId}/preview`, imageData);
+}
+
 export const findCarouselImages = async () => {
     let images = await API.get(`/images/carousel`);
     images.forEach( image => {
