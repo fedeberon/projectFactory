@@ -4,7 +4,7 @@ export const signInCallBack = async (user, account, profile) => {
   const data = {
     name: user.name,
     email: user.email,
-    provider: account.provider,
+    provider: account.provider.toUpperCase(),
     accessToken: account.accessToken,
     idToken: account.idToken,
     image: user.image,

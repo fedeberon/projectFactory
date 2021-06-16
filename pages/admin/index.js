@@ -210,8 +210,8 @@ const Admin = ({
               />
             </figure>
           </td>
-          <td>{professional.firstName}</td>
-          <td>{professional.lastName}</td>
+          <td>{professional.contact}</td>
+          <td>{professional.company.name}</td>
           <td>{professional.email}</td>
           <td>
             {buttons.map((button, index) => {

@@ -32,14 +32,14 @@ const rejectStyle = {
 };
 
 function InputImages(props) {
-  const { 
-    images,       // Current images in the input
-    accept,       // Type of images in the input
-    multiple,     // False if accept only one image or true if accept more than one
+  const {
+    images, // Current images in the input
+    accept, // Type of images in the input
+    multiple, // False if accept only one image or true if accept more than one
     imagesEdited, // Function to set new images
-    onAdd,        // Function on click to add button
-    withTags      // Boolean, true to show button add tags or false to hidde the button of tags
-   } = props;
+    onAdd, // Function on click to add button
+    withTags, // Boolean, true to show button add tags or false to hidde the button of tags
+  } = props;
   const [files, setFiles] = useState([]);
   const { t, lang } = useTranslation("common");
   useEffect(
@@ -80,11 +80,11 @@ function InputImages(props) {
         Object.assign(file, {
           preview: URL.createObjectURL(file),
           added: false,
-          remove: false
+          remove: false,
         });
 
         if (withTags) {
-          Object.assign(file, { tags : [] });
+          Object.assign(file, { tags: [] });
         }
       });
       const newFiles = files.concat(acceptedFiles);
@@ -126,12 +126,12 @@ function InputImages(props) {
     .filter((file) => !file.remove)
     .map((file, index) => (
       <div key={index} className={inputStyles.container}>
-
         <div className={inputStyles.divImg}>
-          <img src={file.preview} className={inputStyles.img}/>
+          <img src={file.preview} className={inputStyles.img} />
         </div>
-        
-        <button className={inputStyles.buttonClose}
+
+        <button
+          className={inputStyles.buttonClose}
           onClick={(event) => {
             event.preventDefault();
             removeImage(file);
@@ -139,16 +139,16 @@ function InputImages(props) {
         >
           X
         </button>
-        
-        
-        <button className={inputStyles.buttonAdd}
+
+        <button
+          className={inputStyles.buttonAdd}
           onClick={(event) => {
             event.preventDefault();
             onAdd(file);
           }}
         >
-          {withTags  && t("AddTags")  }
-          {!withTags && t("AddTitle") }
+          {withTags && t("AddTags")}
+          {!withTags && t("AddTitle")}
         </button>
       </div>
     ));
@@ -158,13 +158,9 @@ function InputImages(props) {
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <CloudArrowUp size={45} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>{`${t("DragAndDropSomeFilesHereOrClickToSelectFiles")}`}</p>
       </div>
-      <aside
-        className={inputStyles.aside}
-      >
-        {thumbs}
-      </aside>
+      <aside className={inputStyles.aside}>{thumbs}</aside>
     </section>
   );
 }
