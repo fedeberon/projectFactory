@@ -32,9 +32,11 @@ const ProfileData = (props) => {
         <>
           <Row className="row-cols-1 g-2">
             <Col>
-              <Button color="primary" onClick={toggleModal}>
-                {t("becomeProfessional")}
-              </Button>
+              {!session.authorities.includes("ROLE_PROFESSIONAL") &&
+                <Button color="primary" onClick={toggleModal}>
+                  {t("becomeProfessional")}
+                </Button>
+              }
             </Col>
             <Col>
               <img src={session.user.image}></img>
