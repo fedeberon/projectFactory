@@ -47,7 +47,7 @@ const CarouselImageCreator = () => {
   return (
     <>
       {session?.authorities?.includes("ROLE_ADMINISTRATOR") && (
-        <Button onClick={toggle}>{t("AddCarouselImage")}</Button>
+        <button onClick={toggle}>{t("AddCarouselImage")}</button>
       )}
 
       <ModalForm
@@ -64,7 +64,7 @@ const CarouselImageCreator = () => {
               withTags={false}
               onAdd={showModalTitle}
             />
-            <Button onClick={onAddImages}>{t("AddImages")}</Button>
+            <button onClick={onAddImages}>{t("AddImages")}</button>
           </>
         }
         modalOpen={{ open: modalAddImages, function: setModalAddImages }}

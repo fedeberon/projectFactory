@@ -136,26 +136,31 @@ const Home = ({ filters, carouselImages }) => {
 
   return (
     <Layout title={`${t("WelcomeTo")} ${process.env.NEXT_PUBLIC_PROJECT_NAME}`}>
+      {session && (
+        <Button
+          className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"
+          color="danger"
+          onClick={toggleModal}
+        >
+          +
+        </Button>
+      )}
+      <CarouselImageCreator/>
       <ModalForm
         modalTitle={t("FORM PROFESSIONAL")}
         className={"Button mt-50"}
         formBody={
           <FormProfessional
-          onAddProfessional={onAddProfessional}
-          toggle={toggleModal}
-          error={error}
-          setError={setError}
+            onAddProfessional={onAddProfessional}
+            toggle={toggleModal}
+            error={error}
+            setError={setError}
           />
         }
         modalOpen={{ open: modalOpen, function: setModalOpen }}
       />
       <CarouselBanner images={carouselImages}/>
-      <div className="my-4 d-flex">
-        <CarouselImageCreator/>
-        <div className="mx-4">
-          <AdministratorCreator />
-        </div>
-      </div>
+      <AdministratorCreator/>
       <Row>
         <Col xs={12} md={3} xl={2}>
           <aside>

@@ -23,9 +23,7 @@ const ProfileData = (props) => {
     <Container>
       {session ? (
         <>
-        {!session.authorities.includes("ROLE_PROFESSIONAL") &&
           <button onClick={toggleModal}>{t("becomeProfessional")}</button>
-        }
           <Row>
             <Col>
               <img src={session.user.image}></img>
