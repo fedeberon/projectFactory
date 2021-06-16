@@ -7,8 +7,6 @@ import { Button, Card, CardBody, CardDeck, CardImg, CardText, Col, Row } from "r
 import { useDispatch, useSelector } from "react-redux";
 
 // Components
-import FormProfessional from "../../components/FormProfessional";
-import ModalForm from "../../components/ModalForm";
 import Layout from "../../components/Layout";
 
 // Services
@@ -22,7 +20,6 @@ import indexStyles from "./index.module.css";
 
 const Professional = ({ data }) => {
   const [session] = useSession();
-  const [modalOpen, setModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
   
@@ -32,8 +29,6 @@ const Professional = ({ data }) => {
   );
 
   const { t, lang } = useTranslation("common");
-
-  
 
   useEffect(() => {
     dispatch(professionalActions.store(data));
@@ -133,13 +128,19 @@ const Professional = ({ data }) => {
                   />
                   <CardBody>
                     <CardText>
-                      {t("FirstName")}: {professional.firstName}
+                      {t("Contact")}: {professional.contact}
                     </CardText>
                     <CardText>
-                      {t("LastName")}: {professional.lastName}
+                      {t("Company")}: {professional.company.name}
                     </CardText>
                     <CardText>
                       {t("Email")}: {professional.email}
+                    </CardText>
+                    <CardText>
+                      {t("Province")}: {professional.province}
+                    </CardText>
+                    <CardText>
+                      {t("Location")}: {professional.location}
                     </CardText>
                   </CardBody>
                 </Card>

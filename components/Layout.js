@@ -4,9 +4,11 @@ import Header from "./Header";
 import PropTypes from "prop-types";
 import NProgress from "nprogress";
 import nProgress from "nprogress";
+import { useTranslation } from "next-i18next";
 
 const Layout = ({ children, title, footer = true }) => {
   const router = useRouter();
+  const { t, lang } = useTranslation("common");
 
   useEffect(() => {
     const handleRouteChange = (url) => {
@@ -40,7 +42,7 @@ const Layout = ({ children, title, footer = true }) => {
           <div className="container p-4">
             <h1>&copy; La Fabrica de Proyectos</h1>
             <p>2021 - {new Date().getFullYear()}</p>
-            <p>All rights Reserved.</p>
+            <p>{t("AllRightsReserved")}.</p>
           </div>
         </footer>
       )}
