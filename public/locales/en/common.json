@@ -157,5 +157,6 @@
     "AllRightsReserved": "All rights reserved",
     "SelectLogo" : "Select logo please",
     "SelectCategoriesPlease" : "Select categories please",
-    "AddCategory" : "Add category"
+    "AddCategory" : "Add category",
+    "TagsRequired" : "Please put tags into images"
 }
