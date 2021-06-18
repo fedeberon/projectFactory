@@ -17,6 +17,7 @@ import ModalForm from "../ModalForm";
 import FormTag from "../FormTag/FormTag";
 import Error from "../Error";
 import Select from "react-select";
+import { session, useSession } from "next-auth/client";
 
 const FormProfessional = ({
   onAddProfessional,
@@ -35,13 +36,19 @@ const FormProfessional = ({
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [optionSelect, setOptionSelect] = useState(true);
   const [companySelected, setCompanySelected] = useState({});
+  const [session] = useSession();
 
   const {
     control,
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      email: session.user.email,
+      contact: session.user.name,
+    },
+  });
 
   const onSubmit = async (
     {
@@ -68,7 +75,7 @@ const FormProfessional = ({
       backgroundImage: backgroundImage[0],
       images,
       province,
-      location
+      location,
     };
     const professional = await onAddProfessional(data);
 
@@ -149,12 +156,10 @@ const FormProfessional = ({
                 </FormGroup>
                 <FormGroup>
                   <Label for="contact">{t("Contact")}</Label>
-                  <Input
-                    type="text"
+                  <Controller
                     name="contact"
-                    id="contact"
-                    placeholder={t("WriteTheContactHerePlease")}
-                    {...register("contact", {
+                    control={control}
+                    rules={{
                       required: {
                         value: true,
                         message: `${t("ContactIsRequired")}`,
@@ -163,10 +168,20 @@ const FormProfessional = ({
                         value: 3,
                         message: `${t("ContactCannotBeLessThan3Character")}`,
                       },
-                    })}
-                    className={
-                      "form-field" + (errors.contact ? " has-error" : "")
-                    }
+                    }}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        type="text"
+                        name="contact"
+                        id="contact"
+                        placeholder={t("WriteTheContactHerePlease")}
+                        className={
+                          "form-field" + (errors.contact ? " has-error" : "")
+                        }
+                      />
+                    )}
                   />
                   {errors.contact && (
                     <FormText className="invalid error-label">
@@ -176,12 +191,10 @@ const FormProfessional = ({
                 </FormGroup>
                 <FormGroup>
                   <Label for="email">{t("ContactEmail")}</Label>
-                  <Input
-                    type="email"
+                  <Controller
                     name="email"
-                    id="email"
-                    placeholder={t("WriteTheEmailHerePlease")}
-                    {...register("email", {
+                    control={control}
+                    rules={{
                       required: {
                         value: true,
                         message: `${t("EmailIsRequired")}`,
@@ -190,10 +203,20 @@ const FormProfessional = ({
                         value: 3,
                         message: `${t("EmailCannotBeLessThan3Character")}`,
                       },
-                    })}
-                    className={
-                      "form-field" + (errors.email ? " has-error" : "")
-                    }
+                    }}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        type="email"
+                        id="email"
+                        id="email"
+                        placeholder={t("WriteTheEmailHerePlease")}
+                        className={
+                          "form-field" + (errors.email ? " has-error" : "")
+                        }
+                      />
+                    )}
                   />
                   {errors.email && (
                     <FormText className="error-label">
