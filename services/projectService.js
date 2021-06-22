@@ -58,14 +58,28 @@ export const addPreviewImage = async (image, projectId, token) => {
 };
 
 export const addImages = async (images, projectId, token) => {
-  API.defaults.headers.common["Authorization"] = token;
-  
-  images.forEach(async (image) => {
-    const imageData = new FormData();
-    const tags = tagService.getTags(image.tags);
-    imageData.append("imageFile", image);
-    imageData.append("tags", tags);
-    await API.post(`/images/projects/${projectId}`, imageData);
+  await addImagesRecursive(Array.from(images), projectId, token);
+};
+
+export const addImagesRecursive = async (images, projectId, token) => {
+  const image = images.shift();
+  const response = await addImage(image, projectId, token);
+  if (response && images.length > 0) {
+    await addImagesRecursive(images, projectId, token);
+  }
+};
+
+export const addImage = async (image, projectId, token) => {
+  const imageData = new FormData();
+  const tags = tagService.getTags(image.tags);
+  imageData.append("imageFile", image);
+  imageData.append("tags", tags);
+  image.uploading = true;
+  return await API.post(`/images/projects/${projectId}`, imageData, {
+    onUploadProgress: progressEvent => {
+      const progress = Math.round(progressEvent.loaded / progressEvent.total * 100);
+      image.setProgress(progress);
+    }
   });
 };
 
