@@ -7,7 +7,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
 
 // Components
-import Layout from "../../components/Layout";
+import Layout from "../../components/Layout/Layout";
 import Tabs from "../../components/Tabs/Tabs";
 import TableAdmin from "../../components/TableAdmin/TableAdmin";
 

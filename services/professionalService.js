@@ -67,13 +67,25 @@ export const addImage = async (image, token) => {
   const imageData = new FormData();
   imageData.append("image", image);
   imageData.append("tags", tags);
-  return await API.post(`/images/professionals`, imageData);
+  image.uploading = true;
+  return await API.post(`/images/professionals`, imageData, {
+    onUploadProgress: progressEvent => {
+      const progress = Math.round(progressEvent.loaded / progressEvent.total * 100);
+      image.setProgress(progress);
+    }
+  });
 };
 
 export const addImages = async (images, token) => {
-  images.forEach(async (image) => {
-    await addImage(image, token);
-  });
+  await addImagesRecursive(Array.from(images), token);
+};
+
+const addImagesRecursive = async (images, token) => {
+  const image = images.shift();
+  const response = await addImage(image, token);
+  if (response && images.length > 0) {
+    await addImagesRecursive(images, token);
+  }
 };
 
 export const addBackgroundImage = async (image, token) => {

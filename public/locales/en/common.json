@@ -158,5 +158,6 @@
     "SelectLogo" : "Select logo please",
     "SelectCategoriesPlease" : "Select categories please",
     "AddCategory" : "Add category",
-    "Link" : "Link"
+    "Link" : "Link",
+    "TagsRequired" : "Please put tags into images"
 }
