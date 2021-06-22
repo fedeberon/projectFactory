@@ -37,10 +37,10 @@ const CarouselImageCreator = () => {
   };
 
   const onAddTitle = (image) => {
-    const title = document.querySelector("#input-title").value;
-    const subTitle = document.querySelector("#input-subTitle").value;
-    image.title = title;
-    image.subTitle = subTitle;
+    image.title = document.querySelector("#input-title").value;
+    image.subTitle = document.querySelector("#input-subTitle").value;
+    image.link = document.querySelector("#input-link").value;
+    
     setModalAddTitle(false);
   };
 
@@ -81,13 +81,16 @@ const CarouselImageCreator = () => {
               alt="image-selected"
             ></img>
             <FormGroup>
-              <Label for="title">{t("Title")}</Label>
+              <Label for="input-title">{t("Title")}</Label>
               <br></br>
-              <input id="input-title" />
+              <Input id="input-title" />
               <br></br>
-              <Label for="subTitle">{t("SubTitle")}</Label>
+              <Label for="input-subTitle">{t("SubTitle")}</Label>
               <br></br>
-              <input id="input-subTitle" />
+              <Input id="input-subTitle" />
+              <Label for="input-link">{t("Link")}</Label>
+              <br></br>
+              <Input id="input-link" />
             </FormGroup>
 
             <Button
