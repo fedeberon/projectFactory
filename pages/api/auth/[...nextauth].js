@@ -27,12 +27,10 @@ export default NextAuth({
       clientSecret: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_SECRET,
     }),
     Providers.Credentials({
-      name: "Email",
-      credentials: {
-        username:{ label: "Email", type: "text", placeholder: "ingrese su email"},
-        password:{ label: "Password", type: "Password", placeholder: "ingrese su contraseña"},
-      },
-      async authorize (credentials) {}
+      name: 'credentials',
+      async authorize(credentials) {
+        return credentials;
+      }
     }),
     // ...add more providers here
   ],
@@ -51,10 +49,14 @@ export default NextAuth({
         user.email = `${profile.username}@gmail.com`;
       }
 
-      const token = await signInCallBack(user, account, profile);
-      user.token = token;
-
-      return !!token;
+      if (account.type != 'credentials') {
+        const token = await signInCallBack(user, account, profile);
+        user.token = token;
+        return !!token;
+      } else {
+        user.token = user.accessToken;
+        return user.accessToken;
+      }
     },
 
     /**

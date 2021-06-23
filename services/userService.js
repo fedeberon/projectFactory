@@ -20,6 +20,11 @@ export const login = async (username, password) => {
   };
   
   const { token } = await API.post(`/users/login`, data);
+  signIn('credentials', { 
+    accessToken: token,
+    name: username,
+    callbackUrl: `${window.location.origin}/`
+   });
   return token;
 };
 
@@ -32,14 +37,19 @@ export const getById = async (userId) => {
   return await API.get(`/users/${userId}`);
 };
 
-export const add = async (username, password, session) => {
+export const add = async (username, password) => {
   const data = {
     username,
     password,
   };
   
-  API.defaults.headers.common["Authorization"] = session.accessToken;
   const { token } = await API.post(`/users/register`, data);
+  
+  signIn('credentials', { 
+    accessToken: token,
+    name: username,
+    callbackUrl: `${window.location.origin}/`
+   });
   return token;
 };
 
