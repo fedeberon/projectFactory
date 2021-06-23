@@ -26,6 +26,14 @@ export default NextAuth({
       clientId: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID,
       clientSecret: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_SECRET,
     }),
+    Providers.Credentials({
+      name: "Email",
+      credentials: {
+        username:{ label: "Email", type: "text", placeholder: "ingrese su email"},
+        password:{ label: "Password", type: "Password", placeholder: "ingrese su contraseña"},
+      },
+      async authorize (credentials) {}
+    }),
     // ...add more providers here
   ],
 
@@ -39,10 +47,10 @@ export default NextAuth({
      *                           Return `string` to redirect to (eg.: "/unauthorized")
      */
     async signIn(user, account, profile) {
-      if (account.provider === 'instagram') {
+      if (account.provider === "instagram") {
         user.email = `${profile.username}@gmail.com`;
       }
-      
+
       const token = await signInCallBack(user, account, profile);
       user.token = token;
 

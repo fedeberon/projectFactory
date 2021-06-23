@@ -19,7 +19,7 @@ import {
 import Authentication from "./Authentication";
 import { useRouter } from "next/dist/client/router";
 import { useTranslation } from "react-i18next";
-import { useSession } from "next-auth/client";
+import { signOut, useSession } from "next-auth/client";
 import { PersonCircle } from "react-bootstrap-icons";
 
 import RolProfile from "./RolProfile";
@@ -59,16 +59,16 @@ export default function Header() {
   };
 
   return (
-    <Navbar color="light" light expand="lg">
+    <Navbar color="white" light expand="lg">
       <Container fluid="xl">
-        <Link href="/"> {t("Home")}</Link>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={dropdown} navbar>
-          <Nav className="w-100" navbar>
+          <Nav
+            className="w-100 justify-content-center align-items-center"
+            navbar
+          >
             <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                {t("Professional")}
-              </DropdownToggle>
+              <DropdownToggle nav caret>{t("Professional")}</DropdownToggle>
               <DropdownMenu>
                 <DropdownItem>
                   <Link href="/professional">{t("Professional")}</Link>
@@ -116,50 +116,6 @@ export default function Header() {
               </NavItem>
             )}
           </Nav>
-          <Row className="justify-content-center align-items-center">
-            <Col>
-              <Dropdown isOpen={dropdownOpen} toggle={toggle2}>
-                {session && (
-                  <>
-                    <DropdownToggle color="light" caret>
-                      {session?.user?.name}
-                      <PersonCircle className="ms-1" size={25} />
-                    </DropdownToggle>
-                  </>
-                )}
-                <DropdownMenu right>
-                  {isRole("ROLE_USER") && (
-                    <>
-                      <DropdownItem>
-                        <Link href="/profile">{t("Profile")}</Link>
-                      </DropdownItem>
-                      <DropdownItem divider />
-                    </>
-                  )}
-                  <DropdownItem>
-                    <RolProfile />
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  {isRole("ROLE_PROFESSIONAL") && (
-                    <>
-                      <DropdownItem>
-                        <Link href="/portfolio">{t("Portfolio")}</Link>
-                      </DropdownItem>
-                      <DropdownItem divider />
-                    </>
-                  )}
-                  <DropdownItem>
-                  <Authentication className="mx-1" />
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </Col>
-          </Row>
-          {!session && <Authentication className="mx-1" />}
-          {!session && 
-          <Button className="mx-1" color="warning" href="/SignIn">
-            {t("Sign in")}
-          </Button>}
         </Collapse>
       </Container>
     </Navbar>
