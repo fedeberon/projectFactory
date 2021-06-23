@@ -1,0 +1,12 @@
+.flag {
+  height: 36px;
+}
+
+.flag:hover {
+  transform: scale(0.7);
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}

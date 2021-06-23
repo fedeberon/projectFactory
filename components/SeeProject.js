@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ModalForm from "./ModalForm";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import FormEditProject from "../components/FormEditProject";
 import { useRouter } from "next/router";
 import FormBuyProject from "../components/FormBuyProject";
@@ -21,7 +21,7 @@ import CarouselProject from "./CarouselProject";
 
 const SeeProject = ({ project, onEditProject }) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
   const router = useRouter();
   const { id } = router.query;
 
@@ -48,7 +48,7 @@ const SeeProject = ({ project, onEditProject }) => {
     <>
       <ModalForm
         className={"Button"}
-        modalTitle={t("Edit project")}
+        modalTitle={t("project-edit")}
         formBody={
           <FormEditProject
             project={project}
@@ -68,27 +68,23 @@ const SeeProject = ({ project, onEditProject }) => {
                   <div id="project-data">
                     <Row>
                       <Col>
-                        <Label>{t("ProfessionalFirstName")}:</Label>
-                        <p>{project.professional?.firstName}</p>
+                        <Label>{t("professional-contact")}:</Label>
+                        <p>{project.professional?.contact}</p>
                       </Col>
                       <Col>
-                        <Label>{t("Total Area")}:</Label>
+                        <Label>{t("total-area")}:</Label>
                         <p>{project.totalArea}</p>
                       </Col>
                       <Col>
-                        <Label>{t("Year")}:</Label>
+                        <Label>{t("year")}:</Label>
                         <p>{project.year}</p>
                       </Col>
                       <Col>
-                        <Label>{t("WebSite")}:</Label>
+                        <Label>{t("web-site")}:</Label>
                         <p>{project.website}</p>
                       </Col>
                       <Col>
-                        <Label>{t("ProfessionalLastName")}: </Label>
-                        <p>{project.professional?.lastName}</p>
-                      </Col>
-                      <Col>
-                        <Label>{t("ProfessionalEmail")}:</Label>
+                        <Label>{t("professional-email")}:</Label>
                         <p>{project.professional?.email}</p>
                       </Col>
                     </Row>
@@ -111,12 +107,12 @@ const SeeProject = ({ project, onEditProject }) => {
                     id="btn-show-buy-project"
                     onClick={showBuyProject}
                   >
-                    {t("BuyProject")}
+                    {t("buy-project")}
                   </Button>
                 )}
                 {project.purchased && (
                   <Button color={"primary"} id="btn-show-2FA" onClick={show2FA}>
-                    {t("DownloadProject")}
+                    {t("download-project")}
                   </Button>
                 )}
                 <Button
@@ -124,7 +120,7 @@ const SeeProject = ({ project, onEditProject }) => {
                   color={"warning"}
                   onClick={toggleModal}
                 >
-                  {t("Edit project")}
+                  {t("project-edit")}
                 </Button>
               </Col>
             </Row>
@@ -148,7 +144,7 @@ const SeeProject = ({ project, onEditProject }) => {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe> */}
-            <h4>{t("OtherProjectsOfProfessional")}</h4>
+            <h4>{t("other-projects-of-professional")}</h4>
             {projectsOfProfessionalList}
           </Col>
         </Row>

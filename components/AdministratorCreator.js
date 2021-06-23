@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import ModalForm from "./ModalForm";
 import Autosuggest from "react-autosuggest";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import * as userService from "../services/userService";
 import autosuggestStyles from "./FormTag/Autosuggest.module.css";
 
@@ -24,7 +24,7 @@ const AdministratorCreator = () => {
   const [modalAdministrator, setModalAdministrator] = useState(false);
   const [session] = useSession();
   const [administratorSelected, setAdministratorSelected] = useState({});
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
   const [tags, setTags] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [value, setValue] = useState("");
@@ -75,7 +75,7 @@ const AdministratorCreator = () => {
 
   // Autosuggest will pass through all these props to the input.
   const inputProps = {
-    placeholder: t("InsertUsername"),
+    placeholder: t("administrator-creator.insert-username"),
     value,
     onChange: onChange,
   };
@@ -92,16 +92,20 @@ const AdministratorCreator = () => {
   return (
     <>
       {session?.authorities?.includes("ROLE_ADMINISTRATOR") && (
-        <Button onClick={toggle}>{t("AddAdministrator")}</Button>
+        <Button onClick={toggle}>
+          {t("administrator-creator.add-administrator")}
+        </Button>
       )}
 
       <ModalForm
         className={"Button"}
-        modalTitle={t("AddAdministrator")}
+        modalTitle={t("administrator-creator.add-administrator")}
         formBody={
           <>
-            <h6>{t("PleaseSelectAdministrator")}</h6>
-            <Label for="administrator">{t("Username")}</Label>
+            <h6>{t("administrator-creator.please-select-administrator")}</h6>
+            <Label for="administrator">
+              {t("administrator-creator.username")}
+            </Label>
 
             <Autosuggest
               suggestions={suggestions}
@@ -115,7 +119,7 @@ const AdministratorCreator = () => {
             />
 
             <Button className="my-4" onClick={onAddAdministrator}>
-              {t("AddAdministrator")}
+              {t("administrator-creator.add-administrator")}
             </Button>
           </>
         }

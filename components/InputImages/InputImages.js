@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { CloudArrowUp } from "react-bootstrap-icons";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import inputStyles from "./InputImages.module.css";
 
 const baseStyle = {
@@ -41,7 +41,7 @@ function InputImages(props) {
     withTags, // Boolean, true to show button add tags or false to hidde the button of tags
   } = props;
   const [files, setFiles] = useState([]);
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
   useEffect(
     () => () => {
       // Make sure to revoke the data uris to avoid memory leaks
@@ -150,8 +150,8 @@ function InputImages(props) {
             onAdd(file);
           }}
         >
-          {withTags && t("AddTags")}
-          {!withTags && t("AddTitle")}
+          {withTags && t("add-tags")}
+          {!withTags && t("add-title")}
         </button>
       </div>
     ));
@@ -161,7 +161,7 @@ function InputImages(props) {
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <CloudArrowUp size={45} />
-        <p>{`${t("DragAndDropSomeFilesHereOrClickToSelectFiles")}`}</p>
+        <p>{`${t("drag-and-drop-some-files-here-or-click-to-select-files")}`}</p>
       </div>
       <aside className={inputStyles.aside}>{thumbs}</aside>
     </section>

@@ -1,6 +1,6 @@
 // frameworks
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import { getSession, useSession } from "next-auth/client";
 import {
   CardDeck,
@@ -13,8 +13,6 @@ import {
   CardBody,
   CardFooter,
 } from "reactstrap";
-
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -45,7 +43,7 @@ const Project = ({ data, professionals, filters }) => {
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [showProjects, setShowProjects] = useState(true);
 
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   const onAddProject = async (data, id) => {
     setLoading(true);
@@ -100,7 +98,7 @@ const Project = ({ data, professionals, filters }) => {
   }
 
   return (
-    <Layout title={t("Project")}>
+    <Layout title={t("project")}>
       {session && (
         <Button
           className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"
@@ -112,7 +110,7 @@ const Project = ({ data, professionals, filters }) => {
       )}
       <ModalForm
         className={"Button"}
-        modalTitle={t("FORM PROJECT")}
+        modalTitle={t("form-project")}
         formBody={
           <FormProject
             onAddProject={onAddProject}
@@ -125,7 +123,7 @@ const Project = ({ data, professionals, filters }) => {
 
       <Row className="row-cols-md-3 g-4">
         {isLoading ? (
-          <h1>{t("Loading")}...</h1>
+          <h1>{t("loading")}...</h1>
         ) : (
           projects.map((project) => (
             <Col key={project.id}>
@@ -139,19 +137,19 @@ const Project = ({ data, professionals, filters }) => {
                   />
                   <CardBody>
                     <CardText>
-                      {t("Name")}: {project.name}
+                      {t("name")}: {project.name}
                     </CardText>
                     <CardText>
-                      {t("Description")}: {project.description}
+                      {t("description")}: {project.description}
                     </CardText>
                     <CardText>
-                      {t("Total Area")}: {project.totalArea}
+                      {t("total-area")}: {project.totalArea}
                     </CardText>
                     <CardText>
-                      {t("Year")}: {project.year}
+                      {t("year")}: {project.year}
                     </CardText>
                     <CardText>
-                      {t("WebSite")}: {project.website}
+                      {t("web-site")}: {project.website}
                     </CardText>
                   </CardBody>
                   <CardFooter className="d-flex justify-content-end">
@@ -160,7 +158,7 @@ const Project = ({ data, professionals, filters }) => {
                       as={`/project/${project.name}-ID-${project.id}`}
                       passHref
                     >
-                      <Button color={"primary"}>{t("Ver más")}</Button>
+                      <Button color={"primary"}>{t("view-more")}</Button>
                     </Link>
                   </CardFooter>
                 </Card>
@@ -198,7 +196,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common"])),
+      // ...(await serverSideTranslations(locale, ["common"])),
       data: projects,
       professionals: response,
       filters : filters,

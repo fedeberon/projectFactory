@@ -12,7 +12,7 @@ import {
   Row,
 } from "reactstrap";
 import ModalForm from "./ModalForm";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import InputImages from "./InputImages/InputImages";
 import * as imageService from "../services/imageService";
 
@@ -47,16 +47,18 @@ const CarouselImageCreator = () => {
   return (
     <>
       {session?.authorities?.includes("ROLE_ADMINISTRATOR") && (
-        <Button onClick={toggle}>{t("AddCarouselImage")}</Button>
+        <Button onClick={toggle}>
+          {t("carousel-image-creator.add-carousel-image")}
+        </Button>
       )}
 
       <ModalForm
         className={"Button"}
-        modalTitle={t("AddCarouselImage")}
+        modalTitle={t("carousel-image-creator.add-carousel-image")}
         formBody={
           <>
-            <h6>{t("PleaseSelectCarouselImages")}</h6>
-            <label>{t("Images")}</label>
+            <h6>{t("carousel-image-creator.please-select-carousel-images")}</h6>
+            <label>{t("carousel-image-creator.images")}</label>
             <InputImages
               accept={"image/*"}
               multiple={true}
@@ -64,7 +66,9 @@ const CarouselImageCreator = () => {
               withTags={false}
               onAdd={showModalTitle}
             />
-            <Button onClick={onAddImages}>{t("AddImages")}</Button>
+            <Button onClick={onAddImages}>
+              {t("carousel-image-creator.add-images")}
+            </Button>
           </>
         }
         modalOpen={{ open: modalAddImages, function: setModalAddImages }}
@@ -72,7 +76,7 @@ const CarouselImageCreator = () => {
 
       <ModalForm
         className={"Button"}
-        modalTitle={t("AddTitle")}
+        modalTitle={t("add-title")}
         formBody={
           <Container fluid="sm">
             <img
@@ -81,11 +85,13 @@ const CarouselImageCreator = () => {
               alt="image-selected"
             ></img>
             <FormGroup>
-              <Label for="title">{t("Title")}</Label>
+              <Label for="title">{t("carousel-image-creator.title")}</Label>
               <br></br>
               <input id="input-title" />
               <br></br>
-              <Label for="subTitle">{t("SubTitle")}</Label>
+              <Label for="subTitle">
+                {t("carousel-image-creator.sub-title")}
+              </Label>
               <br></br>
               <input id="input-subTitle" />
             </FormGroup>
@@ -94,7 +100,7 @@ const CarouselImageCreator = () => {
               onClick={() => onAddTitle(currentImage)}
               color="primary mt-1"
             >
-              {t("AddTitle")}
+              {t("add-title")}
             </Button>
           </Container>
         }

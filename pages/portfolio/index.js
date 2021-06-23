@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { professionalActions } from "../../store";
 import { getSession, useSession } from "next-auth/client";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "react-i18next";
-import Header from "../../components/Header";
+import useTranslation from "next-translate/useTranslation";
+import Layout from "../../components/Layout/Layout";
 import {
   Card,
-  CardBody,
   CardDeck,
   CardImg,
-  CardText,
   Col,
   Row,
 } from "reactstrap";
@@ -19,11 +15,10 @@ import * as professionalService from "../../services/professionalService";
 
 // Styles
 import indexStyles from "./index.module.css";
-import { Container } from "next/app";
 
 const Portfolio = ({ professionalId, page, size }) => {
   const [session] = useSession();
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
   const [professional, setProfessional] = useState({});
 
   useEffect(async () => {
@@ -54,28 +49,27 @@ const Portfolio = ({ professionalId, page, size }) => {
   ));
 
   return (
-    <Container fluid>
-      <Header lang={lang} />
+    <Layout>
+      <img
+        src={professional.backgroundImage}
+        className={indexStyles.backgroundImg}
+      ></img>
+      <div className={indexStyles.previewDiv}>
         <img
-          src={professional.backgroundImage}
-          className={indexStyles.backgroundImg}
+          src={professional.previewImage}
+          className={indexStyles.previewImg}
         ></img>
-        <div className={indexStyles.previewDiv}>
-          <img
-            src={professional.previewImage}
-            className={indexStyles.previewImg}
-          ></img>
+      </div>
+      <div className={indexStyles.imagesDiv}>
+        <div className="text-center">
+          <h1>{`${professional.contact}`}</h1>
+          <h1>{`${professional.company?.name}`}</h1>
         </div>
-        <div className={indexStyles.imagesDiv}>
-          <div className="text-center">
-            <h1>{`${professional.contact}`}</h1>
-            <h1>{`${professional.company?.name}`}</h1>
-          </div>
-          <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
-            {images}
-          </Row>
-        </div>
-    </Container>
+        <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
+          {images}
+        </Row>
+      </div>
+    </Layout>
   );
 };
 
@@ -101,7 +95,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common"])),
       professionalId,
       page,
       size,

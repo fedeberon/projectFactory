@@ -1,5 +1,5 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import {
   Card,
   CardBody,
@@ -12,7 +12,7 @@ import {
 import filteredImagesStyles from "./FilteredImages.module.css";
 
 const FilteredImages = ({ isLoading, images }) => {
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   return (
     <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
@@ -20,19 +20,29 @@ const FilteredImages = ({ isLoading, images }) => {
         <h1>{t("Loading")}...</h1>
       ) : (
         images.map((image, index) => (
-          <Col key={index}>
+          <Col key={index} className={`${filteredImagesStyles.colCard}`}>
             <CardDeck>
               <Card>
-                <CardImg
-                  className="img-fluid"
-                  top
-                  src={image.path}
-                  alt="Professional preview"
-                />
-                <CardBody>
-                  <CardText>
-                    {`${image.entity.firstName} ${image.entity.lastName}`}{" "}
-                  </CardText>
+                <CardBody className="p-0">
+                  <CardImg
+                    className={`${filteredImagesStyles.cardImage}`}
+                    top
+                    src={image.path}
+                    alt="Professional preview"
+                  />
+                  <div className={`${filteredImagesStyles.cardText}`}>
+                    <Col className="col-3">
+                      <img
+                        className={`${filteredImagesStyles.imgProfile} rounded-circle`}
+                        src={image.previewImage}
+                      />
+                    </Col>
+                    <Col className={`col-9`}>
+                      <CardText
+                        className={`${filteredImagesStyles.textShadowSm} fw-bold`}
+                      >{`${image.entity.contact}`}</CardText>
+                    </Col>
+                  </div>
                 </CardBody>
               </Card>
             </CardDeck>

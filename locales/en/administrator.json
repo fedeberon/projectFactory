@@ -1,0 +1,11 @@
+{
+  "pending": "Pending",
+  "approved": "Approved",
+  "disapproved": "Disapproved",
+  
+  "accept": "Accept",
+  "reject": "Reject",
+  "list-of": "List of",
+  "accept-images": "Accept images",
+  "images-accepted": "Images accepted"
+}

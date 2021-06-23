@@ -2,17 +2,9 @@ import React, { useState } from "react";
 import { useSession } from "next-auth/client";
 import {
   Button,
-  Col,
-  Container,
-  Form,
-  FormGroup,
-  FormText,
-  Input,
-  Label,
-  Row,
 } from "reactstrap";
 import ModalForm from "../ModalForm";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import * as companyService from "../../services/companyService";
 import companyCreatorStyles from "./CompanyCreator.module.css";
 import TagList from "../TagList/TagList";
@@ -20,7 +12,7 @@ import TagList from "../TagList/TagList";
 const CompanyCreator = () => {
   const [modalCompany, setModalCompany] = useState(false);
   const [session] = useSession();
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
   const [imageSelected, setImageSelected] = useState({});
   const [imageBlob, setImageBlob] = useState(false);
   const [tagsCategories, setTagsCategories] = useState([]);
@@ -60,32 +52,32 @@ const CompanyCreator = () => {
   return (
     <>
       {session?.authorities?.includes("ROLE_ADMINISTRATOR") && (
-        <Button onClick={toggle}>{t("AddCompany")}</Button>
+        <Button onClick={toggle}>{t("company-creator.add-company")}</Button>
       )}
 
       <ModalForm
         className={"Button"}
-        modalTitle={t("AddCompany")}
+        modalTitle={t("company-creator.add-company")}
         formBody={
           <>
-            <label htmlFor="input-company-name">{t("CompanyName")}</label><br/>
+            <label htmlFor="input-company-name">{t("company-creator.company-name")}</label><br/>
             <input type="text" id="input-company-name"/>
             <br></br>
             {imageBlob && 
               <img className={companyCreatorStyles.img} src={imageBlob}/>
             }<br/>
-            <label>{t("SelectCategoriesPlease")}</label><br/>
+            <label>{t("company-creator.select-categories-please")}</label><br/>
 
-            <input type="text" id="category"/><Button className="mx-4" onClick={AddCategory}>{t("AddCategory")}</Button>
+            <input type="text" id="category"/><Button className="mx-4" onClick={AddCategory}>{t("company-creator.add-category")}</Button>
 
             <div className="my-3">
               <TagList tags={tagsCategories} onDeleteTag={removeTagCategory} />
             </div>
-            <label htmlFor="logo">{t("SelectLogo")}</label><br/>
+            <label htmlFor="logo">{t("company-creator.select-logo")}</label><br/>
             <input type="file" id="logo" onChange={handleChangeImg}/>
             <br></br>
             <div className="my-4">
-              <Button onClick={onAddCompany}>{t("AddCompany")}</Button>
+              <Button onClick={onAddCompany}>{t("company-creator.add-company")}</Button>
             </div>
           </>
         }

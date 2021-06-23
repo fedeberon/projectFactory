@@ -1,16 +1,22 @@
 // Frameworks
 import React, { useEffect, useState } from "react";
 import { getSession, useSession } from "next-auth/client";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "react-i18next";
-import { Button, Card, CardBody, CardDeck, CardImg, CardText, Col, Row } from "reactstrap";
+import useTranslation from "next-translate/useTranslation";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardDeck,
+  CardImg,
+  CardText,
+  Col,
+  Row,
+} from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
+import Image from "next/image";
 
 // Components
-import FormProfessional from "../../components/FormProfessional/FormProfessional";
-import ModalForm from "../../components/ModalForm";
 import Layout from "../../components/Layout/Layout";
-
 
 // Services
 import * as professionalService from "../../services/professionalService";
@@ -25,13 +31,13 @@ const Professional = ({ data }) => {
   const [session] = useSession();
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  
+
   const dispatch = useDispatch();
   const professionals = useSelector((state) =>
     Object.values(state.professionals.items)
   );
 
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("professional");
 
   useEffect(() => {
     dispatch(professionalActions.store(data));
@@ -46,7 +52,7 @@ const Professional = ({ data }) => {
       return professional;
     } catch (error) {
       console.error(error);
-      setError(`${t("EmailIsAlreadyExistPleaseWriteAnotherOne")}`);
+      setError(`${t("email-is-already-exist-please-write-another-one")}`);
       return null;
     }
   };
@@ -114,7 +120,7 @@ const Professional = ({ data }) => {
   };
 
   return (
-    <Layout title={`${t("Professional")}`}>
+    <Layout title={`${t("common:professional")}`}>
       <Row className="row-cols-md-3 g-4">
         {isLoading ? (
           <h1>{t("Loading")}...</h1>
@@ -131,19 +137,19 @@ const Professional = ({ data }) => {
                   />
                   <CardBody>
                     <CardText>
-                      {t("Contact")}: {professional.contact}
+                      {t("common:contact")}: {professional.contact}
                     </CardText>
                     <CardText>
-                      {t("Company")}: {professional.company.name}
+                      {t("common:company")}: {professional.company.name}
                     </CardText>
                     <CardText>
-                      {t("Email")}: {professional.email}
+                      {t("common:email")}: {professional.email}
                     </CardText>
                     <CardText>
-                      {t("Province")}: {professional.province}
+                      {t("common:province")}: {professional.province}
                     </CardText>
                     <CardText>
-                      {t("Location")}: {professional.location}
+                      {t("common:location")}: {professional.location}
                     </CardText>
                   </CardBody>
                 </Card>
@@ -178,7 +184,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common"])),
       data: professionals,
     },
   };

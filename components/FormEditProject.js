@@ -11,7 +11,7 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import InputImages from "../components/InputImages/InputImages";
 import Dropzone from "../components/Dropzone/Dropzone";
 import * as youtubeService from "../services/youtubeService";
@@ -21,7 +21,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
   const [images, setImages] = useState([]);
   const [imagesEdited, setImagesEdited] = useState([]);
 
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   const {
     handleSubmit,
@@ -69,7 +69,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
     } else {
       setError("videoPath",{
         type: "manual",
-        message: t("InvalidLink")
+        message: t("invalid-link")
       });
     }
   };
@@ -79,22 +79,27 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col>
-            <h3 className="form-header">{t("FORM PROJECT")}</h3>
+            <h3 className="form-header">{t("project-edition-form")}</h3>
           </Col>
         </Row>
         <FormGroup>
-          <Label for="name">{t("Name")}</Label>
+          <Label for="name">{t("name")}</Label>
           <Controller
             name="name"
             control={control}
             rules={{
               required: {
                 value: true,
-                message: `${t("Name is required")}`,
+                message: `${t("is-required", {
+                  nameRequired: t("the-name")
+                })}`,
               },
               minLength: {
                 value: 3,
-                message: `${t("Name cannot be less than 3 character")}`,
+                message: `${t("cannot-be-less-than-character", {
+                  nameInput: t("the-name"),
+                  numberCharacters: 3
+                })}`,
               },
             }}
             defaultValue=""
@@ -103,7 +108,9 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 {...field}
                 type="text"
                 id="name"
-                placeholder={t("Write the name here please")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-name").toLowerCase()
+                })}
                 className={"form-field" + (errors.name ? " has-error" : "")}
               />
             )}
@@ -115,18 +122,23 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="description">{t("Description")}</Label>
+          <Label for="description">{t("description")}</Label>
           <Controller
             name="description"
             control={control}
             rules={{
               required: {
                 value: true,
-                message: `${t("Description is required")}`,
+                message: `${t("is-required", {
+                  nameRequired: t("the-description")
+                })}`,
               },
               minLength: {
                 value: 3,
-                message: `${t("Description cannot be less than 3 character")}`,
+                message: `${t("cannot-be-less-than-character", {
+                  nameInput: t("the-description"),
+                  numberCharacters: 3
+                })}`,
               },
             }}
             defaultValue=""
@@ -135,7 +147,9 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 {...field}
                 type="text"
                 id="description"
-                placeholder={t("Write the description here please")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-description").toLowerCase()
+                })}
                 className={
                   "form-field" + (errors.description ? " has-error" : "")
                 }
@@ -149,18 +163,23 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="totalArea">{t("Total Area")}</Label>
+          <Label for="totalArea">{t("total-area")}</Label>
           <Controller
             name="totalArea"
             control={control}
             rules={{
               required: {
                 value: true,
-                message: `${t("Total Area is required")}`,
+                message: `${t("is-required", {
+                  nameRequired: t("the-total-area")
+                })}`,
               },
               minLength: {
                 value: 3,
-                message: `${t("Total Area cannot be less than 3 character")}`,
+                message: `${t("cannot-be-less-than-character", {
+                  nameInput: t("the-total-area"),
+                  numberCharacters: 3
+                })}`,
               },
             }}
             defaultValue=""
@@ -169,7 +188,9 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 {...field}
                 type="number"
                 id="totalArea"
-                placeholder={t("Write the Total Area here please")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-total-area").toLowerCase()
+                })}
                 className={
                   "form-field" + (errors.totalArea ? " has-error" : "")
                 }
@@ -183,15 +204,20 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="email">{t("WebSite")}</Label>
+          <Label for="email">{t("web-site")}</Label>
           <Controller
             name="website"
             control={control}
             rules={{
-              required: { value: true, message: `${t("WebSite is required")}` },
+              required: { value: true, message: `${t("is-required", {
+                nameRequired: t("the-web-site")
+              })}` },
               minLength: {
                 value: 3,
-                message: `${t("WebSite cannot be less than 3 character")}`,
+                message: `${t("cannot-be-less-than-character", {
+                  nameInput: t("the-web-site"),
+                  numberCharacters: 3
+                })}`,
               },
             }}
             defaultValue=""
@@ -200,7 +226,9 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 {...field}
                 type="email"
                 id="email"
-                placeholder={t("Write the website here please")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-web-site").toLowerCase()
+                })}
                 className={"form-field" + (errors.website ? " has-error" : "")}
               />
             )}
@@ -212,15 +240,20 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="year">{t("Year")}</Label>
+          <Label for="year">{t("year")}</Label>
           <Controller
             name="year"
             control={control}
             rules={{
-              required: { value: true, message: `${t("Year is required")}` },
+              required: { value: true, message: `${t("is-required", {
+                nameRequired: t("the-year")
+              })}` },
               minLength: {
                 value: 3,
-                message: `${t("Year cannot be less than 3 character")}`,
+                message: `${t("cannot-be-less-than-character", {
+                  nameInput: t("the-year"),
+                  numberCharacters: 3
+                })}`,
               },
             }}
             defaultValue=""
@@ -229,7 +262,9 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 {...field}
                 type="number"
                 id="year"
-                placeholder={t("Write the Year here please")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-year").toLowerCase()
+                })}
                 className={"form-field" + (errors.year ? " has-error" : "")}
               />
             )}
@@ -239,18 +274,23 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           )}
         </FormGroup>
         <FormGroup>
-        <Label for="videoPath">{t("WriteVideoPath")}</Label>
+        <Label for="videoPath">{t("video-path")}</Label>
           <Controller
             name="videoPath"
             control={control}
             rules={{
               required: {
                 value: true,
-                message: `${t("VideoPathIsRequired")}`,
+                message: `${t("is-required", {
+                  nameRequired: t("the-video-path")
+                })}`,
               },
               minLength: {
                 value: 3,
-                message: `${t("VideoPathInvalid")}`,
+                message: `${t("cannot-be-less-than-character", {
+                  nameInput: t("the-video-path"),
+                  numberCharacters: 3
+                })}`,
               },
             }}
             defaultValue=""
@@ -259,7 +299,9 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 {...field}
                 type="text"
                 id="videoPath"
-                placeholder={t("WriteVideoPathPlease")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-video-path").toLowerCase()
+                })}
                 className={"form-field" + (errors.videoPath ? " has-error" : "")}
               />
             )}
@@ -272,7 +314,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
         </FormGroup>
         <FormGroup>
           <Label for="filePreview">
-            {t("Select preview image for project")}
+            {t("select-preview-image-for-project")}
           </Label>
           <br></br>
           <Dropzone
@@ -284,7 +326,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           />
         </FormGroup>
         <FormGroup>
-          <Label for="uploadFiles">{t("Upload images")}</Label>
+          <Label for="uploadFiles">{t("upload-images")}</Label>
           <br></br>
           <InputImages
             images={images}
@@ -295,7 +337,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           />
         </FormGroup>
         <Button type="submit" color="primary">
-          {t("Send")}
+          {t("send")}
         </Button>
       </Form>
     </Container>

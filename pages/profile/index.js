@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import ProfileData from "../../components/ProfileData";
 import { getSession, useSession } from "next-auth/client";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Layout from "../../components/Layout/Layout";
 
 // Services
@@ -11,7 +10,7 @@ import * as companyService from "../../services/companyService";
 
 const Profile = ({data}) => {
   const [session] = useSession();
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
   const [error, setError] = useState("");
 
   const saveProfessional = async (data, token) => {
@@ -21,7 +20,7 @@ const Profile = ({data}) => {
       return professionalToken;
     } catch (error) {
       console.error(error);
-      setError(`${t("EmailIsAlreadyExistPleaseWriteAnotherOne")}`);
+      setError(`${t("email-is-already-exist-please-write-another-one")}`);
       return null;
     }
   };
@@ -76,7 +75,7 @@ const Profile = ({data}) => {
   };
 
   return (
-    <Layout title={`${t("Profile")}`}>
+    <Layout title={`${t("header.profile")}`}>
       <ProfileData
         onBecomeProfessional={onBecomeProfessional}
         error={error}
@@ -108,7 +107,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common"])),
       data: companies,
     },
   };
