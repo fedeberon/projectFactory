@@ -24,12 +24,14 @@ const CarouselBanner = (props) => {
             onExited={() => setAnimating(false)}
             key={index}
           >
-            <img
-              className={CarouselBannerStyle.images}
-              src={item.path}
-              alt={item.title}
-            />
-            <CarouselCaption captionText={item.title} captionHeader={item.subTitle} />
+            <a href={item.link}>
+              <img
+                className={CarouselBannerStyle.images}
+                src={item.path}
+                alt={item.title}
+              />
+            </a>
+            <CarouselCaption captionText={item.subTitle} captionHeader={item.title} />
           </CarouselItem>
         );
       });

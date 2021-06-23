@@ -155,7 +155,7 @@ const Project = ({ data, professionals, filters }) => {
                   <CardFooter className="d-flex justify-content-end">
                     <Link
                       href={`/project/[id]`}
-                      as={`/project/${project.name}-ID-${project.id}`}
+                      as={`/project/${project.name.replace(/\s+/g, '-')}-${project.id}`}
                       passHref
                     >
                       <Button color={"primary"}>{t("view-more")}</Button>

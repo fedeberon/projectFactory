@@ -15,6 +15,7 @@ import {
 import useTranslation from "next-translate/useTranslation";
 import { signIn } from "next-auth/client";
 import { Google, Facebook, Instagram } from "react-bootstrap-icons";
+import * as userService from "../services/userService";
 
 const SignInForm = (props) => {
   const { t, lang } = useTranslation("common");
@@ -26,11 +27,7 @@ const SignInForm = (props) => {
   } = useForm();
 
   const onSubmit = async ({ name, email, password }, event) => {
-    let data = {
-      name,
-      email,
-      password,
-    };
+    await userService.add(name, password);
   };
 
   return (
@@ -140,9 +137,9 @@ const SignInForm = (props) => {
               <Button color="primary" className="mt-2">{t("sign-in")}</Button>
             </Form>
             <Label for="Registrarse">Registrarse con:</Label>
-            <Button onClick={signIn} color="danger" className="mx-2" size={25}><Google/></Button>
-            <Button onClick={signIn} color="primary" className="mx-2" size={25}><Facebook/></Button>
-            <Button onClick={signIn} color="secondary" className="mx-2" size={25}><Instagram/></Button>
+            <Button onClick={() => signIn("google")} color="danger" className="mx-2" size={25}><Google/></Button>
+            <Button onClick={() => signIn("facebook")} color="primary" className="mx-2" size={25}><Facebook/></Button>
+            <Button onClick={() => signIn("instagram")} color="secondary" className="mx-2" size={25}><Instagram/></Button>
           </CardBody>
         </Card>
       </Col>

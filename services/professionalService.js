@@ -1,4 +1,5 @@
 import API from "./api";
+import { signIn } from "next-auth/client";
 import * as tagService from "./tagService";
 import * as imageService from "./imageService";
 
@@ -67,13 +68,25 @@ export const addImage = async (image, token) => {
   const imageData = new FormData();
   imageData.append("image", image);
   imageData.append("tags", tags);
-  return await API.post(`/images/professionals`, imageData);
+  image.uploading = true;
+  return await API.post(`/images/professionals`, imageData, {
+    onUploadProgress: progressEvent => {
+      const progress = Math.round(progressEvent.loaded / progressEvent.total * 100);
+      image.setProgress(progress);
+    }
+  });
 };
 
 export const addImages = async (images, token) => {
-  images.forEach(async (image) => {
-    await addImage(image, token);
-  });
+  await addImagesRecursive(Array.from(images), token);
+};
+
+const addImagesRecursive = async (images, token) => {
+  const image = images.shift();
+  const response = await addImage(image, token);
+  if (response && images.length > 0) {
+    await addImagesRecursive(images, token);
+  }
 };
 
 export const addBackgroundImage = async (image, token) => {
@@ -86,6 +99,12 @@ export const addBackgroundImage = async (image, token) => {
 export const become = async (professional, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const response = await API.post(`/professionals/become`, professional);
+  signIn('credentials', { 
+    accessToken: response.token,
+    name: professional.contact,
+    email: professional.email,
+    callbackUrl: `${window.location.origin}/profile`
+  });
   return response.token;
 };
 

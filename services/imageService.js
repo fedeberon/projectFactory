@@ -27,6 +27,7 @@ export const addCaroucelImages = async (images, token) => {
         imageData.append('image', image);
         imageData.append('title', image.title);
         imageData.append('subTitle', image.subTitle);
+        imageData.append('link', image.link);
         await API.post(`/images/carousel`, imageData);
     }));
 };

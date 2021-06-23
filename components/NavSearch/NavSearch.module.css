@@ -1,0 +1,19 @@
+.imgProfile {
+  object-fit: cover;
+  width: 40px;
+  height: 40px;
+  position: relative;
+}
+
+.flag {
+  height: 36px;
+}
+
+.flag:hover {
+  transform: scale(0.7);
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Header from "../Header/Header";
+import NavSearch from "../NavSearch/NavSearch";
 import PropTypes from "prop-types";
 import NProgress from "nprogress";
 import nProgress from "nprogress";
@@ -28,11 +29,11 @@ const Layout = ({ children, title, footer = true, header = true }) => {
 
   return (
     <>
-      {header && (
-        <div>
-          <Header />
-        </div>
-      )}
+      {header &&
+      <div>
+        <NavSearch />
+        <Header />
+      </div>}
 
       <main className="container py-4">
         {/* Title */}

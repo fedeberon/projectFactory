@@ -6,7 +6,7 @@ import * as projectService from "../../services/projectService";
 import * as imageService from "../../services/imageService";
 import Layout from "../../components/Layout/Layout";
 
-const ProjectDetail = ({ data }) => {
+const ProjectDetail = ({ data, idSplit }) => {
   const [session, loading] = useSession();
 
   const [project, setProject] = useState({});
@@ -26,7 +26,7 @@ const ProjectDetail = ({ data }) => {
 
   return (
     <Layout title={`${t("project-detail")}`}>
-      <SeeProject project={project} onEditProject={editProject} />
+      <SeeProject project={project} onEditProject={editProject} id={idSplit}/>
     </Layout>
   );
 };
@@ -37,8 +37,8 @@ export async function getServerSideProps({ params, req, res, locale }) {
   const token = session.accessToken;
   let { page, size } = req.__NEXT_INIT_QUERY;
   let { id } = params; // params is necessary in case you reload the page from the url
-  let idSplit = id.split("ID-")[1];
-
+  const split = id.split("-");
+  let idSplit = split[split.length -1];
   if (!page || page <= 0) {
     page = 0;
   }
@@ -64,6 +64,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   return {
     props: {
       data: project,
+      idSplit
     },
   };
 }

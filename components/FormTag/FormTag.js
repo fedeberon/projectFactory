@@ -99,7 +99,12 @@ const FormTag = ({ toggle, image }) => {
     const newTags = Array.from(tags);
     newTags.push(suggestion);
     setTags(newTags);
-    onSuggestionsClearRequested();
+    clearInput();
+  };
+
+  const clearInput = () => {
+    setSuggestions([]);
+    setValue("");
   };
 
   return (
@@ -129,7 +134,7 @@ const FormTag = ({ toggle, image }) => {
           <TagList tags={tags} onDeleteTag={removeTag} />
         </div>
 
-        <Button type="submit" color="primary mt-1">
+        <Button type="submit" disabled={tags.length == 0} color="primary mt-1">
           {t("add-tags")}
         </Button>
       </Form>

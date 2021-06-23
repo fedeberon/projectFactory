@@ -19,11 +19,10 @@ import {
 } from "reactstrap";
 import CarouselProject from "./CarouselProject";
 
-const SeeProject = ({ project, onEditProject }) => {
+const SeeProject = ({ project, onEditProject, id }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { t } = useTranslation("common");
   const router = useRouter();
-  const { id } = router.query;
 
   const toggleModal = () => setModalOpen(!modalOpen);
 
@@ -39,10 +38,11 @@ const SeeProject = ({ project, onEditProject }) => {
 
   useEffect(() => {}, [project]);
 
-  const projectsOfProfessionalList = project?.projectsOfProfessional?.map( project => {
-
-    return <img key={project.previewImage} src={project.previewImage}/>;
-  });
+  const projectsOfProfessionalList = project?.projectsOfProfessional?.map(
+    (project) => {
+      return <img key={project.previewImage} src={project.previewImage} />;
+    }
+  );
 
   return (
     <>
@@ -135,7 +135,7 @@ const SeeProject = ({ project, onEditProject }) => {
                 <CarouselProject className="w-auto" images={project.images} />
               </Col>
             </div>
-            {/* <iframe
+            <iframe
               width="560"
               height="315"
               src={`https://www.youtube.com/embed/${project.videoPath}`}
@@ -143,7 +143,7 @@ const SeeProject = ({ project, onEditProject }) => {
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-            ></iframe> */}
+            ></iframe>
             <h4>{t("other-projects-of-professional")}</h4>
             {projectsOfProfessionalList}
           </Col>

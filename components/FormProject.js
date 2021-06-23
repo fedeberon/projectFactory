@@ -76,7 +76,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         videoPath,
       };
       let id = professionalsSelected.id;
-      onAddProject(data, id);
+      await onAddProject(data, id);
       event.target.reset();
       toggle();
     } else {

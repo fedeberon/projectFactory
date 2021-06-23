@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useMemo, useEffect, useState, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import { CloudArrowUp } from "react-bootstrap-icons";
 import useTranslation from "next-translate/useTranslation";
@@ -41,6 +41,8 @@ function InputImages(props) {
     withTags, // Boolean, true to show button add tags or false to hidde the button of tags
   } = props;
   const [files, setFiles] = useState([]);
+  const spansProgress = useRef([]);
+  spansProgress.current = [];
   const { t } = useTranslation("common");
   useEffect(
     () => () => {
@@ -123,6 +125,28 @@ function InputImages(props) {
     if (file.preview) URL.revokeObjectURL(file.preview);
 
     imagesEdited(newFiles);
+    removeSpanProgress(file.preview);
+  };
+
+  const addSpanProgress = (span, file) => {
+    if (span && !spansProgress.current.includes(span)) {
+      span.setAttribute("name", file.preview);
+      file.setProgress = (progress) => onUpdateProgressFile(progress, span);
+      spansProgress.current.push(span);
+    }
+  };
+
+  const onUpdateProgressFile = (progress, span) => {
+    span.style.setProperty("left", (progress -100) + "%");
+  };
+
+  const removeSpanProgress = (key) => {
+    const spanToRemove = spansProgress.current.filter(span => span.getAttribute("name") === key)[0];
+    const index = spansProgress.current.indexOf(spanToRemove);
+    if (index > -1) {
+      spansProgress.current.splice(index, 1);
+    }
+    return spansProgress.current;
   };
 
   const thumbs = files
@@ -153,6 +177,9 @@ function InputImages(props) {
           {withTags && t("add-tags")}
           {!withTags && t("add-title")}
         </button>
+        <div className={inputStyles.progressBar}>
+          <span ref={(span) => addSpanProgress(span, file)} className={`${inputStyles.spanProgressBar} js-progress`}></span>
+        </div>
       </div>
     ));
 

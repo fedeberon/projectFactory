@@ -56,29 +56,38 @@ const FormProfessional = ({
     },
     event
   ) => {
-    // You should handle login logic with firstName, lastName, email, preview and background images and form data
-    let data = {
-      company: companySelected,
-      category: companyCategory,
-      contact,
-      email,
-      contactLoad,
-      website,
-      previewImage: previewImage[0],
-      backgroundImage: backgroundImage[0],
-      images,
-      province,
-      location,
-    };
-    const professional = await onAddProfessional(data);
-
-    if (professional != null) {
-      setPreviewImage([]);
-      setBackgroundImage([]);
-      event.target.reset();
-      toggle();
-      setError("");
+    if (imagesHasTags()) {
+      // You should handle login logic with firstName, lastName, email, preview and background images and form data
+      let data = {
+        company: companySelected,
+        category: companyCategory,
+        contact,
+        email,
+        contactLoad,
+        website,
+        previewImage: previewImage[0],
+        backgroundImage: backgroundImage[0],
+        images,
+        province,
+        location
+      };
+      const professional = await onAddProfessional(data);
+      
+      if (professional != null) {
+        setPreviewImage([]);
+        setBackgroundImage([]);
+        event.target.reset();
+        toggle();
+        setError("");
+      }
+    } else {
+      setError(t("TagsRequired"));
     }
+  };
+
+  const imagesHasTags = () => {
+    const imagesWithoutTags = images.filter(img => img.tags.length == 0);
+    return imagesWithoutTags.length == 0;
   };
 
   const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
