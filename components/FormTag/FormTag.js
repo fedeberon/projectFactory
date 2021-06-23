@@ -3,16 +3,13 @@ import { useForm, Controller } from "react-hook-form";
 import { useSession } from "next-auth/client";
 import {
   Button,
-  Col,
   Container,
   Form,
   FormGroup,
   FormText,
-  Input,
   Label,
-  Row,
 } from "reactstrap";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import TagList from "../TagList/TagList";
 import Autosuggest from "react-autosuggest";
 import autosuggestStyles from "./Autosuggest.module.css";
@@ -24,7 +21,7 @@ const FormTag = ({ toggle, image }) => {
   const [value, setValue] = useState("");
   const [session, loading] = useSession();
 
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   const {
     control,
@@ -88,7 +85,7 @@ const FormTag = ({ toggle, image }) => {
 
   // Autosuggest will pass through all these props to the input.
   const inputProps = {
-    placeholder: t("InsertTag"),
+    placeholder: t("form-tag.insert-tag"),
     value,
     onChange: onChange,
   };
@@ -115,7 +112,7 @@ const FormTag = ({ toggle, image }) => {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <img className="w-100" src={image.preview} alt="image-selected"></img>
         <FormGroup>
-          <Label for="tag">{t("Tag")}</Label>
+          <Label for="tag">{t("form-tag.tag")}</Label>
 
           <Autosuggest
             suggestions={suggestions}
@@ -138,7 +135,7 @@ const FormTag = ({ toggle, image }) => {
         </div>
 
         <Button type="submit" disabled={tags.length == 0} color="primary mt-1">
-          {t("AddTags")}
+          {t("add-tags")}
         </Button>
       </Form>
     </Container>

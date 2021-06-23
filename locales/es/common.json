@@ -1,0 +1,161 @@
+{
+  "header": {
+    "home": "Inicio",
+    "sign-in": "Registrarse",
+    "log-in": "Loguearse",
+    "log-out": "Cerrar sesión",
+    "signed-in-as": "Ingresado como",
+    "profile": "Perfil",
+    "portfolio": "Mi portafolio"
+  },
+
+  "professional": "Profesional",
+  "project": "Proyecto",
+  "magazine": "Magazine",
+  "about-us": "Sobre Nosotros",
+  "contact": "Contacto",
+  "administrator": "Administrador",
+  "company": "Empresa",
+  "email": "Correo",
+  "add-tags": "Agregar Tags",
+  "add-title": "Agregar titulo",
+  "province": "Provincia",
+  "location": "Localidad",
+  "invalid-link": "El link es invalido",
+
+  "is-required": "{{nameRequired}} es requerido",
+  "write-the-here-please": "Escriba {{namePlaceholder}} aquí por favor",
+  "cannot-be-less-than-character": "{{nameInput}} no puede tener menos de {{numberCharacters}} caracteres",
+  "the-name": "El nombre",
+  "the-description": "La descripcion",
+  "the-total-area": "El área total",
+  "the-web-site": "El sitio web",
+  "the-year": "El año",
+  "the-video-path": "El enlace del video",
+  "the-email": "El email",
+
+  "email-is-already-exist-please-write-another-one": "El email ya existe, por favor ingrese otro",
+  "magazine-detail": "Detalle de Magazine",
+  "professional-detail": "Detalle de Profesional",
+  "user": "Usuario",
+  "drag-and-drop-some-files-here-or-click-to-select-files": "Arrastre y suelte algun archivo aquí o haga click para seleccionar un archivo",
+  
+  "FirstName": "Nombre",
+
+  "form-project": "Formulario Proyecto",
+  "loading": "Cargando",
+  "name": "Nombre",
+  "description": "Descripcion",
+  "total-area": "Área total",
+  "year": "Año",
+  "web-site": "Sitio Web",
+  "view-more": "Ver más",
+  "video-path": "Enlace al video",
+
+  "write-the-web-site": "Escriba el sitio web",
+  "professionals-selected": "Seleccione un profesional",
+  "select-preview-image-for-project": "Seleccione una imagen de previsualizacion para el proyecto",
+  "upload-files": "Subir archivos",
+  "upload-images": "Subir imagenes",
+  "send": "Enviar",
+
+  "administrator-creator": {
+    "add-administrator": "Añadir administrador",
+    "insert-username": "Ingrese el nombre de usuario",
+    "please-select-administrator": "Ingrese el nombre de usuario para agregarlo como administrador",
+    "username": "Nombre de usuario"
+  },
+
+  "carousel-image-creator": {
+    "add-carousel-image": "Agregar imagen al carousel",
+    "please-select-carousel-images": "Por favor seleccione una o mas imagenes para añadir al carousel",
+    "images": "Imagenes",
+    "add-images": "Agregar imagenes",
+    "title": "Titulo",
+    "sub-title": "Subtitulo"
+  },
+
+  "company-creator": {
+    "add-company": "Agregar empresa",
+    "company-name": "Nombre de la empresa",
+    "company-logo": "Logo de la empresa",
+    "select-logo": "Seleccione el logo por favor",
+    "select-categories-please": "Seleccione las categorias de la empresa",
+    "add-category": "Agregar categoria"
+  },
+
+  "filter-list": {
+    "filters": "Filtros"
+  },
+
+  "tag-creator": {
+    "add-tag": "Agregar tag",
+    "please-select-tag": "Ingrese el nombre el nombre de un tag para agregarlo a la lista de tags"
+  },
+
+  "table-admin": {
+    "image": "Imagen",
+    "actions": "Acciones",
+    "there-are-not-more-professional": "No hay más profesionales"
+  },
+
+  "tabs": {
+    "list-of": "Lista de"
+  },
+
+  "form-tag": {
+    "tag": "Tag",
+    "insert-tag": "Ingrese el tag aquí por favor"
+  },
+
+  "seeProject":"------------------",
+  "project-detail": "Detalle de proyecto",
+  "project-edit": "Editar un proyecto",
+  "professional-contact": "Contacto del profesional",
+  "professional-email": "Correo del profesional",
+  "buy-project": "Comprar proyecto",
+  "download-project": "Descargar proyecto",
+  "other-projects-of-professional": "Otros proyectos de este profesional",
+
+  "FormBuyProjects":"------------------",
+  "doc-type": "Tipo de documento",
+  "doc-number": "Número de documento",
+  "card-holder-name": "Titular de la tarjeta",
+  "due-date": "Fecha de vencimiento",
+  "card-number": "Número de la tarjeta",
+  "security-code": "Código de seguridad",
+  "issuer-bank": "Banco emisor",
+  "installments": "Cuotas",
+  "project-purchased": "Has comprado este proyecto",
+  "invalid-card": "Numero de tarjeta invalido",
+
+  "FormTwoFactorAuthentication":"-------------------",
+  "two-factor-authentication": "Doble factor de autentificacion",
+  "enter-code": "Ingresa el codigo de doble factor de autentificacion",
+  "download": "Descargar",
+  "wrong-code": "Codigo invalido",
+  "valid-code": "Codigo valido",
+
+  "project-edition-form": "Formulario edicion de proyecto",
+
+  "Footer":"--------------------------------",
+  "all-rights-reserved": "Todos los derechos reservados",
+  
+  "LogInForm":"--------------------------------",
+  "password": "Contraseña",
+  "the-password": "La contraseña",
+  
+  "Authentication":"--------------------------------",
+  "log-in": "Ingresar",  
+  "sign-in": "Registrarse",
+
+  "DE DONDE ES?":"--------------------------------",
+  "LogOut": "Cerrar sesión",
+  "SignedInAs": "Ingresado como",
+  "Profile": "Perfil",
+  "WriteTagHere": "Escriba el tag aquí por favor",
+  "TagIsRequired": "El tag requerido",
+  "TagCannotBe3OrLess": "El tag no puede tener menos de 3 caracteres",
+
+  "link" : "Enlace"
+}

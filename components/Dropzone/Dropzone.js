@@ -3,8 +3,8 @@ import { useDropzone } from "react-dropzone";
 import { CloudArrowUp, X, FileEarmarkZipFill } from "react-bootstrap-icons";
 import { Container } from "reactstrap";
 import dropzoneStyle from "./Dropzone.module.css";
-import { Card, Button, CardHeader, CardBody, Row, Col } from "reactstrap";
-import { useTranslation } from "react-i18next";
+import { Card, Button, CardBody, Row, Col } from "reactstrap";
+import useTranslation from "next-translate/useTranslation";
 
 const baseStyle = {
   flex: 1,
@@ -38,7 +38,7 @@ function Dropzone(props) {
   const { newFiles, setFile, accept, multiple, name } = props;
   const [flagShow, setFlagShow] = useState(true);
 
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   const {
     acceptedFiles,
@@ -74,12 +74,6 @@ function Dropzone(props) {
   );
 
   const toggle = () => setFlagShow(!flagShow);
-
-  // const files = newFiles?.map((file, index) => (
-  //   <li key={index}>
-  //     {file.name} - {file.size} bytes
-  //   </li>
-  // ));
 
   const removeImage = (file) => {
     const files = Array.from(newFiles);
@@ -153,7 +147,7 @@ function Dropzone(props) {
             <div {...getRootProps({ style })}>
               <input name={name} {...getInputProps()} />
               <CloudArrowUp size={45} />
-              <p>{`${t("DragAndDropSomeFilesHereOrClickToSelectFiles")}`}</p>
+              <p>{`${t("drag-and-drop-some-files-here-or-click-to-select-files")}`}</p>
             </div>
           ) : (
             <aside>{thumbs}</aside>

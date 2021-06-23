@@ -12,7 +12,7 @@ import {
   Row,
 } from "reactstrap";
 import ModalForm from "./ModalForm";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import * as tagService from "../services/tagService";
 
 const TagCreator = ({ tags, setTags }) => {
@@ -37,20 +37,20 @@ const TagCreator = ({ tags, setTags }) => {
   return (
     <>
       {session?.authorities?.includes("ROLE_ADMINISTRATOR") && (
-        <Button onClick={toggle}>{t("AddTag")}</Button>
+        <Button onClick={toggle}>{t("tag-creator.add-tag")}</Button>
       )}
 
       <ModalForm
         className={"Button"}
-        modalTitle={t("AddTag")}
+        modalTitle={t("tag-creator.add-tag")}
         formBody={
           <>
-            <h6>{t("PleaseSelectTag")}</h6>
-            <label>{t("AddTag")}</label>
+            <h6>{t("tag-creator.please-select-tag")}</h6>
+            <label>{t("tag-creator.add-tag")}</label>
             <br></br>
             <input id="input-tag"/>
             <br></br>
-            <Button className="my-3" onClick={onAddTag}>{t("AddTag")}</Button>
+            <Button className="my-3" onClick={onAddTag}>{t("tag-creator.add-tag")}</Button>
           </>
         }
         modalOpen={{ open: modalTag, function: setModalTag }}

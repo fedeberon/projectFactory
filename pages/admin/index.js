@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
 import { Button, Col, Row } from "reactstrap";
 import { CheckCircle, XCircle } from "react-bootstrap-icons";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 
 // Components
 import Layout from "../../components/Layout/Layout";
@@ -31,7 +30,7 @@ const Admin = ({
   const [professionalListAppoved, setProfessionalListAppoved] = useState([]);
   const [professionalListRejected, setProfessionalListRejected] = useState([]);
 
-  const { t, lang } = useTranslation("common");
+  const { t, lang } = useTranslation("administrator");
 
   /**
    * Component button accept to add it to the table that requires it.
@@ -46,7 +45,7 @@ const Admin = ({
         color={"success"}
         onClick={() => changeStateProfessional(professionalId, "APPROVED")}
       >
-        <CheckCircle size={25} /> {t("Accept")}
+        <CheckCircle size={25} /> {t("accept")}
       </Button>
     );
   };
@@ -64,7 +63,7 @@ const Admin = ({
         color={"danger"}
         onClick={() => changeStateProfessional(professionalId, "REJECTED")}
       >
-        <XCircle size={25} /> {t("Reject")}
+        <XCircle size={25} /> {t("reject")}
       </Button>
     );
   };
@@ -82,7 +81,7 @@ const Admin = ({
         color={"success"}
         onClick={ async () => changeStateImages(professionalId, true) }
       >
-        <CheckCircle size={25} /> {t("AcceptImages")}
+        <CheckCircle size={25} /> {t("accept-images")}
       </Button>
     );
   };
@@ -92,7 +91,7 @@ const Admin = ({
     pendingTab();
     approvedTab();
     disapprovedTab();
-    alert(t("ImagesAccepted"))
+    alert(t("images-accepted"))
   };
 
 
@@ -269,10 +268,10 @@ const Admin = ({
   /**
    * These are the titles of the tabs needed to describe each other.
    */
-  const titles = [t("Pending"), t("Approved"), t("Disapproved")];
+  const titles = [t("pending"), t("approved"), t("disapproved")];
 
   return (
-    <Layout title={t("Administrator")}>
+    <Layout title={t("common:administrator")}>
       <Row>
         <Col>
           <Tabs titles={titles}>
@@ -340,7 +339,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common"])),
       professionalNotApproved,
       professionalApproved,
       professionalRejected,

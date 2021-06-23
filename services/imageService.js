@@ -44,6 +44,7 @@ export const getProfessionalImagesByTags = async (tags, page, size, token) => {
     images.forEach( (image) =>{
         image.name = image.path;
         image.path = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${image.entity.id}/images/${image.path}`;
+        image.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${image.entity.id}/preview/${image.entity.previewImage}`;
     });
     return images;
 };

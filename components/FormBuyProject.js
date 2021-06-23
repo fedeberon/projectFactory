@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/client";
 import * as mercadopagoService from "../services/mercadopagoService.js";
 import { Button, Col, Form, Input, Label, Row } from "reactstrap";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 
 const FormBuyProject = ({ projectId }) => {
   const [session, loading] = useSession();
   const [active, setActive] = useState(false);
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     if (window.Mercadopago && !active) {
@@ -81,18 +81,18 @@ const FormBuyProject = ({ projectId }) => {
       >
         <Row className="my-3">
           <Col xs={4}>
-            <Label htmlFor="email">{t("Email")}</Label>
+            <Label htmlFor="email">{t("email")}</Label>
             <Input
               id="email"
               name="email"
               type="text"
-              placeholder={t("Email")}
+              placeholder={t("email")}
             />
           </Col>
         </Row>
         <Row>
           <Col xs={2}>
-            <Label htmlFor="docType">{t("DocType")}</Label><br></br>
+            <Label htmlFor="docType">{t("doc-type")}</Label><br></br>
             <select
               id="docType"
               name="docType"
@@ -102,10 +102,10 @@ const FormBuyProject = ({ projectId }) => {
             ></select>
           </Col>
           <Col xs={2}>
-            <Label htmlFor="docNumber">{t("DocNumber")}</Label>
+            <Label htmlFor="docNumber">{t("doc-number")}</Label>
             <Input
               id="docNumber"
-              placeholder={t("DocNumber")}
+              placeholder={t("doc-number")}
               name="docNumber"
               data-checkout="docNumber"
               type="text"
@@ -114,16 +114,16 @@ const FormBuyProject = ({ projectId }) => {
         </Row>
         <Row className="my-3">
           <Col xs={4}>
-            <Label htmlFor="cardholderName">{t("CardholderName")}</Label>
+            <Label htmlFor="cardholderName">{t("card-holder-name")}</Label>
             <Input
               id="cardholderName"
-              placeholder={t("CardholderName")}
+              placeholder={t("card-holder-name")}
               data-checkout="cardholderName"
               type="text"
             ></Input>
           </Col>
           <Row className="my-3">
-            <Label htmlFor="cardExpirationMonth">{t("DueDate")}</Label>
+            <Label htmlFor="cardExpirationMonth">{t("due-date")}</Label>
             <Col xs={1}>
               <Input
                 type="text"
@@ -148,10 +148,10 @@ const FormBuyProject = ({ projectId }) => {
           </Row>
           <Row>
           <Col xs={3}>
-              <Label htmlFor="cardNumber">{t("CardNumber")}</Label>
+              <Label htmlFor="cardNumber">{t("card-number")}</Label>
               <Input
                 type="number"
-                placeholder={t("CardNumber")}
+                placeholder={t("card-number")}
                 id="cardNumber"
                 data-checkout="cardNumber"
                 onChange={onChangeCardNumber}
@@ -165,11 +165,11 @@ const FormBuyProject = ({ projectId }) => {
           </Row>
           <Row>
             <Col className="my-3" xs={2}>
-              <Label htmlFor="securityCode">{t("SecurityCode")}</Label>
+              <Label htmlFor="securityCode">{t("security-code")}</Label>
               <Input
                 className="w-50"
                 id="securityCode"
-                placeholder={t("SecurityCode")}
+                placeholder={t("security-code")}
                 data-checkout="securityCode"
                 type="text"
                 autoComplete="off"
@@ -178,13 +178,13 @@ const FormBuyProject = ({ projectId }) => {
           </Row>
           <Row>
             <Col id="issuerInput" xs={4}>
-              <Label htmlFor="issuer">{t("IssuerBank")}</Label><br></br>
+              <Label htmlFor="issuer">{t("issuer-bank")}</Label><br></br>
               <select id="issuer" name="issuer" data-checkout="issuer" className="form-select"></select>
             </Col>
           </Row>
           <Row className="my-3">
             <Col xs={4}>
-              <Label htmlFor="installments">{t("Installments")}</Label><br></br>
+              <Label htmlFor="installments">{t("installments")}</Label><br></br>
               <select type="text" id="installments" name="installments" className="form-select"></select>
             </Col>
           </Row>
@@ -218,15 +218,15 @@ const FormBuyProject = ({ projectId }) => {
               onClick={onClickBuyProject}
               className="w-100"
             >
-              {t("BuyProject")}
+              {t("buy-project")}
             </Button>
             <br></br>
             <br></br>
             <span hidden id="successful" style={{ color: "green" }}>
-              {t("ProjectPurchased")}
+              {t("project-purchased")}
             </span>
             <span hidden id="error" style={{ color: "red" }}>
-              {t("InvalidCard")}
+              {t("invalid-card")}
             </span>
           </Col>
         </Row>

@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import Header from "../Header";
+import Header from "../Header/Header";
 import NavSearch from "../NavSearch/NavSearch";
 import PropTypes from "prop-types";
 import NProgress from "nprogress";
 import nProgress from "nprogress";
-import { useTranslation } from "next-i18next";
+import useTranslation from "next-translate/useTranslation";
 
 const Layout = ({ children, title, footer = true, header = true }) => {
   const router = useRouter();
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     const handleRouteChange = (url) => {
@@ -44,11 +44,11 @@ const Layout = ({ children, title, footer = true, header = true }) => {
       </main>
 
       {footer && (
-        <footer  className="bg-light text-dark text-center">
+        <footer className="bg-light text-dark text-center">
           <div className="container">
             <h1>&copy; La Fabrica de Proyectos</h1>
             <p>2021 - {new Date().getFullYear()}</p>
-            <p>{t("AllRightsReserved")}.</p>
+            <p>{t("all-rights-reserved")}.</p>
           </div>
         </footer>
       )}

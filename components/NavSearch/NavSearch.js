@@ -4,9 +4,7 @@ import {
   Navbar,
   NavbarToggler,
   Nav,
-  NavItem,
   NavLink,
-  UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
@@ -14,50 +12,34 @@ import {
   Row,
   Dropdown,
   Container,
-  Button,
-  FormGroup,
   Label,
   Input,
   InputGroup,
   InputGroupAddon,
   InputGroupText,
 } from "reactstrap";
-import Authentication from "../Authentication";
+import Authentication from "../Authentication/Authentication";
 import { useRouter } from "next/dist/client/router";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import { signOut, useSession } from "next-auth/client";
 import { PersonCircle, Search } from "react-bootstrap-icons";
 import NavSearchStyles from "./NavSearch.module.css";
+import Link from "next/link";
+import Image from "next/image";
 
 import RolProfile from "../RolProfile";
-
-const Link = ({ children, href }) => {
-  const router = useRouter();
-  return (
-    <NavLink
-      href="#"
-      onClick={(e) => {
-        e.preventDefault();
-        // typically you want to use `next/link` for this usecase
-        // but this example shows how you can also access the router
-        // and use it manually
-        router.push(href);
-      }}
-    >
-      {children}
-    </NavLink>
-  );
-};
 
 export default function NavSearch() {
   const [dropdown, setDropdown] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [session, loading] = useSession();
 
+  const router = useRouter();
+
   const toggle = () => setDropdown((dropdown) => !dropdown);
   const toggle2 = () => setDropdownOpen((dropdownOpen) => !dropdownOpen);
 
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   const isRole = (role) => {
     if (session) {
@@ -68,7 +50,11 @@ export default function NavSearch() {
   return (
     <Navbar color="light" light expand="lg">
       <Container fluid="xl">
-        <Link href="/"> {t("Home")}</Link>
+        <Link href="/">
+          <NavLink className={`flex ml-4 ${NavSearchStyles.pointer}`}>
+            {t("header.home")}
+          </NavLink>
+        </Link>
         <NavbarToggler onClick={toggle} />
         <Row className="w-100 justify-content-center align-items-center">
           <InputGroup className="w-50  d-flex">
@@ -87,13 +73,7 @@ export default function NavSearch() {
           </InputGroup>
         </Row>
         <Collapse isOpen={dropdown} navbar>
-          <Nav className="w-100" navbar>
-            {isRole("ROLE_ADMINISTRATOR") && (
-              <NavItem>
-                <Link href="/admin">{t("Administrator")}</Link>
-              </NavItem>
-            )}
-          </Nav>
+         
           <Row className="justify-content-center align-items-center">
             <Col>
               <Dropdown isOpen={dropdownOpen} toggle={toggle2}>
@@ -120,7 +100,9 @@ export default function NavSearch() {
                   {isRole("ROLE_USER") && (
                     <>
                       <DropdownItem>
-                        <Link href="/profile">{t("Profile")}</Link>
+                        <Link href="/profile">
+                          <NavLink>{t("header.profile")}</NavLink>
+                        </Link>
                       </DropdownItem>
                       <DropdownItem divider />
                     </>
@@ -132,7 +114,9 @@ export default function NavSearch() {
                   {isRole("ROLE_PROFESSIONAL") && (
                     <>
                       <DropdownItem>
-                        <Link href="/portfolio">{t("Portfolio")}</Link>
+                        <Link href="/portfolio">
+                          <NavLink>{t("header.portfolio")}</NavLink>
+                        </Link>
                       </DropdownItem>
                       <DropdownItem divider />
                     </>
@@ -140,7 +124,7 @@ export default function NavSearch() {
                   <DropdownItem>
                     {session && (
                       <NavLink onClick={() => signOut()}>
-                        {t("Log out")}
+                        {t("header.log-out")}
                       </NavLink>
                     )}
                   </DropdownItem>
@@ -148,7 +132,27 @@ export default function NavSearch() {
               </Dropdown>
             </Col>
           </Row>
-          <Authentication className="mx-1" />
+          <Row className="row">
+            <Col className="col-6">
+              <Authentication />
+            </Col>
+          </Row>
+          <Col className="d-flex col-auto g-2">
+            {router.locales.map((locale, index) => (
+              <Col key={locale} className="mx-1">
+                <Link href={router.asPath} locale={locale}>
+                  <div className={`${NavSearchStyles.flag}`}>
+                    <Image
+                      src={`/flag_${index}.png`}
+                      width={35}
+                      height={35}
+                      alt=""
+                    />
+                  </div>
+                </Link>
+              </Col>
+            ))}
+          </Col>
         </Collapse>
       </Container>
     </Navbar>

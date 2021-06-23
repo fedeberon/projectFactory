@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import filterListStyles from "./FilterList.module.css";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import { ListGroup, ListGroupItem } from "reactstrap";
 import TagCreator from "../TagCreator";
 
 const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
   const [tags, setTags] = useState([]);
 
   useEffect(() => setTags(filters), [filters]);
@@ -37,7 +37,7 @@ const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
   return (
     <ListGroup>
       <ListGroupItem disabled className="bg-warning">
-        <h5 className="m-0">{t("Filters")}</h5>
+        <h5 className="m-0">{t("filter-list.filters")}</h5>
       </ListGroupItem>
       {tags.map((filter) => (
         <ListGroupItem

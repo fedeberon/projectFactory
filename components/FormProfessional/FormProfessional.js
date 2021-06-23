@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import {
   Button,
   Form,
@@ -25,7 +25,7 @@ const FormProfessional = ({
   setError,
   data,
 }) => {
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("profile");
   const [previewImage, setPreviewImage] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState([]);
   const [images, setImages] = useState([]);
@@ -122,20 +122,22 @@ const FormProfessional = ({
           <Col>
             <Row>
               <Col className="col-12">
-                <h2>{t("ProfessionalProfile")}</h2>
+                <h2>{t("formulary.professional-profile")}</h2>
               </Col>
             </Row>
             <Row className="row-cols-1 row-cols-md-2 row-cols-xl-4 g-3">
               <Col>
                 <FormGroup>
-                  <Label for="company">{t("Company")}</Label>
+                  <Label for="company">{t("formulary.company")}</Label>
                   <Controller
                     name="company"
                     control={control}
                     rules={{
                       required: {
                         value: optionSelect,
-                        message: `${t("CompanyIsRequired")}`,
+                        message: `${t("formulary.is-required", {
+                          nameRequired: t("formulary.the-company"),
+                        })}`,
                       },
                     }}
                     render={({ field }) => (
@@ -157,20 +159,30 @@ const FormProfessional = ({
                   )}
                 </FormGroup>
                 <FormGroup>
-                  <Label for="contact">{t("Contact")}</Label>
+                  <Label for="contact">{t("formulary.contact")}</Label>
                   <Input
                     type="text"
                     name="contact"
                     id="contact"
-                    placeholder={t("WriteTheContactHerePlease")}
+                    placeholder={`${t("formulary.write-the-here-please", {
+                      namePlaceholder: t("formulary.the-contact").toLowerCase(),
+                    })}`}
                     {...register("contact", {
                       required: {
                         value: true,
-                        message: `${t("ContactIsRequired")}`,
+                        message: `${t("formulary.is-required", {
+                          nameRequired: t("formulary.the-contact"),
+                        })}`,
                       },
                       minLength: {
                         value: 3,
-                        message: `${t("ContactCannotBeLessThan3Character")}`,
+                        message: `${t(
+                          "formulary.cannot-be-less-than-character",
+                          {
+                            nameInput: t("formulary.contact").toLowerCase(),
+                            numberCharacters: 3,
+                          }
+                        )}`,
                       },
                     })}
                     className={
@@ -178,26 +190,36 @@ const FormProfessional = ({
                     }
                   />
                   {errors.contact && (
-                    <FormText className="invalid error-label">
+                    <FormText className="invalid error-label text-danger">
                       {errors.contact.message}
                     </FormText>
                   )}
                 </FormGroup>
                 <FormGroup>
-                  <Label for="email">{t("ContactEmail")}</Label>
+                  <Label for="email">{t("formulary.contact-email")}</Label>
                   <Input
                     type="email"
                     name="email"
                     id="email"
-                    placeholder={t("WriteTheEmailHerePlease")}
+                    placeholder={t("formulary.write-the-here-please", {
+                      namePlaceholder: t("formulary.the-contact-email").toLowerCase(),
+                    })}
                     {...register("email", {
                       required: {
                         value: true,
-                        message: `${t("EmailIsRequired")}`,
+                        message: `${t("formulary.is-required", {
+                          nameRequired: t("formulary.the-contact-email"),
+                        })}`,
                       },
                       minLength: {
                         value: 3,
-                        message: `${t("EmailCannotBeLessThan3Character")}`,
+                        message: `${t(
+                          "formulary.cannot-be-less-than-character",
+                          {
+                            nameInput: t("formulary.contact-email").toLowerCase(),
+                            numberCharacters: 3,
+                          }
+                        )}`,
                       },
                     })}
                     className={
@@ -213,14 +235,18 @@ const FormProfessional = ({
               </Col>
               <Col>
                 <FormGroup>
-                  <Label for="companyCategory">{t("CompanyCategory")}</Label>
+                  <Label for="companyCategory">
+                    {t("formulary.company-category")}
+                  </Label>
                   <Controller
                     name="companyCategory"
                     control={control}
                     rules={{
                       required: {
                         value: true,
-                        message: `${t("CompanyCategoryIsRequired")}`,
+                        message: `${t("formulary.is-required", {
+                          nameRequired: t("formulary.the-company-category"),
+                        })}`,
                       },
                     }}
                     render={({ field }) => (
@@ -241,21 +267,35 @@ const FormProfessional = ({
                   )}
                 </FormGroup>
                 <FormGroup>
-                  <Label for="contactLoad">{t("ContactCharge")}</Label>
+                  <Label for="contactLoad">
+                    {t("formulary.contact-charge")}
+                  </Label>
                   <Input
                     type="text"
                     name="contactLoad"
                     id="contactLoad"
-                    placeholder={t("WriteTheContactChargeHerePlease")}
+                    placeholder={t("formulary.write-the-here-please", {
+                      namePlaceholder: t(
+                        "formulary.the-contact-charge"
+                      ).toLowerCase(),
+                    })}
                     {...register("contactLoad", {
                       required: {
                         value: true,
-                        message: `${t("ContactChargeIsRequired")}`,
+                        message: `${t("formulary.is-required", {
+                          nameRequired: t("formulary.the-contact-charge"),
+                        })}`,
                       },
                       minLength: {
                         value: 3,
                         message: `${t(
-                          "Contact charge cannot be less than 3 character"
+                          "formulary.cannot-be-less-than-character",
+                          {
+                            nameInput: t(
+                              "formulary.contact-charge"
+                            ).toLowerCase(),
+                            numberCharacters: 3,
+                          }
                         )}`,
                       },
                     })}
@@ -270,20 +310,32 @@ const FormProfessional = ({
                   )}
                 </FormGroup>
                 <FormGroup>
-                  <Label for="website">{t("WebPage")}</Label>
+                  <Label for="website">{t("formulary.web-page")}</Label>
                   <Input
                     type="website"
                     name="website"
                     id="website"
-                    placeholder={t("WriteTheWebPageHerePlease")}
+                    placeholder={t("formulary.write-the-here-please", {
+                      namePlaceholder: t(
+                        "formulary.the-web-page"
+                      ).toLowerCase(),
+                    })}
                     {...register("website", {
                       required: {
                         value: true,
-                        message: `${t("WebPageIsRequired")}`,
+                        message: `${t("formulary.is-required", {
+                          nameRequired: t("formulary.the-web-page"),
+                        })}`,
                       },
                       minLength: {
                         value: 3,
-                        message: `${t("WebPageCannotBeLessThan3Character")}`,
+                        message: `${t(
+                          "formulary.cannot-be-less-than-character",
+                          {
+                            nameInput: t("formulary.web-page").toLowerCase(),
+                            numberCharacters: 3,
+                          }
+                        )}`,
                       },
                     })}
                     className={
@@ -299,7 +351,9 @@ const FormProfessional = ({
               </Col>
               <Col>
                 <FormGroup className="text-center">
-                  <Label for="file">{t("SelectProfilePicture")}</Label>
+                  <Label for="file">
+                    {t("formulary.select-profile-picture")}
+                  </Label>
                   <Dropzone
                     newFiles={previewImage}
                     setFile={setPreviewImage}
@@ -311,7 +365,9 @@ const FormProfessional = ({
               </Col>
               <Col>
                 <FormGroup className="text-center">
-                  <Label for="file">{t("SelectBackgroundPicture")}</Label>
+                  <Label for="file">
+                    {t("formulary.select-background-picture")}
+                  </Label>
                   <Dropzone
                     newFiles={backgroundImage}
                     setFile={setBackgroundImage}
@@ -326,26 +382,38 @@ const FormProfessional = ({
           <Col>
             <Row>
               <Col className="col-12">
-                <h2>{t("LocationOfTheCompany")}</h2>
+                <h2>{t("formulary.location-of-the-company")}</h2>
               </Col>
             </Row>
             <Row className="row-cols-1 row-cols-md-2 g-3">
               <Col>
                 <FormGroup>
-                  <Label for="province">{t("Province")}</Label>
+                  <Label for="province">{t("common:province")}</Label>
                   <Input
                     type="text"
                     name="province"
                     id="province"
-                    placeholder={t("WriteTheProvinceHerePlease")}
+                    placeholder={t("formulary.write-the-here-please", {
+                      namePlaceholder: t(
+                        "formulary.the-province"
+                      ).toLowerCase(),
+                    })}
                     {...register("province", {
                       required: {
                         value: true,
-                        message: `${t("ProvinceIsRequired")}`,
+                        message: `${t("formulary.is-required", {
+                          nameRequired: t("formulary.the-province"),
+                        })}`,
                       },
                       minLength: {
                         value: 3,
-                        message: `${t("ProvinceCannotBeLessThan3Character")}`,
+                        message: `${t(
+                          "formulary.cannot-be-less-than-character",
+                          {
+                            nameInput: t("common:province").toLowerCase(),
+                            numberCharacters: 3,
+                          }
+                        )}`,
                       },
                     })}
                     className={
@@ -361,21 +429,31 @@ const FormProfessional = ({
               </Col>
               <Col>
                 <FormGroup>
-                  <Label for="location">{t("Location")}</Label>
+                  <Label for="location">{t("common:location")}</Label>
                   <Input
                     type="text"
                     name="location"
                     id="location"
-                    placeholder={t("WriteTheNameHerePlease")}
+                    placeholder={t("formulary.write-the-here-please", {
+                      namePlaceholder: t(
+                        "formulary.the-location"
+                      ).toLowerCase(),
+                    })}
                     {...register("location", {
                       required: {
                         value: true,
-                        message: `${t("LocationIsRequired")}`,
+                        message: `${t("formulary.is-required", {
+                          nameRequired: t("formulary.the-location"),
+                        })}`,
                       },
                       minLength: {
                         value: 3,
                         message: `${t(
-                          "Location cannot be less than 3 character"
+                          "formulary.cannot-be-less-than-character",
+                          {
+                            nameInput: t("common:location").toLowerCase(),
+                            numberCharacters: 3,
+                          }
                         )}`,
                       },
                     })}
@@ -394,7 +472,9 @@ const FormProfessional = ({
             <Row>
               <Col className="p-0">
                 <FormGroup className="text-center">
-                  <Label for="uploadFiles">{t("UploadImages")}</Label>
+                  <Label for="uploadFiles">
+                    {t("common:upload-images")}
+                  </Label>
                   <InputImages
                     accept={"image/*"}
                     multiple={true}
@@ -406,14 +486,14 @@ const FormProfessional = ({
               </Col>
             </Row>
             <Button type="submit" color="primary mt-1">
-              {t("Send")}
+              {t("common:send")}
             </Button>
           </Col>
         </Row>
       </Form>
       <ModalForm
         className={"Button"}
-        modalTitle={t("AddTags")}
+        modalTitle={t("common:add-tags")}
         formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}
         modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
       />

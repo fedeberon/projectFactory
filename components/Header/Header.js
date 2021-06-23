@@ -4,7 +4,6 @@ import {
   Navbar,
   NavbarToggler,
   Nav,
-  NavItem,
   NavLink,
   UncontrolledDropdown,
   DropdownToggle,
@@ -14,43 +13,25 @@ import {
   Row,
   Dropdown,
   Container,
-  Button,
 } from "reactstrap";
-import Authentication from "./Authentication";
-import { useRouter } from "next/dist/client/router";
-import { useTranslation } from "react-i18next";
+// import Authentication from "../Authentication/Authentication";
+
+import useTranslation from "next-translate/useTranslation";
 import { signOut, useSession } from "next-auth/client";
-import { PersonCircle } from "react-bootstrap-icons";
+// import { PersonCircle } from "react-bootstrap-icons";
+import Link from "next/link";
 
-import RolProfile from "./RolProfile";
-
-const Link = ({ children, href }) => {
-  const router = useRouter();
-  return (
-    <NavLink
-      href="#"
-      onClick={(e) => {
-        e.preventDefault();
-        // typically you want to use `next/link` for this usecase
-        // but this example shows how you can also access the router
-        // and use it manually
-        router.push(href);
-      }}
-    >
-      {children}
-    </NavLink>
-  );
-};
+// import RolProfile from "../RolProfile";
+import HeaderStyle from "./Header.module.css";
 
 export default function Header() {
   const [dropdown, setDropdown] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [session, loading] = useSession();
+  const { t } = useTranslation("common");
 
   const toggle = () => setDropdown((dropdown) => !dropdown);
   const toggle2 = () => setDropdownOpen((dropdownOpen) => !dropdownOpen);
-
-  const { t, lang } = useTranslation("common");
 
   const isRole = (role) => {
     if (session) {
@@ -59,6 +40,11 @@ export default function Header() {
   };
 
   return (
+    // <Navbar color="light" light expand="lg">
+    //   <Container fluid="xl p-0">
+    //     <Link href="/">
+    //       <NavLink className={`flex ml-4 ${HeaderStyle.pointer}`}>{t("header.home")}</NavLink>
+    //     </Link>
     <Navbar color="white" light expand="lg">
       <Container fluid="xl">
         <NavbarToggler onClick={toggle} />
@@ -68,23 +54,14 @@ export default function Header() {
             navbar
           >
             <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>{t("Professional")}</DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem>
-                  <Link href="/professional">{t("Professional")}</Link>
-                </DropdownItem>
-                <DropdownItem>Option 2</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>Reset</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
-                {t("Project")}
+                {t("professional")}
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem>
-                  <Link href="/project">{t("Project")}</Link>
+                  <Link href="/professional">
+                    <NavLink>{t("professional")}</NavLink>
+                  </Link>
                 </DropdownItem>
                 <DropdownItem>Option 2</DropdownItem>
                 <DropdownItem divider />
@@ -93,27 +70,50 @@ export default function Header() {
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
-                {t("Magazine")}
+                {t("project")}
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem>
+                  <Link href="/project">
+                    <NavLink>{t("project")}</NavLink>
+                  </Link>
+                </DropdownItem>
+                <DropdownItem>Option 2</DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem>Reset</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav caret>
+                {t("magazine")}
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                  <Link href="/magazine">{t("Magazine")}</Link>
+                  <Link href="/magazine">
+                    <NavLink>{t("magazine")}</NavLink>
+                  </Link>
                 </DropdownItem>
                 <DropdownItem>Option 2</DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem>Reset</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
-            <NavItem>
-              <Link href="/about">{t("AboutUs")}</Link>
-            </NavItem>
-            <NavItem>
-              <Link href="/contact">{t("Contact")}</Link>
-            </NavItem>
+            <Link href="/about">
+              <NavLink className={`${HeaderStyle.pointer}`}>
+                {t("about-us")}
+              </NavLink>
+            </Link>
+            <Link href="/contact">
+              <NavLink className={`${HeaderStyle.pointer}`}>
+                {t("contact")}
+              </NavLink>
+            </Link>
             {isRole("ROLE_ADMINISTRATOR") && (
-              <NavItem>
-                <Link href="/admin">{t("Administrator")}</Link>
-              </NavItem>
+              <Link href="/admin">
+                <NavLink className={`${HeaderStyle.pointer}`}>
+                  {t("administrator")}
+                </NavLink>
+              </Link>
             )}
           </Nav>
         </Collapse>

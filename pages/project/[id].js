@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import { getSession, useSession } from "next-auth/client";
 import SeeProject from "../../components/SeeProject";
 import * as projectService from "../../services/projectService";
 import * as imageService from "../../services/imageService";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Layout from "../../components/Layout/Layout";
 
 const ProjectDetail = ({ data, idSplit }) => {
@@ -12,7 +11,7 @@ const ProjectDetail = ({ data, idSplit }) => {
 
   const [project, setProject] = useState({});
 
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   const editProject = async (project) => {
     const newProject = await projectService.edit(project, session.accessToken);
@@ -26,8 +25,8 @@ const ProjectDetail = ({ data, idSplit }) => {
   }, [session]);
 
   return (
-    <Layout title={`${t("ProjectDetail")}`}>
-      <SeeProject project={project} onEditProject={editProject} id={idSplit} />
+    <Layout title={`${t("project-detail")}`}>
+      <SeeProject project={project} onEditProject={editProject} id={idSplit}/>
     </Layout>
   );
 };
@@ -64,7 +63,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
   project.projectsOfProfessional = projectsOfProfessional.filter(p => p.id != project.id);
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common"])),
       data: project,
       idSplit
     },

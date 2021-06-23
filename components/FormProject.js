@@ -12,7 +12,7 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import Select from "react-select";
 import Dropzone from "./Dropzone/Dropzone";
 import * as youtubeService from "../services/youtubeService";
@@ -30,7 +30,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
   const [modalTagOpen, setModalTagOpen] = useState(false);
   const [currentImageTag, setCurrentImageTag] = useState({});
 
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   const {
     control,
@@ -82,7 +82,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
     } else {
       setError("videoPath", {
         type: "manual",
-        message: t("InvalidLink"),
+        message: t("invalid-link"),
       });
     }
   };
@@ -93,19 +93,26 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         <Row className="row-cols-1 row-cols-md-2 g-3">
           <Col>
             <FormGroup>
-              <Label for="name">{t("Name")}</Label>
+              <Label for="name">{t("name")}</Label>
               <Input
                 type="text"
                 id="name"
-                placeholder={t("Write the name here please")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-name").toLowerCase()
+                })}
                 {...register("name", {
                   required: {
                     value: true,
-                    message: `${t("Name is required")}`,
+                    message: `${t("is-required", {
+                      nameRequired: t("the-name")
+                    })}`,
                   },
                   minLength: {
                     value: 3,
-                    message: `${t("Name cannot be less than 3 character")}`,
+                    message: `${t("cannot-be-less-than-character", {
+                      nameInput: t("the-name"),
+                      numberCharacters: 3
+                    })}`,
                   },
                 })}
                 className={"form-field" + (errors.name ? " has-error" : "")}
@@ -117,20 +124,27 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
               )}
             </FormGroup>
             <FormGroup>
-              <Label for="description">{t("Description")}</Label>
+              <Label for="description">{t("description")}</Label>
               <Input
                 type="text"
                 id="description"
-                placeholder={t("Write the description here please")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-description").toLowerCase(),
+                })}
                 {...register("description", {
                   required: {
                     value: true,
-                    message: `${t("Description is required")}`,
+                    message: `${t("is-required", {
+                      nameRequired: t("the-description")
+                    })}`,
                   },
                   minLength: {
                     value: 3,
                     message: `${t(
-                      "Description cannot be less than 3 character"
+                      "cannot-be-less-than-character", {
+                        nameInput: t("the-description"),
+                        numberCharacters: 3
+                      }
                     )}`,
                   },
                 })}
@@ -146,19 +160,26 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
             </FormGroup>
 
             <FormGroup>
-              <Label for="email">{t("Write the website")}</Label>
+              <Label for="email">{t("write-the-web-site")}</Label>
               <Input
                 type="email"
                 id="email"
-                placeholder={t("Write the website here please")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-web-site").toLowerCase()
+                })}
                 {...register("website", {
                   required: {
                     value: true,
-                    message: `${t("WebSite is required")}`,
+                    message: `${t("is-required", {
+                      nameRequired: t("the-web-site")
+                    })}`,
                   },
                   minLength: {
                     value: 3,
-                    message: `${t("WebSite cannot be less than 3 character")}`,
+                    message: `${t("cannot-be-less-than-character" , {
+                      nameInput: t("the-web-site"),
+                      numberCharacters: 3
+                    })}`,
                   },
                 })}
                 className={"form-field" + (errors.website ? " has-error" : "")}
@@ -172,20 +193,27 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
             <Row>
               <Col xs={6}>
                 <FormGroup>
-                  <Label for="totalArea">{t("Total Area")}</Label>
+                  <Label for="totalArea">{t("total-area")}</Label>
                   <Input
                     type="number"
                     id="totalArea"
-                    placeholder={t("Write the Total Area here please")}
+                    placeholder={t("write-the-here-please", {
+                      namePlaceholder: t("the-total-area").toLowerCase()
+                    })}
                     {...register("totalArea", {
                       required: {
                         value: true,
-                        message: `${t("Total Area is required")}`,
+                        message: `${t("is-required", {
+                          nameRequired: t("the-total-area")
+                        })}`,
                       },
                       minLength: {
                         value: 3,
                         message: `${t(
-                          "Total Area cannot be less than 3 character"
+                          "cannot-be-less-than-character", {
+                            nameInput: t("the-total-area"),
+                            numberCharacters: 3
+                          }
                         )}`,
                       },
                     })}
@@ -202,19 +230,26 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
               </Col>
               <Col xs={6}>
                 <FormGroup>
-                  <Label for="year">{t("Year")}</Label>
+                  <Label for="year">{t("year")}</Label>
                   <Input
                     type="number"
                     id="year"
-                    placeholder={t("Write the Year here please")}
+                    placeholder={t("write-the-here-please", {
+                      namePlaceholder: t("the-year").toLowerCase()
+                    })}
                     {...register("year", {
                       required: {
                         value: true,
-                        message: `${t("Year is required")}`,
+                        message: `${t("is-required", {
+                          nameRequired: t("the-year")
+                        })}`,
                       },
                       minLength: {
                         value: 3,
-                        message: `${t("Year cannot be less than 3 character")}`,
+                        message: `${t("cannot-be-less-than-character", {
+                          nameInput: t("the-year"),
+                          numberCharacters: 3
+                        })}`,
                       },
                     })}
                     className={"form-field" + (errors.year ? " has-error" : "")}
@@ -229,20 +264,27 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
             </Row>
 
             <FormGroup>
-              <Label for="videoPath">{t("WriteVideoPath")}</Label>
+              <Label for="videoPath">{t("video-path")}</Label>
               <Input
                 type="text"
                 name="videoPath"
                 id="videoPath"
-                placeholder={t("WriteVideoPathPlease")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-video-path").toLowerCase()
+                })}
                 {...register("videoPath", {
                   required: {
                     value: true,
-                    message: `${t("VideoPathIsRequired")}`,
+                    message: `${t("is-required", {
+                      nameRequired: t("the-video-path")
+                    })}`,
                   },
                   minLength: {
                     value: 3,
-                    message: `${t("VideoPathInvalid")}`,
+                    message: `${t("cannot-be-less-than-character", {
+                      nameInput: t("the-video-path"),
+                      numberCharacters: 3
+                    })}`,
                   },
                 })}
                 className={
@@ -258,7 +300,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
 
             <FormGroup>
               <Label for="professionalsSelected">
-                {t("ProfessionalsSelected")}
+                {t("professionals-selected")}
               </Label>
               <Controller
                 name="professionalsSelected"
@@ -266,7 +308,9 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                 rules={{
                   required: {
                     value: true,
-                    message: `${t("professionalsSelected is required")}`,
+                    message: `${t("is-required", {
+                      nameRequired: t("professionals-selected")
+                    })}`,
                   },
                 }}
                 render={({ field }) => (
@@ -290,7 +334,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
           <Col>
             <FormGroup>
               <Label for="filePreview">
-                {t("Select preview image for project")}
+                {t("select-preview-image-for-project")}
               </Label>
               <Dropzone
                 newFiles={previewImage}
@@ -302,7 +346,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
             </FormGroup>
             <Col>
               <FormGroup>
-                <Label>{t("Upload Files")}</Label>
+                <Label>{t("upload-files")}</Label>
                 <br></br>
                 <Dropzone
                   newFiles={file}
@@ -317,7 +361,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         </Row>
 
         <FormGroup>
-          <Label for="uploadFiles">{t("Upload images")}</Label>
+          <Label for="uploadFiles">{t("upload-images")}</Label>
           <InputImages
             accept={"image/*"}
             multiple={true}
@@ -328,13 +372,13 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         </FormGroup>
 
         <Button type="submit" color="primary mt-1">
-          {t("Send")}
+          {t("send")}
         </Button>
       </Form>
 
       <ModalForm
         className={"Button"}
-        modalTitle={t("AddTags")}
+        modalTitle={t("add-tags")}
         formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}
         modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
       />

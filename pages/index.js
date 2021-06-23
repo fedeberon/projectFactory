@@ -1,20 +1,16 @@
 // Frameworks
 import React, { useEffect, useState } from "react";
 import { getSession, useSession } from "next-auth/client";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "react-i18next";
-import { Button, Col, Row } from "reactstrap";
+import useTranslation from "next-translate/useTranslation";
+import { Col, Row } from "reactstrap";
 
 // Components
 import FilterList from "../components/FilterList/FilterList";
 import FilteredImages from "../components/FilteredImages/FilteredImages";
-import FormProfessional from "../components/FormProfessional/FormProfessional";
-import ModalForm from "../components/ModalForm";
 import Layout from "../components/Layout/Layout";
 import CarouselBanner from "../components/CustomCarousel/CarouselBanner";
 
 // Services
-import * as professionalService from "../services/professionalService";
 import * as tagService from "../services/tagService";
 import * as imageService from "../services/imageService";
 
@@ -24,21 +20,14 @@ import CompanyCreator from "../components/CompanyCreator/CompanyCreator";
 import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
 
-const Code = (p) => <code className={styles.inlineCode} {...p} />;
-
 const Home = ({ filters, carouselImages }) => {
   const [session] = useSession();
-  const [modalOpen, setModalOpen] = useState(false);
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
 
-  const [error, setError] = useState("");
-
-  const { t, i18n } = useTranslation("common");
-
-  const toggleModal = () => setModalOpen(!modalOpen);
+  let { t } = useTranslation("home");
 
   useEffect(async () => {
     const images = await getProfessionalsByTags();
@@ -60,104 +49,18 @@ const Home = ({ filters, carouselImages }) => {
     }
   };
 
-  const saveProfessional = async (data) => {
-    try {
-      const professional = await professionalService.addProfessional(
-        data,
-        session?.accessToken
-      );
-      return professional;
-    } catch (error) {
-      console.error(error);
-      setError(`${t("EmailIsAlreadyExistPleaseWriteAnotherOne")}`);
-      return null;
-    }
-  };
-
-  const savePreviewImage = async (professional, previewImage) => {
-    try {
-      await professionalService.addPreviewImage(
-        previewImage,
-        professional.id,
-        session.accessToken
-      );
-      professional.previewImage = URL.createObjectURL(previewImage);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const saveImages = async (images, professional) => {
-    try {
-      await professionalService.addImages(
-        images,
-        professional.id,
-        session.accessToken
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const saveBackgroundImage = async (professional, backgroundImage) => {
-    try {
-      await professionalService.addBackgroundImage(
-        backgroundImage,
-        professional.id,
-        session.accessToken
-      );
-      professional.backgroundImage = URL.createObjectURL(backgroundImage);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const onAddProfessional = async (data) => {
-    setLoading(true);
-    const previewImage = data.previewImage;
-    const backgroundImage = data.backgroundImage;
-    const images = data.images;
-
-    const professional = await saveProfessional(data);
-
-    if (professional != null) {
-      if (previewImage) {
-        await savePreviewImage(professional, previewImage);
-      }
-      if (backgroundImage) {
-        await saveBackgroundImage(professional, backgroundImage);
-      }
-      if (images.length > 0) {
-        await saveImages(images, professional);
-      }
-    }
-    setLoading(false);
-    return professional;
-  };
-
   return (
-    <Layout title={`${t("WelcomeTo")} ${process.env.NEXT_PUBLIC_PROJECT_NAME}`}>
-      <ModalForm
-        modalTitle={t("FORM PROFESSIONAL")}
-        className={"Button mt-50"}
-        formBody={
-          <FormProfessional
-          onAddProfessional={onAddProfessional}
-          toggle={toggleModal}
-          error={error}
-          setError={setError}
-          />
-        }
-        modalOpen={{ open: modalOpen, function: setModalOpen }}
-      />
-      <CarouselBanner images={carouselImages}/>
+    <Layout
+      title={`${t("welcome-to")} ${process.env.NEXT_PUBLIC_PROJECT_NAME}`}
+    >
+      <CarouselBanner images={carouselImages} />
       <div className="my-4 d-flex">
-        <CarouselImageCreator/>
+        <CarouselImageCreator />
         <div className="mx-4">
           <AdministratorCreator />
         </div>
         <div className="mx-4">
-          <CompanyCreator/>
+          <CompanyCreator />
         </div>
       </div>
       <Row>
@@ -195,7 +98,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common"])),
       filters: filters,
       carouselImages,
     },

@@ -9,7 +9,7 @@ import {
   Col,
 } from "reactstrap";
 import classnames from "classnames";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 
 const Tabs = (props) => {
   const [activeTab, setActiveTab] = useState("1");
@@ -60,7 +60,7 @@ const Tabs = (props) => {
         <TabPane tabId="1">
           <Row>
             <Col sm="12">
-              <h4>{`${t("ListOf")} ${titles[0]}`}</h4>
+              <h4>{`${t("tabs.list-of")} ${titles[0]}`}</h4>
               {children[0]}
             </Col>
           </Row>
@@ -68,7 +68,7 @@ const Tabs = (props) => {
         <TabPane tabId="2">
           <Row>
             <Col sm="12">
-              <h4>{`${t("ListOf")} ${titles[1]}`}</h4>
+              <h4>{`${t("tabs.list-of")} ${titles[1]}`}</h4>
               {children[1]}
             </Col>
           </Row>
@@ -76,7 +76,7 @@ const Tabs = (props) => {
         <TabPane tabId="3">
           <Row>
             <Col sm="12">
-              <h4>{`${t("ListOf")} ${titles[2]}`}</h4>
+              <h4>{`${t("tabs.list-of")} ${titles[2]}`}</h4>
               {children[2]}
             </Col>
           </Row>

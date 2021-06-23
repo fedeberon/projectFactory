@@ -12,7 +12,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import { signIn } from "next-auth/client";
 import { Google, Facebook, Instagram } from "react-bootstrap-icons";
 import * as userService from "../services/userService";
@@ -37,20 +37,27 @@ const SignInForm = (props) => {
           <CardBody>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <FormGroup>
-                <Label for="email">{t("Email")}</Label>
+                <Label for="email">{t("email")}</Label>
                 <Input
                   type="email"
                   name="email"
                   id="email"
-                  placeholder={t("Write the email here please")}
+                  placeholder={t("write-the-here-please", {
+                    namePlaceholder: t("the-email").toLowerCase()
+                  })}
                   {...register("email", {
                     required: {
                       value: true,
-                      message: `${t("Email is required")}`,
+                      message: `${t("is-required", {
+                        nameRequired: t("the-email")
+                      })}`,
                     },
                     minLength: {
                       value: 3,
-                      message: `${t("Email cannot be less than 3 character")}`,
+                      message: `${t("cannot-be-less-than-character", {
+                        nameInput: t("the-email"),
+                        numberCharacters: 3
+                      })}`,
                     },
                   })}
                   className={"form-field" + (errors.email ? " has-error" : "")}
@@ -62,19 +69,26 @@ const SignInForm = (props) => {
                 )}
               </FormGroup>
               <FormGroup>
-                <Label for="name">{t("Name")}</Label>
+                <Label for="name">{t("name")}</Label>
                 <Input
                   type="text"
-                  id="userName"
-                  placeholder={t("Write the name here please")}
+                  id="name"
+                  placeholder={t("write-the-here-please", {
+                    namePlaceholder: t("the-name").toLowerCase()
+                  })}
                   {...register("name", {
                     required: {
                       value: true,
-                      message: `${t("Name is required")}`,
+                      message: `${t("is-required", {
+                        nameRequired: t("the-name")
+                      })}`,
                     },
                     minLength: {
                       value: 3,
-                      message: `${t("Name cannot be less than 3 character")}`,
+                      message: `${t("cannot-be-less-than-character", {
+                        nameInput: t("the-name"),
+                        numberCharacters: 3
+                      })}`,
                     },
                   })}
                   className={"form-field" + (errors.name ? " has-error" : "")}
@@ -86,20 +100,27 @@ const SignInForm = (props) => {
                 )}
               </FormGroup>
               <FormGroup>
-                <Label for="password">{t("Password")}</Label>
+                <Label for="password">{t("password")}</Label>
                 <Input
                   type="password"
                   id="password"
-                  placeholder={t("Write the password here please")}
+                  placeholder={t("write-the-here-please", {
+                    namePlaceholder: t("the-password").toLowerCase()
+                  })}
                   {...register("password", {
                     required: {
                       value: true,
-                      message: `${t("Password is required")}`,
+                      message: `${t("is-required", {
+                        nameRequired: t("the-password")
+                      })}`,
                     },
                     minLength: {
                       value: 8,
                       message: `${t(
-                        "Password cannot be less than 8 character"
+                        "cannot-be-less-than-character", {
+                          nameInput: t("the-password"),
+                          numberCharacters: 8
+                        }
                       )}`,
                     },
                   })}
@@ -113,12 +134,12 @@ const SignInForm = (props) => {
                   </FormText>
                 )}
               </FormGroup>
-              <Button color="primary" onClick={singUp} className="mt-2">{t("Sign in")}</Button>
+              <Button type="submit" color="primary" className="mt-2">{t("sign-in")}</Button>
             </Form>
             <Label for="Registrarse">Registrarse con:</Label>
-            <Button onClick={() => signIn("google")} color="danger" className="mx-2" size={25}><Google/></Button>
-            <Button onClick={() => signIn("facebook")} color="primary" className="mx-2" size={25}><Facebook/></Button>
-            <Button onClick={() => signIn("instagram")} color="secondary" className="mx-2" size={25}><Instagram/></Button>
+            <Button onClick={() => signIn("google")} color="danger" className="mx-2" size={'25'}><Google/></Button>
+            <Button onClick={() => signIn("facebook")} color="primary" className="mx-2" size={'25'}><Facebook/></Button>
+            <Button onClick={() => signIn("instagram")} color="secondary" className="mx-2" size={'25'}><Instagram/></Button>
           </CardBody>
         </Card>
       </Col>
