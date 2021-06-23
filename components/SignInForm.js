@@ -32,7 +32,10 @@ const SignInForm = (props) => {
       password,
     };
   };
-
+  const singUp = () => {
+    const userName = document.querySelector ("#userName").value
+    const password = document.querySelector ("#password").value
+  }
   return (
     <Row className="d-flex justify-content-center">
       <Col xs={6}>
@@ -68,7 +71,7 @@ const SignInForm = (props) => {
                 <Label for="name">{t("Name")}</Label>
                 <Input
                   type="text"
-                  id="name"
+                  id="userName"
                   placeholder={t("Write the name here please")}
                   {...register("name", {
                     required: {
@@ -116,12 +119,12 @@ const SignInForm = (props) => {
                   </FormText>
                 )}
               </FormGroup>
-              <Button color="primary" className="mt-2">{t("Sign in")}</Button>
+              <Button color="primary" onClick={singUp} className="mt-2">{t("Sign in")}</Button>
             </Form>
             <Label for="Registrarse">Registrarse con:</Label>
-            <Button onClick={signIn} color="danger" className="mx-2" size={25}><Google/></Button>
-            <Button onClick={signIn} color="primary" className="mx-2" size={25}><Facebook/></Button>
-            <Button onClick={signIn} color="secondary" className="mx-2" size={25}><Instagram/></Button>
+            <Button onClick={() => signIn("google")} color="danger" className="mx-2" size={25}><Google/></Button>
+            <Button onClick={() => signIn("facebook")} color="primary" className="mx-2" size={25}><Facebook/></Button>
+            <Button onClick={() => signIn("instagram")} color="secondary" className="mx-2" size={25}><Instagram/></Button>
           </CardBody>
         </Card>
       </Col>
