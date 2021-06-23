@@ -1,4 +1,5 @@
 import API from "./api";
+import { signIn } from "next-auth/client";
 import * as tagService from "./tagService";
 import * as imageService from "./imageService";
 
@@ -98,6 +99,12 @@ export const addBackgroundImage = async (image, token) => {
 export const become = async (professional, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const response = await API.post(`/professionals/become`, professional);
+  signIn('credentials', { 
+    accessToken: response.token,
+    name: professional.contact,
+    email: professional.email,
+    callbackUrl: `${window.location.origin}/profile`
+  });
   return response.token;
 };
 

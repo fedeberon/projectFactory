@@ -15,6 +15,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { signIn } from "next-auth/client";
 import { Google, Facebook, Instagram } from "react-bootstrap-icons";
+import * as userService from "../services/userService";
 
 const SignInForm = (props) => {
   const { t, lang } = useTranslation("common");
@@ -26,16 +27,9 @@ const SignInForm = (props) => {
   } = useForm();
 
   const onSubmit = async ({ name, email, password }, event) => {
-    let data = {
-      name,
-      email,
-      password,
-    };
+    await userService.add(name, password);
   };
-  const singUp = () => {
-    const userName = document.querySelector ("#userName").value
-    const password = document.querySelector ("#password").value
-  }
+
   return (
     <Row className="d-flex justify-content-center">
       <Col xs={6}>
