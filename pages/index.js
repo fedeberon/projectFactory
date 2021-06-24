@@ -29,6 +29,8 @@ const Home = ({ filters, carouselImages }) => {
 
   let { t } = useTranslation("home");
 
+  const updateLikePhoto = () => {};
+
   useEffect(async () => {
     const images = await getProfessionalsByTags();
     if (images) {
@@ -37,16 +39,18 @@ const Home = ({ filters, carouselImages }) => {
   }, [appliedFilters]);
 
   const getProfessionalsByTags = async () => {
-    try {
-      return await imageService.getProfessionalImagesByTags(
-        appliedFilters,
-        pageSize.page,
-        pageSize.size,
-        session?.accessToken
-      );
-    } catch (error) {
-      console.error(error);
-    }
+    // if (session) {
+      try {
+        return await imageService.getProfessionalImagesByTags(
+          appliedFilters,
+          pageSize.page,
+          pageSize.size,
+          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsYWZhYnJpY2FkZXByb3llY3Rvc2JvbGl2YXJAZ21haWwuY29tIiwianRpIjoiMzYyZWUyZGMtZTk4Ny00YTBlLTg1YWEtNjU1MDQ0ODExNDM3IiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIiwiUk9MRV9BRE1JTklTVFJBVE9SIiwiUk9MRV9QUk9GRVNTSU9OQUwiXSwiaWF0IjoxNjI0NTM5OTM4LCJleHAiOjE2MjY2ODc0MjJ9.1EnVu-7shLbFVoZYt335CkURZCMUAQerMt0OGKcoeQSiutIbbujxGWuInlx3qo7DwPh4yS1LAe70Oyy9A-fIfw"
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    // }
   };
 
   return (
