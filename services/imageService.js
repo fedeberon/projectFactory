@@ -40,7 +40,6 @@ export const addCaroucelImages = async (images, token) => {
 
 export const getProfessionalImagesByTags = async (tags, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  console.log(token);
   let concatenatedTags = "";
   tags.forEach((tag) => {
     concatenatedTags = `${concatenatedTags}tags=${tag.tag}&`;

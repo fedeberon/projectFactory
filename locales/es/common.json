@@ -154,7 +154,7 @@
   "SignedInAs": "Ingresado como",
   "Profile": "Perfil",
   "WriteTagHere": "Escriba el tag aquí por favor",
-  "TagIsRequired": "El tag requerido",
+
   "TagCannotBe3OrLess": "El tag no puede tener menos de 3 caracteres",
 
   "link" : "Enlace"

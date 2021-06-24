@@ -81,7 +81,7 @@ const FormProfessional = ({
         setError("");
       }
     } else {
-      setError(t("TagsRequired"));
+      setError(t("tag-is-required"));
     }
   };
 

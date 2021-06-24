@@ -20,16 +20,14 @@ import CompanyCreator from "../components/CompanyCreator/CompanyCreator";
 import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
 
-const Home = ({ filters, carouselImages }) => {
-  const [session] = useSession();
+const Home = ({ filters, carouselImages, session }) => {
+  // const [session] = useSession();
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
 
   let { t } = useTranslation("home");
-
-  const updateLikePhoto = () => {};
 
   useEffect(async () => {
     const images = await getProfessionalsByTags();
@@ -39,18 +37,16 @@ const Home = ({ filters, carouselImages }) => {
   }, [appliedFilters]);
 
   const getProfessionalsByTags = async () => {
-    // if (session) {
-      try {
-        return await imageService.getProfessionalImagesByTags(
-          appliedFilters,
-          pageSize.page,
-          pageSize.size,
-          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsYWZhYnJpY2FkZXByb3llY3Rvc2JvbGl2YXJAZ21haWwuY29tIiwianRpIjoiMzYyZWUyZGMtZTk4Ny00YTBlLTg1YWEtNjU1MDQ0ODExNDM3IiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIiwiUk9MRV9BRE1JTklTVFJBVE9SIiwiUk9MRV9QUk9GRVNTSU9OQUwiXSwiaWF0IjoxNjI0NTM5OTM4LCJleHAiOjE2MjY2ODc0MjJ9.1EnVu-7shLbFVoZYt335CkURZCMUAQerMt0OGKcoeQSiutIbbujxGWuInlx3qo7DwPh4yS1LAe70Oyy9A-fIfw"
-        );
-      } catch (error) {
-        console.error(error);
-      }
-    // }
+    try {
+      return await imageService.getProfessionalImagesByTags(
+        appliedFilters,
+        pageSize.page,
+        pageSize.size,
+        session?.accessToken
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -104,6 +100,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
     props: {
       filters: filters,
       carouselImages,
+      session,
     },
   };
 }

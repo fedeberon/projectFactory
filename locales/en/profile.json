@@ -27,5 +27,6 @@
     "cannot-be-less-than-character": "{{nameInput}} cannot be less than {{numberCharacters}} character",
     "select-profile-picture": "Select profile picture",
     "select-background-picture": "Select background picture"
-  }
+  },
+  "tag-is-required": "Tag is required"
 }
