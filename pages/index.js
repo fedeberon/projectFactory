@@ -26,6 +26,7 @@ const Home = ({ filters, carouselImages, session }) => {
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
+  const [imagesCarousel, setImagesCarousel] = useState([]);
 
   let { t } = useTranslation("home");
 
@@ -35,6 +36,21 @@ const Home = ({ filters, carouselImages, session }) => {
       setFilteredImages(images);
     }
   }, [appliedFilters]);
+
+  const onAddCarouselImages = async () => {
+    try {
+      const carouselImages = await imageService.findCarouselImages();
+      setImagesCarousel(carouselImages);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(async () => {
+    if (carouselImages) {
+      await onAddCarouselImages();
+    }
+  }, [carouselImages]);
 
   const getProfessionalsByTags = async () => {
     try {
@@ -53,9 +69,9 @@ const Home = ({ filters, carouselImages, session }) => {
     <Layout
       title={`${t("welcome-to")} ${process.env.NEXT_PUBLIC_PROJECT_NAME}`}
     >
-      <CarouselBanner images={carouselImages} />
+      <CarouselBanner images={imagesCarousel} />
       <div className="my-4 d-flex">
-        <CarouselImageCreator />
+        <CarouselImageCreator onAddCarouselImages={onAddCarouselImages} />
         <div className="mx-4">
           <AdministratorCreator />
         </div>

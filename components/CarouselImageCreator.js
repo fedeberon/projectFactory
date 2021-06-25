@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
 import {
   Button,
@@ -16,18 +16,22 @@ import useTranslation from "next-translate/useTranslation";
 import InputImages from "./InputImages/InputImages";
 import * as imageService from "../services/imageService";
 
-const CarouselImageCreator = () => {
+const CarouselImageCreator = ({ onAddCarouselImages }) => {
   const [modalAddImages, setModalAddImages] = useState(false);
   const [modalAddTitle, setModalAddTitle] = useState(false);
   const [currentImage, setCurrentImage] = useState({});
   const [session] = useSession();
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
   const [images, setImages] = useState([]);
 
   const toggle = () => setModalAddImages(!modalAddImages);
 
   const onAddImages = async () => {
-    await imageService.addCaroucelImages(images, session.accessToken);
+    await imageService.addCaroucelImages(
+      images,
+      session.accessToken
+    );
+    await onAddCarouselImages();
     setModalAddImages(false);
   };
 
@@ -40,9 +44,14 @@ const CarouselImageCreator = () => {
     image.title = document.querySelector("#input-title").value;
     image.subTitle = document.querySelector("#input-subTitle").value;
     image.link = document.querySelector("#input-link").value;
-    
+
     setModalAddTitle(false);
   };
+
+  useEffect(() => {
+    if (modalAddImages) {
+    }
+  }, [modalAddImages]);
 
   return (
     <>
@@ -85,7 +94,9 @@ const CarouselImageCreator = () => {
               alt="image-selected"
             ></img>
             <FormGroup>
-              <Label for="input-title">{t("carousel-image-creator.title")}</Label>
+              <Label for="input-title">
+                {t("carousel-image-creator.title")}
+              </Label>
               <br></br>
               <Input id="input-title" />
               <br></br>
