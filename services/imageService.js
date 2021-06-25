@@ -7,7 +7,6 @@ export const getProjectImages = async (id, token, page, size) => {
   );
   images.forEach((image) => {
     image.name = image.path;
-    image.path = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/projects/${id}/images/${image.path}`;
   });
   return images;
 };
@@ -19,8 +18,7 @@ export const getProjectsImagesFiltered = async (token, page, size) => {
   );
   images.forEach((image) => {
     image.name = image.path;
-    image.path = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/projects/${id}/${image.path}`;
-  });
+   });
   return images;
 };
 
@@ -59,9 +57,7 @@ export const getProfessionalImagesByTags = async (tags, page, size, token) => {
       await callback(image);
     };
     image.name = image.path;
-    image.path = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${image.entity.id}/images/${image.path}`;
-    image.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${image.entity.id}/preview/${image.entity.previewImage}`;
-  });
+    });
   return images;
 };
 
@@ -72,8 +68,7 @@ export const getProfessionalImages = async (id, page, size, token) => {
   );
   images.forEach((image) => {
     image.name = image.path;
-    image.path = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${id}/images/${image.path}`;
-  });
+   });
   return images;
 };
 
@@ -87,8 +82,7 @@ export const uploadCompanyPreview = async (companyId, image, token) => {
 export const findCarouselImages = async () => {
   let images = await API.get(`/images/carousel`);
   images.forEach((image) => {
-    image.path = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/carousel/${image.path}`;
-  });
+   });
   return images;
 };
 
@@ -105,3 +99,12 @@ export const setLikePhoto = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
   await API.put(`/images/${image.id}/like/${image.liked}`);
 };
+
+export const getLikePhotos = async (page, size, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  console.log(token);
+  console.log(page);
+  console.log(size);
+  let images = await API.get(`/images/liked?page=${page}&size=${size}`);
+  return images;
+}

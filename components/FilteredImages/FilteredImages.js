@@ -66,7 +66,7 @@ const FilteredImages = ({ isLoading, images }) => {
                     <Col className="col-auto">
                       <img
                         className={`${filteredImagesStyles.imgProfile} rounded-circle`}
-                        src={image.previewImage}
+                        src={image.entity.previewImage}
                       />
                     </Col>
                     <Col className={`col-auto`}>

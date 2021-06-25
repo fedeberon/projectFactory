@@ -4,11 +4,7 @@ import * as tagService from './tagService';
 
 export const findAll = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  const projects = await API.get(`/projects?page=${page}&size=${size}`);
-  projects.forEach((project) => {
-    project.previewImage = getPathToPreviewImage(project.id, project.previewImage);
-  });
-  return projects;
+  return  await API.get(`/projects?page=${page}&size=${size}`);
 };
 
 
@@ -17,7 +13,6 @@ export const getById = async (id, token) => {
   const project = await API.get(`/projects/${id}`);
   let purchased = await isPurchased(project, token);
   project.purchased = purchased != undefined; 
-  project.previewImage = getPathToPreviewImage(project.id, project.previewImage);
   return project;
 };
 
@@ -94,7 +89,6 @@ export const edit = async (project, token) => {
   delete project.id;
   delete project.images;
   let projectEdited = await API.put(`/projects/${id}`, project);
-  projectEdited.previewImage = getPathToPreviewImage(id, projectEdited.previewImage);
   if (previewImage) {
     await addPreviewImage(previewImage, id, token);
     projectEdited.previewImage = URL.createObjectURL(previewImage);
@@ -146,10 +140,6 @@ const removeAndAddImages = async (images, id, token) => {
   return newImages;
 };
 
-const getPathToPreviewImage = (projectId, imageId) => {
-  return `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/projects/${projectId}/preview/${imageId}`;
-}
-
 export const getPurchasedProjects = async (token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.get(`/projects/purchased?page=0&size=99`);
@@ -163,11 +153,6 @@ export const isPurchased = async (project, token) => {
 
 export const findAllByProfessionalId = async (professionalId, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  const projects = await API.get(`/projects/professionals/${professionalId}?page=${page}&size=${size}`);
-  projects.forEach( project => {
-    project.previewImage = getPathToPreviewImage(project.id, project.previewImage);
-  });
-  return projects;
+  return await API.get(`/projects/professionals/${professionalId}?page=${page}&size=${size}`);
+  
 };
-
-export default {findAll, getById, addProject, addPreviewImage, addImages, edit, addFile, download, removeAndAddImages,getPurchasedProjects, isPurchased}

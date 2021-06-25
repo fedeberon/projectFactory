@@ -28,5 +28,6 @@
     "select-profile-picture": "Seleccione la imagen de perfil",
     "select-background-picture": "Seleccione la imagen de fondo"
   },
-  "tag-is-required": "El tag es requerido"
+  "tag-is-required": "El tag es requerido",
+  "images-i-liked": "Imagenes que me gustan"
 }

@@ -28,5 +28,6 @@
     "select-profile-picture": "Select profile picture",
     "select-background-picture": "Select background picture"
   },
-  "tag-is-required": "Tag is required"
+  "tag-is-required": "Tag is required",
+  "images-i-liked": "Images i liked"
 }
