@@ -17,3 +17,14 @@
 .pointer {
   cursor: pointer;
 }
+
+.inputSearch {
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+}
+
+.buttonSearch {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  height: 100%;
+}

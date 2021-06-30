@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Collapse,
   Navbar,
@@ -26,13 +26,20 @@ import { PersonCircle, Search } from "react-bootstrap-icons";
 import NavSearchStyles from "./NavSearch.module.css";
 import Link from "next/link";
 import Image from "next/image";
+import SuggestionsSearch from "../SuggestionsSearch/SuggestionsSearch";
+import * as professionalService from "../../services/professionalService";
 
 import RolProfile from "../RolProfile";
 
 export default function NavSearch() {
   const [dropdown, setDropdown] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchActive, setSearchActive] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [searchByProfessionals, setSearchByProfessionals] = useState(true);
+  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const [session, loading] = useSession();
+  const inputSearch = useRef();
 
   const router = useRouter();
 
@@ -45,6 +52,37 @@ export default function NavSearch() {
     if (session) {
       return session.authorities.includes(role);
     }
+  };
+
+  const searchProjectsOrProfessionals = async () => {
+    const value = inputSearch.current.value;
+    let newSuggestions;
+    if (value != "") {
+      if (searchByProfessionals) {
+        newSuggestions = await professionalService.findByContactAndStatus(
+          value,
+          "APPROVED",
+          pageSize.page,
+          pageSize.size
+        );
+      } else {
+        newSuggestions = [];
+      }
+    } else {
+      newSuggestions = [];
+    }
+
+      setSuggestions(newSuggestions);
+  };
+
+  const changeIdeas = () => {
+    setSearchByProfessionals(true);
+    searchProjectsOrProfessionals();
+  };
+
+  const changeProjects = () => {
+    setSearchByProfessionals(false);
+    searchProjectsOrProfessionals();
   };
 
   return (
@@ -62,18 +100,33 @@ export default function NavSearch() {
             <Input
               type="search"
               name="search"
+              autoComplete="off"
+              innerRef={inputSearch}
               id="exampleSearch"
-              placeholder="Buscar ideas/ profesionales"
+              className={NavSearchStyles.inputSearch}
+              placeholder={t("header.search-placeholder")}
+              onChange={searchProjectsOrProfessionals}
+              onFocus={() => setSearchActive(true)}
+              onBlur={() => setSearchActive(true)}
+            />
+            <SuggestionsSearch
+              active={searchActive}
+              suggestions={suggestions}
+              input={inputSearch.current}
+              onChangeCheckIdeas={changeIdeas}
+              onChangeCheckProjects={changeProjects}
             />
             <InputGroupAddon addonType="append">
-              <InputGroupText className="h-100">
+              <InputGroupText
+                className="h-100"
+                className={NavSearchStyles.buttonSearch}
+              >
                 <Search />
               </InputGroupText>
             </InputGroupAddon>
           </InputGroup>
         </Row>
         <Collapse isOpen={dropdown} navbar>
-         
           <Row className="justify-content-center align-items-center">
             <Col>
               <Dropdown isOpen={dropdownOpen} toggle={toggle2}>
