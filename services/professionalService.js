@@ -126,6 +126,7 @@ export const setEnebleProfessional = async (id, status, token) => {
   return response;
 };
 
+
 export const findByUsernameAndStatus = async (username, status, page, size) => {
   return await API.get(`/professionals/username/${username}/status/${status}?page=${page}&size=${size}`);
 };
@@ -138,3 +139,9 @@ export const setNewTokensToProfessional = async (newTokens, professionalId, toke
   API.defaults.headers.common["Authorization"] = token;
   return await API.put(`/professionals/${professionalId}/tokens/${newTokens}`);
 }
+
+export const buyPlan = async (plan, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/professionals/purchase-plan/${plan}`);
+};
+
