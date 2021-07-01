@@ -1,1 +1,6 @@
-{}
+{
+    "phone":"Phone",
+    "message":"Message",
+    "write-your-message-here":"Write your message here",
+    "write-your-phone-here":"Write your phone here"
+}
