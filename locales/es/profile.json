@@ -1,8 +1,9 @@
 {
   "become-professional": "Convertirse en un profesional",
-  
+
   "authority": "Autoridad",
   "without-session": "Sin sesión",
+  "buy-more-tokens": "Comprar mas fichas",
   "formulary": {
     "professional-form": "Formulario Profesional",
     "professional-profile": "Perfil profesional",
@@ -27,5 +28,27 @@
     "cannot-be-less-than-character": "El {{nameInput}} no puede tener menos de {{numberCharacters}} caracteres",
     "select-profile-picture": "Seleccione la imagen de perfil",
     "select-background-picture": "Seleccione la imagen de fondo"
+  },
+  "tag-is-required": "El tag es requerido",
+  "images-i-liked": "Imagenes que me gustan",
+  
+  "formulary-plan" : {
+    "title" : "Seleccione un plan",
+    "plans" : "Planes",
+    "message" : "Selecciona un plan para obtener fichas y asi aumentar las visualizaciones de tus obras, cada plan incluye una cantidad de fichas distintas la cual mientras mas fichas tengas, mayores son las posibilidades de que tus obras sean vistas por los usuarios. Recorda que tus fichas se van gastando a medida que los usuarios ven tus obras.",
+    "basic-plan" : "Basico",
+    "medium-plan" : "Medio",
+    "advance-plan" : "Avanzado",
+    "buy-now" : "Comprar ahora",
+    "tokens" : "fichas",
+    "includes" : "Incluye",
+    "basic-message" : "Este es el plan basico para aumentar la visibilidad de tus obras por un corto periodo de tiempo, tu obras resaltaran sobre cualquier otro profesional que no tenga fichas.",
+    "medium-message" : "Con este plan, podras hacer que tus obras resalten sobre los profesionales que no tengan ningun plan o tengan el plan basico.",
+    "advance-message" : "Con el plan avanzado resaltaras sobre cualquier otro profesional, sobre aquellos que no tengan ningun plan o tengan un plan basico o medio, tus obras estaran en la pagina principal aumentando la visibilidad de tus obras.",
+    "successful-message" : "Has comprado",
+    "compare-plans" : "Comparar planes",
+    "increased-visibility" : "Visibilidad aumentada",
+    "amount-tokens" : "Cantidad de tokens",
+    "price" : "Precio"
   }
 }

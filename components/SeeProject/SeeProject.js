@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import ModalForm from "./ModalForm";
+import ModalForm from "../ModalForm";
 import useTranslation from "next-translate/useTranslation";
-import FormEditProject from "../components/FormEditProject";
+import FormEditProject from "../FormEditProject";
 import { useRouter } from "next/router";
-import FormBuyProject from "../components/FormBuyProject";
-import FormTwoFactorAuthentication from "../components/FormTwoFactorAuthentication";
+import FormBuyProject from "../FormBuyProject";
+import FormTwoFactorAuthentication from "../FormTwoFactorAuthentication";
 import {
   Button,
   Card,
@@ -17,7 +17,8 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import CarouselProject from "./CarouselProject";
+import CarouselProject from "../CarouselProject/CarouselProject";
+import SeeProjectStyle from "./SeeProject.module.css";
 
 const SeeProject = ({ project, onEditProject, id }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -91,6 +92,7 @@ const SeeProject = ({ project, onEditProject, id }) => {
                   </div>
                 </CardSubtitle>
                 <img
+                  className={`${SeeProjectStyle.img}`}
                   src={project.previewImage}
                   width="100%"
                   alt="preview-image"

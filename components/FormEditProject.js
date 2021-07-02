@@ -15,11 +15,16 @@ import useTranslation from "next-translate/useTranslation";
 import InputImages from "../components/InputImages/InputImages";
 import Dropzone from "../components/Dropzone/Dropzone";
 import * as youtubeService from "../services/youtubeService";
+import FormTag from "../components/FormTag/FormTag";
+import ModalForm from "../components/ModalForm";
 
 const FormEditProject = ({ project, onEdit, toggle }) => {
   const [previewImage, setPreviewImage] = useState([]);
   const [images, setImages] = useState([]);
   const [imagesEdited, setImagesEdited] = useState([]);
+  const [currentImageTag, setCurrentImageTag] = useState({});
+  const [modalTagOpen, setModalTagOpen] = useState(false);
+  const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
 
   const { t } = useTranslation("common");
 
@@ -44,28 +49,42 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
     }
   }, [project]);
 
+  const onClickAddTag = (image) => {
+    setCurrentImageTag(image);
+    toggleTagModal();
+  };
+
+  const imagesHasTags = () => {
+    const imagesWithoutTags = images.filter(img => img.tags.length == 0);
+    return imagesWithoutTags.length == 0;
+  };
+
   const onSubmit = async (
     { name, description, totalArea, website, year, videoPath },
     event
   ) => {
+    // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image for form data
     if (youtubeService.isValidVideo(videoPath)) {
-      // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image for form data
-      let image;
-      previewImage.length == 0 ? (image = undefined) : (image = previewImage[0]);
-      let data = {
-        name,
-        description,
-        totalArea,
-        website,
-        year,
-        previewImage: image,
-        imagesEdited,
-        videoPath,
-        id: project.id,
-      };
-      onEdit(data);
-      event.target.reset();
-      toggle();
+      if (imagesHasTags()) {
+        let image;
+        previewImage.length == 0 ? (image = undefined) : (image = previewImage[0]);
+        let data = {
+          name,
+          description,
+          totalArea,
+          website,
+          year,
+          previewImage: image,
+          imagesEdited,
+          videoPath,
+          id: project.id,
+        };
+        onEdit(data);
+        event.target.reset();
+        toggle();
+      } else {
+        
+      }
     } else {
       setError("videoPath",{
         type: "manual",
@@ -331,6 +350,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           <InputImages
             images={images}
             accept={"image/*"}
+            onAdd={onClickAddTag}
             multiple={true}
             withTags={true}
             imagesEdited={setImagesEdited}
@@ -340,6 +360,13 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           {t("send")}
         </Button>
       </Form>
+
+      <ModalForm
+        className={"Button"}
+        modalTitle={t("add-tags")}
+        formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}
+        modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
+      />
     </Container>
   );
 };

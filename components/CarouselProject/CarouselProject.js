@@ -7,8 +7,8 @@ import {
   CarouselCaption,
   Button,
 } from "reactstrap";
-import ModalImage from "./ModalImage/ModalImage";
-
+import ModalImage from "../ModalImage/ModalImage";
+import CarouselProjectStyle from "./CarouselProject.module.css";
 
 const CarouselProject = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -26,22 +26,25 @@ const CarouselProject = (props) => {
   const verImagen = (event) => {
     setSelectImage(event.target.src);
     toggle();
-  }
+  };
 
   useEffect(() => {
     if (images) {
       const imagesCarousel = images.map((item, index) => {
         return (
           <CarouselItem
+            className={`${CarouselProjectStyle.height}`}
             onExiting={() => setAnimating(true)}
             onExited={() => setAnimating(false)}
             key={index}
           >
             <img
-              className="img-fluid w-100 h-100"
+              className={`${CarouselProjectStyle.img}`}
               src={item.path}
               alt={item.name}
-              onClick={(event)=>{verImagen(event)}}
+              onClick={(event) => {
+                verImagen(event);
+              }}
             />
             <CarouselCaption captionText={""} captionHeader={""} />
           </CarouselItem>
@@ -71,7 +74,12 @@ const CarouselProject = (props) => {
 
   return (
     <>
-      <ModalImage toggle={toggle} isOpen={modalImage} selectImage={selectImage} className={"modal-fullscreen-xxl-down"+" bg-transparent"} />
+      <ModalImage
+        toggle={toggle}
+        isOpen={modalImage}
+        selectImage={selectImage}
+        className={"modal-fullscreen-xxl-down" + " bg-transparent"}
+      />
       <Carousel activeIndex={activeIndex} next={next} previous={previous}>
         <CarouselIndicators
           items={slides}

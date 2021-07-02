@@ -6,7 +6,10 @@
     "log-out": "Cerrar sesión",
     "signed-in-as": "Ingresado como",
     "profile": "Perfil",
-    "portfolio": "Mi portafolio"
+    "portfolio": "Mi portafolio",
+    "search-placeholder" : "Buscar ideas/ profesionales",
+    "search-by-ideas" : "Buscar por ideas",
+    "search-by-professionals" : "Buscar por profesionales"
   },
 
   "professional": "Profesional",
@@ -25,6 +28,7 @@
   "is-required": "{{nameRequired}} es requerido",
   "write-the-here-please": "Escriba {{namePlaceholder}} aquí por favor",
   "cannot-be-less-than-character": "{{nameInput}} no puede tener menos de {{numberCharacters}} caracteres",
+  "cannot-be-more-than-character": "{{nameInput}} no puede tener más de {{numberCharacters}} caracteres",
   "the-name": "El nombre",
   "the-description": "La descripcion",
   "the-total-area": "El área total",
@@ -38,7 +42,7 @@
   "professional-detail": "Detalle de Profesional",
   "user": "Usuario",
   "drag-and-drop-some-files-here-or-click-to-select-files": "Arrastre y suelte algun archivo aquí o haga click para seleccionar un archivo",
-  
+
   "FirstName": "Nombre",
 
   "form-project": "Formulario Proyecto",
@@ -95,7 +99,9 @@
   "table-admin": {
     "image": "Imagen",
     "actions": "Acciones",
-    "there-are-not-more-professional": "No hay más profesionales"
+    "there-are-not-more-professional": "No hay más profesionales",
+    "find-by-contact" : "Buscar por contacto",
+    "tokens" : "Fichas"
   },
 
   "tabs": {
@@ -107,7 +113,7 @@
     "insert-tag": "Ingrese el tag aquí por favor"
   },
 
-  "seeProject":"------------------",
+  "seeProject": "------------------",
   "project-detail": "Detalle de proyecto",
   "project-edit": "Editar un proyecto",
   "professional-contact": "Contacto del profesional",
@@ -116,7 +122,7 @@
   "download-project": "Descargar proyecto",
   "other-projects-of-professional": "Otros proyectos de este profesional",
 
-  "FormBuyProjects":"------------------",
+  "FormBuyProjects": "------------------",
   "doc-type": "Tipo de documento",
   "doc-number": "Número de documento",
   "card-holder-name": "Titular de la tarjeta",
@@ -128,7 +134,7 @@
   "project-purchased": "Has comprado este proyecto",
   "invalid-card": "Numero de tarjeta invalido",
 
-  "FormTwoFactorAuthentication":"-------------------",
+  "FormTwoFactorAuthentication": "-------------------",
   "two-factor-authentication": "Doble factor de autentificacion",
   "enter-code": "Ingresa el codigo de doble factor de autentificacion",
   "download": "Descargar",
@@ -137,24 +143,31 @@
 
   "project-edition-form": "Formulario edicion de proyecto",
 
-  "Footer":"--------------------------------",
+  "Footer": "--------------------------------",
+  "who-we-are": "Quienes somos",
+  "frequently-asked-questions": "Preguntas frecuentes",
+  "site-policies": "Politicas del sitio",
   "all-rights-reserved": "Todos los derechos reservados",
-  
-  "LogInForm":"--------------------------------",
+
+  "LogInForm": "--------------------------------",
   "password": "Contraseña",
   "the-password": "La contraseña",
-  
-  "Authentication":"--------------------------------",
-  "log-in": "Ingresar",  
+
+  "Authentication": "--------------------------------",
+  "log-in": "Ingresar",
   "sign-in": "Registrarse",
 
-  "DE DONDE ES?":"--------------------------------",
+  "DE DONDE ES?": "--------------------------------",
   "LogOut": "Cerrar sesión",
   "SignedInAs": "Ingresado como",
   "Profile": "Perfil",
   "WriteTagHere": "Escriba el tag aquí por favor",
-  "TagIsRequired": "El tag requerido",
+
   "TagCannotBe3OrLess": "El tag no puede tener menos de 3 caracteres",
 
-  "link" : "Enlace"
+  "link": "Enlace",
+  "work-form": "Formulario de Obra",
+  "building-work-detail": "Detalle de obra",
+  "preview-image": "Imagen previsualizacion",
+  "select-preview-image-for-building-work": "Seleccione una imagen de previsualizacion para la obra"
 }

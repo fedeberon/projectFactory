@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { getSession, useSession } from "next-auth/client";
-import SeeProject from "../../components/SeeProject";
+import SeeProject from "../../components/SeeProject/SeeProject";
 import * as projectService from "../../services/projectService";
 import * as imageService from "../../services/imageService";
 import Layout from "../../components/Layout/Layout";

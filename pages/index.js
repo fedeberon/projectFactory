@@ -1,6 +1,6 @@
 // Frameworks
 import React, { useEffect, useState } from "react";
-import { getSession, useSession } from "next-auth/client";
+import { getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 import { Col, Row } from "reactstrap";
 
@@ -20,12 +20,12 @@ import CompanyCreator from "../components/CompanyCreator/CompanyCreator";
 import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
 
-const Home = ({ filters, carouselImages }) => {
-  const [session] = useSession();
+const Home = ({ filters, carouselImages, session }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
+  const [imagesCarousel, setImagesCarousel] = useState([]);
 
   let { t } = useTranslation("home");
 
@@ -35,6 +35,21 @@ const Home = ({ filters, carouselImages }) => {
       setFilteredImages(images);
     }
   }, [appliedFilters]);
+
+  const onAddCarouselImages = async () => {
+    try {
+      const carouselImages = await imageService.findCarouselImages();
+      setImagesCarousel(carouselImages);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(async () => {
+    if (carouselImages) {
+      await onAddCarouselImages();
+    }
+  }, [carouselImages]);
 
   const getProfessionalsByTags = async () => {
     try {
@@ -53,9 +68,9 @@ const Home = ({ filters, carouselImages }) => {
     <Layout
       title={`${t("welcome-to")} ${process.env.NEXT_PUBLIC_PROJECT_NAME}`}
     >
-      <CarouselBanner images={carouselImages} />
+      <CarouselBanner images={imagesCarousel} />
       <div className="my-4 d-flex">
-        <CarouselImageCreator />
+        <CarouselImageCreator onAddCarouselImages={onAddCarouselImages} />
         <div className="mx-4">
           <AdministratorCreator />
         </div>
@@ -100,6 +115,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
     props: {
       filters: filters,
       carouselImages,
+      session,
     },
   };
 }

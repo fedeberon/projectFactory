@@ -9,12 +9,14 @@ import useTranslation from "next-translate/useTranslation";
 import Layout from "../../components/Layout/Layout";
 import Tabs from "../../components/Tabs/Tabs";
 import TableAdmin from "../../components/TableAdmin/TableAdmin";
+import { Input } from "reactstrap";
 
 //Services
 import {
   getProfessionalForApproved,
   setEnebleProfessional,
 } from "../../services/professionalService";
+import * as professionalService from "../../services/professionalService";
 import * as imageService from "../../services/imageService";
 
 const Admin = ({
@@ -94,6 +96,11 @@ const Admin = ({
     alert(t("images-accepted"))
   };
 
+  const inputSetTokens = (professionalId) => {
+    return (
+      <></>
+    );
+  };
 
   /**
    * Funtionality to buttonAcept and buttonReject components
@@ -134,6 +141,10 @@ const Admin = ({
    */
   const pendingTab = async () => {
     const professionals = await getProfessional("PENDING");
+    renderPendingProfessionals(professionals);
+  };
+
+  const renderPendingProfessionals = (professionals) => {
     const professionalsList = getList(professionals, [
       (professionalId) => buttonAccept(professionalId),
       (professionalId) => buttonReject(professionalId),
@@ -147,6 +158,10 @@ const Admin = ({
    */
   const approvedTab = async () => {
     const professionals = await getProfessional("APPROVED");
+    renderApprovedProfessionals(professionals);
+  };
+  
+  const renderApprovedProfessionals = (professionals) => {
     const professionalsList = getList(professionals, [
       (professionalId) => buttonReject(professionalId),
       (professionalId) => buttonAcceptImages(professionalId),
@@ -160,6 +175,10 @@ const Admin = ({
    */
   const disapprovedTab = async () => {
     const professionals = await getProfessional("REJECTED");
+    renderRejectedProfessionals(professionals);
+  };
+  
+  const renderRejectedProfessionals = (professionals) => {
     const professionalsList = getList(professionals, [
       (professionalId) => buttonAccept(professionalId),
     ]);
@@ -213,6 +232,10 @@ const Admin = ({
           <td>{professional.company.name}</td>
           <td>{professional.email}</td>
           <td>
+            <Input min="0" type="number" className="d-inline-block w-50 mr-2" defaultValue={professional.tokens}/>
+            <Button onClick={(e)=> setNewTokensToProfessional(e.target.previousElementSibling.value, professional.id)}>{t("apply")}</Button>
+          </td>
+          <td>
             {buttons.map((button, index) => {
               return <div key={index}>{button(professional.id)}</div>;
             })}
@@ -221,6 +244,11 @@ const Admin = ({
       );
     });
     return professionalList;
+  };
+
+  const setNewTokensToProfessional = async (tokens, professionalId) => {
+    await professionalService.setNewTokensToProfessional(tokens, professionalId, session.accessToken);
+    alert(t("tokens-setted"));
   };
 
   /**
@@ -270,6 +298,31 @@ const Admin = ({
    */
   const titles = [t("pending"), t("approved"), t("disapproved")];
 
+  /**
+   * Find all professionals by username and status, if username is empty, only find by status
+   * when get all professionals, the method will render them
+   */
+  const findByContactAndStatus = async (username, status) => {
+    let newProfessionals;
+
+    if (username != "")
+      newProfessionals = await professionalService.findByContactAndStatus(username, status, pageSize.page, pageSize.size);
+    else
+      newProfessionals = await getProfessional(status);
+
+    switch (status) {
+      case "PENDING":
+        renderPendingProfessionals(newProfessionals);
+        break;
+      case "APPROVED":
+        renderApprovedProfessionals(newProfessionals);
+        break;
+      case "REJECTED":
+        renderRejectedProfessionals(newProfessionals);
+        break;
+    };
+  };
+
   return (
     <Layout title={t("common:administrator")}>
       <Row>
@@ -278,14 +331,17 @@ const Admin = ({
             <TableAdmin
               professionalList={professionalListNotAppoved}
               title={titles[0]}
+              onSearch={(username) => findByContactAndStatus(username, "PENDING")}
             />
             <TableAdmin
               professionalList={professionalListAppoved}
               title={titles[1]}
+              onSearch={(username) => findByContactAndStatus(username, "APPROVED")}
             />
             <TableAdmin
               professionalList={professionalListRejected}
               title={titles[2]}
+              onSearch={(username) => findByContactAndStatus(username, "REJECTED")}
             />
           </Tabs>
         </Col>

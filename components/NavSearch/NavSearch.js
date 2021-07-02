@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Collapse,
   Navbar,
@@ -27,13 +27,22 @@ import { PersonCircle, Search } from "react-bootstrap-icons";
 import NavSearchStyles from "./NavSearch.module.css";
 import Link from "next/link";
 import Image from "next/image";
+
 import Header from "../Header/Header";
+import SuggestionsSearch from "../SuggestionsSearch/SuggestionsSearch";
+import * as professionalService from "../../services/professionalService";
+
 import RolProfile from "../RolProfile";
 
 export default function NavSearch() {
   const [dropdown, setDropdown] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchActive, setSearchActive] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [searchByProfessionals, setSearchByProfessionals] = useState(true);
+  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const [session, loading] = useSession();
+  const inputSearch = useRef();
 
   const router = useRouter();
 
@@ -48,28 +57,75 @@ export default function NavSearch() {
     }
   };
 
+  const searchProjectsOrProfessionals = async () => {
+    const value = inputSearch.current.value;
+    let newSuggestions;
+    if (value != "") {
+      if (searchByProfessionals) {
+        newSuggestions = await professionalService.findByContactAndStatus(
+          value,
+          "APPROVED",
+          pageSize.page,
+          pageSize.size
+        );
+      } else {
+        newSuggestions = [];
+      }
+    } else {
+      newSuggestions = [];
+    }
+
+    setSuggestions(newSuggestions);
+  };
+
+  const changeIdeas = () => {
+    setSearchByProfessionals(true);
+    searchProjectsOrProfessionals();
+  };
+
+  const changeProjects = () => {
+    setSearchByProfessionals(false);
+    searchProjectsOrProfessionals();
+  };
+
   return (
     <>
       <Container fluid="xl">
         <Navbar className="light navbar-expand-lg px-2" light>
           <Link href="/" passHref>
             <NavLink className={`${NavSearchStyles.pointer} flex-lg-grow-0`}>
+              {/* <NavLink className={`flex ml-4 ${NavSearchStyles.pointer}`}> */}
               {t("header.home")}
             </NavLink>
           </Link>
-          <Row
-            className={`justify-content-center align-items-center mx-auto`}
-          >
+          {/* <NavbarToggler onClick={toggle} /> */}
+          <Row className={`justify-content-center w-50 align-items-center mx-auto`}>
+            {/* <Row className="w-100 justify-content-center align-items-center"></Row> */}
             <InputGroup className="w-100  d-flex">
+              {/* <InputGroup className="w-50  d-flex"> */}
               <Label for="exampleSearch" htmlFor="Search"></Label>
               <Input
                 type="search"
                 name="search"
+                autoComplete="off"
+                innerRef={inputSearch}
                 id="exampleSearch"
-                placeholder="Buscar ideas/ profesionales"
+                className={NavSearchStyles.inputSearch}
+                placeholder={t("header.search-placeholder")}
+                onChange={searchProjectsOrProfessionals}
+                onFocus={() => setSearchActive(true)}
+                onBlur={() => setSearchActive(false)}
+              />
+              <SuggestionsSearch
+                active={searchActive}
+                suggestions={suggestions}
+                input={inputSearch.current}
+                onChangeCheckIdeas={changeIdeas}
+                onChangeCheckProjects={changeProjects}
               />
               <InputGroupAddon addonType="append">
-                <InputGroupText className="h-100">
+                {/* <InputGroupText className="h-100"> */}
+                <InputGroupText className={NavSearchStyles.buttonSearch}>
                   <Search />
                 </InputGroupText>
               </InputGroupAddon>
@@ -77,6 +133,8 @@ export default function NavSearch() {
           </Row>
           <NavbarToggler onClick={toggle} />
 
+          {/* <Collapse isOpen={dropdown} navbar>
+          <Row className="justify-content-center align-items-center"> */}
           <Collapse isOpen={dropdown} navbar className="flex-lg-grow-0">
             <Row className={`justify-content-md-center justify-content-start`}>
               <Col>

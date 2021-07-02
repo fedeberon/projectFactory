@@ -11,15 +11,22 @@ import { useSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 
 // Components
-import ModalForm from "../components/ModalForm";
-import RolProfile from "./RolProfile";
-import FormProfessional from "../components/FormProfessional/FormProfessional";
+import ModalForm from "../ModalForm";
+import RolProfile from "../RolProfile";
+import FormProfessional from "../FormProfessional/FormProfessional";
+import Plans from "../Plans/Plans";
+
+//Styles
+import ProfileDataStyles from "./ProfileData.module.css";
 
 const ProfileData = (props) => {
   const [session] = useSession();
   const [modalOpen, setModalOpen] = useState(false);
   const { t } = useTranslation("profile");
-  const { onBecomeProfessional, error, setError, data } = props;
+  const { onBecomeProfessional, error, setError, data, onBuyPlan } = props;
+  const [showModalPlan, setShowModalPlan] = useState(false);
+
+  const toggleModalPlan = () => setShowModalPlan(!showModalPlan);
 
   const toggleModal = () => setModalOpen(!modalOpen);
 
@@ -29,11 +36,13 @@ const ProfileData = (props) => {
         <>
           <Row className="row-cols-1 g-2">
             <Col>
-              {!session.authorities.includes("ROLE_PROFESSIONAL") && (
+              {!session.authorities.includes("ROLE_PROFESSIONAL") ? (
                 <Button color="primary" onClick={toggleModal}>
                   {t("become-professional")}
                 </Button>
-              )}
+              ) : 
+              <Button onClick={toggleModalPlan}>{t("buy-more-tokens")}</Button>
+              }
             </Col>
             <Col>
               <img src={session.user.image}></img>
@@ -56,6 +65,14 @@ const ProfileData = (props) => {
         <h1>{t("without-session")}</h1>
       )}
 
+      <ModalForm
+        modalTitle={t("formulary-plan.title")}
+        className={"Button mt-50"}
+        formBody={
+          <Plans onBuyPlan={onBuyPlan}/>
+        }
+        modalOpen={{ open: showModalPlan, function: setShowModalPlan }}
+      />
       <ModalForm
         modalTitle={t("formulary.professional-form")}
         className={"Button mt-50"}
