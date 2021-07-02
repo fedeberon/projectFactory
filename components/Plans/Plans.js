@@ -36,9 +36,9 @@ const Plans = (props) => {
 
   return (
     <>
-    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-      <h1 class="display-4 fw-normal">{t("formulary-plan.plans")}</h1>
-      <p class="fs-5 text-muted">{t("formulary-plan.message")}</p>
+    <div className="pricing-header p-3 pb-md-4 mx-auto text-center">
+      <h1 className="display-4 fw-normal">{t("formulary-plan.plans")}</h1>
+      <p className="fs-5 text-muted">{t("formulary-plan.message")}</p>
     </div>
 
       <div className="row row-cols-1 row-cols-md-3 mb-3 text-center">

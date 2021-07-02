@@ -5,22 +5,12 @@ import * as imageService from "./imageService";
 
 export const findAll = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  const professionals = await API.get(
-    `/professionals?page=${page}&size=${size}`
-  );
-  professionals.forEach((professional) => {
-    professional.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${professional.id}/preview/${professional.previewImage}`;
-    professional.backgroundImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${professional.id}/background/${professional.backgroundImage}`;
-  });
-  return professionals;
+  return await API.get(`/professionals?page=${page}&size=${size}`);
 };
 
 export const getById = async (id, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  const professional = await API.get(`/professionals/${id}`);
-  professional.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${id}/preview/${professional.previewImage}`;
-  professional.backgroundImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${id}/background/${professional.backgroundImage}`;
-  return professional;
+  return await API.get(`/professionals/${id}`);
 };
 
 export const getByIdWithImages = async (id, page, size, token) => {
@@ -32,18 +22,6 @@ export const getByIdWithImages = async (id, page, size, token) => {
     size,
     token
   );
-
-  await Promise.all(
-    images.map(async (image) => {
-      const imageInBytes = await fetch(image.path, {
-        headers: { Authorization: token },
-      });
-      const imageInBlob = await imageInBytes.blob();
-      const imageSrc = URL.createObjectURL(imageInBlob);
-      image.path = imageSrc;
-    })
-  );
-
   professional.images = images;
   return professional;
 };
@@ -70,10 +48,12 @@ export const addImage = async (image, token) => {
   imageData.append("tags", tags);
   image.uploading = true;
   return await API.post(`/images/professionals`, imageData, {
-    onUploadProgress: progressEvent => {
-      const progress = Math.round(progressEvent.loaded / progressEvent.total * 100);
+    onUploadProgress: (progressEvent) => {
+      const progress = Math.round(
+        (progressEvent.loaded / progressEvent.total) * 100
+      );
       image.setProgress(progress);
-    }
+    },
   });
 };
 
@@ -99,21 +79,16 @@ export const addBackgroundImage = async (image, token) => {
 export const become = async (professional, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const response = await API.post(`/professionals/become`, professional);
-  signIn('credentials', { 
+  signIn("credentials", {
     accessToken: response.token,
     name: professional.contact,
     email: professional.email,
-    callbackUrl: `${window.location.origin}/profile`
+    callbackUrl: `${window.location.origin}/profile`,
   });
   return response.token;
 };
 
-export const getProfessionalForApproved = async (
-  status,
-  page,
-  size,
-  token
-) => {
+export const getProfessionalForApproved = async (status, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.get(
     `/professionals/status/${status}?page=${page}&size=${size}`
@@ -122,8 +97,7 @@ export const getProfessionalForApproved = async (
 
 export const setEnebleProfessional = async (id, status, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  const response = await API.put(`/professionals/${id}/status/${status}`);
-  return response;
+  return await API.put(`/professionals/${id}/status/${status}`);
 };
 
 

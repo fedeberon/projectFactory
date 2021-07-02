@@ -1,6 +1,6 @@
 {
   "become-professional": "Convertirse en un profesional",
-  
+
   "authority": "Autoridad",
   "without-session": "Sin sesión",
   "buy-more-tokens": "Comprar mas fichas",
@@ -29,6 +29,9 @@
     "select-profile-picture": "Seleccione la imagen de perfil",
     "select-background-picture": "Seleccione la imagen de fondo"
   },
+  "tag-is-required": "El tag es requerido",
+  "images-i-liked": "Imagenes que me gustan",
+  
   "formulary-plan" : {
     "title" : "Seleccione un plan",
     "plans" : "Planes",

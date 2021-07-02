@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import useTranslation from "next-translate/useTranslation";
-import ProfileData from "../../components/ProfileData";
+import ProfileData from "../../components/ProfileData/ProfileData";
 import { getSession, useSession } from "next-auth/client";
 import Layout from "../../components/Layout/Layout";
 
 // Services
 import * as professionalService from "../../services/professionalService";
 import * as companyService from "../../services/companyService";
+import { getLikePhotos } from "../../services/imageService";
 
-const Profile = ({data}) => {
+// Components
+import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
+
+const Profile = ({ data, imagesLiked }) => {
   const [session] = useSession();
   const { t } = useTranslation("common");
   const [error, setError] = useState("");
@@ -87,6 +91,7 @@ const Profile = ({data}) => {
         data={data}
         onBuyPlan={onBuyPlan}
       />
+      <SeeImagesLiked imagesLiked={imagesLiked} />
     </Layout>
   );
 };
@@ -96,6 +101,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   let token;
   let companies = [];
+  let imagesLiked = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -108,11 +114,13 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (session) {
     token = session.accessToken;
     companies = await companyService.findAll(page, size, token);
+    imagesLiked = await getLikePhotos(page, size, token);
   }
 
   return {
     props: {
       data: companies,
+      imagesLiked,
     },
   };
 }

@@ -31,11 +31,15 @@ const RolProfile = () => {
   const getRole = () => {
     if (session) {
       let roleChoised;
+      let min = 3;
       session.authorities.map((role) => {
         roleChoised = getKey(role);
+        if (roleChoised < min) {
+          min = roleChoised;
+        }
       });
       let icoProfile;
-      switch (roleChoised) {
+      switch (min) {
         case 2:
           icoProfile = (
             <>

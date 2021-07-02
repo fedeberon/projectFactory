@@ -11,10 +11,13 @@ import { useSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 
 // Components
-import ModalForm from "../components/ModalForm";
-import RolProfile from "./RolProfile";
-import FormProfessional from "../components/FormProfessional/FormProfessional";
-import Plans from "./Plans/Plans";
+import ModalForm from "../ModalForm";
+import RolProfile from "../RolProfile";
+import FormProfessional from "../FormProfessional/FormProfessional";
+import Plans from "../Plans/Plans";
+
+//Styles
+import ProfileDataStyles from "./ProfileData.module.css";
 
 const ProfileData = (props) => {
   const [session] = useSession();

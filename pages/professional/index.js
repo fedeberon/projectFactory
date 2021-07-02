@@ -123,7 +123,7 @@ const Professional = ({ data }) => {
     <Layout title={`${t("common:professional")}`}>
       <Row className="row-cols-md-3 g-4">
         {isLoading ? (
-          <h1>{t("Loading")}...</h1>
+          <h1>{t("loading")}...</h1>
         ) : (
           professionals.map((professional, index) => (
             <Col key={index}>

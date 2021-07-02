@@ -1,6 +1,6 @@
 {
   "become-professional": "Become in a professional",
-  
+
   "authority": "Authority",
   "without-session": "Without session",
   "buy-more-tokens": "Buy more tokens",
@@ -29,6 +29,9 @@
     "select-profile-picture": "Select profile picture",
     "select-background-picture": "Select background picture"
   },
+  "tag-is-required": "Tag is required",
+  "images-i-liked": "Images i liked",
+  
   "formulary-plan" : {
     "title" : "Select one plan",
     "plans" : "Plans",

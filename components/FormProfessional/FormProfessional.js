@@ -11,7 +11,6 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import InputImages from "../InputImages/InputImages";
 import Dropzone from "../Dropzone/Dropzone";
 import ModalForm from "../ModalForm";
 import FormTag from "../FormTag/FormTag";
@@ -28,7 +27,6 @@ const FormProfessional = ({
   const { t } = useTranslation("profile");
   const [previewImage, setPreviewImage] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState([]);
-  const [images, setImages] = useState([]);
   const [modalTagOpen, setModalTagOpen] = useState(false);
   const [currentImageTag, setCurrentImageTag] = useState({});
   const [companyOptions, setCompanyOptions] = useState([]);
@@ -56,46 +54,31 @@ const FormProfessional = ({
     },
     event
   ) => {
-    if (imagesHasTags()) {
-      // You should handle login logic with firstName, lastName, email, preview and background images and form data
-      let data = {
-        company: companySelected,
-        category: companyCategory,
-        contact,
-        email,
-        contactLoad,
-        website,
-        previewImage: previewImage[0],
-        backgroundImage: backgroundImage[0],
-        images,
-        province,
-        location
-      };
-      const professional = await onAddProfessional(data);
-      
-      if (professional != null) {
-        setPreviewImage([]);
-        setBackgroundImage([]);
-        event.target.reset();
-        toggle();
-        setError("");
-      }
-    } else {
-      setError(t("TagsRequired"));
+    // You should handle login logic with firstName, lastName, email, preview and background images and form data
+    let data = {
+      company: companySelected,
+      category: companyCategory,
+      contact,
+      email,
+      contactLoad,
+      website,
+      previewImage: previewImage[0],
+      backgroundImage: backgroundImage[0],
+      province,
+      location,
+    };
+    const professional = await onAddProfessional(data);
+
+    if (professional != null) {
+      setPreviewImage([]);
+      setBackgroundImage([]);
+      event.target.reset();
+      toggle();
+      setError("");
     }
   };
 
-  const imagesHasTags = () => {
-    const imagesWithoutTags = images.filter(img => img.tags.length == 0);
-    return imagesWithoutTags.length == 0;
-  };
-
   const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
-
-  const showTagModal = (img) => {
-    setModalTagOpen(true);
-    setCurrentImageTag(img);
-  };
 
   useEffect(() => {
     if (data) {
@@ -202,7 +185,9 @@ const FormProfessional = ({
                     name="email"
                     id="email"
                     placeholder={t("formulary.write-the-here-please", {
-                      namePlaceholder: t("formulary.the-contact-email").toLowerCase(),
+                      namePlaceholder: t(
+                        "formulary.the-contact-email"
+                      ).toLowerCase(),
                     })}
                     {...register("email", {
                       required: {
@@ -216,7 +201,9 @@ const FormProfessional = ({
                         message: `${t(
                           "formulary.cannot-be-less-than-character",
                           {
-                            nameInput: t("formulary.contact-email").toLowerCase(),
+                            nameInput: t(
+                              "formulary.contact-email"
+                            ).toLowerCase(),
                             numberCharacters: 3,
                           }
                         )}`,
@@ -466,22 +453,6 @@ const FormProfessional = ({
                       {errors.location.message}
                     </FormText>
                   )}
-                </FormGroup>
-              </Col>
-            </Row>
-            <Row>
-              <Col className="p-0">
-                <FormGroup className="text-center">
-                  <Label for="uploadFiles">
-                    {t("common:upload-images")}
-                  </Label>
-                  <InputImages
-                    accept={"image/*"}
-                    multiple={true}
-                    imagesEdited={setImages}
-                    withTags={true}
-                    onAdd={showTagModal}
-                  />
                 </FormGroup>
               </Col>
             </Row>

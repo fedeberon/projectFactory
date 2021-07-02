@@ -363,6 +363,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         <FormGroup>
           <Label for="uploadFiles">{t("upload-images")}</Label>
           <InputImages
+            images={images}
             accept={"image/*"}
             multiple={true}
             imagesEdited={setImages}
