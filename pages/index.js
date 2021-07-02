@@ -1,6 +1,6 @@
 // Frameworks
 import React, { useEffect, useState } from "react";
-import { getSession, useSession } from "next-auth/client";
+import { getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 import { Col, Row } from "reactstrap";
 
@@ -21,7 +21,6 @@ import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
 
 const Home = ({ filters, carouselImages, session }) => {
-  // const [session] = useSession();
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -42,7 +41,7 @@ const Home = ({ filters, carouselImages, session }) => {
       const carouselImages = await imageService.findCarouselImages();
       setImagesCarousel(carouselImages);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

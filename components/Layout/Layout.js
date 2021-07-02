@@ -45,7 +45,7 @@ const Layout = ({ children, title, footer = true, header = true }) => {
         </div>
       )}
 
-      <main className="container py-4">
+      <main className="container py-2">
         {/* Title */}
         {title && <h1 className="text-center">{title}</h1>}
 
@@ -67,10 +67,10 @@ const Layout = ({ children, title, footer = true, header = true }) => {
                 />
               </Col>
               <Col>
-                <p className="m-0 text-muted">Quienes somos</p>
-                <p className="m-0 text-muted">Preguntas frecuentes</p>
-                <p className="m-0 text-muted">Politicas del sitio</p>
-                <p className="m-0 text-muted">Contacto</p>
+                <p className="m-0 text-muted">{t("who-we-are")}</p>
+                <p className="m-0 text-muted">{t("frequently-asked-questions")}</p>
+                <p className="m-0 text-muted">{t("site-policies")}</p>
+                <p className="m-0 text-muted">{t("contact")}</p>
               </Col>
               <Col>
                 <p className="m-0 text-muted">LaFabricaDeProyectosBolivar@gmail.com</p>

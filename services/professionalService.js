@@ -22,18 +22,6 @@ export const getByIdWithImages = async (id, page, size, token) => {
     size,
     token
   );
-
-  await Promise.all(
-    images.map(async (image) => {
-      const imageInBytes = await fetch(image.path, {
-        headers: { Authorization: token },
-      });
-      const imageInBlob = await imageInBytes.blob();
-      const imageSrc = URL.createObjectURL(imageInBlob);
-      image.path = imageSrc;
-    })
-  );
-
   professional.images = images;
   return professional;
 };

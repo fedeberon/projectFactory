@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { CloudArrowUp, X, FileEarmarkZipFill } from "react-bootstrap-icons";
 import { Container } from "reactstrap";
@@ -94,6 +94,12 @@ function Dropzone(props) {
     toggle();
   };
 
+  useEffect(() => {
+    if (newFiles.length > 0) {
+      toggle();
+    }
+  }, [newFiles]);
+
   const thumbs = newFiles
     .filter((file) => !file.remove)
     .map((file, index) => (
@@ -147,7 +153,9 @@ function Dropzone(props) {
             <div {...getRootProps({ style })}>
               <input name={name} {...getInputProps()} />
               <CloudArrowUp size={45} />
-              <p>{`${t("drag-and-drop-some-files-here-or-click-to-select-files")}`}</p>
+              <p>{`${t(
+                "drag-and-drop-some-files-here-or-click-to-select-files"
+              )}`}</p>
             </div>
           ) : (
             <aside>{thumbs}</aside>

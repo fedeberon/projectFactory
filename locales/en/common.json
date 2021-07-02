@@ -26,6 +26,7 @@
   "is-required": "{{nameRequired}} is required",
   "write-the-here-please": "Write {{namePlaceholder}} here please",
   "cannot-be-less-than-character": "{{nameInput}} cannot be less than {{numberCharacters}} character",
+  "cannot-be-more-than-character": "{{nameInput}} cannot be more than {{numberCharacters}} character",
   "the-name": "The name",
   "the-description": "The description",
   "the-total-area": "The total area",
@@ -139,6 +140,9 @@
   "project-edition-form": "Project edition form",
 
   "Footer":"--------------------------------",
+  "who-we-are": "Who we are",
+  "frequently-asked-questions": "Frequently Asked Questions",
+  "site-policies": "Site Policies",
   "all-rights-reserved": "All rights reserved",
   
   "LogInForm":"--------------------------------",
@@ -157,5 +161,9 @@
   
   "TagCannotBe3OrLess": "Tag cannot be less than 3 character",
 
-  "link" : "Link"
+  "link" : "Link",
+  "work-form": "Work form",
+  "building-work-detail": "Building work detail",
+  "preview-image": "Preview image",
+  "select-preview-image-for-building-work": "Select preview image for building work"
 }

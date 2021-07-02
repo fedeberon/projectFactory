@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import { CloudArrowUp } from "react-bootstrap-icons";
 import useTranslation from "next-translate/useTranslation";
@@ -40,36 +40,9 @@ function InputImages(props) {
     onAdd, // Function on click to add button
     withTags, // Boolean, true to show button add tags or false to hidde the button of tags
   } = props;
-  const [files, setFiles] = useState([]);
   const spansProgress = useRef([]);
   spansProgress.current = [];
   const { t } = useTranslation("common");
-  useEffect(
-    () => () => {
-      // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach((file) => {
-        if (file.remove)
-          URL.revokeObjectURL(file.preview)
-      });
-    },
-    [files]
-  );
-
-  useEffect(() => {
-    if (images) {
-      const currentImages = Array.from(images);
-      currentImages.forEach((img) => {
-        img.preview = img.path;
-        img.added = true;
-        img.remove = false;
-        if (withTags && img.tags === undefined) {
-          img.tags = [];
-        }
-      });
-      setFiles(currentImages);
-      imagesEdited(currentImages);
-    }
-  }, [images]);
 
   const {
     acceptedFiles,
@@ -92,8 +65,7 @@ function InputImages(props) {
           Object.assign(file, { tags: [] });
         }
       });
-      const newFiles = files.concat(acceptedFiles);
-      setFiles(newFiles);
+      const newFiles = images.concat(acceptedFiles);
       imagesEdited(newFiles);
     },
     multiple: multiple,
@@ -110,7 +82,7 @@ function InputImages(props) {
   );
 
   const removeImage = (file) => {
-    const newFiles = Array.from(files);
+    const newFiles = Array.from(images);
 
     if (file.added) {
       file.remove = true;
@@ -118,7 +90,7 @@ function InputImages(props) {
       const index = newFiles.indexOf(file);
       if (index > -1) {
         newFiles.splice(index, 1);
-        setFiles(newFiles);
+        imagesEdited(newFiles);
       }
     }
     // revoke preview URL for old image
@@ -137,11 +109,13 @@ function InputImages(props) {
   };
 
   const onUpdateProgressFile = (progress, span) => {
-    span.style.setProperty("left", (progress -100) + "%");
+    span.style.setProperty("left", progress - 100 + "%");
   };
 
   const removeSpanProgress = (key) => {
-    const spanToRemove = spansProgress.current.filter(span => span.getAttribute("name") === key)[0];
+    const spanToRemove = spansProgress.current.filter(
+      (span) => span.getAttribute("name") === key
+    )[0];
     const index = spansProgress.current.indexOf(spanToRemove);
     if (index > -1) {
       spansProgress.current.splice(index, 1);
@@ -149,7 +123,7 @@ function InputImages(props) {
     return spansProgress.current;
   };
 
-  const thumbs = files
+  const thumbs = images
     .filter((file) => !file.remove)
     .map((file, index) => (
       <div key={index} className={inputStyles.container}>
@@ -178,7 +152,10 @@ function InputImages(props) {
           {!withTags && t("add-title")}
         </button>
         <div className={inputStyles.progressBar}>
-          <span ref={(span) => addSpanProgress(span, file)} className={`${inputStyles.spanProgressBar} js-progress`}></span>
+          <span
+            ref={(span) => addSpanProgress(span, file)}
+            className={`${inputStyles.spanProgressBar} js-progress`}
+          ></span>
         </div>
       </div>
     ));
@@ -188,7 +165,9 @@ function InputImages(props) {
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <CloudArrowUp size={45} />
-        <p>{`${t("drag-and-drop-some-files-here-or-click-to-select-files")}`}</p>
+        <p>{`${t(
+          "drag-and-drop-some-files-here-or-click-to-select-files"
+        )}`}</p>
       </div>
       <aside className={inputStyles.aside}>{thumbs}</aside>
     </section>

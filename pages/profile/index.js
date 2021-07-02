@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useTranslation from "next-translate/useTranslation";
-import ProfileData from "../../components/ProfileData";
+import ProfileData from "../../components/ProfileData/ProfileData";
 import { getSession, useSession } from "next-auth/client";
 import Layout from "../../components/Layout/Layout";
 
@@ -13,7 +13,6 @@ import { getLikePhotos } from "../../services/imageService";
 import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
 
 const Profile = ({ data, imagesLiked }) => {
-  console.log(imagesLiked);
   const [session] = useSession();
   const { t } = useTranslation("common");
   const [error, setError] = useState("");

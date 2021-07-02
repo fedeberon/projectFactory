@@ -27,10 +27,7 @@ const CarouselImageCreator = ({ onAddCarouselImages }) => {
   const toggle = () => setModalAddImages(!modalAddImages);
 
   const onAddImages = async () => {
-    await imageService.addCaroucelImages(
-      images,
-      session.accessToken
-    );
+    await imageService.addCaroucelImages(images, session.accessToken);
     await onAddCarouselImages();
     setModalAddImages(false);
   };
@@ -69,6 +66,7 @@ const CarouselImageCreator = ({ onAddCarouselImages }) => {
             <h6>{t("carousel-image-creator.please-select-carousel-images")}</h6>
             <label>{t("carousel-image-creator.images")}</label>
             <InputImages
+              images={images}
               accept={"image/*"}
               multiple={true}
               imagesEdited={setImages}

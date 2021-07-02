@@ -42,7 +42,7 @@ const FilteredImages = ({ isLoading, images }) => {
         heartsIco[1].style.display = "block";
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

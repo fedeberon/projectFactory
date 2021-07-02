@@ -1,4 +1,6 @@
+import image from "next/image";
 import API from "./api";
+import * as tagService from "./tagService";
 
 export const getProjectImages = async (id, token, page, size) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -18,7 +20,7 @@ export const getProjectsImagesFiltered = async (token, page, size) => {
   );
   images.forEach((image) => {
     image.name = image.path;
-   });
+  });
   return images;
 };
 
@@ -45,7 +47,7 @@ export const getProfessionalImagesByTags = async (tags, page, size, token) => {
   concatenatedTags = concatenatedTags.substring(0, concatenatedTags.length - 1);
 
   const images = await API.get(
-    `/images/professionals/tags?page=${page}&size=${size}&${concatenatedTags}`
+    `/images/building-works/tags?page=${page}&size=${size}&${concatenatedTags}`
   );
   images.forEach((image) => {
     image.div = null;
@@ -57,7 +59,15 @@ export const getProfessionalImagesByTags = async (tags, page, size, token) => {
       await callback(image);
     };
     image.name = image.path;
-    });
+  });
+  return images;
+};
+
+export const getImagesByBuildingWorksId = async (id, page, size, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const images = await API.get(
+    `/images/building-works/${id}?page=${page}&size=${size}`
+  );
   return images;
 };
 
@@ -68,7 +78,7 @@ export const getProfessionalImages = async (id, page, size, token) => {
   );
   images.forEach((image) => {
     image.name = image.path;
-   });
+  });
   return images;
 };
 
@@ -81,8 +91,7 @@ export const uploadCompanyPreview = async (companyId, image, token) => {
 
 export const findCarouselImages = async () => {
   let images = await API.get(`/images/carousel`);
-  images.forEach((image) => {
-   });
+  images.forEach((image) => {});
   return images;
 };
 
@@ -102,9 +111,45 @@ export const setLikePhoto = async (image, token) => {
 
 export const getLikePhotos = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  console.log(token);
-  console.log(page);
-  console.log(size);
   let images = await API.get(`/images/liked?page=${page}&size=${size}`);
   return images;
-}
+};
+
+export const addPreviewImageToBuildingWork = async (data, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const imageData = new FormData();
+  imageData.append("image", data.previewImage);
+  return await API.post(`/images/building-works/${data.id}/preview`, imageData);
+};
+//put
+//falta terminar con tomy
+export const setImagesToBuildingWork = async (data, token) => {};
+
+export const addImagesToBuildingWork = async (data, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await addImagesRecursive(data.id, Array.from(data.images));
+};
+
+const addImage = async (id, image) => {
+  const imageData = new FormData();
+  const tags = tagService.getTags(image.tags);
+  imageData.append("image", image);
+  imageData.append("tags", tags);
+  return await API.post(`/images/building-works/${id}`, imageData, {
+    onUploadProgress: (progressEvent) => {
+      const progress = Math.round(
+        (progressEvent.loaded / progressEvent.total) * 100
+      );
+      image.setProgress(progress);
+    },
+  });
+};
+
+const addImagesRecursive = async (id, images) => {
+  const image = images.shift();
+  const response = await addImage(id, image);
+  if (response && images.length > 0) {
+    return await addImagesRecursive(id, images);
+  }
+  return response;
+};

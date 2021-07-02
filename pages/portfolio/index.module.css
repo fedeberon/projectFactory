@@ -1,23 +1,21 @@
 .backgroundImg {
-    width: 100%;
-}
-
-.previewImg {
-    border-radius: 50%;
-    position: relative;
-    width: 300px;
-    height: 300px;
-    top: -150px;
-    z-index: 100;
+  object-fit: cover;
 }
 
 .previewDiv {
-    position: absolute;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 150px;
 }
 
-.imagesDiv {
-    margin-top: 220px;
+.previewImg {
+  border-radius: 50%;
+  position: relative;
+  object-fit: cover;
+  width: 300px;
+  height: 300px;
+  top: -150px;
+  z-index: 100;
 }
