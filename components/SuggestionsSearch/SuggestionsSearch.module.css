@@ -2,7 +2,7 @@
     position: absolute;
     top: 37px;
     display: flex;
-    z-index: 1;
+    
     width: 95.5%;
     border: 1px solid #CED4DA;
     border-radius: 0 0 5px 5px !important;
@@ -15,6 +15,7 @@
 }
 
 .dropDownSearchActive {
+    z-index: 1;
     opacity: 1;
 }
 
