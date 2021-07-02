@@ -115,14 +115,9 @@ export const getProfessionalForApproved = async (
   token
 ) => {
   API.defaults.headers.common["Authorization"] = token;
-  const response = await API.get(
+  return await API.get(
     `/professionals/status/${status}?page=${page}&size=${size}`
   );
-  response.forEach((professional) => {
-    professional.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${professional.id}/preview/${professional.previewImage}`;
-    professional.backgroundImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${professional.id}/background/${professional.backgroundImage}`;
-  });
-  return response;
 };
 
 export const setEnebleProfessional = async (id, status, token) => {
@@ -131,7 +126,22 @@ export const setEnebleProfessional = async (id, status, token) => {
   return response;
 };
 
+
+export const findByUsernameAndStatus = async (username, status, page, size) => {
+  return await API.get(`/professionals/username/${username}/status/${status}?page=${page}&size=${size}`);
+};
+
+export const findByContactAndStatus = async (contact, status, page, size) => {
+  return await API.get(`/professionals/contact/${contact}/status/${status}?page=${page}&size=${size}`);
+};
+
+export const setNewTokensToProfessional = async (newTokens, professionalId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/professionals/${professionalId}/tokens/${newTokens}`);
+}
+
 export const buyPlan = async (plan, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.put(`/professionals/purchase-plan/${plan}`);
 };
+
