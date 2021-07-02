@@ -9,6 +9,7 @@
     "/professional": ["professional"],
     "/profile": ["profile"],
     "/project": ["project"],
-    "/admin": ["administrator"]
+    "/admin": ["administrator"],
+    "/policies":["policies"]
   }
 }

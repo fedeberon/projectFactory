@@ -1,11 +1,11 @@
 // Framewroks
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import NProgress from "nprogress";
 import nProgress from "nprogress";
 import useTranslation from "next-translate/useTranslation";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col,NavbarToggler,Collapse } from "reactstrap";
 import Image from "next/image";
 import { Instagram, Facebook } from "react-bootstrap-icons";
 
@@ -19,6 +19,7 @@ import LayoutStyles from "./Layout.module.css";
 const Layout = ({ children, title, footer = true, header = true }) => {
   const router = useRouter();
   const { t } = useTranslation("common");
+  const [dropdown, setDropdown] = useState(false);
 
   useEffect(() => {
     const handleRouteChange = (url) => {
@@ -36,12 +37,15 @@ const Layout = ({ children, title, footer = true, header = true }) => {
     };
   }, []);
 
+  const toggle = () => setDropdown((dropdown) => !dropdown);
   return (
     <>
       {header && (
-        <div>
+        <div className="bg-light">
+            <NavSearch />
+        {/* <div>
           <NavSearch />
-          <Header />
+          <Header /> */}
         </div>
       )}
 
@@ -56,7 +60,7 @@ const Layout = ({ children, title, footer = true, header = true }) => {
       {footer && (
         <footer className="bg-light text-dark">
           <Container>
-            <Row className="row-cols-4 justify-content-center align-items-center">
+            <Row className="row-cols-4 justify-content-center align-items-center w-100">
               <Col className="p-2">
                 <Image
                   src={`/logo.svg`}
