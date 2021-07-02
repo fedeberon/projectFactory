@@ -99,6 +99,15 @@ export async function getServerSideProps({ params, req, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
 
+  if (!session || !session.authorities.includes(process.env.NEXT_PUBLIC_ROLE_USER)) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
   let token;
   let companies = [];
   let imagesLiked = [];
