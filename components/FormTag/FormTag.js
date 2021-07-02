@@ -32,7 +32,7 @@ const FormTag = ({ toggle, image }) => {
   } = useForm();
 
   useEffect(() => {
-    setTags([]);
+    setTags(image.tags);
   }, [image]);
 
   const onSubmit = async (event) => {
