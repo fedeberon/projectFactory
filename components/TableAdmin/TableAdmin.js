@@ -2,19 +2,25 @@ import React from "react";
 import { InfoCircleFill } from "react-bootstrap-icons";
 import { Alert, Table } from "reactstrap";
 import useTranslation from "next-translate/useTranslation";
+import { Input } from "reactstrap";
 
-const TableAdmin = ({ professionalList, title }) => {
+const TableAdmin = ({ professionalList, title, onSearch }) => {
   const { t, lang } = useTranslation("common");
+
+  const handleChangeInput = async (e) => {
+    await onSearch(e.target.value);
+  };
 
   return (
     <Table hover striped>
       <thead>
         <tr className="text-center">
-          <th>#</th>
+          <th><Input type="search" placeholder={t("table-admin.find-by-contact")} onChange={handleChangeInput}/></th>
           <th>{t("table-admin.image")}</th>
           <th>{t("contact")}</th>
           <th>{t("company")}</th>
           <th>{t("email")}</th>
+          <th>{t("table-admin.tokens")}</th>
           <th>{t("table-admin.actions")}</th>
         </tr>
       </thead>
@@ -23,7 +29,7 @@ const TableAdmin = ({ professionalList, title }) => {
           professionalList
         ) : (
           <tr>
-            <td colSpan="6" className="p-0">
+            <td colSpan="7" className="p-0">
               <Alert color="primary text-center">
                 <InfoCircleFill size={25} />
                 {`${t(

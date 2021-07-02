@@ -6,5 +6,7 @@
   "reject": "Rechazar",
   "list-of": "Lista de",
   "accept-images": "Aceptar imagenes",
-  "images-accepted": "Imagenes aceptadas"
+  "images-accepted": "Imagenes aceptadas",
+  "tokens-setted" : "Tokens establecidos",
+  "apply" : "Aplicar"
 }

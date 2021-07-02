@@ -6,7 +6,10 @@
     "log-out": "Log out",
     "signed-in-as": "Signed in as",
     "profile": "Profile",
-    "portfolio": "My portfolio"
+    "portfolio": "My portfolio",
+    "search-placeholder" : "Find ideas/ professionals",
+    "search-by-ideas" : "Search by ideas",
+    "search-by-professionals" : "Search by professionals"
   },
 
   "professional": "Professional",
@@ -97,7 +100,9 @@
   "table-admin": {
     "image": "Image",
     "actions": "Action",
-    "there-are-not-more-professional": "There are not more professionals"
+    "there-are-not-more-professional": "There are not more professionals",
+    "find-by-contact" : "Find by contact",
+    "tokens" : "Tokens"
   },
 
   "tabs": {

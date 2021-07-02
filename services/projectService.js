@@ -133,11 +133,20 @@ const removeAndAddImages = async (images, id, token) => {
       await API.post(`/images/projects/${id}`, imageData);
       const path = URL.createObjectURL(img);
       newImages.push({ path });
-    } else {
+    } else if (img.added) {
+      await editTags(img, token);
       newImages.push({ path: img.path });
     }
   };
   return newImages;
+};
+
+export const editTags = async (image, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const imageData = new FormData();
+  const tags = tagService.getTags(image.tags);
+  imageData.append("tags", tags);
+  return await API.put(`/images/${image.id}/projects/tags`, imageData);
 };
 
 export const getPurchasedProjects = async (token) => {

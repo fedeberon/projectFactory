@@ -100,7 +100,22 @@ export const setEnebleProfessional = async (id, status, token) => {
   return await API.put(`/professionals/${id}/status/${status}`);
 };
 
+
+export const findByUsernameAndStatus = async (username, status, page, size) => {
+  return await API.get(`/professionals/username/${username}/status/${status}?page=${page}&size=${size}`);
+};
+
+export const findByContactAndStatus = async (contact, status, page, size) => {
+  return await API.get(`/professionals/contact/${contact}/status/${status}?page=${page}&size=${size}`);
+};
+
+export const setNewTokensToProfessional = async (newTokens, professionalId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/professionals/${professionalId}/tokens/${newTokens}`);
+}
+
 export const buyPlan = async (plan, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.put(`/professionals/purchase-plan/${plan}`);
 };
+
