@@ -78,6 +78,10 @@ const Profile = ({ data, imagesLiked }) => {
     return token;
   };
 
+  const onBuyPlan = async (plan) => {
+    await professionalService.buyPlan(plan, session.accessToken);
+  };
+
   return (
     <Layout title={`${t("header.profile")}`}>
       <ProfileData
@@ -85,6 +89,7 @@ const Profile = ({ data, imagesLiked }) => {
         error={error}
         setError={setError}
         data={data}
+        onBuyPlan={onBuyPlan}
       />
       <SeeImagesLiked imagesLiked={imagesLiked} />
     </Layout>

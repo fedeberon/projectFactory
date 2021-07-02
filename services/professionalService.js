@@ -99,3 +99,8 @@ export const setEnebleProfessional = async (id, status, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.put(`/professionals/${id}/status/${status}`);
 };
+
+export const buyPlan = async (plan, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/professionals/purchase-plan/${plan}`);
+};
