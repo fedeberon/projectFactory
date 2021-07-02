@@ -3,8 +3,7 @@ import { signIn } from "next-auth/client";
 import * as tagService from "./tagService";
 import * as imageService from "./imageService";
 
-export const findAll = async (page, size, token) => {
-  API.defaults.headers.common["Authorization"] = token;
+export const findAll = async (page, size) => {
   return await API.get(`/professionals?page=${page}&size=${size}`);
 };
 
