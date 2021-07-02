@@ -1,7 +1,6 @@
 {
   "header": {
     "home": "Home",
-    "sign-in": "Sign in",
     "log-in": "Log in",
     "log-out": "Log out",
     "signed-in-as": "Signed in as",
@@ -15,6 +14,7 @@
   "professional": "Professional",
   "project": "Project",
   "magazine": "Magazine",
+  "about-us": "About Us",
   "contact": "Contact",
   "administrator": "Administrator",
   "email": "Email",

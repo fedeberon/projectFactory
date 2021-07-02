@@ -38,7 +38,7 @@ const Authentication = (props) => {
               color="warning"
               href="/SignIn"
             >
-              {t("sign-in")}
+              {t("common:sign-in")}
             </Button>
           </Col>
         </Col>

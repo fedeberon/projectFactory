@@ -1,7 +1,6 @@
 {
   "header": {
     "home": "Inicio",
-    "sign-in": "Registrarse",
     "log-in": "Loguearse",
     "log-out": "Cerrar sesión",
     "signed-in-as": "Ingresado como",
@@ -15,6 +14,7 @@
   "professional": "Profesional",
   "project": "Proyecto",
   "magazine": "Magazine",
+  "about-us": "Sobre Nosotros",
   "contact": "Contacto",
   "administrator": "Administrador",
   "company": "Empresa",

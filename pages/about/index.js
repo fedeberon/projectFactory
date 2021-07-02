@@ -19,7 +19,7 @@ const About = () => {
   const { t } = useTranslation("about");
 
   return (
-    <Layout title={`${t("about-us")}`}>
+    <Layout title={`${t("common:about-us")}`}>
       <h4 className="text-center">{t("Our-platform-provides-a-solution-to")}</h4>
       <Row>
         <Col className="col-12 col-md-4">
@@ -76,7 +76,7 @@ const About = () => {
           color="warning"
           href="/SignIn"
         >
-          {t("sign-in")}
+          {t("common:sign-in")}
         </Button>
       </Col>
     </Layout>

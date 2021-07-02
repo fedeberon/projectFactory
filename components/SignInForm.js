@@ -134,7 +134,7 @@ const SignInForm = (props) => {
                   </FormText>
                 )}
               </FormGroup>
-              <Button type="submit" color="primary" className="mt-2">{t("sign-in")}</Button>
+              <Button type="submit" color="primary" className="mt-2">{t("common:sign-in")}</Button>
             </Form>
             <Label for="Registrarse">Registrarse con:</Label>
             <Button onClick={() => signIn("google")} color="danger" className="mx-2" size={'25'}><Google/></Button>

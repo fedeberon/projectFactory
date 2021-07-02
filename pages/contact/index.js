@@ -52,7 +52,7 @@ const ContactUs = () => {
               )}
             </FormGroup>
             <FormGroup>
-              <Label for="email">{t("email")}</Label>
+              <Label for="email">{t("common:email")}</Label>
               <Input
                 type="email"
                 name="email"
