@@ -354,6 +354,15 @@ export async function getServerSideProps({ params, req, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
 
+  if (!session || !session.authorities.includes("ROLE_ADMINISTRATOR")) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
   let token;
 
   let professionalNotApproved = [];
