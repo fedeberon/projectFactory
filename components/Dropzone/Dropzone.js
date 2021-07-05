@@ -35,7 +35,7 @@ const rejectStyle = {
 };
 
 function Dropzone(props) {
-  const { newFiles, setFile, accept, multiple, name } = props;
+  const { newFiles, setFile, accept, multiple, name, height } = props;
   const [flagShow, setFlagShow] = useState(true);
 
   const { t } = useTranslation("common");
@@ -136,6 +136,7 @@ function Dropzone(props) {
                   <img
                     src={file.preview}
                     className={`img-fluid ${dropzoneStyle.imgMid}`}
+                    style={{ height: height }}
                   />
                 </figure>
               )}
