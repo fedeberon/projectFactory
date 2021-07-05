@@ -132,11 +132,14 @@ const FormProfessional = ({
                         getOptionValue={(option) => `${option?.id}`}
                         isClearable
                         onChange={(value) => seleccion(value)}
+                        className={
+                          "form-field" + (errors.company && optionSelect ? " has-error" : "")
+                        }
                       />
                     )}
                   />
-                  {errors.company && (
-                    <FormText className="error-label">
+                  {errors.company && optionSelect && (
+                    <FormText color="danger" className="error-label">
                       {errors.company.message}
                     </FormText>
                   )}
@@ -173,7 +176,10 @@ const FormProfessional = ({
                     }
                   />
                   {errors.contact && (
-                    <FormText className="invalid error-label text-danger">
+                    <FormText
+                      color="danger"
+                      className="invalid error-label text-danger"
+                    >
                       {errors.contact.message}
                     </FormText>
                   )}
@@ -214,7 +220,7 @@ const FormProfessional = ({
                     }
                   />
                   {errors.email && (
-                    <FormText className="error-label">
+                    <FormText color="danger" className="error-label">
                       {errors.email.message}
                     </FormText>
                   )}
@@ -244,11 +250,15 @@ const FormProfessional = ({
                         getOptionLabel={(option) => `${option?.name}`}
                         getOptionValue={(option) => `${option?.id}`}
                         isClearable
+                        className={
+                          "form-field" +
+                          (errors.companyCategory ? " has-error" : "")
+                        }
                       />
                     )}
                   />
                   {errors.companyCategory && (
-                    <FormText className="error-label">
+                    <FormText color="danger" className="error-label">
                       {errors.companyCategory.message}
                     </FormText>
                   )}
@@ -291,7 +301,7 @@ const FormProfessional = ({
                     }
                   />
                   {errors.contactLoad && (
-                    <FormText className="invalid error-label">
+                    <FormText color="danger" className="invalid error-label">
                       {errors.contactLoad.message}
                     </FormText>
                   )}
@@ -330,7 +340,7 @@ const FormProfessional = ({
                     }
                   />
                   {errors.website && (
-                    <FormText className="error-label">
+                    <FormText color="danger" className="error-label">
                       {errors.website.message}
                     </FormText>
                   )}
@@ -347,6 +357,7 @@ const FormProfessional = ({
                     accept={"image/*"}
                     multiple={false}
                     name={"images"}
+                    height={"90px"}
                   />
                 </FormGroup>
               </Col>
@@ -361,6 +372,7 @@ const FormProfessional = ({
                     accept={"image/*"}
                     multiple={false}
                     name={"images"}
+                    height={"90px"}
                   />
                 </FormGroup>
               </Col>
@@ -408,7 +420,7 @@ const FormProfessional = ({
                     }
                   />
                   {errors.province && (
-                    <FormText className="error-label">
+                    <FormText color="danger" className="error-label">
                       {errors.province.message}
                     </FormText>
                   )}
@@ -449,7 +461,7 @@ const FormProfessional = ({
                     }
                   />
                   {errors.location && (
-                    <FormText className="invalid error-label">
+                    <FormText color="danger" className="invalid error-label">
                       {errors.location.message}
                     </FormText>
                   )}

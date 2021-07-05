@@ -156,7 +156,7 @@ const FormObra = ({
                     )}
                   />
                   {errors.name && (
-                    <FormText className="invalid error-label text-danger">
+                    <FormText color="danger" className="invalid error-label text-danger">
                       {errors.name.message}
                     </FormText>
                   )}
@@ -208,7 +208,7 @@ const FormObra = ({
                     )}
                   />
                   {errors.description && (
-                    <FormText className="invalid error-label text-danger">
+                    <FormText color="danger" className="invalid error-label text-danger">
                       {errors.description.message}
                     </FormText>
                   )}
@@ -225,6 +225,7 @@ const FormObra = ({
                     accept={"image/*"}
                     multiple={false}
                     name={"previewImage"}
+                    height={"237px"}
                   />
                 </FormGroup>
               </Col>

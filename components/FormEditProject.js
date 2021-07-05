@@ -135,7 +135,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.name && (
-            <FormText className="invalid error-label">
+            <FormText color="danger" className="invalid error-label">
               {errors.name.message}
             </FormText>
           )}
@@ -176,7 +176,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.description && (
-            <FormText className="error-label">
+            <FormText color="danger" className="error-label">
               {errors.description.message}
             </FormText>
           )}
@@ -217,7 +217,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.totalArea && (
-            <FormText className="error-label">
+            <FormText color="danger" className="error-label">
               {errors.totalArea.message}
             </FormText>
           )}
@@ -253,7 +253,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.website && (
-            <FormText className="error-label">
+            <FormText color="danger" className="error-label">
               {errors.website.message}
             </FormText>
           )}
@@ -289,7 +289,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.year && (
-            <FormText className="error-label">{errors.year.message}</FormText>
+            <FormText color="danger" className="error-label">{errors.year.message}</FormText>
           )}
         </FormGroup>
         <FormGroup>
@@ -326,7 +326,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.videoPath && (
-            <FormText className="invalid error-label">
+            <FormText color="danger" className="invalid error-label">
               {errors.videoPath.message}
             </FormText>
           )}
@@ -342,6 +342,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             accept={"image/*"}
             multiple={false}
             name={"filePreview"}
+            height={"90px"}
           />
         </FormGroup>
         <FormGroup>

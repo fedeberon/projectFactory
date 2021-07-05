@@ -98,27 +98,27 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                 type="text"
                 id="name"
                 placeholder={t("write-the-here-please", {
-                  namePlaceholder: t("the-name").toLowerCase()
+                  namePlaceholder: t("the-name").toLowerCase(),
                 })}
                 {...register("name", {
                   required: {
                     value: true,
                     message: `${t("is-required", {
-                      nameRequired: t("the-name")
+                      nameRequired: t("the-name"),
                     })}`,
                   },
                   minLength: {
                     value: 3,
                     message: `${t("cannot-be-less-than-character", {
                       nameInput: t("the-name"),
-                      numberCharacters: 3
+                      numberCharacters: 3,
                     })}`,
                   },
                 })}
                 className={"form-field" + (errors.name ? " has-error" : "")}
               />
               {errors.name && (
-                <FormText className="invalid error-label">
+                <FormText color="danger" className="invalid error-label">
                   {errors.name.message}
                 </FormText>
               )}
@@ -135,17 +135,15 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                   required: {
                     value: true,
                     message: `${t("is-required", {
-                      nameRequired: t("the-description")
+                      nameRequired: t("the-description"),
                     })}`,
                   },
                   minLength: {
                     value: 3,
-                    message: `${t(
-                      "cannot-be-less-than-character", {
-                        nameInput: t("the-description"),
-                        numberCharacters: 3
-                      }
-                    )}`,
+                    message: `${t("cannot-be-less-than-character", {
+                      nameInput: t("the-description"),
+                      numberCharacters: 3,
+                    })}`,
                   },
                 })}
                 className={
@@ -153,7 +151,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                 }
               />
               {errors.description && (
-                <FormText className="error-label">
+                <FormText color="danger" className="error-label">
                   {errors.description.message}
                 </FormText>
               )}
@@ -165,27 +163,27 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                 type="email"
                 id="email"
                 placeholder={t("write-the-here-please", {
-                  namePlaceholder: t("the-web-site").toLowerCase()
+                  namePlaceholder: t("the-web-site").toLowerCase(),
                 })}
                 {...register("website", {
                   required: {
                     value: true,
                     message: `${t("is-required", {
-                      nameRequired: t("the-web-site")
+                      nameRequired: t("the-web-site"),
                     })}`,
                   },
                   minLength: {
                     value: 3,
-                    message: `${t("cannot-be-less-than-character" , {
+                    message: `${t("cannot-be-less-than-character", {
                       nameInput: t("the-web-site"),
-                      numberCharacters: 3
+                      numberCharacters: 3,
                     })}`,
                   },
                 })}
                 className={"form-field" + (errors.website ? " has-error" : "")}
               />
               {errors.website && (
-                <FormText className="error-label">
+                <FormText color="danger" className="error-label">
                   {errors.website.message}
                 </FormText>
               )}
@@ -198,23 +196,21 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                     type="number"
                     id="totalArea"
                     placeholder={t("write-the-here-please", {
-                      namePlaceholder: t("the-total-area").toLowerCase()
+                      namePlaceholder: t("the-total-area").toLowerCase(),
                     })}
                     {...register("totalArea", {
                       required: {
                         value: true,
                         message: `${t("is-required", {
-                          nameRequired: t("the-total-area")
+                          nameRequired: t("the-total-area"),
                         })}`,
                       },
                       minLength: {
                         value: 3,
-                        message: `${t(
-                          "cannot-be-less-than-character", {
-                            nameInput: t("the-total-area"),
-                            numberCharacters: 3
-                          }
-                        )}`,
+                        message: `${t("cannot-be-less-than-character", {
+                          nameInput: t("the-total-area"),
+                          numberCharacters: 3,
+                        })}`,
                       },
                     })}
                     className={
@@ -222,7 +218,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                     }
                   />
                   {errors.totalArea && (
-                    <FormText className="error-label">
+                    <FormText color="danger" className="error-label">
                       {errors.totalArea.message}
                     </FormText>
                   )}
@@ -235,27 +231,27 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                     type="number"
                     id="year"
                     placeholder={t("write-the-here-please", {
-                      namePlaceholder: t("the-year").toLowerCase()
+                      namePlaceholder: t("the-year").toLowerCase(),
                     })}
                     {...register("year", {
                       required: {
                         value: true,
                         message: `${t("is-required", {
-                          nameRequired: t("the-year")
+                          nameRequired: t("the-year"),
                         })}`,
                       },
                       minLength: {
                         value: 3,
                         message: `${t("cannot-be-less-than-character", {
                           nameInput: t("the-year"),
-                          numberCharacters: 3
+                          numberCharacters: 3,
                         })}`,
                       },
                     })}
                     className={"form-field" + (errors.year ? " has-error" : "")}
                   />
                   {errors.year && (
-                    <FormText className="error-label">
+                    <FormText color="danger" className="error-label">
                       {errors.year.message}
                     </FormText>
                   )}
@@ -270,20 +266,20 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                 name="videoPath"
                 id="videoPath"
                 placeholder={t("write-the-here-please", {
-                  namePlaceholder: t("the-video-path").toLowerCase()
+                  namePlaceholder: t("the-video-path").toLowerCase(),
                 })}
                 {...register("videoPath", {
                   required: {
                     value: true,
                     message: `${t("is-required", {
-                      nameRequired: t("the-video-path")
+                      nameRequired: t("the-video-path"),
                     })}`,
                   },
                   minLength: {
                     value: 3,
                     message: `${t("cannot-be-less-than-character", {
                       nameInput: t("the-video-path"),
-                      numberCharacters: 3
+                      numberCharacters: 3,
                     })}`,
                   },
                 })}
@@ -292,7 +288,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                 }
               />
               {errors.videoPath && (
-                <FormText className="error-label">
+                <FormText color="danger" className="error-label">
                   {errors.videoPath.message}
                 </FormText>
               )}
@@ -309,7 +305,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                   required: {
                     value: true,
                     message: `${t("is-required", {
-                      nameRequired: t("professionals-selected")
+                      nameRequired: t("professionals-selected"),
                     })}`,
                   },
                 }}
@@ -321,11 +317,14 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                     getOptionLabel={(option) => `${option?.contact}`}
                     getOptionValue={(option) => `${option?.id}`}
                     isClearable
+                    className={
+                      "form-field" + (errors.professionalsSelected ? " has-error" : "")
+                    }
                   />
                 )}
               />
               {errors.professionalsSelected && (
-                <FormText className="error-label">
+                <FormText color="danger" className="error-label">
                   {errors.professionalsSelected.message}
                 </FormText>
               )}
@@ -342,6 +341,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                 accept={"image/*"}
                 multiple={false}
                 name={"previewImage"}
+                height={"90px"}
               />
             </FormGroup>
             <Col>
@@ -354,6 +354,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                   accept={"application/x-zip-compressed, application/zip"}
                   multiple={false}
                   name={"file"}
+                  height={"90px"}
                 />
               </FormGroup>
             </Col>
