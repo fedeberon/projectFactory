@@ -70,7 +70,6 @@ const CompanyCreator = () => {
         const newTagsCategories = Array.from(tagsCategories);
         newTagsCategories.push(parse);
         setTagsCategories(newTagsCategories);
-        console.log(tagsCategories);
       } else {
         showErrorToLimitTime(
           t("company-creator.already-exists", {
@@ -110,6 +109,8 @@ const CompanyCreator = () => {
             tagsCategories,
             session?.accessToken
           );
+          setTagsCategories([]);
+          setPreviewImage([]);
           toggle();
         } else {
           showErrorToLimitTime(
