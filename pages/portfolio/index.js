@@ -76,6 +76,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
   const [images, setImages] = useState([]);
   const [localBuildingWorks, setLocalBuildingWorks] = useState([]);
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
+  const [buildingWorkId, setBuildingWorkId] = useState(null);
 
   const [buildingWorkData, setBuildingWorkData] = useState({
     defaultValues: {
@@ -152,11 +153,15 @@ const Portfolio = ({ professional, buildingWorks }) => {
     }
   };
 
-  const onSetbuildingWork = async (data) => {
+  const onSetbuildingWork = async (data, buildingWorkId) => {
     if (session) {
       try {
         //falta terminar con tomy
-        // let images = await onSetImagesToBuildingWork(folder, data.images);
+        await buildingWorkService.removeAndAddImages(
+          data.images,
+          buildingWorkId,
+          session.accessToken
+        );
       } catch (error) {
         console.error(error);
       }
@@ -235,6 +240,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
     setBuildingWorkData(copyBuildingWorkData);
 
     let imagenes = await onEditGetBuildingWorks(id);
+
     imagenes.forEach(async (img, index) => {
       const imagen = await fetch(img.path, {
         headers: { Authorization: session.accessToken },
@@ -248,6 +254,8 @@ const Portfolio = ({ professional, buildingWorks }) => {
         preview: URL.createObjectURL(file),
       });
       img.preview = file.preview;
+      img.added = true; //is already in the BD
+      img.remove = false; //if I have to delete it or not as it comes from BD I don’t have to delete it
     });
 
     setImages(imagenes);
@@ -263,6 +271,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
     });
 
     setPreviewImage([file]);
+    setBuildingWorkId(id);
     toggleModal();
   };
 
@@ -291,20 +300,21 @@ const Portfolio = ({ professional, buildingWorks }) => {
       {isLoading ? (
         <h1>{t("loading")}...</h1>
       ) : (
-        localBuildingWorks.map((image, index) => (
+        localBuildingWorks.map((buildingWork, index) => (
           <Col key={index}>
+            <pre>{JSON.stringify(buildingWork, null, 2)}</pre>
             <CardDeck className={`${filteredImagesStyles.colCard}`}>
               <Card>
                 <CardBody className="p-0">
                   <Link
                     href={`/building/[id]`}
-                    as={`/building/${image.name.replace(/\s+/g, "-")}-${
-                      image.id
+                    as={`/building/${buildingWork.name.replace(/\s+/g, "-")}-${
+                      buildingWork.id
                     }`}
                   >
                     <img
                       className={`${filteredImagesStyles.cardImage}`}
-                      src={image.previewImage}
+                      src={buildingWork.previewImage}
                       alt="Professional preview"
                     />
                   </Link>
@@ -312,14 +322,14 @@ const Portfolio = ({ professional, buildingWorks }) => {
                     <Col className="col-auto">
                       <img
                         className={`${filteredImagesStyles.imgProfile} rounded-circle`}
-                        // src={image.entity.previewImage}
+                        // src={buildingWork.entity.previewImage}
                       />
                     </Col>
                     <Col className={`col-auto`}>
                       <CardText
                         className={`${filteredImagesStyles.textShadowSm} fw-bold`}
                       >
-                        {image.name}
+                        {buildingWork.name}
                       </CardText>
                     </Col>
                     <Col
@@ -328,7 +338,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
                       {session && (
                         <div>
                           <CustomButtonTogle
-                            id={image.id}
+                            id={buildingWork.id}
                             editBuildingWork={editBuildingWork}
                           />
                         </div>
@@ -393,6 +403,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
             images={images}
             setImages={setImages}
             changeState={{ stateFormObra, function: setStateFormObra }}
+            buildingWorkId={buildingWorkId}
           />
         }
         modalOpen={{ open: modalOpen, function: setModalOpen }}

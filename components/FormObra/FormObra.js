@@ -29,6 +29,7 @@ const FormObra = ({
   images,
   setImages,
   changeState,
+  buildingWorkId
 }) => {
   const { t } = useTranslation("common");
   const [currentImageTag, setCurrentImageTag] = useState({});
@@ -90,7 +91,7 @@ const FormObra = ({
         }
         if (changeState.stateFormObra.put) {
           //Falta terminar con tomy
-          const buildingWorkModify = await onSetbuildingWork(data);
+          const buildingWorkModify = await onSetbuildingWork(data, buildingWorkId);
         }
       } else {
         showErrorToLimitTime(
