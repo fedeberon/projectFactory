@@ -318,7 +318,8 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                     getOptionValue={(option) => `${option?.id}`}
                     isClearable
                     className={
-                      "form-field" + (errors.professionalsSelected ? " has-error" : "")
+                      "form-field" +
+                      (errors.professionalsSelected ? " has-error" : "")
                     }
                   />
                 )}
@@ -379,6 +380,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
       </Form>
 
       <ModalForm
+        size={"md"}
         className={"Button"}
         modalTitle={t("add-tags")}
         formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}

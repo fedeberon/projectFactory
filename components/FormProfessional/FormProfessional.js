@@ -133,7 +133,8 @@ const FormProfessional = ({
                         isClearable
                         onChange={(value) => seleccion(value)}
                         className={
-                          "form-field" + (errors.company && optionSelect ? " has-error" : "")
+                          "form-field" +
+                          (errors.company && optionSelect ? " has-error" : "")
                         }
                       />
                     )}
@@ -475,6 +476,7 @@ const FormProfessional = ({
         </Row>
       </Form>
       <ModalForm
+        size={"xl"}
         className={"Button"}
         modalTitle={t("common:add-tags")}
         formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}

@@ -10,14 +10,14 @@ import {
 } from "reactstrap";
 import { X } from "react-bootstrap-icons";
 const ModalForm = (props) => {
-  const { className, modalTitle, formBody, modalOpen } = props;
+  const { className, modalTitle, formBody, modalOpen, size } = props;
 
   const toggle = () => modalOpen.function(!modalOpen.open);
   return (
     <div>
       <Modal
         centered
-        size={"xl"}
+        size={size}
         isOpen={modalOpen.open}
         toggle={toggle}
         className={className}

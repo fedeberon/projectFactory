@@ -48,6 +48,7 @@ const SeeProject = ({ project, onEditProject, id }) => {
   return (
     <>
       <ModalForm
+        size={"xl"}
         className={"Button"}
         modalTitle={t("project-edit")}
         formBody={

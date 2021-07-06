@@ -6,9 +6,9 @@
     "signed-in-as": "Ingresado como",
     "profile": "Perfil",
     "portfolio": "Mi portafolio",
-    "search-placeholder" : "Buscar ideas/ profesionales",
-    "search-by-ideas" : "Buscar por ideas",
-    "search-by-professionals" : "Buscar por profesionales"
+    "search-placeholder": "Buscar ideas/ profesionales",
+    "search-by-ideas": "Buscar por ideas",
+    "search-by-professionals": "Buscar por profesionales"
   },
 
   "professional": "Profesional",
@@ -24,6 +24,7 @@
   "province": "Provincia",
   "location": "Localidad",
   "invalid-link": "El link es invalido",
+  "image": "Imagen",
 
   "is-required": "{{nameRequired}} es requerido",
   "write-the-here-please": "Escriba {{namePlaceholder}} aquí por favor",
@@ -36,6 +37,8 @@
   "the-year": "El año",
   "the-video-path": "El enlace del video",
   "the-email": "El email",
+  "the-image": "La imagen",
+  "the-tag": "El tag",
 
   "email-is-already-exist-please-write-another-one": "El email ya existe, por favor ingrese otro",
   "magazine-detail": "Detalle de Magazine",
@@ -79,12 +82,18 @@
   },
 
   "company-creator": {
+    "form-company-creator": "Formulario creardor de empresa",
     "add-company": "Agregar empresa",
     "company-name": "Nombre de la empresa",
     "company-logo": "Logo de la empresa",
     "select-logo": "Seleccione el logo por favor",
     "select-categories-please": "Seleccione las categorias de la empresa",
-    "add-category": "Agregar categoria"
+    "categories": "Categorias",
+    "the-category": "La categoria",
+    "the-categories": "Las categorias",
+    "add-category": "Agregar categoria",
+    "cannot-be-empty": "{{fieldName}} no puede estar vacía",
+    "already-exists": "{{fieldName}} ya existe"
   },
 
   "filter-list": {
@@ -97,11 +106,10 @@
   },
 
   "table-admin": {
-    "image": "Imagen",
     "actions": "Acciones",
     "there-are-not-more-professional": "No hay más profesionales",
-    "find-by-contact" : "Buscar por contacto",
-    "tokens" : "Fichas"
+    "find-by-contact": "Buscar por contacto",
+    "tokens": "Fichas"
   },
 
   "tabs": {
@@ -169,5 +177,6 @@
   "work-form": "Formulario de Obra",
   "building-work-detail": "Detalle de obra",
   "preview-image": "Imagen previsualizacion",
-  "select-preview-image-for-building-work": "Seleccione una imagen de previsualizacion para la obra"
+  "select-preview-image-for-building-work": "Seleccione una imagen de previsualizacion para la obra",
+  "the-administrator-cannot-be-empty": "El administrador no puede estar vacío"
 }

@@ -40,9 +40,11 @@ const ProfileData = (props) => {
                 <Button color="primary" onClick={toggleModal}>
                   {t("become-professional")}
                 </Button>
-              ) : 
-              <Button onClick={toggleModalPlan}>{t("buy-more-tokens")}</Button>
-              }
+              ) : (
+                <Button onClick={toggleModalPlan}>
+                  {t("buy-more-tokens")}
+                </Button>
+              )}
             </Col>
             <Col>
               <img src={session.user.image}></img>
@@ -66,14 +68,14 @@ const ProfileData = (props) => {
       )}
 
       <ModalForm
+        size={"xl"}
         modalTitle={t("formulary-plan.title")}
         className={"Button mt-50"}
-        formBody={
-          <Plans onBuyPlan={onBuyPlan}/>
-        }
+        formBody={<Plans onBuyPlan={onBuyPlan} />}
         modalOpen={{ open: showModalPlan, function: setShowModalPlan }}
       />
       <ModalForm
+        size={"xl"}
         modalTitle={t("formulary.professional-form")}
         className={"Button mt-50"}
         formBody={

@@ -6,9 +6,9 @@
     "signed-in-as": "Signed in as",
     "profile": "Profile",
     "portfolio": "My portfolio",
-    "search-placeholder" : "Find ideas/ professionals",
-    "search-by-ideas" : "Search by ideas",
-    "search-by-professionals" : "Search by professionals"
+    "search-placeholder": "Find ideas/ professionals",
+    "search-by-ideas": "Search by ideas",
+    "search-by-professionals": "Search by professionals"
   },
 
   "professional": "Professional",
@@ -24,7 +24,8 @@
   "province": "Province",
   "location": "Location",
   "invalid-link": "Invalid link",
-  
+  "image": "Image",
+
   "is-required": "{{nameRequired}} is required",
   "write-the-here-please": "Write {{namePlaceholder}} here please",
   "cannot-be-less-than-character": "{{nameInput}} cannot be less than {{numberCharacters}} character",
@@ -36,6 +37,8 @@
   "the-year": "The year",
   "the-video-path": "The link to video",
   "the-email": "the email",
+  "the-image": "The image",
+  "the-tag": "The tag",
 
   "email-is-already-exist-please-write-another-one": "Email is already exist, please write another one",
   "magazine-detail": "Magazine Detail",
@@ -61,7 +64,7 @@
   "upload-files": "Upload files",
   "upload-images": "Upload images",
   "send": "Send",
-  
+
   "administrator-creator": {
     "add-administrator": "Add administrator",
     "insert-username": "Insert username",
@@ -79,12 +82,18 @@
   },
 
   "company-creator": {
+    "form-company-creator": "Form company creator",
     "add-company": "Add company",
     "company-name": "Company name",
     "company-logo": "Company logo",
     "select-logo": "Select logo please",
     "select-categories-please": "Select categories please",
-    "add-category": "Add category"
+    "categories": "Categories",
+    "the-category": "The category",
+    "the-categories": "The categories",
+    "add-category": "Add category",
+    "cannot-be-empty": "{{fieldName}} cannot be empty",
+    "already-exists": "{{fieldName}} already exists"
   },
 
   "filter-list": {
@@ -97,11 +106,10 @@
   },
 
   "table-admin": {
-    "image": "Image",
     "actions": "Action",
     "there-are-not-more-professional": "There are not more professionals",
-    "find-by-contact" : "Find by contact",
-    "tokens" : "Tokens"
+    "find-by-contact": "Find by contact",
+    "tokens": "Tokens"
   },
 
   "tabs": {
@@ -113,7 +121,7 @@
     "insert-tag": "Insert tag here please"
   },
 
-  "seeProject":"------------------",
+  "seeProject": "------------------",
   "project-detail": "Project detail",
   "project-edit": "Project edit",
   "professional-contact": "Professional contact",
@@ -121,8 +129,8 @@
   "buy-project": "Buy project",
   "download-project": "Download project",
   "other-projects-of-professional": "Other projects of this professional",
-  
-  "FormBuyProjects":"------------------",
+
+  "FormBuyProjects": "------------------",
   "doc-type": "Doc type",
   "doc-number": "Doc number",
   "card-holder-name": "Cardholder",
@@ -134,7 +142,7 @@
   "project-purchased": "You have purchased this project",
   "invalid-card": "Invalid card number",
 
-  "FormTwoFactorAuthentication":"-------------------",
+  "FormTwoFactorAuthentication": "-------------------",
   "two-factor-authentication": "Two factor authentication",
   "enter-code": "Enter the code of two factor authentication",
   "download": "Download",
@@ -143,31 +151,32 @@
 
   "project-edition-form": "Project edition form",
 
-  "Footer":"--------------------------------",
+  "Footer": "--------------------------------",
   "who-we-are": "Who we are",
   "frequently-asked-questions": "Frequently Asked Questions",
   "site-policies": "Site Policies",
   "all-rights-reserved": "All rights reserved",
-  
-  "LogInForm":"--------------------------------",
+
+  "LogInForm": "--------------------------------",
   "password": "Password",
   "the-password": "The password",
-  
-  "Authentication":"--------------------------------",
+
+  "Authentication": "--------------------------------",
   "log-in": "Log in",
   "sign-in": "Sign in",
 
-  "DE DONDE ES?":"--------------------------------",
+  "DE DONDE ES?": "--------------------------------",
   "LogOut": "Sign out",
   "SignedInAs": "Signed in as",
   "Profile": "Profile",
   "WriteTagHere": "Write tag here please",
-  
+
   "TagCannotBe3OrLess": "Tag cannot be less than 3 character",
 
-  "link" : "Link",
+  "link": "Link",
   "work-form": "Work form",
   "building-work-detail": "Building work detail",
   "preview-image": "Preview image",
-  "select-preview-image-for-building-work": "Select preview image for building work"
+  "select-preview-image-for-building-work": "Select preview image for building work",
+  "the-administrator-cannot-be-empty": "The administrator cannot be empty"
 }

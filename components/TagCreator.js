@@ -1,37 +1,65 @@
 import React, { useState } from "react";
 import { useSession } from "next-auth/client";
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  FormGroup,
-  FormText,
-  Input,
-  Label,
-  Row,
-} from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 import ModalForm from "./ModalForm";
 import useTranslation from "next-translate/useTranslation";
 import * as tagService from "../services/tagService";
+import Error from "../components/Error";
 
 const TagCreator = ({ tags, setTags }) => {
   const [modalTag, setModalTag] = useState(false);
   const [session] = useSession();
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
+  const [error, setError] = useState("");
+  const [timeErrorLive, setTimeErrorLive] = useState(0);
 
   const toggle = () => setModalTag(!modalTag);
 
+  const showErrorToLimitTime = (error) => {
+    setError(error);
+    clearTimeout(timeErrorLive);
+    setTimeErrorLive(
+      setTimeout(() => {
+        setError("");
+      }, 3000)
+    );
+  };
+
+  const isEqual = (tag) => {
+    for (const elem of tags) {
+      if (elem.tag === tag.tag.toLowerCase()) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const onAddTag = async () => {
     const tag = {
-        "tag" : document.querySelector("#input-tag").value
+      tag: document.querySelector("#input-tag").value.toLowerCase().trim(),
     };
 
-    const newTag = await tagService.addTag(tag, session.accessToken);
-    const newTags = Array.from(tags);
-    newTags.push(newTag);
-    setTags(newTags);
-    toggle();
+    if (tag.tag != "") {
+      if (!isEqual(tag)) {
+        const newTag = await tagService.addTag(tag, session.accessToken);
+        const newTags = Array.from(tags);
+        newTags.push(newTag);
+        setTags(newTags);
+        toggle();
+      } else {
+        showErrorToLimitTime(
+          t("company-creator.already-exists", {
+            fieldName: t("the-tag"),
+          })
+        );
+      }
+    } else {
+      showErrorToLimitTime(
+        t("company-creator.cannot-be-empty", {
+          fieldName: t("the-tag"),
+        })
+      );
+    }
   };
 
   return (
@@ -42,15 +70,25 @@ const TagCreator = ({ tags, setTags }) => {
 
       <ModalForm
         className={"Button"}
+        size={"md"}
         modalTitle={t("tag-creator.add-tag")}
         formBody={
           <>
             <h6>{t("tag-creator.please-select-tag")}</h6>
             <label>{t("tag-creator.add-tag")}</label>
             <br></br>
-            <input id="input-tag"/>
+            <input id="input-tag" />
             <br></br>
-            <Button className="my-3" onClick={onAddTag}>{t("tag-creator.add-tag")}</Button>
+            <Button className="my-3" onClick={onAddTag}>
+              {t("tag-creator.add-tag")}
+            </Button>
+            {error && (
+              <Row className="mt-2">
+                <Col>
+                  <Error error={error} />
+                </Col>
+              </Row>
+            )}
           </>
         }
         modalOpen={{ open: modalTag, function: setModalTag }}

@@ -156,7 +156,10 @@ const FormObra = ({
                     )}
                   />
                   {errors.name && (
-                    <FormText color="danger" className="invalid error-label text-danger">
+                    <FormText
+                      color="danger"
+                      className="invalid error-label text-danger"
+                    >
                       {errors.name.message}
                     </FormText>
                   )}
@@ -208,7 +211,10 @@ const FormObra = ({
                     )}
                   />
                   {errors.description && (
-                    <FormText color="danger" className="invalid error-label text-danger">
+                    <FormText
+                      color="danger"
+                      className="invalid error-label text-danger"
+                    >
                       {errors.description.message}
                     </FormText>
                   )}
@@ -267,6 +273,7 @@ const FormObra = ({
       )}
 
       <ModalForm
+        size={"md"}
         className={"Button"}
         modalTitle={t("common:add-tags")}
         formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}

@@ -16,7 +16,7 @@ const TableAdmin = ({ professionalList, title, onSearch }) => {
       <thead>
         <tr className="text-center">
           <th><Input type="search" placeholder={t("table-admin.find-by-contact")} onChange={handleChangeInput}/></th>
-          <th>{t("table-admin.image")}</th>
+          <th>{t("image")}</th>
           <th>{t("contact")}</th>
           <th>{t("company")}</th>
           <th>{t("email")}</th>
