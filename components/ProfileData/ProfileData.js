@@ -23,10 +23,14 @@ const ProfileData = (props) => {
   const [session] = useSession();
   const [modalOpen, setModalOpen] = useState(false);
   const { t } = useTranslation("profile");
-  const { onBecomeProfessional, error, setError, data, onBuyPlan } = props;
-  const [showModalPlan, setShowModalPlan] = useState(false);
+  const { onBecomeProfessional, error, setError, data, onBuyPlan, linkToMercadopago, status } = props;
+  const [showModalPlan, setShowModalPlan] = useState(status == "approved");
+  const [statusPurchased, setStatusPurchased] = useState(status)
 
-  const toggleModalPlan = () => setShowModalPlan(!showModalPlan);
+  const toggleModalPlan = () => {
+    setStatusPurchased("");
+    setShowModalPlan(!showModalPlan);
+  }
 
   const toggleModal = () => setModalOpen(!modalOpen);
 
@@ -40,9 +44,10 @@ const ProfileData = (props) => {
                 <Button color="primary" onClick={toggleModal}>
                   {t("become-professional")}
                 </Button>
-              ) : 
+              ) : <div>
               <Button onClick={toggleModalPlan}>{t("buy-more-tokens")}</Button>
-              }
+              <a className={ProfileDataStyles.btnLinkAccount} href={linkToMercadopago}>{t("link-account-to-mercadopago")}</a>
+              </div>}
             </Col>
             <Col>
               <img src={session.user.image}></img>
@@ -69,7 +74,7 @@ const ProfileData = (props) => {
         modalTitle={t("formulary-plan.title")}
         className={"Button mt-50"}
         formBody={
-          <Plans onBuyPlan={onBuyPlan}/>
+          <Plans onBuyPlan={onBuyPlan} status={statusPurchased}/>
         }
         modalOpen={{ open: showModalPlan, function: setShowModalPlan }}
       />

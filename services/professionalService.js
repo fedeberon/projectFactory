@@ -114,8 +114,13 @@ export const setNewTokensToProfessional = async (newTokens, professionalId, toke
   return await API.put(`/professionals/${professionalId}/tokens/${newTokens}`);
 }
 
-export const buyPlan = async (plan, token) => {
+export const generatePreferenceForToken = async (plan, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  return await API.put(`/professionals/purchase-plan/${plan}`);
+  const backUrl = {
+    success : window.location.href,
+    failure : window.location.href,
+    pending : window.location.href
+  }
+  return await API.post(`/mercadopago/plan/${plan}/create-preference`, backUrl);
 };
 
