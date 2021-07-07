@@ -1,5 +1,6 @@
 {
   "become-professional": "Become in a professional",
+  "link-account-to-mercadopago" : "Link to MercadoPago",
 
   "authority": "Authority",
   "without-session": "Without session",
@@ -45,7 +46,7 @@
     "basic-message" : "This is the basic plan to increase the visibility of your works for a short period of time, your works will stand out from any other professional who does not have any tokens.",
     "medium-message" : "With this plan, you can make your works stand out from professionals who have no plan or have the basic plan.",
     "advance-message" : "With the advanced plan you will stand out over any other professional, over those who do not have any plan or have a basic or medium plan, your works will be on the main page increasing the visibility of your works.",
-    "successful-message" : "You have bought",
+    "successful-message" : "Purchase made",
     "compare-plans" : "Compare plans",
     "increased-visibility": "Increased visibility",
     "amount-tokens" : "Amount of tokens",

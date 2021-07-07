@@ -4,27 +4,8 @@ import useTranslation from "next-translate/useTranslation";
 import styles from "./Plans.module.css";
 
 const Plans = (props) => {
-  const { onBuyPlan, toggle } = props;
-  const [amountTokens, setAmountTokens] = useState(0);
+  const { onBuyPlan, toggle, status } = props;
   const { t } = useTranslation("profile");
-
-  const buyPlan = async (plan) => {
-    await onBuyPlan(plan);
-    let tokensPurchased = 0;
-    switch (plan) {
-      case process.env.NEXT_PUBLIC_BASIC_PLAN:
-        tokensPurchased = process.env.NEXT_PUBLIC_BASIC_PLAN_AMOUNT_TOKENS;
-        break;
-      case process.env.NEXT_PUBLIC_MEDIUM_PLAN:
-        tokensPurchased = process.env.NEXT_PUBLIC_MEDIUM_PLAN_AMOUNT_TOKENS;
-        break;
-      case process.env.NEXT_PUBLIC_ADVANCE_PLAN:
-        tokensPurchased = process.env.NEXT_PUBLIC_ADVANCE_PLAN_AMOUNT_TOKENS;
-        break;
-    }
-
-    setAmountTokens(tokensPurchased);
-  };
 
   const check = 
   <Image
@@ -62,7 +43,7 @@ const Plans = (props) => {
                 </li>
               </ul>
               <button
-                onClick={() => buyPlan(process.env.NEXT_PUBLIC_BASIC_PLAN)}
+                onClick={() => onBuyPlan(process.env.NEXT_PUBLIC_BASIC_PLAN)}
                 type="button"
                 className="w-100 btn btn-lg btn-outline-primary"
               >
@@ -91,7 +72,7 @@ const Plans = (props) => {
                 </li>
               </ul>
               <button
-                onClick={() => buyPlan(process.env.NEXT_PUBLIC_MEDIUM_PLAN)}
+                onClick={() => onBuyPlan(process.env.NEXT_PUBLIC_MEDIUM_PLAN)}
                 type="button"
                 className="w-100 btn btn-lg btn-primary"
               >
@@ -120,7 +101,7 @@ const Plans = (props) => {
                 </li>
               </ul>
               <button
-                onClick={() => buyPlan(process.env.NEXT_PUBLIC_ADVANCE_PLAN)}
+                onClick={() => onBuyPlan(process.env.NEXT_PUBLIC_ADVANCE_PLAN)}
                 type="button"
                 className="w-100 btn btn-lg btn-primary"
               >
@@ -130,9 +111,9 @@ const Plans = (props) => {
           </div>
         </div>
       </div>
-      {amountTokens != 0 && (
+      {status == "approved"  && (
         <div className="alert alert-success" role="alert">
-          {`${t("formulary-plan.successful-message")} ${amountTokens} ${t("formulary-plan.tokens")}`}
+          {`${t("formulary-plan.successful-message")}`}
         </div>
       )}
 

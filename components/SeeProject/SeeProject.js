@@ -3,7 +3,6 @@ import ModalForm from "../ModalForm";
 import useTranslation from "next-translate/useTranslation";
 import FormEditProject from "../FormEditProject";
 import { useRouter } from "next/router";
-import FormBuyProject from "../FormBuyProject";
 import FormTwoFactorAuthentication from "../FormTwoFactorAuthentication";
 import {
   Button,
@@ -20,24 +19,17 @@ import {
 import CarouselProject from "../CarouselProject/CarouselProject";
 import SeeProjectStyle from "./SeeProject.module.css";
 
-const SeeProject = ({ project, onEditProject, id }) => {
+const SeeProject = ({ project, onEditProject, id, onBuyProyect, status }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { t } = useTranslation("common");
   const router = useRouter();
 
   const toggleModal = () => setModalOpen(!modalOpen);
 
-  const showBuyProject = () => {
-    document.querySelector("#form-buy-project").hidden = false;
-    document.querySelector("#project-data").hidden = true;
-  };
-
   const show2FA = () => {
     document.querySelector("#two-factor").hidden = false;
     document.querySelector("#project-data").hidden = true;
   };
-
-  useEffect(() => {}, [project]);
 
   const projectsOfProfessionalList = project?.projectsOfProfessional?.map(
     (project) => {
@@ -107,7 +99,7 @@ const SeeProject = ({ project, onEditProject, id }) => {
                     className="mx-1"
                     color={"success"}
                     id="btn-show-buy-project"
-                    onClick={showBuyProject}
+                    onClick={onBuyProyect}
                   >
                     {t("buy-project")}
                   </Button>
@@ -125,10 +117,13 @@ const SeeProject = ({ project, onEditProject, id }) => {
                   {t("project-edit")}
                 </Button>
               </Col>
+              {status == "approved"  &&
+              <div class="alert alert-success" role="alert">
+                {t("you-bought-this-project")}
+              </div>
+              }
+              <div className="cho-container"></div>
             </Row>
-            <div hidden id="form-buy-project">
-              <FormBuyProject projectId={id} />
-            </div>
             <div hidden id="two-factor">
               <FormTwoFactorAuthentication projectId={id} />
             </div>

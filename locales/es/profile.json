@@ -1,5 +1,6 @@
 {
   "become-professional": "Convertirse en un profesional",
+  "link-account-to-mercadopago" : "Vincular con MercadoPago",
 
   "authority": "Autoridad",
   "without-session": "Sin sesión",
@@ -45,10 +46,10 @@
     "basic-message" : "Este es el plan basico para aumentar la visibilidad de tus obras por un corto periodo de tiempo, tu obras resaltaran sobre cualquier otro profesional que no tenga fichas.",
     "medium-message" : "Con este plan, podras hacer que tus obras resalten sobre los profesionales que no tengan ningun plan o tengan el plan basico.",
     "advance-message" : "Con el plan avanzado resaltaras sobre cualquier otro profesional, sobre aquellos que no tengan ningun plan o tengan un plan basico o medio, tus obras estaran en la pagina principal aumentando la visibilidad de tus obras.",
-    "successful-message" : "Has comprado",
+    "successful-message" : "Compra realizada",
     "compare-plans" : "Comparar planes",
     "increased-visibility" : "Visibilidad aumentada",
-    "amount-tokens" : "Cantidad de tokens",
+    "amount-tokens" : "Cantidad de fichas",
     "price" : "Precio"
   }
 }
