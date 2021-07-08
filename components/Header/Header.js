@@ -53,7 +53,13 @@ export default function Header() {
                       <NavLink>{t("professional")}</NavLink>
                     </Link>
                   </DropdownItem>
-                  <DropdownItem>Option 2</DropdownItem>
+
+                  <DropdownItem>
+                    <Link href="/companies">
+                      <a>{t("companies")}</a> 
+                    </Link>
+                  </DropdownItem>
+
                   <DropdownItem divider />
                   <DropdownItem>Reset</DropdownItem>
                 </DropdownMenu>

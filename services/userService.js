@@ -1,4 +1,5 @@
 import API from "./api";
+import { signIn } from "next-auth/client";
 
 export const signInCallBack = async (user, account, profile) => {
   const data = {
@@ -42,7 +43,6 @@ export const add = async (username, password) => {
     username,
     password,
   };
-  
   const { token } = await API.post(`/users/register`, data);
   
   signIn('credentials', { 

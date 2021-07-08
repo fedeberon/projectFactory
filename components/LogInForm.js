@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Button,
@@ -15,10 +15,12 @@ import {
 import useTranslation from "next-translate/useTranslation";
 import { signIn } from "next-auth/client";
 import { Google, Facebook, Instagram } from "react-bootstrap-icons";
+import * as userService from "../services/userService";
 
 const LogInForm = (props) => {
-
+    const [invalidCredentials, setInvalidCredentials] = useState(false)
     const { t } = useTranslation("common");
+    const resetInvalidCredentials = () => setInvalidCredentials(false);
 
     const {
       register,
@@ -27,10 +29,11 @@ const LogInForm = (props) => {
     } = useForm();
   
     const onSubmit = async ({ email, password }, event) => {
-      let data = {
-        email,
-        password,
-      };
+      try {
+        await userService.login(email, password);
+      } catch (e) {
+        setInvalidCredentials(true);
+      }
     };
   
   return (
@@ -43,6 +46,7 @@ const LogInForm = (props) => {
                 <Label for="email">{t("email")}</Label>
                 <Input
                   type="email"
+                  onClick={resetInvalidCredentials}
                   name="email"
                   id="email"
                   placeholder={t("write-the-here-please", {
@@ -76,6 +80,7 @@ const LogInForm = (props) => {
                 <Input
                   type="password"
                   id="password"
+                  resetInvalidCredentials
                   placeholder={t("write-the-here-please", {
                     namePlaceholder: t("the-password").toLowerCase()
                   })}
@@ -107,11 +112,16 @@ const LogInForm = (props) => {
                 )}
               </FormGroup>
               <Button color="primary" className="mt-2">{t("log-in")}</Button>
-            </Form>
-            <Label for="Registrarse">Ingresar con:</Label>
-            <Button onClick={signIn} color="danger" className="mx-2" size={25}><Google/></Button>
-            <Button onClick={signIn} color="primary" className="mx-2" size={25}><Facebook/></Button>
-            <Button onClick={signIn} color="secondary" className="mx-2" size={25}><Instagram/></Button>
+              {invalidCredentials &&
+                <div class="alert alert-danger" role="alert">
+                  {t("invalid-credentials")}
+                </div>
+              }
+            </Form> 
+            <Label for="Registrarse">{t("log-in-with")}:</Label>
+            <Button onClick={() => signIn("google")} color="danger" className="mx-2" size={25}><Google/></Button>
+            <Button onClick={() => signIn("facebook")} color="primary" className="mx-2" size={25}><Facebook/></Button>
+            <Button onClick={() => signIn("instagram")} color="secondary" className="mx-2" size={25}><Instagram/></Button>
           </CardBody>
         </Card>
       </Col>
