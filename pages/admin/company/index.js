@@ -6,50 +6,41 @@ import { CheckCircle, XCircle } from "react-bootstrap-icons";
 import useTranslation from "next-translate/useTranslation";
 
 // Components
-import Layout from "../../components/Layout/Layout";
-import Tabs from "../../components/Tabs/Tabs";
-import TableAdmin from "../../components/TableAdmin/TableAdmin";
+import Layout from "../../../components/Layout/Layout";
+import Tabs from "../../../components/Tabs/Tabs";
+import TableAdmin from "../../../components/TableAdmin/TableAdmin";
 import { Input } from "reactstrap";
 
 //Services
-import {
-  getProfessionalForApproved,
-  setEnebleProfessional,
-} from "../../services/professionalService";
-import * as professionalService from "../../services/professionalService";
-import * as imageService from "../../services/imageService";
-import * as companyService from "../../services/companyService";
+import * as professionalService from "../../../services/professionalService";
+import * as imageService from "../../../services/imageService";
+import * as companyService from "../../../services/companyService";
 
-const Admin = ({
-  professionalNotApproved,
+const CompanyAdmin = ({
   companiesNotApproved,
-  professionalApproved,
-  professionalRejected,
+  companiesApproved,
+  companiesRejected,
   session,
 }) => {
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
-  const [professionalListNotAppoved, setProfessionalListNotAppoved] = useState(
-    []
-  );
-  const [companyListNotAppoved, setCompanyListNotAppoved] =
-    useState(companiesNotApproved);
-  const [professionalListAppoved, setProfessionalListAppoved] = useState([]);
-  const [professionalListRejected, setProfessionalListRejected] = useState([]);
+  const [companyListNotAppoved, setCompanyListNotAppoved] = useState([]);
+  const [companiesListAppoved, setListAppoved] = useState([]);
+  const [companiesListRejected, setcompaniesListRejected] = useState([]);
 
-  const { t, lang } = useTranslation("administrator");
+  const { t } = useTranslation("administrator");
 
   /**
    * Component button accept to add it to the table that requires it.
    * @param {*} professionalId String necessary to identify the profesisonal
-   * in changeStateProfessional
+   * in changeState
    * @returns A button armed with the functionality to change the state to Id
    */
-  const buttonAccept = (professionalId) => {
+  const buttonAccept = (companylId) => {
     return (
       <Button
         outline
         color={"success"}
-        onClick={() => changeStateProfessional(professionalId, "APPROVED")}
+        onClick={() => changeState(companylId, "APPROVED")}
       >
         <CheckCircle size={25} /> {t("accept")}
       </Button>
@@ -58,16 +49,16 @@ const Admin = ({
 
   /**
    * Component button reject to add it to the table that requires it.
-   * @param {*} professionalId String necessary to identify the profesisonal
-   * in changeStateProfessional
+   * @param {*} companyId String necessary to identify the profesisonal
+   * in changeState
    * @returns A button armed with the functionality to change the state to Id.
    */
-  const buttonReject = (professionalId) => {
+  const buttonReject = (companyId) => {
     return (
       <Button
         outline
         color={"danger"}
-        onClick={() => changeStateProfessional(professionalId, "REJECTED")}
+        onClick={() => changeState(companyId, "REJECTED")}
       >
         <XCircle size={25} /> {t("reject")}
       </Button>
@@ -106,14 +97,14 @@ const Admin = ({
 
   /**
    * Funtionality to buttonAcept and buttonReject components
-   * to change the status of a professional in a tabs pending, approved and
+   * to change the status of a company in a tabs pending, approved and
    * disapproved.
-   * @param {*} id String necessary to identify of a professional.
+   * @param {*} id String necessary to identify of a company.
    * @param {*} status String to show that you want it to see.
    * The states are : PENDING APPROVED REJECTED DELETED
    */
-  const changeStateProfessional = async (id, status) => {
-    const professionalChange = await saveChangeProfessional(id, status);
+  const changeState = async (id, status) => {
+    const professionalChange = await saveChangeStatus(id, status);
     if (professionalChange) {
       pendingTab();
       approvedTab();
@@ -128,9 +119,9 @@ const Admin = ({
    * The states are : PENDING APPROVED REJECTED DELETED
    * @returns true or false to obtein if save change or not
    */
-  const saveChangeProfessional = async (id, status) => {
+  const saveChangeStatus = async (id, status) => {
     try {
-      await setEnebleProfessional(id, status, session?.accessToken);
+      await companyService.setStatus(id, status, session?.accessToken);
       return true;
     } catch (error) {
       console.error(error);
@@ -139,35 +130,34 @@ const Admin = ({
   };
 
   /**
-   * Funtionality to refresh the pending tab when a professional is accepted.
+   * Funtionality to refresh the pending tab when a company is accepted.
    */
   const pendingTab = async () => {
-    const professionals = await getProfessional("PENDING");
-    renderPendingProfessionals(professionals);
+    const companies = await getAllCompanies("PENDING");
+    renderPending(companies);
   };
 
-  const renderPendingProfessionals = (professionals) => {
-    const professionalsList = getList(professionals, [
-      (professionalId) => buttonAccept(professionalId),
-      (professionalId) => buttonReject(professionalId),
+  const renderPending = (companies) => {
+    const companiesList = getList(companies, [
+      (companyId) => buttonAccept(companyId),
+      (companyId) => buttonReject(companyId),
     ]);
-    setProfessionalListNotAppoved(professionalsList);
+    setCompanyListNotAppoved(companiesList);
   };
 
   /**
    * Funcionality to refresh the approved tab when a professional is rejected.
    */
   const approvedTab = async () => {
-    const professionals = await getProfessional("APPROVED");
-    renderApprovedProfessionals(professionals);
+    const companies = await getAllCompanies("APPROVED");
+    renderApproved(companies);
   };
 
-  const renderApprovedProfessionals = (professionals) => {
-    const professionalsList = getList(professionals, [
-      (professionalId) => buttonReject(professionalId),
-      (professionalId) => buttonAcceptImages(professionalId),
+  const renderApproved = (companies) => {
+    const companiesList = getList(companies, [
+      (companyId) => buttonReject(companyId),
     ]);
-    setProfessionalListAppoved(professionalsList);
+    setListAppoved(companiesList);
   };
 
   /**
@@ -175,15 +165,15 @@ const Admin = ({
    * a professional again.
    */
   const disapprovedTab = async () => {
-    const professionals = await getProfessional("REJECTED");
-    renderRejectedProfessionals(professionals);
+    const companies = await getAllCompanies("REJECTED");
+    renderRejectedProfessionals(companies);
   };
 
   const renderRejectedProfessionals = (professionals) => {
     const professionalsList = getList(professionals, [
       (professionalId) => buttonAccept(professionalId),
     ]);
-    setProfessionalListRejected(professionalsList);
+    setcompaniesListRejected(professionalsList);
   };
 
   /**
@@ -193,15 +183,15 @@ const Admin = ({
    * The states are: PENDING APPROVED REJECTED DELETED
    * @returns arrangement of professionally limited for page.
    */
-  const getProfessional = async (status) => {
+  const getAllCompanies = async (status) => {
     try {
-      const professionalNotApproved = await getProfessionalForApproved(
+      const companiesNotAppoved = await companyService.findAll(
         status,
         pageSize.page,
         pageSize.size,
         session?.accessToken
       );
-      return professionalNotApproved;
+      return companiesNotAppoved;
     } catch (error) {
       console.error(error);
     }
@@ -229,52 +219,10 @@ const Admin = ({
    * @param {*} buttons is the buttons you want to display in the table as actions.
    * @returns the body of the table.
    */
-  const getList = (professionals, buttons) => {
-    const professionalList = professionals.map((professional, index) => {
+  const getList = (companies, buttons) => {
+    const companiesList = companies.map((company, index) => {
       return (
         <tr key={index} className="align-middle text-center">
-          <td scope="row">{index + 1}</td>
-          <td width="150px">
-            <figure className="figure mx-auto">
-              <img
-                className="img-fluid rounded"
-                src={professional.previewImage}
-                alt=""
-              />
-            </figure>
-          </td>
-          <td>{professional.contact}</td>
-          <td>{professional.company.name}</td>
-          <td>{professional.email}</td>
-          <td>
-            <Input
-              min="0"
-              type="number"
-              className="d-inline-block w-50 mr-2"
-              defaultValue={professional.tokens}
-            />
-            <Button
-              onClick={(e) =>
-                setNewTokensToProfessional(
-                  e.target.previousElementSibling.value,
-                  professional.id
-                )
-              }
-            >
-              {t("apply")}
-            </Button>
-          </td>
-          <td>
-            {buttons.map((button, index) => {
-              return <div key={index}>{button(professional.id)}</div>;
-            })}
-          </td>
-        </tr>
-      );
-    });
-    const companyList = companyListNotAppoved.map((company, index) => {
-      return (
-        <tr key={index}>
           <td scope="row">{index + 1}</td>
           <td width="150px">
             <figure className="figure mx-auto">
@@ -288,12 +236,33 @@ const Admin = ({
           <td>{company.contact}</td>
           <td>{company.name}</td>
           <td>{company.email}</td>
+          <td>
+            <Input
+              min="0"
+              type="number"
+              className="d-inline-block w-50 mr-2"
+              defaultValue={company.tokensAsigned}
+            />
+            <Button
+            // onClick={(e) =>
+            //   setNewTokensToProfessional(
+            //     e.target.previousElementSibling.value,
+            //     company.id
+            //   )
+            // }
+            >
+              {t("apply")}
+            </Button>
+          </td>
+          <td>
+            {buttons.map((button, index) => {
+              return <div key={index}>{button(company.id)}</div>;
+            })}
+          </td>
         </tr>
       );
     });
-    console.log(companyList);
-    console.log("professionalList", professionalList);
-    return professionalList;
+    return companiesList;
   };
 
   const setNewTokensToProfessional = async (tokens, professionalId) => {
@@ -307,44 +276,43 @@ const Admin = ({
 
   /**
    * This is for when using the SSR and loading the tableAdmin component properly
-   * with the list of pending proffesional.
+   * with the list of pending companies.
    */
   useEffect(async () => {
-    if (professionalNotApproved) {
-      const professionalList = getList(professionalNotApproved, [
-        (professionalId) => buttonAccept(professionalId),
-        (professionalId) => buttonReject(professionalId),
+    if (companiesNotApproved) {
+      const companiesList = getList(companiesNotApproved, [
+        (companyId) => buttonAccept(companyId),
+        (companyId) => buttonReject(companyId),
       ]);
-      setProfessionalListNotAppoved(professionalList);
+      setCompanyListNotAppoved(companiesList);
     }
-  }, [professionalNotApproved, companiesNotApproved]);
+  }, [companiesNotApproved]);
 
   /**
    * This is for when using the SSR and loading the tableAdmin component properly
    * with the list of approved proffesional.
    */
   useEffect(async () => {
-    if (professionalApproved) {
-      const professionalList = getList(professionalApproved, [
+    if (companiesApproved) {
+      const professionalList = getList(companiesApproved, [
         (professionalId) => buttonReject(professionalId),
-        (professionalId) => buttonAcceptImages(professionalId),
       ]);
-      setProfessionalListAppoved(professionalList);
+      setListAppoved(professionalList);
     }
-  }, [professionalApproved]);
+  }, [companiesApproved]);
 
   /**
    * This is for when using the SSR and loading the tableAdmin component properly
    * with the list of disapproved proffesional.
    */
   useEffect(async () => {
-    if (professionalRejected) {
-      const professionalList = getList(professionalRejected, [
+    if (companiesRejected) {
+      const professionalList = getList(companiesRejected, [
         (professionalId) => buttonAccept(professionalId),
       ]);
-      setProfessionalListRejected(professionalList);
+      setcompaniesListRejected(professionalList);
     }
-  }, [professionalRejected]);
+  }, [companiesRejected]);
 
   /**
    * These are the titles of the tabs needed to describe each other.
@@ -369,10 +337,10 @@ const Admin = ({
 
     switch (status) {
       case "PENDING":
-        renderPendingProfessionals(newProfessionals);
+        renderPending(newProfessionals);
         break;
       case "APPROVED":
-        renderApprovedProfessionals(newProfessionals);
+        renderApproved(newProfessionals);
         break;
       case "REJECTED":
         renderRejectedProfessionals(newProfessionals);
@@ -381,26 +349,26 @@ const Admin = ({
   };
 
   return (
-    <Layout title={t("common:administrator")}>
+    <Layout title={t("managing-companies")}>
       <Row>
         <Col>
           <Tabs titles={titles}>
             <TableAdmin
-              professionalList={professionalListNotAppoved}
+              professionalList={companyListNotAppoved}
               title={titles[0]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "PENDING")
               }
             />
             <TableAdmin
-              professionalList={professionalListAppoved}
+              professionalList={companiesListAppoved}
               title={titles[1]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "APPROVED")
               }
             />
             <TableAdmin
-              professionalList={professionalListRejected}
+              professionalList={companiesListRejected}
               title={titles[2]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "REJECTED")
@@ -431,9 +399,8 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   let token;
 
-  let professionalNotApproved = [];
-  let professionalApproved = [];
-  let professionalRejected = [];
+  let companiesApproved = [];
+  let companiesRejected = [];
   let companiesNotApproved = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
@@ -447,44 +414,26 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (session) {
     let status = "PENDING";
     token = session.accessToken;
-    professionalNotApproved = await getProfessionalForApproved(
-      status,
-      page,
-      size,
-      token
-    );
     companiesNotApproved = await companyService.findAll(
       status,
       page,
       size,
-      session?.accessToken
+      token
     );
-    console.log("companiesNotApproved", companiesNotApproved);
 
     status = "APPROVED";
-    professionalApproved = await getProfessionalForApproved(
-      status,
-      page,
-      size,
-      token
-    );
+    companiesApproved = await companyService.findAll(status, page, size, token);
     status = "REJECTED";
-    professionalRejected = await getProfessionalForApproved(
-      status,
-      page,
-      size,
-      token
-    );
+    companiesRejected = await companyService.findAll(status, page, size, token);
   }
 
   return {
     props: {
-      professionalNotApproved,
       companiesNotApproved,
-      professionalApproved,
-      professionalRejected,
+      companiesApproved,
+      companiesRejected,
       session,
     },
   };
 }
-export default Admin;
+export default CompanyAdmin;

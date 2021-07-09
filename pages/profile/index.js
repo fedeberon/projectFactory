@@ -54,6 +54,10 @@ const Profile = ({ data, imagesLiked }) => {
   };
 
   const onBecomeProfessional = async (data) => {
+    const company = { id: data.company.id };
+    const category = { id: data.category.id };
+    data.company = company;
+    data.category = category;
     const previewImage = data.previewImage;
     const backgroundImage = data.backgroundImage;
     const images = data.images;
@@ -99,7 +103,10 @@ export async function getServerSideProps({ params, req, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
 
-  if (!session || !session.authorities.includes(process.env.NEXT_PUBLIC_ROLE_USER)) {
+  if (
+    !session ||
+    !session.authorities.includes(process.env.NEXT_PUBLIC_ROLE_USER)
+  ) {
     return {
       redirect: {
         destination: "/",
@@ -122,7 +129,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   if (session) {
     token = session.accessToken;
-    companies = await companyService.findAll(page, size, token);
+    companies = await companyService.findAll("APPROVED", page, size, token);
     imagesLiked = await getLikePhotos(page, size, token);
   }
 

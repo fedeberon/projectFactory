@@ -18,6 +18,7 @@ import TagList from "../TagList/TagList";
 import Error from "../../components/Error";
 import Dropzone from "../Dropzone/Dropzone";
 import { useForm } from "react-hook-form";
+import { Building } from "react-bootstrap-icons";
 
 const CompanyCreator = () => {
   const [modalCompany, setModalCompany] = useState(false);
@@ -93,18 +94,37 @@ const CompanyCreator = () => {
     handleSubmit,
   } = useForm();
 
-  const onSubmit = async ({ name }, event) => {
+  const onSubmit = async (
+    {
+      name,
+      email,
+      backgroundImage, //falta
+      contact,
+      contactLoad,
+      website,
+      province,
+      location,
+    },
+    event
+  ) => {
     name = name.toLowerCase().trim();
     // You should handle login logic with name, preview and background images and form data
     let data = {
       name,
+      email,
+      backgroundImage: "",
+      contact,
+      contactLoad,
+      website,
+      province,
+      location,
     };
 
     if (name !== "") {
       if (previewImage.length != 0) {
         if (tagsCategories.length > 0) {
           await companyService.create(
-            name,
+            data,
             previewImage[0],
             tagsCategories,
             session?.accessToken
@@ -137,12 +157,14 @@ const CompanyCreator = () => {
 
   return (
     <>
-      {session?.authorities?.includes("ROLE_ADMINISTRATOR") && (
-        <Button onClick={toggle}>{t("company-creator.add-company")}</Button>
-      )}
+      <Button color="dark" onClick={toggle}>
+        <Building size={25} />
+        {` `}
+        {t("profile:become-in-a-company")}
+      </Button>
 
       <ModalForm
-        size={"md"}
+        size={"xl"}
         className={"Button"}
         modalTitle={t("company-creator.add-company")}
         formBody={
@@ -180,7 +202,7 @@ const CompanyCreator = () => {
                         minLength: {
                           value: 3,
                           message: `${t("cannot-be-less-than-character", {
-                            nameInput: t("name").toLowerCase(),
+                            nameInput: t("the-name"),
                             numberCharacters: 3,
                           })}`,
                         },
@@ -195,6 +217,163 @@ const CompanyCreator = () => {
                         className="invalid error-label text-danger"
                       >
                         {errors.name.message}
+                      </FormText>
+                    )}
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="website">
+                      {t("common:formulary.web-page")}
+                    </Label>
+                    <Input
+                      type="website"
+                      name="website"
+                      id="website"
+                      placeholder={t("write-the-here-please", {
+                        namePlaceholder: t(
+                          "common:formulary.the-web-page"
+                        ).toLowerCase(),
+                      })}
+                      {...register("website", {
+                        required: {
+                          value: true,
+                          message: `${t("is-required", {
+                            nameRequired: t("common:formulary.the-web-page"),
+                          })}`,
+                        },
+                        minLength: {
+                          value: 3,
+                          message: `${t("cannot-be-less-than-character", {
+                            nameInput: t("common:formulary.the-web-page"),
+                            numberCharacters: 3,
+                          })}`,
+                        },
+                      })}
+                      className={
+                        "form-field" + (errors.website ? " has-error" : "")
+                      }
+                    />
+                    {errors.website && (
+                      <FormText color="danger" className="error-label">
+                        {errors.website.message}
+                      </FormText>
+                    )}
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="contact">{t("contact")}</Label>
+                    <Input
+                      type="text"
+                      name="contact"
+                      id="contact"
+                      placeholder={`${t("write-the-here-please", {
+                        namePlaceholder: t(
+                          "common:formulary.the-contact"
+                        ).toLowerCase(),
+                      })}`}
+                      {...register("contact", {
+                        required: {
+                          value: true,
+                          message: `${t("is-required", {
+                            nameRequired: t("common:formulary.the-contact"),
+                          })}`,
+                        },
+                        minLength: {
+                          value: 3,
+                          message: `${t("cannot-be-less-than-character", {
+                            nameInput: t("common:formulary.the-contact"),
+                            numberCharacters: 3,
+                          })}`,
+                        },
+                      })}
+                      className={
+                        "form-field" + (errors.contact ? " has-error" : "")
+                      }
+                    />
+                    {errors.contact && (
+                      <FormText
+                        color="danger"
+                        className="invalid error-label text-danger"
+                      >
+                        {errors.contact.message}
+                      </FormText>
+                    )}
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="contactLoad">
+                      {t("common:formulary.contact-charge")}
+                    </Label>
+                    <Input
+                      type="text"
+                      name="contactLoad"
+                      id="contactLoad"
+                      placeholder={t("write-the-here-please", {
+                        namePlaceholder: t(
+                          "common:formulary.the-contact-charge"
+                        ).toLowerCase(),
+                      })}
+                      {...register("contactLoad", {
+                        required: {
+                          value: true,
+                          message: `${t("is-required", {
+                            nameRequired: t(
+                              "common:formulary.the-contact-charge"
+                            ),
+                          })}`,
+                        },
+                        minLength: {
+                          value: 3,
+                          message: `${t("cannot-be-less-than-character", {
+                            nameInput: t("common:formulary.the-contact-charge"),
+                            numberCharacters: 3,
+                          })}`,
+                        },
+                      })}
+                      className={
+                        "form-field" + (errors.contactLoad ? " has-error" : "")
+                      }
+                    />
+                    {errors.contactLoad && (
+                      <FormText color="danger" className="invalid error-label">
+                        {errors.contactLoad.message}
+                      </FormText>
+                    )}
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="email">
+                      {t("common:formulary.contact-email")}
+                    </Label>
+                    <Input
+                      type="email"
+                      name="email"
+                      id="email"
+                      placeholder={t("write-the-here-please", {
+                        namePlaceholder: t(
+                          "common:formulary.the-contact-email"
+                        ).toLowerCase(),
+                      })}
+                      {...register("email", {
+                        required: {
+                          value: true,
+                          message: `${t("is-required", {
+                            nameRequired: t(
+                              "common:formulary.the-contact-email"
+                            ),
+                          })}`,
+                        },
+                        minLength: {
+                          value: 3,
+                          message: `${t("cannot-be-less-than-character", {
+                            nameInput: t("common:formulary.the-contact-email"),
+                            numberCharacters: 3,
+                          })}`,
+                        },
+                      })}
+                      className={
+                        "form-field" + (errors.email ? " has-error" : "")
+                      }
+                    />
+                    {errors.email && (
+                      <FormText color="danger" className="error-label">
+                        {errors.email.message}
                       </FormText>
                     )}
                   </FormGroup>
@@ -235,6 +414,89 @@ const CompanyCreator = () => {
                         />
                       </div>
                     </Col>
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="col-12">
+                  <h2>{t("common:formulary.location-of-the-company")}</h2>
+                </Col>
+              </Row>
+              <Row className="row-cols-1 row-cols-md-2 g-3">
+                <Col>
+                  <FormGroup>
+                    <Label for="province">{t("common:province")}</Label>
+                    <Input
+                      type="text"
+                      name="province"
+                      id="province"
+                      placeholder={t("write-the-here-please", {
+                        namePlaceholder: t(
+                          "common:formulary.the-province"
+                        ).toLowerCase(),
+                      })}
+                      {...register("province", {
+                        required: {
+                          value: true,
+                          message: `${t("is-required", {
+                            nameRequired: t("common:formulary.the-province"),
+                          })}`,
+                        },
+                        minLength: {
+                          value: 3,
+                          message: `${t("cannot-be-less-than-character", {
+                            nameInput: t("common:formulary.the-province"),
+                            numberCharacters: 3,
+                          })}`,
+                        },
+                      })}
+                      className={
+                        "form-field" + (errors.province ? " has-error" : "")
+                      }
+                    />
+                    {errors.province && (
+                      <FormText color="danger" className="error-label">
+                        {errors.province.message}
+                      </FormText>
+                    )}
+                  </FormGroup>
+                </Col>
+                <Col>
+                  <FormGroup>
+                    <Label for="location">{t("common:location")}</Label>
+                    <Input
+                      type="text"
+                      name="location"
+                      id="location"
+                      placeholder={t("write-the-here-please", {
+                        namePlaceholder: t(
+                          "common:formulary.the-location"
+                        ).toLowerCase(),
+                      })}
+                      {...register("location", {
+                        required: {
+                          value: true,
+                          message: `${t("is-required", {
+                            nameRequired: t("common:formulary.the-location"),
+                          })}`,
+                        },
+                        minLength: {
+                          value: 3,
+                          message: `${t("cannot-be-less-than-character", {
+                            nameInput: t("common:formulary.the-location"),
+                            numberCharacters: 3,
+                          })}`,
+                        },
+                      })}
+                      className={
+                        "form-field" + (errors.location ? " has-error" : "")
+                      }
+                    />
+                    {errors.location && (
+                      <FormText color="danger" className="invalid error-label">
+                        {errors.location.message}
+                      </FormText>
+                    )}
                   </FormGroup>
                 </Col>
               </Row>

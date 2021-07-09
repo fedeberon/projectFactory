@@ -1,34 +1,11 @@
 {
   "become-professional": "Become in a professional",
+  "become-in-a-company": "Become in a company",
 
   "authority": "Authority",
   "without-session": "Without session",
   "buy-more-tokens": "Buy more tokens",
-  "formulary": {
-    "professional-form": "Form Professional",
-    "professional-profile": "Professional profile",
-    "company": "Company",
-    "the-company": "The company",
-    "contact": "Contact",
-    "the-contact": "The contact",
-    "contact-email": "Contact email",
-    "the-contact-email": "The contact email",
-    "contact-charge": "Contact charge",
-    "the-contact-charge": "The contact charge",
-    "company-category": "Company category",
-    "the-company-category": "The company category",
-    "web-page": "Web page",
-    "the-web-page": "The web page",
-    "location-of-the-company": "Location of the company",
-    "the-location-of-the-company": "The location of the company",
-    "the-province": "The province",
-    "the-location": "The location",
-    "is-required": "{{nameRequired}} is required",
-    "write-the-here-please": "Write {{namePlaceholder}} here please",
-    "cannot-be-less-than-character": "{{nameInput}} cannot be less than {{numberCharacters}} character",
-    "select-profile-picture": "Select profile picture",
-    "select-background-picture": "Select background picture"
-  },
+
   "tag-is-required": "Tag is required",
   "images-i-liked": "Images i liked",
   

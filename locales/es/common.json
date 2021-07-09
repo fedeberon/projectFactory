@@ -178,5 +178,30 @@
   "building-work-detail": "Detalle de obra",
   "preview-image": "Imagen previsualizacion",
   "select-preview-image-for-building-work": "Seleccione una imagen de previsualizacion para la obra",
-  "the-administrator-cannot-be-empty": "El administrador no puede estar vacío"
+  "the-administrator-cannot-be-empty": "El administrador no puede estar vacío",
+
+  "formulary": {
+    "professional-form": "Formulario Profesional",
+    "professional-profile": "Perfil profesional",
+    "company": "Empresa",
+    "the-company": "La empresa",
+    "contact": "Contacto",
+    "the-contact": "El contacto",
+    "contact-email": "Email de contacto",
+    "the-contact-email": "El email de contacto",
+    "contact-charge": "Cargo del conctacto",
+    "the-contact-charge": "El cargo del conctacto",
+    "company-category": "Categoria de empresa",
+    "the-company-category": "La categoria de empresa",
+    "web-page": "Página Web",
+    "the-web-page": "La página web",
+    "location-of-the-company": "Ubicacion de la empresa",
+    "the-location-of-the-company": "La ubicacion de la empresa",
+    "the-province": "La provincia",
+    "the-location": "La localidad",
+    "telephone": "Telefono",
+    "the-telephone": "El telefono",
+    "select-profile-picture": "Seleccione la imagen de perfil",
+    "select-background-picture": "Seleccione la imagen de fondo"
+  }
 }

@@ -15,6 +15,8 @@ import ModalForm from "../ModalForm";
 import RolProfile from "../RolProfile";
 import FormProfessional from "../FormProfessional/FormProfessional";
 import Plans from "../Plans/Plans";
+import CompanyCreator from "../CompanyCreator/CompanyCreator";
+import { Briefcase } from "react-bootstrap-icons";
 
 //Styles
 import ProfileDataStyles from "./ProfileData.module.css";
@@ -35,17 +37,31 @@ const ProfileData = (props) => {
       {session ? (
         <>
           <Row className="row-cols-1 g-2">
-            <Col>
-              {!session.authorities.includes("ROLE_PROFESSIONAL") ? (
-                <Button color="primary" onClick={toggleModal}>
-                  {t("become-professional")}
-                </Button>
-              ) : (
-                <Button onClick={toggleModalPlan}>
-                  {t("buy-more-tokens")}
-                </Button>
-              )}
-            </Col>
+            <Row className="p-0">
+              <Col className="col-auto">
+                {
+                !session.authorities.includes("ROLE_PROFESSIONAL") &&
+                !session.authorities.includes("ROLE_ADMINISTRATOR") &&
+                !session.authorities.includes("ROLE_COMPANY") ? (
+                  <Button color="primary" onClick={toggleModal}>
+                    <Briefcase size={25} />
+                    {` `}
+                    {t("become-professional")}
+                  </Button>
+                ) : (
+                  <Button onClick={toggleModalPlan}>
+                    {t("buy-more-tokens")}
+                  </Button>
+                )}
+              </Col>
+              {!session.authorities.includes("ROLE_COMPANY") &&
+                !session.authorities.includes("ROLE_ADMINISTRATOR") &&
+                !session.authorities.includes("ROLE_PROFESSIONAL") && (
+                  <Col className="col-auto">
+                    <CompanyCreator />
+                  </Col>
+                )}
+            </Row>
             <Col>
               <img src={session.user.image}></img>
             </Col>
@@ -76,7 +92,7 @@ const ProfileData = (props) => {
       />
       <ModalForm
         size={"xl"}
-        modalTitle={t("formulary.professional-form")}
+        modalTitle={t("common:formulary.professional-form")}
         className={"Button mt-50"}
         formBody={
           <FormProfessional

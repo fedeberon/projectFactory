@@ -178,5 +178,30 @@
   "building-work-detail": "Building work detail",
   "preview-image": "Preview image",
   "select-preview-image-for-building-work": "Select preview image for building work",
-  "the-administrator-cannot-be-empty": "The administrator cannot be empty"
+  "the-administrator-cannot-be-empty": "The administrator cannot be empty",
+
+  "formulary": {
+    "professional-form": "Form Professional",
+    "professional-profile": "Professional profile",
+    "company": "Company",
+    "the-company": "The company",
+    "contact": "Contact",
+    "the-contact": "The contact",
+    "contact-email": "Contact email",
+    "the-contact-email": "The contact email",
+    "contact-charge": "Contact charge",
+    "the-contact-charge": "The contact charge",
+    "company-category": "Company category",
+    "the-company-category": "The company category",
+    "web-page": "Web page",
+    "the-web-page": "The web page",
+    "location-of-the-company": "Location of the company",
+    "the-location-of-the-company": "The location of the company",
+    "the-province": "The province",
+    "the-location": "The location",
+    "telephone": "Telephone",
+    "the-telephone": "The telephone",
+    "select-profile-picture": "Select profile picture",
+    "select-background-picture": "Select background picture"
+  }
 }

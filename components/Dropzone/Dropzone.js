@@ -119,7 +119,7 @@ function Dropzone(props) {
               </Button>
             </Col>
             <Col></Col>
-            <Col>
+            <Col className="d-flex justify-content-center align-items-center">
               {accept === "application/x-zip-compressed, application/zip" ? (
                 <Row className="row-cols-1 text-center">
                   <Col>
