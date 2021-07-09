@@ -1,6 +1,7 @@
 {
   "become-professional": "Become in a professional",
   "become-in-a-company": "Become in a company",
+  "link-account-to-mercadopago": "Link to MercadoPago",
 
   "authority": "Authority",
   "without-session": "Without session",
@@ -8,24 +9,24 @@
 
   "tag-is-required": "Tag is required",
   "images-i-liked": "Images i liked",
-  
-  "formulary-plan" : {
-    "title" : "Select one plan",
-    "plans" : "Plans",
-    "message" : "Select a plan to obtain tokens and thus increase the views of your works, each plan includes a number of different tokens which the more tokens you have, the greater the chances that your works will be seen by users. Remember that your tokens are spent as users see your works.",
-    "basic-plan" : "Basic",
-    "medium-plan" : "Medium",
-    "advance-plan" : "Advance",
-    "buy-now" : "Buy now",
-    "tokens" : "tokens",
-    "includes" : "Includes",
-    "basic-message" : "This is the basic plan to increase the visibility of your works for a short period of time, your works will stand out from any other professional who does not have any tokens.",
-    "medium-message" : "With this plan, you can make your works stand out from professionals who have no plan or have the basic plan.",
-    "advance-message" : "With the advanced plan you will stand out over any other professional, over those who do not have any plan or have a basic or medium plan, your works will be on the main page increasing the visibility of your works.",
-    "successful-message" : "You have bought",
-    "compare-plans" : "Compare plans",
+
+  "formulary-plan": {
+    "title": "Select one plan",
+    "plans": "Plans",
+    "message": "Select a plan to obtain tokens and thus increase the views of your works, each plan includes a number of different tokens which the more tokens you have, the greater the chances that your works will be seen by users. Remember that your tokens are spent as users see your works.",
+    "basic-plan": "Basic",
+    "medium-plan": "Medium",
+    "advance-plan": "Advance",
+    "buy-now": "Buy now",
+    "tokens": "tokens",
+    "includes": "Includes",
+    "basic-message": "This is the basic plan to increase the visibility of your works for a short period of time, your works will stand out from any other professional who does not have any tokens.",
+    "medium-message": "With this plan, you can make your works stand out from professionals who have no plan or have the basic plan.",
+    "advance-message": "With the advanced plan you will stand out over any other professional, over those who do not have any plan or have a basic or medium plan, your works will be on the main page increasing the visibility of your works.",
+    "successful-message": "Purchase made",
+    "compare-plans": "Compare plans",
     "increased-visibility": "Increased visibility",
-    "amount-tokens" : "Amount of tokens",
-    "price" : "Price"
+    "amount-tokens": "Amount of tokens",
+    "price": "Price"
   }
 }

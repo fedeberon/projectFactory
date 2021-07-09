@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useTranslation from "next-translate/useTranslation";
 import ProfileData from "../../components/ProfileData/ProfileData";
 import { getSession, useSession } from "next-auth/client";
@@ -12,10 +12,17 @@ import { getLikePhotos } from "../../services/imageService";
 // Components
 import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
 
-const Profile = ({ data, imagesLiked }) => {
+const Profile = ({ data, imagesLiked, status }) => {
   const [session] = useSession();
   const { t } = useTranslation("common");
   const [error, setError] = useState("");
+  const [linkToMercadopago, setLinkToMercadopago] = useState("");
+  
+  useEffect(() => {
+    if (session) {
+      setLinkToMercadopago(getLinkToMercadopago());
+    }
+  }, [session]);
 
   const saveProfessional = async (data, token) => {
     try {
@@ -82,8 +89,38 @@ const Profile = ({ data, imagesLiked }) => {
     return token;
   };
 
+  const getLinkToMercadopago = () => {
+    return `https://auth.mercadopago.com.ar/authorization?client_id=${process.env.NEXT_PUBLIC_MERCADOPAGO_CLIENT_ID}&response_type=code&state=${getState()}&platform_id=mp&redirect_uri=${process.env.NEXT_PUBLIC_MERCADOPAGO_REDIRECT_URI}`;
+  };
+
+  const getState = () => {
+    return `${uuidv4()}=${session.user.id}`;
+  };
+
+  const uuidv4 = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  };
+
   const onBuyPlan = async (plan) => {
-    await professionalService.buyPlan(plan, session.accessToken);
+    const mp = new MercadoPago(
+      process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY,
+      { locale: 'es-AR' }
+    );
+
+    const preference = await professionalService.generatePreferenceForToken(plan, session.accessToken);
+    mp.checkout(
+    {
+      preference: preference.id
+    });
+  
+    const link = document.createElement("a");
+    document.body.appendChild(link);
+    link.href = preference.initPoint;
+    link.setAttribute("type", "hidden");
+    link.click();
   };
 
   return (
@@ -94,12 +131,14 @@ const Profile = ({ data, imagesLiked }) => {
         setError={setError}
         data={data}
         onBuyPlan={onBuyPlan}
+        linkToMercadopago={linkToMercadopago}
+        status={status}
       />
       <SeeImagesLiked imagesLiked={imagesLiked} />
     </Layout>
   );
 };
-export async function getServerSideProps({ params, req, res, locale }) {
+export async function getServerSideProps({ params, req, query, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
 
@@ -137,6 +176,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
     props: {
       data: companies,
       imagesLiked,
+      status: query.status ? query.status : ""
     },
   };
 }

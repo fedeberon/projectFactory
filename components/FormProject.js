@@ -59,6 +59,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
       year,
       professionalsSelected,
       videoPath,
+      price,
     },
     event
   ) => {
@@ -74,6 +75,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         images,
         file: file[0],
         videoPath,
+        price,
       };
       let id = professionalsSelected.id;
       await onAddProject(data, id);
@@ -327,6 +329,34 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
               {errors.professionalsSelected && (
                 <FormText color="danger" className="error-label">
                   {errors.professionalsSelected.message}
+                </FormText>
+              )}
+            </FormGroup>
+
+            <FormGroup>
+              <Label for="price">{t("price")}</Label>
+              <Input
+                type="number"
+                name="price"
+                id="price"
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("price").toLowerCase()
+                })}
+                {...register("price", {
+                  required: {
+                    value: true,
+                    message: `${t("is-required", {
+                      nameRequired: t("price")
+                    })}`,
+                  },
+                })}
+                className={
+                  "form-field" + (errors.price ? " has-error" : "")
+                }
+              />
+              {errors.price && (
+                <FormText className="error-label">
+                  {errors.price.message}
                 </FormText>
               )}
             </FormGroup>

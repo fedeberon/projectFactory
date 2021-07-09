@@ -25,10 +25,14 @@ const ProfileData = (props) => {
   const [session] = useSession();
   const [modalOpen, setModalOpen] = useState(false);
   const { t } = useTranslation("profile");
-  const { onBecomeProfessional, error, setError, data, onBuyPlan } = props;
-  const [showModalPlan, setShowModalPlan] = useState(false);
+  const { onBecomeProfessional, error, setError, data, onBuyPlan, linkToMercadopago, status } = props;
+  const [showModalPlan, setShowModalPlan] = useState(status == "approved");
+  const [statusPurchased, setStatusPurchased] = useState(status)
 
-  const toggleModalPlan = () => setShowModalPlan(!showModalPlan);
+  const toggleModalPlan = () => {
+    setStatusPurchased("");
+    setShowModalPlan(!showModalPlan);
+  }
 
   const toggleModal = () => setModalOpen(!modalOpen);
 
@@ -43,24 +47,26 @@ const ProfileData = (props) => {
                 !session.authorities.includes("ROLE_PROFESSIONAL") &&
                 !session.authorities.includes("ROLE_ADMINISTRATOR") &&
                 !session.authorities.includes("ROLE_COMPANY") ? (
+                  <>
                   <Button color="primary" onClick={toggleModal}>
                     <Briefcase size={25} />
                     {` `}
                     {t("become-professional")}
                   </Button>
+                    {/* //  <Col className="col-auto"> */}
+                     <CompanyCreator />
+                  {/* //  </Col> */}
+                  </>
                 ) : (
-                  <Button onClick={toggleModalPlan}>
-                    {t("buy-more-tokens")}
-                  </Button>
+                  <div>
+                    <Button onClick={toggleModalPlan}>
+                      {t("buy-more-tokens")}
+                    </Button>
+                    <Button onClick={toggleModalPlan}>{t("buy-more-tokens")}</Button>
+                    <a className={ProfileDataStyles.btnLinkAccount} href={linkToMercadopago}>{t("link-account-to-mercadopago")}</a>
+                  </div>
                 )}
               </Col>
-              {!session.authorities.includes("ROLE_COMPANY") &&
-                !session.authorities.includes("ROLE_ADMINISTRATOR") &&
-                !session.authorities.includes("ROLE_PROFESSIONAL") && (
-                  <Col className="col-auto">
-                    <CompanyCreator />
-                  </Col>
-                )}
             </Row>
             <Col>
               <img src={session.user.image}></img>
@@ -87,7 +93,9 @@ const ProfileData = (props) => {
         size={"xl"}
         modalTitle={t("formulary-plan.title")}
         className={"Button mt-50"}
-        formBody={<Plans onBuyPlan={onBuyPlan} />}
+        formBody={
+          <Plans onBuyPlan={onBuyPlan} status={statusPurchased}/>
+        }
         modalOpen={{ open: showModalPlan, function: setShowModalPlan }}
       />
       <ModalForm

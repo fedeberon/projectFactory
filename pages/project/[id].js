@@ -5,8 +5,9 @@ import SeeProject from "../../components/SeeProject/SeeProject";
 import * as projectService from "../../services/projectService";
 import * as imageService from "../../services/imageService";
 import Layout from "../../components/Layout/Layout";
+import * as mercadopagoService from "../../services/mercadopagoService";
 
-const ProjectDetail = ({ data, idSplit }) => {
+const ProjectDetail = ({ data, idSplit, status }) => {
   const [session, loading] = useSession();
 
   const [project, setProject] = useState({});
@@ -24,14 +25,33 @@ const ProjectDetail = ({ data, idSplit }) => {
     }
   }, [session]);
 
+  const onBuyProyect = async () => {
+    const mp = new MercadoPago(
+      process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY,
+      { locale: 'es-AR' }
+    );
+
+    const preference = await mercadopagoService.createPreferenceToProject(idSplit, session.accessToken);
+    mp.checkout(
+    {
+      preference: preference.id
+    });
+
+    const link = document.createElement("a");
+    document.body.appendChild(link);
+    link.href = preference.initPoint;
+    link.setAttribute("type", "hidden");
+    link.click();
+  }
+
   return (
     <Layout title={`${t("project-detail")}`}>
-      <SeeProject project={project} onEditProject={editProject} id={idSplit}/>
+      <SeeProject project={project} status={status} onBuyProyect={onBuyProyect} onEditProject={editProject} id={idSplit}/>
     </Layout>
   );
 };
 
-export async function getServerSideProps({ params, req, res, locale }) {
+export async function getServerSideProps({ params, req, query, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
   const token = session.accessToken;
@@ -64,7 +84,8 @@ export async function getServerSideProps({ params, req, res, locale }) {
   return {
     props: {
       data: project,
-      idSplit
+      idSplit,
+      status: query.status ? query.status : ""
     },
   };
 }

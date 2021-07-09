@@ -23,6 +23,7 @@
   "add-title": "Agregar titulo",
   "province": "Provincia",
   "location": "Localidad",
+  "price": "Precio",
   "invalid-link": "El link es invalido",
   "image": "Imagen",
 
@@ -39,6 +40,7 @@
   "the-email": "El email",
   "the-image": "La imagen",
   "the-tag": "El tag",
+  "the-price": "El precio",
 
   "email-is-already-exist-please-write-another-one": "El email ya existe, por favor ingrese otro",
   "magazine-detail": "Detalle de Magazine",
@@ -127,6 +129,7 @@
   "professional-contact": "Contacto del profesional",
   "professional-email": "Correo del profesional",
   "buy-project": "Comprar proyecto",
+  "you-bought-this-project": "Compraste este proyecto",
   "download-project": "Descargar proyecto",
   "other-projects-of-professional": "Otros proyectos de este profesional",
 
