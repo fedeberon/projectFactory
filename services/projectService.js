@@ -165,3 +165,7 @@ export const findAllByProfessionalId = async (professionalId, page, size, token)
   return await API.get(`/projects/professionals/${professionalId}?page=${page}&size=${size}`);
   
 };
+
+export const findByNameAndActive = async (name, active, page, size) => {
+  return await API.get(`/projects/name/${name}/active/${active}?page=${page}&size=${size}`);
+}
