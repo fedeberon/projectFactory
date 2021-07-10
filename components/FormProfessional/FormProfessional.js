@@ -265,11 +265,11 @@ const FormProfessional = ({
                     </FormText>
                   )}
                 </FormGroup>
-                <PhoneInput
+                {/* <PhoneInput
                   placeholder="Enter phone number"
                   value={value}
                   onChange={setValue}
-                />
+                /> */}
               </Col>
               <Col>
                 <FormGroup>
