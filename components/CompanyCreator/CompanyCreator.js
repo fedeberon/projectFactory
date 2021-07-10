@@ -67,7 +67,6 @@ const CompanyCreator = () => {
     const parse = { tag: category };
     if (category !== "") {
       if (!isEqual(parse)) {
-        console.log("no es igual");
         const newTagsCategories = Array.from(tagsCategories);
         newTagsCategories.push(parse);
         setTagsCategories(newTagsCategories);

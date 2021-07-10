@@ -121,9 +121,6 @@ export const addPreviewImageToBuildingWork = async (data, token) => {
   imageData.append("image", data.previewImage);
   return await API.post(`/images/building-works/${data.id}/preview`, imageData);
 };
-//put
-//falta terminar con tomy
-export const setImagesToBuildingWork = async (data, token) => {};
 
 export const addImagesToBuildingWork = async (data, token) => {
   API.defaults.headers.common["Authorization"] = token;

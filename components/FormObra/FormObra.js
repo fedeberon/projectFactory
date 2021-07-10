@@ -85,13 +85,18 @@ const FormObra = ({
           if (buildingWork) {
             setPreviewImage([]);
             event.target.reset();
-            toggle();
             setError("");
+            toggle();
           }
         }
         if (changeState.stateFormObra.put) {
-          //Falta terminar con tomy
           const buildingWorkModify = await onSetbuildingWork(data, buildingWorkId);
+          if (buildingWorkModify) {
+            setPreviewImage([]);
+            event.target.reset();
+            setError("");
+            toggle();
+          }
         }
       } else {
         showErrorToLimitTime(

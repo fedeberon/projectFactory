@@ -38,7 +38,7 @@ import indexStyles from "./index.module.css";
 import filteredImagesStyles from "../../components/FilteredImages/FilteredImages.module.css";
 import image from "next/image";
 
-const CustomButtonTogle = ({ id, editBuildingWork }) => {
+const CustomButtonTogle = ({ id, editBuildingWork, imageSize }) => {
   const [dropdownOpen, setOpen] = useState(false);
   const toggle = () => setOpen((dropdownOpen) => !dropdownOpen);
   return (
@@ -53,7 +53,7 @@ const CustomButtonTogle = ({ id, editBuildingWork }) => {
             color={"white"}
             size={25}
           />
-          {` Photos`}
+          {` ${imageSize} Photos`}
         </DropdownItem>
         <DropdownItem divider />
         <DropdownItem
@@ -135,33 +135,45 @@ const Portfolio = ({ professional, buildingWorks }) => {
     }
   };
 
-  const onSetImagesToBuildingWork = async (folder, images) => {
-    if (session) {
-      const data = {
-        images,
-        id: folder.id,
-      };
-      try {
-        let images = await imageService.setImagesToBuildingWork(
-          data,
-          session.accessToken
-        );
-        return images;
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
+  // const onSetImagesToBuildingWork = async (folder, images) => {
+  //   if (session) {
+  //     const data = {
+  //       images,
+  //       id: folder.id,
+  //     };
+  //     try {
+  //       let images = await imageService.setImagesToBuildingWork(
+  //         data,
+  //         session.accessToken
+  //       );
+  //       return images;
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  // };
 
+  //subir imagen y cambiar los datos del nombre y la description
   const onSetbuildingWork = async (data, buildingWorkId) => {
     if (session) {
       try {
-        //falta terminar con tomy
+        const data2 = { name: data.name, description: data.description };
+        await buildingWorkService.setFolder(
+          buildingWorkId,
+          data2,
+          session.accessToken
+        );
+        data.id = buildingWorkId;
+        await imageService.addPreviewImageToBuildingWork(
+          data,
+          session.accessToken
+        );
         await buildingWorkService.removeAndAddImages(
           data.images,
           buildingWorkId,
           session.accessToken
         );
+        return true;
       } catch (error) {
         console.error(error);
       }
@@ -340,6 +352,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
                           <CustomButtonTogle
                             id={buildingWork.id}
                             editBuildingWork={editBuildingWork}
+                            imageSize={buildingWork.countImages}
                           />
                         </div>
                       )}

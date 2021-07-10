@@ -1,5 +1,5 @@
 import API from "./api";
-import * as tagService from './tagService';
+import * as tagService from "./tagService";
 
 export const findAll = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -28,17 +28,22 @@ export const addFolder = async (data, token) => {
   return await API.post(`/building-works`, data);
 };
 
+export const setFolder = async (id, data, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/building-works/${id}`, data);
+};
 
 export const removeAndAddImages = async (images, id, token) => {
   API.defaults.headers.common["Authorization"] = token;
   let newImages = [];
-  console.log("images",images);
-  
+
   for (let i = 0; i < images.length; i++) {
     let img = images[i];
-    if (img.added && img.remove) { //es para que la imagen ya esta en la BD y la quiere borrar
-      await API.delete(`/images/building-works/${id}/${img.name}`);
-    } else if (!img.added) { //una nueva imagen no esta en la BD 
+    if (img.added && img.remove) {
+      //es para que la imagen ya esta en la BD y la quiere borrar
+      await API.delete(`/images/${img.id}/building-works/${id}`);
+    } else if (!img.added) {
+      //una nueva imagen no esta en la BD
       const imageData = new FormData();
       imageData.append("image", img);
       const tags = tagService.getTags(img.tags);
@@ -46,11 +51,12 @@ export const removeAndAddImages = async (images, id, token) => {
       await API.post(`/images/building-works/${id}`, imageData);
       const path = URL.createObjectURL(img);
       newImages.push({ path });
-    } else if (img.added) { //esta en la BD no la quiere borrar pero la quiere actualizar los tags o no pueden ser los mismos
-      // await editTags(img, token);
-      // newImages.push({ path: img.path });
+    } else if (img.added) {
+      //esta en la BD no la quiere borrar pero la quiere actualizar los tags o no pueden ser los mismos
+      await editTags(img, token);
+      newImages.push({ path: img.path });
     }
-  };
+  }
   return newImages;
 };
 

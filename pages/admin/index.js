@@ -291,8 +291,6 @@ const Admin = ({
         </tr>
       );
     });
-    console.log(companyList);
-    console.log("professionalList", professionalList);
     return professionalList;
   };
 
@@ -459,7 +457,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
       size,
       session?.accessToken
     );
-    console.log("companiesNotApproved", companiesNotApproved);
 
     status = "APPROVED";
     professionalApproved = await getProfessionalForApproved(
