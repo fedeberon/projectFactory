@@ -59,40 +59,37 @@ export default function NavSearch() {
   };
 
   useEffect(() => {
-    document.addEventListener("click",(e) => {
+    const verifyClickedNavSearch = (e) => {
       const isClickedOnNavSearch = (DOMElement) => {
         if (DOMElement != null) {
           const classList = Array.from(DOMElement.classList);
           const clickOnNav = classList.includes("nav-search");
-          return clickOnNav ? true : isClickedOnNavSearch(DOMElement.parentElement);
+          return clickOnNav
+            ? true
+            : isClickedOnNavSearch(DOMElement.parentElement);
         } else {
           return false;
         }
       };
+  
+      if (isClickedOnNavSearch(e.target)) setSearchActive(true);
+      else setSearchActive(false);
+    };
 
-      if (isClickedOnNavSearch(e.target))
-        setSearchActive(true);
-      else 
-        setSearchActive(false);
-    });
+    document.addEventListener("click", verifyClickedNavSearch);
+    return () => {
+      document.removeEventListener("click", verifyClickedNavSearch);
+    };
   }, []);
 
   useEffect(() => {
-
-    if (searchActive)
-      inputSearch.current.focus();
-    else
-      inputSearch.current.blur();
-
+    if (searchActive) inputSearch.current.focus();
+    else inputSearch.current.blur();
   }, [searchActive]);
 
   const handleOnBlurInputSearch = () => {
-
-    if (searchActive)
-      inputSearch.current.focus();
-    else
-      inputSearch.current.blur();
-
+    if (searchActive) inputSearch.current.focus();
+    else inputSearch.current.blur();
   };
 
   useEffect(() => searchProjectsOrProfessionals(), [searchByProfessionals]);
@@ -108,8 +105,8 @@ export default function NavSearch() {
           pageSize.page,
           pageSize.size
         );
-        newSuggestions.forEach(suggestion => {
-          suggestion.value = suggestion.contact
+        newSuggestions.forEach((suggestion) => {
+          suggestion.value = suggestion.contact;
           suggestion.link = "#";
         });
       } else {
@@ -119,7 +116,7 @@ export default function NavSearch() {
           pageSize.page,
           pageSize.size
         );
-        newSuggestions.forEach(suggestion => {
+        newSuggestions.forEach((suggestion) => {
           suggestion.value = suggestion.name;
           suggestion.link = `project/${suggestion.name}-${suggestion.id}`;
         });
@@ -131,8 +128,6 @@ export default function NavSearch() {
     setSuggestions(newSuggestions);
   };
 
- 
-
   return (
     <>
       <Container fluid="xl">
@@ -142,7 +137,9 @@ export default function NavSearch() {
               {t("header.home")}
             </NavLink>
           </Link>
-          <Row className={`justify-content-center w-50 align-items-center mx-auto`}>
+          <Row
+            className={`justify-content-center w-50 align-items-center mx-auto`}
+          >
             <InputGroup className="w-100  d-flex">
               <Label for="exampleSearch" htmlFor="Search"></Label>
               <Input
