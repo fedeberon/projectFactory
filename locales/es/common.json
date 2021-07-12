@@ -161,15 +161,20 @@
   "all-rights-reserved": "Todos los derechos reservados",
 
   "LogInForm": "--------------------------------",
+  "username": "Nombre de usuario",
+  "the-username": "El nombre de usuario",
   "password": "Contraseña",
   "the-password": "La contraseña",
-  "log-in-with" : "Ingresar con",
-  "invalid-credentials" : "Nombre de usuario o contraseña invalido",
+  "log-in-with": "Ingresar con",
+  "invalid-credentials": "Nombre de usuario o contraseña invalido",
+  "don't-have-an-account-please": "¿No tienes una cuenta? Por favor",
+  "register-here": "Regístrese aquí.",
+  "go-back": "Volver",
 
   "Authentication": "--------------------------------",
   "log-in": "Ingresar",
   "sign-in": "Registrarse",
-  "username-already-exists" : "El nombre de usuario ya existe",
+  "username-already-exists": "El nombre de usuario ya existe",
 
   "DE DONDE ES?": "--------------------------------",
   "LogOut": "Cerrar sesión",
