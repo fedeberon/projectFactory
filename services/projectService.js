@@ -124,16 +124,16 @@ const removeAndAddImages = async (images, id, token) => {
   
   for (let i = 0; i < images.length; i++) {
     let img = images[i];
-    if (img.added && img.remove) {
+    if (img.added && img.remove) { //is so that the image is already in the database and wants to delete it
       await API.delete(`/images/projects/${id}/${img.name}`);
-    } else if (!img.added) {
+    } else if (!img.added) { //a new image is not in the database 
       const imageData = new FormData();
       imageData.append("imageFile", img);
       imageData.append("tags", []);
       await API.post(`/images/projects/${id}`, imageData);
       const path = URL.createObjectURL(img);
       newImages.push({ path });
-    } else if (img.added) {
+    } else if (img.added) { //this in the database does not want to delete it but wants to update the tags or can not be the same
       await editTags(img, token);
       newImages.push({ path: img.path });
     }
@@ -165,3 +165,7 @@ export const findAllByProfessionalId = async (professionalId, page, size, token)
   return await API.get(`/projects/professionals/${professionalId}?page=${page}&size=${size}`);
   
 };
+
+export const findByNameAndActive = async (name, active, page, size) => {
+  return await API.get(`/projects/name/${name}/active/${active}?page=${page}&size=${size}`);
+}

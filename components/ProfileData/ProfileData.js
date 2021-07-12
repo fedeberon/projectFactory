@@ -15,6 +15,8 @@ import ModalForm from "../ModalForm";
 import RolProfile from "../RolProfile";
 import FormProfessional from "../FormProfessional/FormProfessional";
 import Plans from "../Plans/Plans";
+import CompanyCreator from "../CompanyCreator/CompanyCreator";
+import { Briefcase } from "react-bootstrap-icons";
 
 //Styles
 import ProfileDataStyles from "./ProfileData.module.css";
@@ -23,14 +25,22 @@ const ProfileData = (props) => {
   const [session] = useSession();
   const [modalOpen, setModalOpen] = useState(false);
   const { t } = useTranslation("profile");
-  const { onBecomeProfessional, error, setError, data, onBuyPlan, linkToMercadopago, status } = props;
+  const {
+    onBecomeProfessional,
+    error,
+    setError,
+    data,
+    onBuyPlan,
+    linkToMercadopago,
+    status,
+  } = props;
   const [showModalPlan, setShowModalPlan] = useState(status == "approved");
-  const [statusPurchased, setStatusPurchased] = useState(status)
+  const [statusPurchased, setStatusPurchased] = useState(status);
 
   const toggleModalPlan = () => {
     setStatusPurchased("");
     setShowModalPlan(!showModalPlan);
-  }
+  };
 
   const toggleModal = () => setModalOpen(!modalOpen);
 
@@ -39,16 +49,38 @@ const ProfileData = (props) => {
       {session ? (
         <>
           <Row className="row-cols-1 g-2">
-            <Col>
-              {!session.authorities.includes("ROLE_PROFESSIONAL") ? (
-                <Button color="primary" onClick={toggleModal}>
-                  {t("become-professional")}
-                </Button>
-              ) : <div>
-              <Button onClick={toggleModalPlan}>{t("buy-more-tokens")}</Button>
-              <a className={ProfileDataStyles.btnLinkAccount} href={linkToMercadopago}>{t("link-account-to-mercadopago")}</a>
-              </div>}
-            </Col>
+            <Row className="p-0">
+              <Row className="col-auto g-2 d-flex">
+                {!session.authorities.includes("ROLE_PROFESSIONAL") &&
+                !session.authorities.includes("ROLE_ADMINISTRATOR") &&
+                !session.authorities.includes("ROLE_COMPANY") ? (
+                  <>
+                    <Col className="col-auto">
+                      <Button color="primary" onClick={toggleModal}>
+                        <Briefcase size={25} />
+                        {` `}
+                        {t("become-professional")}
+                      </Button>
+                    </Col>
+                    <Col className="col-auto">
+                      <CompanyCreator />
+                    </Col>
+                  </>
+                ) : (
+                  <div>
+                    <Button onClick={toggleModalPlan}>
+                      {t("buy-more-tokens")}
+                    </Button>
+                    <a
+                      className={ProfileDataStyles.btnLinkAccount}
+                      href={linkToMercadopago}
+                    >
+                      {t("link-account-to-mercadopago")}
+                    </a>
+                  </div>
+                )}
+              </Row>
+            </Row>
             <Col>
               <img src={session.user.image}></img>
             </Col>
@@ -71,15 +103,15 @@ const ProfileData = (props) => {
       )}
 
       <ModalForm
+        size={"xl"}
         modalTitle={t("formulary-plan.title")}
         className={"Button mt-50"}
-        formBody={
-          <Plans onBuyPlan={onBuyPlan} status={statusPurchased}/>
-        }
+        formBody={<Plans onBuyPlan={onBuyPlan} status={statusPurchased} />}
         modalOpen={{ open: showModalPlan, function: setShowModalPlan }}
       />
       <ModalForm
-        modalTitle={t("formulary.professional-form")}
+        size={"xl"}
+        modalTitle={t("common:formulary.professional-form")}
         className={"Button mt-50"}
         formBody={
           <FormProfessional

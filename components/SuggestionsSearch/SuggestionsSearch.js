@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./SuggestionsSearch.module.css";
 import useTranslation from "next-translate/useTranslation";
 import { Search } from "react-bootstrap-icons";
+import Link from "next/link";
 
 const SuggestionsSearch = (props) => {
   const {
@@ -9,54 +10,36 @@ const SuggestionsSearch = (props) => {
     active,
     onChangeCheckIdeas,
     onChangeCheckProjects,
-    input,
+    input
   } = props;
-  const [byProfessionals, setByProfessionals] = useState(false);
-
-  useEffect(() => {
-    if (suggestions.length > 0) {
-      const suggestion = suggestions[0];
-      if (suggestion.email != undefined) {
-        setByProfessionals(true);
-      } else {
-        setByProfessionals(false);
-      }
-    } else {
-      setByProfessionals(false);
-    }
-  }, [suggestions]);
-
-  const getProfessionalList = () =>
-    suggestions.map((professional, index) => (
-      <div className={styles.suggestionContainer} key={professional.id}>
-        <img
-          className={styles.previewImage}
-          src={professional.previewImage}
-          layout="fill"
-          alt="professional-preview"
-        />
-        <div className={styles.divName}>
-          <span>
-            <span className={styles.spanMatch}>{input.value}</span>
-            <span>{professional.contact.slice(input.value.length)}</span>
-          </span>
-        </div>
-      </div>
-    ));
-
-  const getProjectsList = () =>
-    suggestions.map((project, index) => (
-      <div key={project.id}>{project.name}</div>
-    ));
-
   const { t } = useTranslation("common");
+
   return (
     <div
       className={`${styles.dropDownSearch} ${
         active ? styles.dropDownSearchActive : ""
-      }`}
+      } nav-search`}
     >
-      {byProfessionals ? getProfessionalList() : getProjectsList()}
+      {suggestions.map((suggestion) => (
+        <Link href={suggestion.link} key={suggestion.id}>
+          <a className={styles.link}>
+            <div className={styles.suggestionContainer}>
+              <img
+                className={styles.previewImage}
+                src={suggestion.previewImage}
+                layout="fill"
+                alt="preview"
+              />
+              <div className={styles.divName}>
+                <span>
+                  <span className={styles.spanMatch}>{input.value}</span>
+                  <span>{suggestion.value.slice(input.value.length)}</span>
+                </span>
+              </div>
+            </div>
+          </a>
+        </Link>
+      ))}
       <div className={styles.divCheckboxs}>
         <div className="form-check">
           <input

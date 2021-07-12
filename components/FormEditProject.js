@@ -39,7 +39,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
       totalArea: project.totalArea,
       website: project.website,
       year: project.year,
-      videoPath: youtubeService.getLinkToId(project.videoPath)
+      videoPath: youtubeService.getLinkToId(project.videoPath),
     },
   });
 
@@ -55,7 +55,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
   };
 
   const imagesHasTags = () => {
-    const imagesWithoutTags = images.filter(img => img.tags.length == 0);
+    const imagesWithoutTags = images.filter((img) => img.tags.length == 0);
     return imagesWithoutTags.length == 0;
   };
 
@@ -67,7 +67,9 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
     if (youtubeService.isValidVideo(videoPath)) {
       if (imagesHasTags()) {
         let image;
-        previewImage.length == 0 ? (image = undefined) : (image = previewImage[0]);
+        previewImage.length == 0
+          ? (image = undefined)
+          : (image = previewImage[0]);
         let data = {
           name,
           description,
@@ -83,12 +85,11 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
         event.target.reset();
         toggle();
       } else {
-        
       }
     } else {
-      setError("videoPath",{
+      setError("videoPath", {
         type: "manual",
-        message: t("invalid-link")
+        message: t("invalid-link"),
       });
     }
   };
@@ -110,14 +111,14 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
               required: {
                 value: true,
                 message: `${t("is-required", {
-                  nameRequired: t("the-name")
+                  nameRequired: t("the-name"),
                 })}`,
               },
               minLength: {
                 value: 3,
                 message: `${t("cannot-be-less-than-character", {
                   nameInput: t("the-name"),
-                  numberCharacters: 3
+                  numberCharacters: 3,
                 })}`,
               },
             }}
@@ -128,14 +129,14 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 type="text"
                 id="name"
                 placeholder={t("write-the-here-please", {
-                  namePlaceholder: t("the-name").toLowerCase()
+                  namePlaceholder: t("the-name").toLowerCase(),
                 })}
                 className={"form-field" + (errors.name ? " has-error" : "")}
               />
             )}
           />
           {errors.name && (
-            <FormText className="invalid error-label">
+            <FormText color="danger" className="invalid error-label">
               {errors.name.message}
             </FormText>
           )}
@@ -149,14 +150,14 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
               required: {
                 value: true,
                 message: `${t("is-required", {
-                  nameRequired: t("the-description")
+                  nameRequired: t("the-description"),
                 })}`,
               },
               minLength: {
                 value: 3,
                 message: `${t("cannot-be-less-than-character", {
                   nameInput: t("the-description"),
-                  numberCharacters: 3
+                  numberCharacters: 3,
                 })}`,
               },
             }}
@@ -167,7 +168,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 type="text"
                 id="description"
                 placeholder={t("write-the-here-please", {
-                  namePlaceholder: t("the-description").toLowerCase()
+                  namePlaceholder: t("the-description").toLowerCase(),
                 })}
                 className={
                   "form-field" + (errors.description ? " has-error" : "")
@@ -176,7 +177,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.description && (
-            <FormText className="error-label">
+            <FormText color="danger" className="error-label">
               {errors.description.message}
             </FormText>
           )}
@@ -190,14 +191,14 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
               required: {
                 value: true,
                 message: `${t("is-required", {
-                  nameRequired: t("the-total-area")
+                  nameRequired: t("the-total-area"),
                 })}`,
               },
               minLength: {
                 value: 3,
                 message: `${t("cannot-be-less-than-character", {
                   nameInput: t("the-total-area"),
-                  numberCharacters: 3
+                  numberCharacters: 3,
                 })}`,
               },
             }}
@@ -208,7 +209,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 type="number"
                 id="totalArea"
                 placeholder={t("write-the-here-please", {
-                  namePlaceholder: t("the-total-area").toLowerCase()
+                  namePlaceholder: t("the-total-area").toLowerCase(),
                 })}
                 className={
                   "form-field" + (errors.totalArea ? " has-error" : "")
@@ -217,7 +218,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.totalArea && (
-            <FormText className="error-label">
+            <FormText color="danger" className="error-label">
               {errors.totalArea.message}
             </FormText>
           )}
@@ -228,14 +229,17 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             name="website"
             control={control}
             rules={{
-              required: { value: true, message: `${t("is-required", {
-                nameRequired: t("the-web-site")
-              })}` },
+              required: {
+                value: true,
+                message: `${t("is-required", {
+                  nameRequired: t("the-web-site"),
+                })}`,
+              },
               minLength: {
                 value: 3,
                 message: `${t("cannot-be-less-than-character", {
                   nameInput: t("the-web-site"),
-                  numberCharacters: 3
+                  numberCharacters: 3,
                 })}`,
               },
             }}
@@ -246,14 +250,14 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 type="email"
                 id="email"
                 placeholder={t("write-the-here-please", {
-                  namePlaceholder: t("the-web-site").toLowerCase()
+                  namePlaceholder: t("the-web-site").toLowerCase(),
                 })}
                 className={"form-field" + (errors.website ? " has-error" : "")}
               />
             )}
           />
           {errors.website && (
-            <FormText className="error-label">
+            <FormText color="danger" className="error-label">
               {errors.website.message}
             </FormText>
           )}
@@ -264,14 +268,17 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             name="year"
             control={control}
             rules={{
-              required: { value: true, message: `${t("is-required", {
-                nameRequired: t("the-year")
-              })}` },
+              required: {
+                value: true,
+                message: `${t("is-required", {
+                  nameRequired: t("the-year"),
+                })}`,
+              },
               minLength: {
                 value: 3,
                 message: `${t("cannot-be-less-than-character", {
                   nameInput: t("the-year"),
-                  numberCharacters: 3
+                  numberCharacters: 3,
                 })}`,
               },
             }}
@@ -282,18 +289,20 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 type="number"
                 id="year"
                 placeholder={t("write-the-here-please", {
-                  namePlaceholder: t("the-year").toLowerCase()
+                  namePlaceholder: t("the-year").toLowerCase(),
                 })}
                 className={"form-field" + (errors.year ? " has-error" : "")}
               />
             )}
           />
           {errors.year && (
-            <FormText className="error-label">{errors.year.message}</FormText>
+            <FormText color="danger" className="error-label">
+              {errors.year.message}
+            </FormText>
           )}
         </FormGroup>
         <FormGroup>
-        <Label for="videoPath">{t("video-path")}</Label>
+          <Label for="videoPath">{t("video-path")}</Label>
           <Controller
             name="videoPath"
             control={control}
@@ -301,14 +310,14 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
               required: {
                 value: true,
                 message: `${t("is-required", {
-                  nameRequired: t("the-video-path")
+                  nameRequired: t("the-video-path"),
                 })}`,
               },
               minLength: {
                 value: 3,
                 message: `${t("cannot-be-less-than-character", {
                   nameInput: t("the-video-path"),
-                  numberCharacters: 3
+                  numberCharacters: 3,
                 })}`,
               },
             }}
@@ -319,14 +328,16 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
                 type="text"
                 id="videoPath"
                 placeholder={t("write-the-here-please", {
-                  namePlaceholder: t("the-video-path").toLowerCase()
+                  namePlaceholder: t("the-video-path").toLowerCase(),
                 })}
-                className={"form-field" + (errors.videoPath ? " has-error" : "")}
+                className={
+                  "form-field" + (errors.videoPath ? " has-error" : "")
+                }
               />
             )}
           />
           {errors.videoPath && (
-            <FormText className="invalid error-label">
+            <FormText color="danger" className="invalid error-label">
               {errors.videoPath.message}
             </FormText>
           )}
@@ -342,6 +353,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             accept={"image/*"}
             multiple={false}
             name={"filePreview"}
+            height={"90px"}
           />
         </FormGroup>
         <FormGroup>
@@ -362,6 +374,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
       </Form>
 
       <ModalForm
+        size={"xl"}
         className={"Button"}
         modalTitle={t("add-tags")}
         formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}

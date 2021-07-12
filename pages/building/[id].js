@@ -6,15 +6,52 @@ import CarouselProject from "../../components/CarouselProject/CarouselProject";
 import { getSession } from "next-auth/client";
 import * as imageService from "../../services/imageService";
 import * as buildingWorkService from "../../services/buildingWorkService";
-import { Row, Col, Button, Card, CardTitle, CardText } from "reactstrap";
+import {
+  Row,
+  Col,
+  Button,
+  Card,
+  CardTitle,
+  CardText,
+  CardGroup,
+  CardImg,
+  CardBody,
+  CardSubtitle,
+  CardDeck,
+} from "reactstrap";
+import buildingStyles from "./building.module.css";
 
 const BuildingDetail = ({ data, session }) => {
+  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
+  const [filteredImages, setFilteredImages] = useState([]);
+  const [appliedFilters, setAppliedFilters] = useState([]);
+  const [currentImageId, setCurrentImageId] = useState(null);
+  
+
+  const [tagsAuxiliar, setTagsAuxiliar] = useState([]);
   const { t } = useTranslation("common");
 
   const [imagenes, setImagenes] = useState([]);
 
   const router = useRouter();
   const { id } = router.query;
+
+  const getProfessionalsByTags = async () => {
+    console.log("dentro de get", appliedFilters);
+    console.log(pageSize.page);
+    console.log(pageSize.size);
+    console.log(session?.accessToken);
+    try {
+      return await imageService.getProfessionalImagesByTags(
+        appliedFilters,
+        pageSize.page,
+        pageSize.size,
+        session?.accessToken
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const onLoadImage = async () => {
     const newArray = [];
@@ -36,18 +73,36 @@ const BuildingDetail = ({ data, session }) => {
     if (data.images && session) {
       let newArray = await onLoadImage();
       setImagenes(newArray);
+      let copy = [];
+      data.images.forEach((images) => {
+        copy.push(Array.from(images.tags)[0]);
+      });
+      setAppliedFilters(copy);
+      console.log("copia", copy);
     }
   }, [data.images]);
+
+  useEffect(async () => {
+    console.log("antes del get", appliedFilters);
+    let images = await getProfessionalsByTags();
+    if (images) {
+      images=images.filter(img=>img.id!=currentImageId);
+      setFilteredImages(images);
+      console.log(images);
+      console.log("appliedFilters", appliedFilters);
+      console.log("filteredImages", filteredImages);
+    }
+  }, [appliedFilters]);
 
   return (
     <Layout title={`${t("building-work-detail")}`}>
       <Row className="row-cols-1 g-2">
         <Col>
-          <CarouselProject images={imagenes} />
+          <CarouselProject setAppliedFilters={setAppliedFilters} setCurrentImageId={setCurrentImageId} images={imagenes} />
         </Col>
         <Col>
-          <Row className="row-cols-2 g-4">
-            <Col className="col-2">
+          <Row className="row-cols-md-2 g-4">
+            <Col className="col-md-2 col-12">
               <Card body outline color="secondary">
                 <CardTitle tag="h5">
                   {data.buildingWork.professional.company.name}
@@ -57,12 +112,25 @@ const BuildingDetail = ({ data, session }) => {
                 <Button>Ver Perfil</Button>
               </Card>
             </Col>
-            <Col className="col-10">
+            <Col className="col-md-10 col-12">
               <Card className="border-0">
                 <CardTitle tag="h5">{data.buildingWork.name}</CardTitle>
                 <CardText>{data.buildingWork.description}</CardText>
               </Card>
             </Col>
+          </Row>
+          <Row className="row-cols-md-3">
+          {filteredImages.map((image) => (
+              <Col key={image.id} className="col-4">
+                <CardDeck className="p-1">
+                  <Card>
+                    <CardBody>
+                    <CardImg src={image.path} className={`${buildingStyles.imgCard}`}/>
+                    </CardBody>
+                  </Card>
+                </CardDeck>
+              </Col>
+          ))}
           </Row>
         </Col>
       </Row>

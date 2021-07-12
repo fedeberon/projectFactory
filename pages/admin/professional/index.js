@@ -6,23 +6,21 @@ import { CheckCircle, XCircle } from "react-bootstrap-icons";
 import useTranslation from "next-translate/useTranslation";
 
 // Components
-import Layout from "../../components/Layout/Layout";
-import Tabs from "../../components/Tabs/Tabs";
-import TableAdmin from "../../components/TableAdmin/TableAdmin";
+import Layout from "../../../components/Layout/Layout";
+import Tabs from "../../../components/Tabs/Tabs";
+import TableAdmin from "../../../components/TableAdmin/TableAdmin";
 import { Input } from "reactstrap";
 
 //Services
 import {
   getProfessionalForApproved,
   setEnebleProfessional,
-} from "../../services/professionalService";
-import * as professionalService from "../../services/professionalService";
-import * as imageService from "../../services/imageService";
-import * as companyService from "../../services/companyService";
+} from "../../../services/professionalService";
+import * as professionalService from "../../../services/professionalService";
+import * as imageService from "../../../services/imageService";
 
-const Admin = ({
+const ProfessionalAdmin = ({
   professionalNotApproved,
-  companiesNotApproved,
   professionalApproved,
   professionalRejected,
   session,
@@ -31,8 +29,6 @@ const Admin = ({
   const [professionalListNotAppoved, setProfessionalListNotAppoved] = useState(
     []
   );
-  const [companyListNotAppoved, setCompanyListNotAppoved] =
-    useState(companiesNotApproved);
   const [professionalListAppoved, setProfessionalListAppoved] = useState([]);
   const [professionalListRejected, setProfessionalListRejected] = useState([]);
 
@@ -207,20 +203,6 @@ const Admin = ({
     }
   };
 
-  const getCompaniesForApproved = async (status) => {
-    try {
-      const companiesNotApproved = await companyService.findAll(
-        status,
-        pageSize.page,
-        pageSize.size,
-        session?.accessToken
-      );
-      return companiesNotApproved;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   /**
    * Complete the body part of the table showing the result of the pending,
    * approved or rejected professional consultations.
@@ -251,7 +233,7 @@ const Admin = ({
               min="0"
               type="number"
               className="d-inline-block w-50 mr-2"
-              defaultValue={professional.tokens}
+              defaultValue={professional.tokensAsigned}
             />
             <Button
               onClick={(e) =>
@@ -269,25 +251,6 @@ const Admin = ({
               return <div key={index}>{button(professional.id)}</div>;
             })}
           </td>
-        </tr>
-      );
-    });
-    const companyList = companyListNotAppoved.map((company, index) => {
-      return (
-        <tr key={index}>
-          <td scope="row">{index + 1}</td>
-          <td width="150px">
-            <figure className="figure mx-auto">
-              <img
-                className="img-fluid rounded"
-                src={company.previewImage}
-                alt=""
-              />
-            </figure>
-          </td>
-          <td>{company.contact}</td>
-          <td>{company.name}</td>
-          <td>{company.email}</td>
         </tr>
       );
     });
@@ -315,7 +278,7 @@ const Admin = ({
       ]);
       setProfessionalListNotAppoved(professionalList);
     }
-  }, [professionalNotApproved, companiesNotApproved]);
+  }, [professionalNotApproved]);
 
   /**
    * This is for when using the SSR and loading the tableAdmin component properly
@@ -379,7 +342,7 @@ const Admin = ({
   };
 
   return (
-    <Layout title={t("common:administrator")}>
+    <Layout title={t("managing-professionals")}>
       <Row>
         <Col>
           <Tabs titles={titles}>
@@ -432,7 +395,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
   let professionalNotApproved = [];
   let professionalApproved = [];
   let professionalRejected = [];
-  let companiesNotApproved = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -450,12 +412,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
       page,
       size,
       token
-    );
-    companiesNotApproved = await companyService.findAll(
-      status,
-      page,
-      size,
-      session?.accessToken
     );
 
     status = "APPROVED";
@@ -477,11 +433,10 @@ export async function getServerSideProps({ params, req, res, locale }) {
   return {
     props: {
       professionalNotApproved,
-      companiesNotApproved,
       professionalApproved,
       professionalRejected,
       session,
     },
   };
 }
-export default Admin;
+export default ProfessionalAdmin;

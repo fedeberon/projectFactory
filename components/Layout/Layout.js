@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import NProgress from "nprogress";
 import nProgress from "nprogress";
 import useTranslation from "next-translate/useTranslation";
-import { Container, Row, Col,NavbarToggler,Collapse } from "reactstrap";
+import { Container, Row, Col, NavbarToggler, Collapse } from "reactstrap";
 import Image from "next/image";
 import { Instagram, Facebook } from "react-bootstrap-icons";
 
@@ -15,6 +15,7 @@ import NavSearch from "../NavSearch/NavSearch";
 
 // Styles
 import LayoutStyles from "./Layout.module.css";
+import Link from "next/link";
 
 const Layout = ({ children, title, footer = true, header = true }) => {
   const router = useRouter();
@@ -42,8 +43,8 @@ const Layout = ({ children, title, footer = true, header = true }) => {
     <>
       {header && (
         <div className="bg-light">
-            <NavSearch />
-        {/* <div>
+          <NavSearch />
+          {/* <div>
           <NavSearch />
           <Header /> */}
         </div>
@@ -71,22 +72,41 @@ const Layout = ({ children, title, footer = true, header = true }) => {
                 />
               </Col>
               <Col>
-                <p className="m-0 text-muted">{t("who-we-are")}</p>
-                <p className="m-0 text-muted">{t("frequently-asked-questions")}</p>
-                <p className="m-0 text-muted">{t("site-policies")}</p>
-                <p className="m-0 text-muted">{t("contact")}</p>
+                <a
+                  href="/about"
+                  className="m-0 text-muted text-decoration-none list-group-item border-0 p-0"
+                >
+                  {t("who-we-are")}
+                </a>
+                <a className="m-0 text-muted text-decoration-none list-group-item border-0 p-0">
+                  {t("frequently-asked-questions")}
+                </a>
+                <a
+                  href="/policies"
+                  className="m-0 text-muted text-decoration-none list-group-item border-0 p-0" 
+                >
+                  {t("site-policies")}
+                </a>
+                <a
+                  href="/contact"
+                  className="m-0 text-muted text-decoration-none list-group-item border-0 p-0"
+                >
+                  {t("contact")}
+                </a>
               </Col>
               <Col>
-                <p className="m-0 text-muted">LaFabricaDeProyectosBolivar@gmail.com</p>
+                <p className="m-0 text-muted">
+                  LaFabricaDeProyectosBolivar@gmail.com
+                </p>
                 <p className="m-0 text-muted">+54 9 11 4545 4545</p>
               </Col>
               <Col>
                 <Row className="justify-content-center">
                   <Col className="col-auto">
-                    <Instagram size={25} className="text-muted"/>
+                    <Instagram size={25} className="text-muted" />
                   </Col>
                   <Col className="col-auto">
-                    <Facebook size={25} className="text-muted"/>
+                    <Facebook size={25} className="text-muted" />
                   </Col>
                 </Row>
               </Col>
@@ -94,8 +114,8 @@ const Layout = ({ children, title, footer = true, header = true }) => {
             <Row>
               <Col>
                 <p className="text-muted">
-                  &copy; Fabrica de Proyectos 2021 -{" "}
-                  {new Date().getFullYear()} {t("all-rights-reserved")}.
+                  &copy; Fabrica de Proyectos 2021 - {new Date().getFullYear()}{" "}
+                  {t("all-rights-reserved")}.
                 </p>
               </Col>
             </Row>

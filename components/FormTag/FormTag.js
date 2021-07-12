@@ -126,7 +126,7 @@ const FormTag = ({ toggle, image }) => {
           />
 
           {errors.tag && (
-            <FormText className="error-label">{errors.tag.message}</FormText>
+            <FormText color="danger" className="error-label">{errors.tag.message}</FormText>
           )}
         </FormGroup>
 

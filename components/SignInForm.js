@@ -69,7 +69,7 @@ const SignInForm = (props) => {
                   className={"form-field" + (errors.email ? " has-error" : "")}
                 />
                 {errors.email && (
-                  <FormText className="error-label">
+                  <FormText color="danger" className="error-label">
                     {errors.email.message}
                   </FormText>
                 )}
@@ -101,7 +101,7 @@ const SignInForm = (props) => {
                   className={"form-field" + (errors.name ? " has-error" : "")}
                 />
                 {errors.name && (
-                  <FormText className="error-label">
+                  <FormText color="danger" className="error-label">
                     {errors.name.message}
                   </FormText>
                 )}
@@ -137,7 +137,7 @@ const SignInForm = (props) => {
                   }
                 />
                 {errors.password && (
-                  <FormText className="error-label">
+                  <FormText color="danger" className="error-label">
                     {errors.password.message}
                   </FormText>
                 )}

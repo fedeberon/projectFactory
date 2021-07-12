@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Collapse,
   Navbar,
@@ -31,6 +31,7 @@ import Image from "next/image";
 import Header from "../Header/Header";
 import SuggestionsSearch from "../SuggestionsSearch/SuggestionsSearch";
 import * as professionalService from "../../services/professionalService";
+import * as projectService from "../../services/projectService";
 
 import RolProfile from "../RolProfile";
 
@@ -57,6 +58,45 @@ export default function NavSearch() {
     }
   };
 
+  useEffect(() => {
+    document.addEventListener("click",(e) => {
+      const isClickedOnNavSearch = (DOMElement) => {
+        if (DOMElement != null) {
+          const classList = Array.from(DOMElement.classList);
+          const clickOnNav = classList.includes("nav-search");
+          return clickOnNav ? true : isClickedOnNavSearch(DOMElement.parentElement);
+        } else {
+          return false;
+        }
+      };
+
+      if (isClickedOnNavSearch(e.target))
+        setSearchActive(true);
+      else 
+        setSearchActive(false);
+    });
+  }, []);
+
+  useEffect(() => {
+
+    if (searchActive)
+      inputSearch.current.focus();
+    else
+      inputSearch.current.blur();
+
+  }, [searchActive]);
+
+  const handleOnBlurInputSearch = () => {
+
+    if (searchActive)
+      inputSearch.current.focus();
+    else
+      inputSearch.current.blur();
+
+  };
+
+  useEffect(() => searchProjectsOrProfessionals(), [searchByProfessionals]);
+
   const searchProjectsOrProfessionals = async () => {
     const value = inputSearch.current.value;
     let newSuggestions;
@@ -68,8 +108,21 @@ export default function NavSearch() {
           pageSize.page,
           pageSize.size
         );
+        newSuggestions.forEach(suggestion => {
+          suggestion.value = suggestion.contact
+          suggestion.link = "#";
+        });
       } else {
-        newSuggestions = [];
+        newSuggestions = await projectService.findByNameAndActive(
+          value,
+          true,
+          pageSize.page,
+          pageSize.size
+        );
+        newSuggestions.forEach(suggestion => {
+          suggestion.value = suggestion.name;
+          suggestion.link = `project/${suggestion.name}-${suggestion.id}`;
+        });
       }
     } else {
       newSuggestions = [];
@@ -78,15 +131,7 @@ export default function NavSearch() {
     setSuggestions(newSuggestions);
   };
 
-  const changeIdeas = () => {
-    setSearchByProfessionals(true);
-    searchProjectsOrProfessionals();
-  };
-
-  const changeProjects = () => {
-    setSearchByProfessionals(false);
-    searchProjectsOrProfessionals();
-  };
+ 
 
   return (
     <>
@@ -94,15 +139,11 @@ export default function NavSearch() {
         <Navbar className="light navbar-expand-lg px-2" light>
           <Link href="/" passHref>
             <NavLink className={`${NavSearchStyles.pointer} flex-lg-grow-0`}>
-              {/* <NavLink className={`flex ml-4 ${NavSearchStyles.pointer}`}> */}
               {t("header.home")}
             </NavLink>
           </Link>
-          {/* <NavbarToggler onClick={toggle} /> */}
           <Row className={`justify-content-center w-50 align-items-center mx-auto`}>
-            {/* <Row className="w-100 justify-content-center align-items-center"></Row> */}
             <InputGroup className="w-100  d-flex">
-              {/* <InputGroup className="w-50  d-flex"> */}
               <Label for="exampleSearch" htmlFor="Search"></Label>
               <Input
                 type="search"
@@ -110,21 +151,20 @@ export default function NavSearch() {
                 autoComplete="off"
                 innerRef={inputSearch}
                 id="exampleSearch"
-                className={NavSearchStyles.inputSearch}
+                className={`${NavSearchStyles.inputSearch} nav-search`}
                 placeholder={t("header.search-placeholder")}
                 onChange={searchProjectsOrProfessionals}
                 onFocus={() => setSearchActive(true)}
-                onBlur={() => setSearchActive(false)}
+                onBlur={handleOnBlurInputSearch}
               />
               <SuggestionsSearch
                 active={searchActive}
                 suggestions={suggestions}
                 input={inputSearch.current}
-                onChangeCheckIdeas={changeIdeas}
-                onChangeCheckProjects={changeProjects}
+                onChangeCheckIdeas={() => setSearchByProfessionals(false)}
+                onChangeCheckProjects={() => setSearchByProfessionals(true)}
               />
               <InputGroupAddon addonType="append">
-                {/* <InputGroupText className="h-100"> */}
                 <InputGroupText className={NavSearchStyles.buttonSearch}>
                   <Search />
                 </InputGroupText>
@@ -133,8 +173,6 @@ export default function NavSearch() {
           </Row>
           <NavbarToggler onClick={toggle} />
 
-          {/* <Collapse isOpen={dropdown} navbar>
-          <Row className="justify-content-center align-items-center"> */}
           <Collapse isOpen={dropdown} navbar className="flex-lg-grow-0">
             <Row className={`justify-content-md-center justify-content-start`}>
               <Col>

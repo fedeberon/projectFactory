@@ -70,7 +70,7 @@ const LogInForm = (props) => {
                   className={"form-field" + (errors.email ? " has-error" : "")}
                 />
                 {errors.email && (
-                  <FormText className="error-label">
+                  <FormText color="danger" className="error-label">
                     {errors.email.message}
                   </FormText>
                 )}
@@ -106,7 +106,7 @@ const LogInForm = (props) => {
                   }
                 />
                 {errors.password && (
-                  <FormText className="error-label">
+                  <FormText color="danger" className="error-label">
                     {errors.password.message}
                   </FormText>
                 )}

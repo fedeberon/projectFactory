@@ -166,7 +166,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
 
-  let token;
   let professionals = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
@@ -177,10 +176,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  if (session) {
-    token = session.accessToken;
-    professionals = await professionalService.findAll(page, size, token);
-  }
+  professionals = await professionalService.findAll(page, size);
 
   return {
     props: {

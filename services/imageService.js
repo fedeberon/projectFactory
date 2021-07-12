@@ -82,11 +82,11 @@ export const getProfessionalImages = async (id, page, size, token) => {
   return images;
 };
 
-export const uploadCompanyPreview = async (companyId, image, token) => {
+export const uploadCompanyPreview = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const imageData = new FormData();
   imageData.append("image", image);
-  await API.post(`/images/companies/${companyId}/preview`, imageData);
+  await API.post(`/images/companies/preview`, imageData);
 };
 
 export const findCarouselImages = async () => {
@@ -121,9 +121,6 @@ export const addPreviewImageToBuildingWork = async (data, token) => {
   imageData.append("image", data.previewImage);
   return await API.post(`/images/building-works/${data.id}/preview`, imageData);
 };
-//put
-//falta terminar con tomy
-export const setImagesToBuildingWork = async (data, token) => {};
 
 export const addImagesToBuildingWork = async (data, token) => {
   API.defaults.headers.common["Authorization"] = token;

@@ -3,11 +3,6 @@ import { useSession } from "next-auth/client";
 import {
   Button,
   Col,
-  Container,
-  Form,
-  FormGroup,
-  FormText,
-  Input,
   Label,
   Row,
 } from "reactstrap";
@@ -16,6 +11,7 @@ import Autosuggest from "react-autosuggest";
 import useTranslation from "next-translate/useTranslation";
 import * as userService from "../services/userService";
 import autosuggestStyles from "./FormTag/Autosuggest.module.css";
+import Error from "../components/Error";
 
 const page = 0;
 const size = 5;
@@ -28,15 +24,33 @@ const AdministratorCreator = () => {
   const [tags, setTags] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [value, setValue] = useState("");
+  const [error, setError] = useState("");
+  const [timeErrorLive, setTimeErrorLive] = useState(0);
+
+  const showErrorToLimitTime = (error) => {
+    setError(error);
+    clearTimeout(timeErrorLive);
+    setTimeErrorLive(
+      setTimeout(() => {
+        setError("");
+      }, 3000)
+    );
+  };
 
   const toggle = () => setModalAdministrator(!modalAdministrator);
 
   const onAddAdministrator = async (administrator) => {
-    await userService.addAdministrator(
-      administratorSelected,
-      session.accessToken
-    );
-    toggle();
+    if (Object.keys(administratorSelected).length !== 0) {
+      await userService.addAdministrator(
+        administratorSelected,
+        session.accessToken
+      );
+      toggle();
+    } else {
+      showErrorToLimitTime(t("the-administrator-cannot-be-empty"));
+    }
+    setAdministratorSelected({});
+    setValue("");
   };
 
   // When suggestion is clicked, Autosuggest needs to populate the input
@@ -121,6 +135,13 @@ const AdministratorCreator = () => {
             <Button className="my-4" onClick={onAddAdministrator}>
               {t("administrator-creator.add-administrator")}
             </Button>
+            {error && (
+              <Row className="mt-2">
+                <Col>
+                  <Error error={error} />
+                </Col>
+              </Row>
+            )}
           </>
         }
         modalOpen={{

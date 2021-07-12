@@ -2,6 +2,8 @@
   "pending": "Pending",
   "approved": "Approved",
   "disapproved": "Disapproved",
+  "managing-professionals": "Managing professionals",
+  "managing-companies": "Managing companies",
   
   "accept": "Accept",
   "reject": "Reject",

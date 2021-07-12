@@ -15,8 +15,14 @@ const TableAdmin = ({ professionalList, title, onSearch }) => {
     <Table hover striped>
       <thead>
         <tr className="text-center">
-          <th><Input type="search" placeholder={t("table-admin.find-by-contact")} onChange={handleChangeInput}/></th>
-          <th>{t("table-admin.image")}</th>
+          <th>
+            <Input
+              type="search"
+              placeholder={t("table-admin.find-by-contact")}
+              onChange={handleChangeInput}
+            />
+          </th>
+          <th>{t("image")}</th>
           <th>{t("contact")}</th>
           <th>{t("company")}</th>
           <th>{t("email")}</th>

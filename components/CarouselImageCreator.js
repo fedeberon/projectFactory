@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  FormGroup,
-  FormText,
-  Input,
-  Label,
-  Row,
-} from "reactstrap";
+import { Button, Container, FormGroup, Input, Label } from "reactstrap";
 import ModalForm from "./ModalForm";
 import useTranslation from "next-translate/useTranslation";
 import InputImages from "./InputImages/InputImages";
@@ -61,6 +51,7 @@ const CarouselImageCreator = ({ onAddCarouselImages }) => {
       <ModalForm
         className={"Button"}
         modalTitle={t("carousel-image-creator.add-carousel-image")}
+        size={"lg"}
         formBody={
           <>
             <h6>{t("carousel-image-creator.please-select-carousel-images")}</h6>
@@ -84,6 +75,7 @@ const CarouselImageCreator = ({ onAddCarouselImages }) => {
       <ModalForm
         className={"Button"}
         modalTitle={t("add-title")}
+        size={"md"}
         formBody={
           <Container fluid="sm">
             <img
