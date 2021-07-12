@@ -9,7 +9,7 @@ const Companies = (props) => {
     const { t } = useTranslation("common");
     const [companies, setCompanies] = useState(data);
 
-    return <Layout title={t("companies")}>
+    return <Layout title={t("company")}>
         {companies.map(company => 
             <Company key={company.id} company={company} />
         )}
