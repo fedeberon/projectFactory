@@ -90,9 +90,7 @@ export const uploadCompanyPreview = async (image, token) => {
 };
 
 export const findCarouselImages = async () => {
-  let images = await API.get(`/images/carousel`);
-  images.forEach((image) => {});
-  return images;
+  return await API.get(`/images/carousel`);
 };
 
 export const changeStateImagesByProfessionalId = async (

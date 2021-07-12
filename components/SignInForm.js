@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Button,
@@ -19,7 +19,8 @@ import * as userService from "../services/userService";
 
 const SignInForm = (props) => {
   const { t, lang } = useTranslation("common");
-
+  const [usernameAlreadyExists, setUsernameAlreadyExists] = useState(false);
+  const resetAlert = () => setUsernameAlreadyExists(false);
   const {
     register,
     formState: { errors },
@@ -27,7 +28,11 @@ const SignInForm = (props) => {
   } = useForm();
 
   const onSubmit = async ({ name, email, password }, event) => {
-    await userService.add(name, password);
+    try {
+      await userService.add(name, password);
+    } catch (e) {
+      setUsernameAlreadyExists(true);
+    }
   };
 
   return (
@@ -41,6 +46,7 @@ const SignInForm = (props) => {
                 <Input
                   type="email"
                   name="email"
+                  onClick={resetAlert}
                   id="email"
                   placeholder={t("write-the-here-please", {
                     namePlaceholder: t("the-email").toLowerCase()
@@ -72,6 +78,7 @@ const SignInForm = (props) => {
                 <Label for="name">{t("name")}</Label>
                 <Input
                   type="text"
+                  onClick={resetAlert}
                   id="name"
                   placeholder={t("write-the-here-please", {
                     namePlaceholder: t("the-name").toLowerCase()
@@ -104,6 +111,7 @@ const SignInForm = (props) => {
                 <Input
                   type="password"
                   id="password"
+                  onClick={resetAlert}
                   placeholder={t("write-the-here-please", {
                     namePlaceholder: t("the-password").toLowerCase()
                   })}
@@ -135,6 +143,11 @@ const SignInForm = (props) => {
                 )}
               </FormGroup>
               <Button type="submit" color="primary" className="mt-2">{t("common:sign-in")}</Button>
+              {usernameAlreadyExists &&
+                <div class="alert alert-danger" role="alert">
+                  {t("common:username-already-exists")}
+                </div>
+              }
             </Form>
             <Label for="Registrarse">Registrarse con:</Label>
             <Button onClick={() => signIn("google")} color="danger" className="mx-2" size={'25'}><Google/></Button>

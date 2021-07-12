@@ -53,6 +53,58 @@ export default function Header() {
                 <NavLink>{t("professional")}</NavLink>
               </Link>
             </DropdownItem>
+
+            <DropdownItem>
+              <Link href="/companies">
+                <a>{t("companies")}</a> 
+              </Link>
+            </DropdownItem>
+
+            <DropdownItem divider />
+            <DropdownItem>Reset</DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret>
+                  {t("project")}
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem>
+                    <Link href="/project">
+                      <NavLink>{t("project")}</NavLink>
+                    </Link>
+                  </DropdownItem>
+                  <DropdownItem>Option 2</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem>Reset</DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret>
+                  {t("magazine")}
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem>
+                    <Link href="/magazine">
+                      <NavLink>{t("magazine")}</NavLink>
+                    </Link>
+                  </DropdownItem>
+                  <DropdownItem>Option 2</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem>Reset</DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+
+              <Link href="/about">
+                <NavLink className={`${HeaderStyle.pointer}`}>
+                  {t("about-us")}
+                </NavLink>
+              </Link>
+              
+        <UncontrolledDropdown>
+          <DropdownMenu>
             <DropdownItem>Option 2</DropdownItem>
             <DropdownItem divider />
             <DropdownItem>Reset</DropdownItem>

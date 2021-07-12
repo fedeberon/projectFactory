@@ -12,6 +12,7 @@
   },
 
   "professional": "Profesional",
+  "companies" : "Compañias",
   "project": "Proyecto",
   "magazine": "Magazine",
   "about-us": "Sobre Nosotros",
@@ -163,10 +164,13 @@
   "LogInForm": "--------------------------------",
   "password": "Contraseña",
   "the-password": "La contraseña",
+  "log-in-with" : "Ingresar con",
+  "invalid-credentials" : "Nombre de usuario o contraseña invalido",
 
   "Authentication": "--------------------------------",
   "log-in": "Ingresar",
   "sign-in": "Registrarse",
+  "username-already-exists" : "El nombre de usuario ya existe",
 
   "DE DONDE ES?": "--------------------------------",
   "LogOut": "Cerrar sesión",

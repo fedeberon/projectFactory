@@ -23,7 +23,7 @@ const Authentication = (props) => {
         <Col className="col d-flex">
           <Col>
             <Button
-              onClick={() => signIn()}
+              href="/logIn"
               outline
               color="secondary"
               className={`d-flex ${AuthenticationStyle.pLine}`}
@@ -36,7 +36,7 @@ const Authentication = (props) => {
             <Button
               className={`d-flex ${AuthenticationStyle.pLine} mx-1`}
               color="warning"
-              href="/SignIn"
+              href="/signIn"
             >
               {t("common:sign-in")}
             </Button>
