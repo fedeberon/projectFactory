@@ -66,14 +66,14 @@ const FilteredImages = ({ isLoading, images }) => {
                     <Col className="col-auto">
                       <img
                         className={`${filteredImagesStyles.imgProfile} rounded-circle`}
-                        src={image.entity.previewImage}
+                        src={image.professional.previewImage}
                       />
                     </Col>
                     <Col className={`col-auto`}>
                       <CardText
                         className={`${filteredImagesStyles.textShadowSm} fw-bold`}
                       >
-                        {`${image.entity.contact}`}
+                        {`${image.professional.contact}`}
                       </CardText>
                     </Col>
                     <Col
