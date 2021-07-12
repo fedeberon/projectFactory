@@ -16,7 +16,6 @@ import * as imageService from "../services/imageService";
 
 // Styles
 import styles from "../styles/Home.module.css";
-import CompanyCreator from "../components/CompanyCreator/CompanyCreator";
 import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
 
@@ -73,9 +72,6 @@ const Home = ({ filters, carouselImages, session }) => {
         <CarouselImageCreator onAddCarouselImages={onAddCarouselImages} />
         <div className="mx-4">
           <AdministratorCreator />
-        </div>
-        <div className="mx-4">
-          <CompanyCreator />
         </div>
       </div>
       <Row>

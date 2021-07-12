@@ -39,73 +39,84 @@ export default function Header() {
 
   return (
     <>
-            <Nav
-              className={`w-100 justify-content-start  justify-content-md-center`}
-              navbar
-            >
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  {t("professional")}
-                </DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem>
-                    <Link href="/professional">
-                      <NavLink>{t("professional")}</NavLink>
-                    </Link>
-                  </DropdownItem>
-                  <DropdownItem>Option 2</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Reset</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  {t("project")}
-                </DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem>
-                    <Link href="/project">
-                      <NavLink>{t("project")}</NavLink>
-                    </Link>
-                  </DropdownItem>
-                  <DropdownItem>Option 2</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Reset</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  {t("magazine")}
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem>
-                    <Link href="/magazine">
-                      <NavLink>{t("magazine")}</NavLink>
-                    </Link>
-                  </DropdownItem>
-                  <DropdownItem>Option 2</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Reset</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              <Link href="/about">
-                <NavLink className={`${HeaderStyle.pointer}`}>
-                  {t("about-us")}
-                </NavLink>
+      <Nav
+        className={`w-100 justify-content-start  justify-content-md-center`}
+        navbar
+      >
+        <UncontrolledDropdown nav inNavbar>
+          <DropdownToggle nav caret>
+            {t("professional")}
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem>
+              <Link href="/professional">
+                <NavLink>{t("professional")}</NavLink>
               </Link>
-              <Link href="/contact">
-                <NavLink className={`${HeaderStyle.pointer}`}>
-                  {t("contact")}
-                </NavLink>
+            </DropdownItem>
+            <DropdownItem>Option 2</DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem>Reset</DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+        <UncontrolledDropdown nav inNavbar>
+          <DropdownToggle nav caret>
+            {t("project")}
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem>
+              <Link href="/project">
+                <NavLink>{t("project")}</NavLink>
               </Link>
-              {isRole("ROLE_ADMINISTRATOR") && (
-                <Link href="/admin">
-                  <NavLink className={`${HeaderStyle.pointer}`}>
-                    {t("administrator")}
-                  </NavLink>
+            </DropdownItem>
+            <DropdownItem>Option 2</DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem>Reset</DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+        <UncontrolledDropdown nav inNavbar>
+          <DropdownToggle nav caret>
+            {t("magazine")}
+          </DropdownToggle>
+          <DropdownMenu right>
+            <DropdownItem>
+              <Link href="/magazine">
+                <NavLink>{t("magazine")}</NavLink>
+              </Link>
+            </DropdownItem>
+            <DropdownItem>Option 2</DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem>Reset</DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+        <Link href="/about">
+          <NavLink className={`${HeaderStyle.pointer}`}>
+            {t("about-us")}
+          </NavLink>
+        </Link>
+        <Link href="/contact">
+          <NavLink className={`${HeaderStyle.pointer}`}>{t("contact")}</NavLink>
+        </Link>
+        {isRole("ROLE_ADMINISTRATOR") && (
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle nav caret>
+              {t("administrator")}
+            </DropdownToggle>
+            <DropdownMenu right>
+              <DropdownItem>
+                <Link href="/admin/company">
+                  <NavLink>{t("company")}</NavLink>
                 </Link>
-              )}
-            </Nav>
+              </DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>
+                <Link href="/admin/professional">
+                  <NavLink>{t("professional")}</NavLink>
+                </Link>
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+        )}
+      </Nav>
     </>
   );
 }

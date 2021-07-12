@@ -46,7 +46,7 @@ const ContactUs = () => {
                 className={"form-field" + (errors.name ? " has-error" : "")}
               />
               {errors.name && (
-                <FormText className="error-label">
+                <FormText color="danger" className="error-label">
                   {errors.name.message}
                 </FormText>
               )}
@@ -78,7 +78,7 @@ const ContactUs = () => {
                 className={"form-field" + (errors.email ? " has-error" : "")}
               />
               {errors.email && (
-                <FormText className="error-label">
+                <FormText color="danger" className="error-label">
                   {errors.email.message}
                 </FormText>
               )}

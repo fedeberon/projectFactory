@@ -35,7 +35,7 @@ const rejectStyle = {
 };
 
 function Dropzone(props) {
-  const { newFiles, setFile, accept, multiple, name } = props;
+  const { newFiles, setFile, accept, multiple, name, height } = props;
   const [flagShow, setFlagShow] = useState(true);
 
   const { t } = useTranslation("common");
@@ -119,7 +119,7 @@ function Dropzone(props) {
               </Button>
             </Col>
             <Col></Col>
-            <Col>
+            <Col className="d-flex justify-content-center align-items-center">
               {accept === "application/x-zip-compressed, application/zip" ? (
                 <Row className="row-cols-1 text-center">
                   <Col>
@@ -136,6 +136,7 @@ function Dropzone(props) {
                   <img
                     src={file.preview}
                     className={`img-fluid ${dropzoneStyle.imgMid}`}
+                    style={{ height: height }}
                   />
                 </figure>
               )}

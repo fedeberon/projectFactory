@@ -47,7 +47,11 @@ const Project = ({ data, professionals, filters }) => {
 
   const onAddProject = async (data, id) => {
     setLoading(true);
-    const project = await projectService.addProject(data, id, session.accessToken);
+    const project = await projectService.addProject(
+      data,
+      id,
+      session.accessToken
+    );
     dispatch(projectActions.addItem(project));
     setLoading(false);
   };
@@ -70,7 +74,7 @@ const Project = ({ data, professionals, filters }) => {
     }
   }, [appliedFilters]);
 
-  const handleClickFilter = filter => {
+  const handleClickFilter = (filter) => {
     if (appliedFilters.contains(filter)) {
       removeFilter(filter);
     } else {
@@ -78,8 +82,8 @@ const Project = ({ data, professionals, filters }) => {
     }
   };
 
-  const removeFilter = filter => {
-    const newAppliedFilters = Array.from(appliedFilters); 
+  const removeFilter = (filter) => {
+    const newAppliedFilters = Array.from(appliedFilters);
     const index = newAppliedFilters.indexOf(filter);
     if (index > -1) {
       newAppliedFilters.splice(index, 1);
@@ -87,8 +91,8 @@ const Project = ({ data, professionals, filters }) => {
     }
   };
 
-  const addFilter = filter => {
-    const newAppliedFilters = Array.from(appliedFilters); 
+  const addFilter = (filter) => {
+    const newAppliedFilters = Array.from(appliedFilters);
     newAppliedFilters.push(filter);
     setAppliedFilters(newAppliedFilters);
   };
@@ -109,6 +113,7 @@ const Project = ({ data, professionals, filters }) => {
         </Button>
       )}
       <ModalForm
+        size={"xl"}
         className={"Button"}
         modalTitle={t("form-project")}
         formBody={
@@ -155,7 +160,9 @@ const Project = ({ data, professionals, filters }) => {
                   <CardFooter className="d-flex justify-content-end">
                     <Link
                       href={`/project/[id]`}
-                      as={`/project/${project.name.replace(/\s+/g, '-')}-${project.id}`}
+                      as={`/project/${project.name.replace(/\s+/g, "-")}-${
+                        project.id
+                      }`}
                       passHref
                     >
                       <Button color={"primary"}>{t("view-more")}</Button>
@@ -196,10 +203,9 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   return {
     props: {
-      // ...(await serverSideTranslations(locale, ["common"])),
       data: projects,
       professionals: response,
-      filters : filters,
+      filters: filters,
     },
   };
 }

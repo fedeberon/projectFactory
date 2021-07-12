@@ -29,6 +29,7 @@ const FormObra = ({
   images,
   setImages,
   changeState,
+  buildingWorkId
 }) => {
   const { t } = useTranslation("common");
   const [currentImageTag, setCurrentImageTag] = useState({});
@@ -84,13 +85,18 @@ const FormObra = ({
           if (buildingWork) {
             setPreviewImage([]);
             event.target.reset();
-            toggle();
             setError("");
+            toggle();
           }
         }
         if (changeState.stateFormObra.put) {
-          //Falta terminar con tomy
-          const buildingWorkModify = await onSetbuildingWork(data);
+          const buildingWorkModify = await onSetbuildingWork(data, buildingWorkId);
+          if (buildingWorkModify) {
+            setPreviewImage([]);
+            event.target.reset();
+            setError("");
+            toggle();
+          }
         }
       } else {
         showErrorToLimitTime(
@@ -156,7 +162,10 @@ const FormObra = ({
                     )}
                   />
                   {errors.name && (
-                    <FormText className="invalid error-label text-danger">
+                    <FormText
+                      color="danger"
+                      className="invalid error-label text-danger"
+                    >
                       {errors.name.message}
                     </FormText>
                   )}
@@ -208,7 +217,10 @@ const FormObra = ({
                     )}
                   />
                   {errors.description && (
-                    <FormText className="invalid error-label text-danger">
+                    <FormText
+                      color="danger"
+                      className="invalid error-label text-danger"
+                    >
                       {errors.description.message}
                     </FormText>
                   )}
@@ -225,6 +237,7 @@ const FormObra = ({
                     accept={"image/*"}
                     multiple={false}
                     name={"previewImage"}
+                    height={"237px"}
                   />
                 </FormGroup>
               </Col>
@@ -266,6 +279,7 @@ const FormObra = ({
       )}
 
       <ModalForm
+        size={"md"}
         className={"Button"}
         modalTitle={t("common:add-tags")}
         formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}

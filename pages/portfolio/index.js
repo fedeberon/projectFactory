@@ -38,7 +38,7 @@ import indexStyles from "./index.module.css";
 import filteredImagesStyles from "../../components/FilteredImages/FilteredImages.module.css";
 import image from "next/image";
 
-const CustomButtonTogle = ({ id, editBuildingWork }) => {
+const CustomButtonTogle = ({ id, editBuildingWork, imageSize }) => {
   const [dropdownOpen, setOpen] = useState(false);
   const toggle = () => setOpen((dropdownOpen) => !dropdownOpen);
   return (
@@ -53,7 +53,7 @@ const CustomButtonTogle = ({ id, editBuildingWork }) => {
             color={"white"}
             size={25}
           />
-          {` Photos`}
+          {` ${imageSize} Photos`}
         </DropdownItem>
         <DropdownItem divider />
         <DropdownItem
@@ -76,6 +76,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
   const [images, setImages] = useState([]);
   const [localBuildingWorks, setLocalBuildingWorks] = useState([]);
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
+  const [buildingWorkId, setBuildingWorkId] = useState(null);
 
   const [buildingWorkData, setBuildingWorkData] = useState({
     defaultValues: {
@@ -134,29 +135,45 @@ const Portfolio = ({ professional, buildingWorks }) => {
     }
   };
 
-  const onSetImagesToBuildingWork = async (folder, images) => {
+  // const onSetImagesToBuildingWork = async (folder, images) => {
+  //   if (session) {
+  //     const data = {
+  //       images,
+  //       id: folder.id,
+  //     };
+  //     try {
+  //       let images = await imageService.setImagesToBuildingWork(
+  //         data,
+  //         session.accessToken
+  //       );
+  //       return images;
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  // };
+
+  //subir imagen y cambiar los datos del nombre y la description
+  const onSetbuildingWork = async (data, buildingWorkId) => {
     if (session) {
-      const data = {
-        images,
-        id: folder.id,
-      };
       try {
-        let images = await imageService.setImagesToBuildingWork(
+        const data2 = { name: data.name, description: data.description };
+        await buildingWorkService.setFolder(
+          buildingWorkId,
+          data2,
+          session.accessToken
+        );
+        data.id = buildingWorkId;
+        await imageService.addPreviewImageToBuildingWork(
           data,
           session.accessToken
         );
-        return images;
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
-  const onSetbuildingWork = async (data) => {
-    if (session) {
-      try {
-        //falta terminar con tomy
-        // let images = await onSetImagesToBuildingWork(folder, data.images);
+        await buildingWorkService.removeAndAddImages(
+          data.images,
+          buildingWorkId,
+          session.accessToken
+        );
+        return true;
       } catch (error) {
         console.error(error);
       }
@@ -235,6 +252,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
     setBuildingWorkData(copyBuildingWorkData);
 
     let imagenes = await onEditGetBuildingWorks(id);
+
     imagenes.forEach(async (img, index) => {
       const imagen = await fetch(img.path, {
         headers: { Authorization: session.accessToken },
@@ -248,6 +266,8 @@ const Portfolio = ({ professional, buildingWorks }) => {
         preview: URL.createObjectURL(file),
       });
       img.preview = file.preview;
+      img.added = true; //is already in the BD
+      img.remove = false; //if I have to delete it or not as it comes from BD I don’t have to delete it
     });
 
     setImages(imagenes);
@@ -263,6 +283,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
     });
 
     setPreviewImage([file]);
+    setBuildingWorkId(id);
     toggleModal();
   };
 
@@ -291,20 +312,21 @@ const Portfolio = ({ professional, buildingWorks }) => {
       {isLoading ? (
         <h1>{t("loading")}...</h1>
       ) : (
-        localBuildingWorks.map((image, index) => (
+        localBuildingWorks.map((buildingWork, index) => (
           <Col key={index}>
+            <pre>{JSON.stringify(buildingWork, null, 2)}</pre>
             <CardDeck className={`${filteredImagesStyles.colCard}`}>
               <Card>
                 <CardBody className="p-0">
                   <Link
                     href={`/building/[id]`}
-                    as={`/building/${image.name.replace(/\s+/g, "-")}-${
-                      image.id
+                    as={`/building/${buildingWork.name.replace(/\s+/g, "-")}-${
+                      buildingWork.id
                     }`}
                   >
                     <img
                       className={`${filteredImagesStyles.cardImage}`}
-                      src={image.previewImage}
+                      src={buildingWork.previewImage}
                       alt="Professional preview"
                     />
                   </Link>
@@ -312,14 +334,14 @@ const Portfolio = ({ professional, buildingWorks }) => {
                     <Col className="col-auto">
                       <img
                         className={`${filteredImagesStyles.imgProfile} rounded-circle`}
-                        // src={image.entity.previewImage}
+                        // src={buildingWork.entity.previewImage}
                       />
                     </Col>
                     <Col className={`col-auto`}>
                       <CardText
                         className={`${filteredImagesStyles.textShadowSm} fw-bold`}
                       >
-                        {image.name}
+                        {buildingWork.name}
                       </CardText>
                     </Col>
                     <Col
@@ -328,8 +350,9 @@ const Portfolio = ({ professional, buildingWorks }) => {
                       {session && (
                         <div>
                           <CustomButtonTogle
-                            id={image.id}
+                            id={buildingWork.id}
                             editBuildingWork={editBuildingWork}
+                            imageSize={buildingWork.countImages}
                           />
                         </div>
                       )}
@@ -379,6 +402,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
         <Col className="col-auto">{imagesCard}</Col>
       </Row>
       <ModalForm
+        size={"xl"}
         modalTitle={t("work-form")}
         className={"Button mt-50"}
         formBody={
@@ -392,6 +416,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
             images={images}
             setImages={setImages}
             changeState={{ stateFormObra, function: setStateFormObra }}
+            buildingWorkId={buildingWorkId}
           />
         }
         modalOpen={{ open: modalOpen, function: setModalOpen }}
@@ -403,6 +428,18 @@ const Portfolio = ({ professional, buildingWorks }) => {
 export async function getServerSideProps({ params, req, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
+
+  if (
+    !session ||
+    !session.authorities.includes(process.env.NEXT_PUBLIC_ROLE_PROFESSIONAL)
+  ) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 
   let token;
   let professionalId;

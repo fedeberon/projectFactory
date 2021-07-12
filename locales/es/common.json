@@ -6,9 +6,9 @@
     "signed-in-as": "Ingresado como",
     "profile": "Perfil",
     "portfolio": "Mi portafolio",
-    "search-placeholder" : "Buscar ideas/ profesionales",
-    "search-by-ideas" : "Buscar por ideas",
-    "search-by-professionals" : "Buscar por profesionales"
+    "search-placeholder": "Buscar ideas/ profesionales",
+    "search-by-ideas": "Buscar por ideas",
+    "search-by-professionals": "Buscar por profesionales"
   },
 
   "professional": "Profesional",
@@ -23,8 +23,9 @@
   "add-title": "Agregar titulo",
   "province": "Provincia",
   "location": "Localidad",
-  "price" : "Precio",
+  "price": "Precio",
   "invalid-link": "El link es invalido",
+  "image": "Imagen",
 
   "is-required": "{{nameRequired}} es requerido",
   "write-the-here-please": "Escriba {{namePlaceholder}} aquí por favor",
@@ -37,7 +38,9 @@
   "the-year": "El año",
   "the-video-path": "El enlace del video",
   "the-email": "El email",
-  "the-price" : "El precio",
+  "the-image": "La imagen",
+  "the-tag": "El tag",
+  "the-price": "El precio",
 
   "email-is-already-exist-please-write-another-one": "El email ya existe, por favor ingrese otro",
   "magazine-detail": "Detalle de Magazine",
@@ -81,12 +84,18 @@
   },
 
   "company-creator": {
+    "form-company-creator": "Formulario creardor de empresa",
     "add-company": "Agregar empresa",
     "company-name": "Nombre de la empresa",
     "company-logo": "Logo de la empresa",
     "select-logo": "Seleccione el logo por favor",
     "select-categories-please": "Seleccione las categorias de la empresa",
-    "add-category": "Agregar categoria"
+    "categories": "Categorias",
+    "the-category": "La categoria",
+    "the-categories": "Las categorias",
+    "add-category": "Agregar categoria",
+    "cannot-be-empty": "{{fieldName}} no puede estar vacía",
+    "already-exists": "{{fieldName}} ya existe"
   },
 
   "filter-list": {
@@ -99,11 +108,10 @@
   },
 
   "table-admin": {
-    "image": "Imagen",
     "actions": "Acciones",
     "there-are-not-more-professional": "No hay más profesionales",
-    "find-by-contact" : "Buscar por contacto",
-    "tokens" : "Fichas"
+    "find-by-contact": "Buscar por contacto",
+    "tokens": "Fichas"
   },
 
   "tabs": {
@@ -121,7 +129,7 @@
   "professional-contact": "Contacto del profesional",
   "professional-email": "Correo del profesional",
   "buy-project": "Comprar proyecto",
-  "you-bought-this-project" : "Compraste este proyecto",
+  "you-bought-this-project": "Compraste este proyecto",
   "download-project": "Descargar proyecto",
   "other-projects-of-professional": "Otros proyectos de este profesional",
 
@@ -172,5 +180,31 @@
   "work-form": "Formulario de Obra",
   "building-work-detail": "Detalle de obra",
   "preview-image": "Imagen previsualizacion",
-  "select-preview-image-for-building-work": "Seleccione una imagen de previsualizacion para la obra"
+  "select-preview-image-for-building-work": "Seleccione una imagen de previsualizacion para la obra",
+  "the-administrator-cannot-be-empty": "El administrador no puede estar vacío",
+
+  "formulary": {
+    "professional-form": "Formulario Profesional",
+    "professional-profile": "Perfil profesional",
+    "company": "Empresa",
+    "the-company": "La empresa",
+    "contact": "Contacto",
+    "the-contact": "El contacto",
+    "contact-email": "Email de contacto",
+    "the-contact-email": "El email de contacto",
+    "contact-charge": "Cargo del conctacto",
+    "the-contact-charge": "El cargo del conctacto",
+    "company-category": "Categoria de empresa",
+    "the-company-category": "La categoria de empresa",
+    "web-page": "Página Web",
+    "the-web-page": "La página web",
+    "location-of-the-company": "Ubicacion de la empresa",
+    "the-location-of-the-company": "La ubicacion de la empresa",
+    "the-province": "La provincia",
+    "the-location": "La localidad",
+    "telephone": "Telefono",
+    "the-telephone": "El telefono",
+    "select-profile-picture": "Seleccione la imagen de perfil",
+    "select-background-picture": "Seleccione la imagen de fondo"
+  }
 }
