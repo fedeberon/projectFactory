@@ -210,5 +210,7 @@
     "the-telephone": "El telefono",
     "select-profile-picture": "Seleccione la imagen de perfil",
     "select-background-picture": "Seleccione la imagen de fondo"
-  }
+  },
+
+  "photos" : "Fotos"
 }

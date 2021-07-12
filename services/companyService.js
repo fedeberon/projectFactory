@@ -37,3 +37,7 @@ export const setStatus = async (id, status, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.put(`/companies/${id}/status/${status}`);
 };
+
+export const findById = async (id) => {
+  return await API.get(`/companies/${id}`);
+};

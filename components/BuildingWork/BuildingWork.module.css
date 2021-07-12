@@ -1,0 +1,9 @@
+.divCard {
+    width: 18rem;
+}
+
+@media (max-width: 768px) {
+    .divCard {
+        width: 100%;
+    }
+}
