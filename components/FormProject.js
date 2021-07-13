@@ -20,7 +20,7 @@ import InputImages from "../components/InputImages/InputImages";
 import FormTag from "../components/FormTag/FormTag";
 import ModalForm from "../components/ModalForm";
 
-const FormProject = ({ onAddProject, professionals, toggle }) => {
+const FormProject = ({ onAddProject, toggle }) => {
   const [session, loading] = useSession();
   const [options, setOptions] = useState([]);
 
@@ -40,10 +40,6 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
     handleSubmit,
   } = useForm();
 
-  useEffect(async () => {
-    setOptions(professionals);
-  }, [professionals]);
-
   const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
   const showTagModal = (img) => {
     setModalTagOpen(true);
@@ -57,14 +53,13 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
       totalArea,
       website,
       year,
-      professionalsSelected,
       videoPath,
       price,
     },
     event
   ) => {
     if (youtubeService.isValidVideo(videoPath)) {
-      // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image, video path for form data
+      // You should handle login logic with name, description, totalArea, website, year, preview image, video path for form data
       let data = {
         name,
         description,
@@ -77,8 +72,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         videoPath,
         price,
       };
-      let id = professionalsSelected.id;
-      await onAddProject(data, id);
+      await onAddProject(data);
       event.target.reset();
       toggle();
     } else {
@@ -292,43 +286,6 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
               {errors.videoPath && (
                 <FormText color="danger" className="error-label">
                   {errors.videoPath.message}
-                </FormText>
-              )}
-            </FormGroup>
-
-            <FormGroup>
-              <Label for="professionalsSelected">
-                {t("professionals-selected")}
-              </Label>
-              <Controller
-                name="professionalsSelected"
-                control={control}
-                rules={{
-                  required: {
-                    value: true,
-                    message: `${t("is-required", {
-                      nameRequired: t("professionals-selected"),
-                    })}`,
-                  },
-                }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    inputId={"professionalsSelected"}
-                    options={options}
-                    getOptionLabel={(option) => `${option?.contact}`}
-                    getOptionValue={(option) => `${option?.id}`}
-                    isClearable
-                    className={
-                      "form-field" +
-                      (errors.professionalsSelected ? " has-error" : "")
-                    }
-                  />
-                )}
-              />
-              {errors.professionalsSelected && (
-                <FormText color="danger" className="error-label">
-                  {errors.professionalsSelected.message}
                 </FormText>
               )}
             </FormGroup>
