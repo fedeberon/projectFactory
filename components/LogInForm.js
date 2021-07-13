@@ -11,31 +11,33 @@ import {
   CardBody,
   Row,
   Col,
+  CardText,
 } from "reactstrap";
 import useTranslation from "next-translate/useTranslation";
 import { signIn } from "next-auth/client";
 import { Google, Facebook, Instagram } from "react-bootstrap-icons";
 import * as userService from "../services/userService";
+import Link from "next/link";
 
 const LogInForm = (props) => {
-    const [invalidCredentials, setInvalidCredentials] = useState(false)
-    const { t } = useTranslation("common");
-    const resetInvalidCredentials = () => setInvalidCredentials(false);
+  const [invalidCredentials, setInvalidCredentials] = useState(false);
+  const { t } = useTranslation("common");
+  const resetInvalidCredentials = () => setInvalidCredentials(false);
 
-    const {
-      register,
-      formState: { errors },
-      handleSubmit,
-    } = useForm();
-  
-    const onSubmit = async ({ email, password }, event) => {
-      try {
-        await userService.login(email, password);
-      } catch (e) {
-        setInvalidCredentials(true);
-      }
-    };
-  
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+
+  const onSubmit = async ({ username, password }, event) => {
+    try {
+      await userService.login(username, password);
+    } catch (e) {
+      setInvalidCredentials(true);
+    }
+  };
+
   return (
     <Row className="d-flex justify-content-center">
       <Col xs={6}>
@@ -43,35 +45,37 @@ const LogInForm = (props) => {
           <CardBody>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <FormGroup>
-                <Label for="email">{t("email")}</Label>
+                <Label for="username">{t("username")}</Label>
                 <Input
-                  type="email"
+                  type="text"
                   onClick={resetInvalidCredentials}
-                  name="email"
-                  id="email"
+                  name="username"
+                  id="username"
                   placeholder={t("write-the-here-please", {
-                    namePlaceholder: t("the-email")
+                    namePlaceholder: t("the-username").toLowerCase(),
                   })}
-                  {...register("email", {
+                  {...register("username", {
                     required: {
                       value: true,
                       message: `${t("is-required", {
-                        namePlaceholder: t("the-email")
+                        nameRequired: t("the-username"),
                       })}`,
                     },
                     minLength: {
                       value: 3,
                       message: `${t("cannot-be-less-than-character", {
-                        nameInput: t("the-email"),
-                        numberCharacters: 3
+                        nameInput: t("the-username"),
+                        numberCharacters: 3,
                       })}`,
                     },
                   })}
-                  className={"form-field" + (errors.email ? " has-error" : "")}
+                  className={
+                    "form-field" + (errors.username ? " has-error" : "")
+                  }
                 />
-                {errors.email && (
+                {errors.username && (
                   <FormText color="danger" className="error-label">
-                    {errors.email.message}
+                    {errors.username.message}
                   </FormText>
                 )}
               </FormGroup>
@@ -80,25 +84,23 @@ const LogInForm = (props) => {
                 <Input
                   type="password"
                   id="password"
-                  resetInvalidCredentials
+                  onClick={resetInvalidCredentials}
                   placeholder={t("write-the-here-please", {
-                    namePlaceholder: t("the-password").toLowerCase()
+                    namePlaceholder: t("the-password").toLowerCase(),
                   })}
                   {...register("password", {
                     required: {
                       value: true,
                       message: `${t("is-required", {
-                        nameRequired: t("the-password")
+                        nameRequired: t("the-password"),
                       })}`,
                     },
                     minLength: {
                       value: 8,
-                      message: `${t(
-                        "cannot-be-less-than-character", {
-                          nameInput: t("the-password"),
-                          numberCharacters: 8
-                        }
-                      )}`,
+                      message: `${t("cannot-be-less-than-character", {
+                        nameInput: t("the-password"),
+                        numberCharacters: 8,
+                      })}`,
                     },
                   })}
                   className={
@@ -111,17 +113,54 @@ const LogInForm = (props) => {
                   </FormText>
                 )}
               </FormGroup>
-              <Button color="primary" className="mt-2">{t("log-in")}</Button>
-              {invalidCredentials &&
-                <div class="alert alert-danger" role="alert">
+              <Button color="primary" className="mt-2">
+                {t("log-in")}
+              </Button>
+              {invalidCredentials && (
+                <div className="alert alert-danger" role="alert">
                   {t("invalid-credentials")}
                 </div>
-              }
-            </Form> 
+              )}
+            </Form>
             <Label for="Registrarse">{t("log-in-with")}:</Label>
-            <Button onClick={() => signIn("google")} color="danger" className="mx-2" size={25}><Google/></Button>
-            <Button onClick={() => signIn("facebook")} color="primary" className="mx-2" size={25}><Facebook/></Button>
-            <Button onClick={() => signIn("instagram")} color="secondary" className="mx-2" size={25}><Instagram/></Button>
+            <Button
+              onClick={() => signIn("google")}
+              color="danger"
+              className="mx-2"
+            >
+              <Google size={25} />
+            </Button>
+            <Button
+              onClick={() => signIn("facebook")}
+              color="primary"
+              className="mx-2"
+            >
+              <Facebook size={25} />
+            </Button>
+            <Button
+              onClick={() => signIn("instagram")}
+              color="secondary"
+              className="mx-2"
+            >
+              <Instagram size={25} />
+            </Button>
+            <Row>
+              <Col>
+                <CardText>
+                  {t("don't-have-an-account-please")}
+                  <Link href={"/signIn"}>
+                    <a>{` ${t("register-here").toLowerCase()}`}</a>
+                  </Link>
+                </CardText>
+              </Col>
+            </Row>
+            <Row className="justify-content-end">
+              <Col className="col-auto">
+                <Link href={"/"}>
+                  <Button>{t("go-back")}</Button>
+                </Link>
+              </Col>
+            </Row>
           </CardBody>
         </Card>
       </Col>

@@ -17,7 +17,7 @@ const CarouselProject = (props) => {
   const [modalImage, showModalImage] = useState(false);
   const [selectImage, setSelectImage] = useState("");
 
-  const { images, imageOpen, setAppliedFilters, setCurrentImageId} = props;
+  const { images, imageOpen, setAppliedFilters, setCurrentImageId } = props;
 
   const toggle = () => {
     showModalImage(!modalImage);
@@ -58,9 +58,10 @@ const CarouselProject = (props) => {
   const next = () => {
     if (animating) return;
     const nextIndex = activeIndex === images.length - 1 ? 0 : activeIndex + 1;
-    console.log("next",images[nextIndex]);
-    setCurrentImageId(images[nextIndex].id);
-    setAppliedFilters(images[nextIndex].tags);
+    if (images.length > 0) {
+      setCurrentImageId(images[nextIndex].id);
+      setAppliedFilters(images[nextIndex].tags);
+    }
     setActiveIndex(nextIndex);
   };
 

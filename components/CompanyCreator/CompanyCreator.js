@@ -25,6 +25,7 @@ const CompanyCreator = () => {
   const [session] = useSession();
   const { t } = useTranslation("common");
   const [previewImage, setPreviewImage] = useState([]);
+  const [backgroundImage, setBackgroundImage] = useState([]);
   const [tagsCategories, setTagsCategories] = useState([]);
   const [error, setError] = useState("");
   const [timeErrorLive, setTimeErrorLive] = useState(0);
@@ -97,7 +98,6 @@ const CompanyCreator = () => {
     {
       name,
       email,
-      backgroundImage, //falta
       contact,
       contactLoad,
       website,
@@ -111,7 +111,6 @@ const CompanyCreator = () => {
     let data = {
       name,
       email,
-      backgroundImage: "",
       contact,
       contactLoad,
       website,
@@ -120,11 +119,12 @@ const CompanyCreator = () => {
     };
 
     if (name !== "") {
-      if (previewImage.length != 0) {
+      if (previewImage.length != 0 && backgroundImage.length != 0) {
         if (tagsCategories.length > 0) {
           await companyService.create(
             data,
             previewImage[0],
+            backgroundImage[0],
             tagsCategories,
             session?.accessToken
           );
@@ -392,7 +392,23 @@ const CompanyCreator = () => {
                       height={"145px"}
                     />
                   </FormGroup>
+
+                  <FormGroup>
+                    <Label htmlFor="backgroundImage" className="mt-4">
+                      {t("company-creator.select-background-image")}
+                    </Label>
+
+                    <Dropzone
+                      newFiles={backgroundImage}
+                      setFile={setBackgroundImage}
+                      accept={"image/*"}
+                      multiple={false}
+                      name={"filePreview"}
+                      height={"145px"}
+                    />
+                  </FormGroup>
                 </Col>
+                
 
                 <Col className="col-auto">
                   <FormGroup>
