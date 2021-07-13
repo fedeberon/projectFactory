@@ -221,6 +221,16 @@ export default function NavSearch() {
                         <DropdownItem divider />
                       </>
                     )}
+                    {isRole("ROLE_COMPANY") && (
+                      <>
+                        <DropdownItem>
+                          <Link href="/my-products">
+                            <NavLink>{t("header.my-products")}</NavLink>
+                          </Link>
+                        </DropdownItem>
+                        <DropdownItem divider />
+                      </>
+                    )}
                     <DropdownItem>
                       {session && (
                         <NavLink onClick={() => signOut()}>
