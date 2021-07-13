@@ -22,6 +22,7 @@ const FormFilterCompany = (props) => {
     { id: 3, field: "category" },
     { id: 4, field: "contact" },
   ]);
+  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
 
   const { t } = useTranslation("common");
 
@@ -40,8 +41,12 @@ const FormFilterCompany = (props) => {
       name,
       optionsSelected,
     };
-    console.log(watch());
-    let companiesFilter = await onGetFilterCompanies(data, "APPROVED", 0, 10);
+    let companiesFilter = await onGetFilterCompanies(
+      data,
+      "APPROVED",
+      pageSize.page,
+      pageSize.size
+    );
     setCompanies(companiesFilter);
   };
 
