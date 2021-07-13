@@ -214,5 +214,7 @@
     "the-telephone": "The telephone",
     "select-profile-picture": "Select profile picture",
     "select-background-picture": "Select background picture"
-  }
+  },
+  "search":"Search",
+  "filter-by-option": "Filter by option"
 }
