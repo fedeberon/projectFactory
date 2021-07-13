@@ -103,6 +103,13 @@ export const uploadCompanyPreview = async (image, token) => {
   await API.post(`/images/companies/preview`, imageData);
 };
 
+export const uploadCompanyBackground = async (image, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const imageData = new FormData();
+  imageData.append("image", image);
+  await API.post(`/images/companies/background`, imageData);
+};
+
 export const findCarouselImages = async () => {
   return await API.get(`/images/carousel`);
 };

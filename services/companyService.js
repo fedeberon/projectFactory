@@ -1,7 +1,7 @@
 import API from "./api";
 import * as imageService from "./imageService";
 
-export const create = async (data, logo, categories, token) => {
+export const create = async (data, logo, backgroundImage, categories, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const newCategories = [];
   categories.map((category) => newCategories.push({ name: category.tag }));
@@ -9,7 +9,6 @@ export const create = async (data, logo, categories, token) => {
     name: data.name,
     categories: newCategories,
     email: data.email,
-    backgroundImage: data.backgroundImage,
     contact: data.contact,
     contactLoad: data.contactLoad,
     website: data.website,
@@ -18,6 +17,7 @@ export const create = async (data, logo, categories, token) => {
   };
   const company = await API.post(`/companies/become`, companyRequest);
   await imageService.uploadCompanyPreview(logo, token);
+  await imageService.uploadCompanyBackground(backgroundImage, token);
 };
 
 export const getStartsWith = async (value, page, size) => {
