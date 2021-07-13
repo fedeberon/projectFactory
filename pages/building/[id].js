@@ -26,7 +26,6 @@ const BuildingDetail = ({ data, session }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [currentImageId, setCurrentImageId] = useState(null);
-  
 
   const [tagsAuxiliar, setTagsAuxiliar] = useState([]);
   const { t } = useTranslation("common");
@@ -37,10 +36,6 @@ const BuildingDetail = ({ data, session }) => {
   const { id } = router.query;
 
   const getProfessionalsByTags = async () => {
-    console.log("dentro de get", appliedFilters);
-    console.log(pageSize.page);
-    console.log(pageSize.size);
-    console.log(session?.accessToken);
     try {
       return await imageService.getProfessionalImagesByTags(
         appliedFilters,
@@ -78,19 +73,14 @@ const BuildingDetail = ({ data, session }) => {
         copy.push(Array.from(images.tags)[0]);
       });
       setAppliedFilters(copy);
-      console.log("copia", copy);
     }
   }, [data.images]);
 
   useEffect(async () => {
-    console.log("antes del get", appliedFilters);
     let images = await getProfessionalsByTags();
     if (images) {
-      images=images.filter(img=>img.id!=currentImageId);
+      images = images.filter((img) => img.id != currentImageId);
       setFilteredImages(images);
-      console.log(images);
-      console.log("appliedFilters", appliedFilters);
-      console.log("filteredImages", filteredImages);
     }
   }, [appliedFilters]);
 
@@ -98,17 +88,21 @@ const BuildingDetail = ({ data, session }) => {
     <Layout title={`${t("building-work-detail")}`}>
       <Row className="row-cols-1 g-2">
         <Col>
-          <CarouselProject setAppliedFilters={setAppliedFilters} setCurrentImageId={setCurrentImageId} images={imagenes} />
+          <CarouselProject
+            setAppliedFilters={setAppliedFilters}
+            setCurrentImageId={setCurrentImageId}
+            images={imagenes}
+          />
         </Col>
         <Col>
           <Row className="row-cols-md-2 g-4">
             <Col className="col-md-2 col-12">
               <Card body outline color="secondary">
                 <CardTitle tag="h5">
-                  {data.buildingWork.professional.company.name}
+                  {data.buildingWork.professional?.company.name}
                 </CardTitle>
-                <CardText>{data.buildingWork.professional.province}</CardText>
-                <CardText>{data.buildingWork.professional.location}</CardText>
+                <CardText>{data.buildingWork.professional?.province}</CardText>
+                <CardText>{data.buildingWork.professional?.location}</CardText>
                 <Button>Ver Perfil</Button>
               </Card>
             </Col>
@@ -120,17 +114,20 @@ const BuildingDetail = ({ data, session }) => {
             </Col>
           </Row>
           <Row className="row-cols-md-3">
-          {filteredImages.map((image) => (
+            {filteredImages.map((image) => (
               <Col key={image.id} className="col-4">
                 <CardDeck className="p-1">
                   <Card>
                     <CardBody>
-                    <CardImg src={image.path} className={`${buildingStyles.imgCard}`}/>
+                      <CardImg
+                        src={image.path}
+                        className={`${buildingStyles.imgCard}`}
+                      />
                     </CardBody>
                   </Card>
                 </CardDeck>
               </Col>
-          ))}
+            ))}
           </Row>
         </Col>
       </Row>

@@ -5,22 +5,20 @@ import PropTypes from "prop-types";
 import NProgress from "nprogress";
 import nProgress from "nprogress";
 import useTranslation from "next-translate/useTranslation";
-import { Container, Row, Col, NavbarToggler, Collapse } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import Image from "next/image";
 import { Instagram, Facebook } from "react-bootstrap-icons";
+import Link from "next/link";
 
 // Components
-import Header from "../Header/Header";
 import NavSearch from "../NavSearch/NavSearch";
 
 // Styles
 import LayoutStyles from "./Layout.module.css";
-import Link from "next/link";
 
 const Layout = ({ children, title, footer = true, header = true }) => {
   const router = useRouter();
   const { t } = useTranslation("common");
-  const [dropdown, setDropdown] = useState(false);
 
   useEffect(() => {
     const handleRouteChange = (url) => {
@@ -38,15 +36,11 @@ const Layout = ({ children, title, footer = true, header = true }) => {
     };
   }, []);
 
-  const toggle = () => setDropdown((dropdown) => !dropdown);
   return (
     <>
       {header && (
         <div className="bg-light">
           <NavSearch />
-          {/* <div>
-          <NavSearch />
-          <Header /> */}
         </div>
       )}
 
@@ -72,27 +66,26 @@ const Layout = ({ children, title, footer = true, header = true }) => {
                 />
               </Col>
               <Col>
-                <a
-                  href="/about"
-                  className="m-0 text-muted text-decoration-none list-group-item border-0 p-0"
-                >
-                  {t("who-we-are")}
-                </a>
-                <a className="m-0 text-muted text-decoration-none list-group-item border-0 p-0">
-                  {t("frequently-asked-questions")}
-                </a>
-                <a
-                  href="/policies"
-                  className="m-0 text-muted text-decoration-none list-group-item border-0 p-0" 
-                >
-                  {t("site-policies")}
-                </a>
-                <a
-                  href="/contact"
-                  className="m-0 text-muted text-decoration-none list-group-item border-0 p-0"
-                >
-                  {t("contact")}
-                </a>
+                <Link href="/about">
+                  <a className="m-0 text-muted text-decoration-none list-group-item border-0 p-0 bg-transparent">
+                    {t("who-we-are")}
+                  </a>
+                </Link>
+                <Link href="/">
+                  <a className="m-0 text-muted text-decoration-none list-group-item border-0 p-0 bg-transparent">
+                    {t("frequently-asked-questions")}
+                  </a>
+                </Link>
+                <Link href="/policies">
+                  <a className="m-0 text-muted text-decoration-none list-group-item border-0 p-0 bg-transparent">
+                    {t("site-policies")}
+                  </a>
+                </Link>
+                <Link href="/contact">
+                  <a className="m-0 text-muted text-decoration-none list-group-item border-0 p-0 bg-transparent">
+                    {t("contact")}
+                  </a>
+                </Link>
               </Col>
               <Col>
                 <p className="m-0 text-muted">

@@ -4,6 +4,7 @@ import useTranslation from "next-translate/useTranslation";
 import { NavLink, Button, Row, Col } from "reactstrap";
 import { PersonCircle } from "react-bootstrap-icons";
 import AuthenticationStyle from "./Authentication.module.css";
+import Link from "next/link";
 
 /**
  * Login and logout component when user wants to use Facebook or Instagram or Google account.
@@ -22,24 +23,26 @@ const Authentication = (props) => {
       {!session && (
         <Col className="col d-flex">
           <Col>
-            <Button
-              href="/logIn"
-              outline
-              color="secondary"
-              className={`d-flex ${AuthenticationStyle.pLine}`}
-            >
-              <PersonCircle className="mx-1" size={25} />
-              {t("log-in")}
-            </Button>
+            <Link href="/logIn">
+              <Button
+                outline
+                color="secondary"
+                className={`d-flex ${AuthenticationStyle.pLine}`}
+              >
+                <PersonCircle className="mx-1" size={25} />
+                {t("log-in")}
+              </Button>
+            </Link>
           </Col>
           <Col>
-            <Button
-              className={`d-flex ${AuthenticationStyle.pLine} mx-1`}
-              color="warning"
-              href="/signIn"
-            >
-              {t("common:sign-in")}
-            </Button>
+            <Link href="/signIn">
+              <Button
+                className={`d-flex ${AuthenticationStyle.pLine} mx-1`}
+                color="warning"
+              >
+                {t("common:sign-in")}
+              </Button>
+            </Link>
           </Col>
         </Col>
       )}

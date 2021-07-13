@@ -12,7 +12,6 @@
   },
 
   "professional": "Professional",
-  "companies" : "Companies",
   "project": "Project",
   "magazine": "Magazine",
   "about-us": "About Us",
@@ -24,7 +23,7 @@
   "add-title": "Add title",
   "province": "Province",
   "location": "Location",
-  "price" : "Price",
+  "price": "Price",
   "invalid-link": "Invalid link",
   "image": "Image",
 
@@ -41,7 +40,7 @@
   "the-email": "the email",
   "the-image": "The image",
   "the-tag": "The tag",
-  "the-price" : "The price",
+  "the-price": "The price",
 
   "email-is-already-exist-please-write-another-one": "Email is already exist, please write another one",
   "magazine-detail": "Magazine Detail",
@@ -130,7 +129,7 @@
   "professional-contact": "Professional contact",
   "professional-email": "Professional email",
   "buy-project": "Buy project",
-  "you-bought-this-project" : "You bought this project",
+  "you-bought-this-project": "You bought this project",
   "download-project": "Download project",
   "other-projects-of-professional": "Other projects of this professional",
 
@@ -145,8 +144,8 @@
   "installments": "Installments",
   "project-purchased": "You have purchased this project",
   "invalid-card": "Invalid card number",
-  
-  "FormTwoFactorAuthentication":"-------------------",
+
+  "FormTwoFactorAuthentication": "-------------------",
   "two-factor-authentication": "Two factor authentication",
   "enter-code": "Enter the code of two factor authentication",
   "download": "Download",
@@ -162,15 +161,20 @@
   "all-rights-reserved": "All rights reserved",
 
   "LogInForm": "--------------------------------",
+  "username": "Username",
+  "the-username": "The username",
   "password": "Password",
   "the-password": "The password",
-  "log-in-with" : "Log In with",
-  "invalid-credentials" : "Invalid username or password",
-  
+  "log-in-with": "Log In with",
+  "invalid-credentials": "Invalid username or password",
+  "don't-have-an-account-please": "Don't have an account? Please",
+  "register-here": "Register here",
+  "go-back": "Go back",
+
   "Authentication": "--------------------------------",
   "log-in": "Log in",
   "sign-in": "Sign in",
-  "username-already-exists" : "Username already exists",
+  "username-already-exists": "Username already exists",
 
   "DE DONDE ES?": "--------------------------------",
   "LogOut": "Sign out",
@@ -210,5 +214,7 @@
     "the-telephone": "The telephone",
     "select-profile-picture": "Select profile picture",
     "select-background-picture": "Select background picture"
-  }
+  },
+  "search":"Search",
+  "filter-by-option": "Filter by option"
 }
