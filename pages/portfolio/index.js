@@ -314,7 +314,6 @@ const Portfolio = ({ professional, buildingWorks }) => {
       ) : (
         localBuildingWorks.map((buildingWork, index) => (
           <Col key={index}>
-            <pre>{JSON.stringify(buildingWork, null, 2)}</pre>
             <CardDeck className={`${filteredImagesStyles.colCard}`}>
               <Card>
                 <CardBody className="p-0">
