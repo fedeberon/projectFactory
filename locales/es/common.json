@@ -216,6 +216,8 @@
     "select-profile-picture": "Seleccione la imagen de perfil",
     "select-background-picture": "Seleccione la imagen de fondo"
   },
+
+  "photos" : "Fotos",
   "search":"Buscar",
   "filter-by-option": "Filtrar por opcion"
 }

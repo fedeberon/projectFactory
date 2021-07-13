@@ -38,6 +38,10 @@ export const setStatus = async (id, status, token) => {
   return await API.put(`/companies/${id}/status/${status}`);
 };
 
+export const findById = async (id) => {
+  return await API.get(`/companies/${id}`);
+};
+
 export const findAllByFieldAndStatus = async (data, status, page, size) => {
   return await API.get(
     `/companies/${data.optionsSelected.field}/${data.name}/status/${status}?page=${page}&size=${size}`

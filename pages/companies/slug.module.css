@@ -1,0 +1,49 @@
+.logo {
+    width: 150px;
+    height: 150px;
+    margin: 8px;
+}
+
+.logoContainer {
+    bottom: -75px;
+    left: 35px;
+    position: absolute;
+    width: 166px;
+    height: 166px;
+    background-color: white;
+    border: 1px solid #D9D9D9;
+}
+
+.backgroundImage {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.location {
+    color: #4F4F4F;
+}
+
+.locationIcon {
+    color: #4F4F4F;
+    margin-right: 5px;
+}
+
+.companyName {
+    margin: 1% 0 0 19%;
+}
+
+.aside {
+    width: 20%;
+    background-color: #F8F8F8;
+    padding: 10px;
+    float: left;
+}
+
+.asideTitle {
+    display: block;
+    font-weight: bold;
+}
+
+.section {
+    margin-top: 4%;
+}

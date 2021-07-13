@@ -18,6 +18,10 @@ export const getByProfessionalId = async (
   );
 };
 
+export const getAllByCompanyId = async (companyId , page, size) => {
+  return await API.get(`/building-works/companies/${companyId}?page=${page}&size=${size}`);
+};
+
 export const getById = async (id, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.get(`/building-works/${id}`);
