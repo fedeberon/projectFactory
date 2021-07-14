@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/client";
 import { useForm, Controller } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
 import {
@@ -36,13 +37,19 @@ const FormProfessional = ({
   const [optionSelect, setOptionSelect] = useState(true);
   const [companySelected, setCompanySelected] = useState({});
   const [value, setValue] = useState();
+  const [session] = useSession();
 
   const {
     control,
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      email: session.user.email ? session.user.email : "",
+      contact: session.user.name ? session.user.name : "",
+    },
+  });
 
   const onSubmit = async (
     {
@@ -150,18 +157,13 @@ const FormProfessional = ({
                     </FormText>
                   )}
                 </FormGroup>
+
                 <FormGroup>
                   <Label for="contact">{t("common:formulary.contact")}</Label>
-                  <Input
-                    type="text"
+                  <Controller
                     name="contact"
-                    id="contact"
-                    placeholder={`${t("common:write-the-here-please", {
-                      namePlaceholder: t(
-                        "common:formulary.the-contact"
-                      ).toLowerCase(),
-                    })}`}
-                    {...register("contact", {
+                    control={control}
+                    rules={{
                       required: {
                         value: true,
                         message: `${t("common:is-required", {
@@ -175,39 +177,42 @@ const FormProfessional = ({
                           numberCharacters: 3,
                         })}`,
                       },
-                    })}
-                    className={
-                      "form-field" + (errors.contact ? " has-error" : "")
-                    }
+                    }}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        type="text"
+                        id="contact"
+                        placeholder={`${t("common:write-the-here-please", {
+                          namePlaceholder: t(
+                            "common:formulary.the-contact"
+                          ).toLowerCase(),
+                        })}`}
+                        className={
+                          "form-field" + (errors.email ? " has-error" : "")
+                        }
+                      />
+                    )}
                   />
-                  {errors.contact && (
-                    <FormText
-                      color="danger"
-                      className="invalid error-label text-danger"
-                    >
-                      {errors.contact.message}
+                  {errors.email && (
+                    <FormText className="error-label">
+                      {errors.email.message}
                     </FormText>
                   )}
                 </FormGroup>
+
                 <FormGroup>
-                  <Label for="email">
-                    {t("common:formulary.contact-email")}
-                  </Label>
-                  <Input
-                    type="email"
+                  <Label for="email">{t("common:formulary.contact-email")}</Label>
+                  <Controller
                     name="email"
-                    id="email"
-                    placeholder={t("common:write-the-here-please", {
-                      namePlaceholder: t(
-                        "common:formulary.the-contact-email"
-                      ).toLowerCase(),
-                    })}
-                    {...register("email", {
+                    control={control}
+                    rules={{
                       required: {
                         value: true,
                         message: `${t("common:is-required", {
                           nameRequired: t("common:formulary.the-contact-email"),
-                        })}`,
+                        })}`
                       },
                       minLength: {
                         value: 3,
@@ -216,17 +221,31 @@ const FormProfessional = ({
                           numberCharacters: 3,
                         })}`,
                       },
-                    })}
-                    className={
-                      "form-field" + (errors.email ? " has-error" : "")
-                    }
+                    }}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        type="email"
+                        id="email"
+                        placeholder={t("common:write-the-here-please", {
+                          namePlaceholder: t(
+                            "common:formulary.the-contact-email"
+                          ).toLowerCase(),
+                        })}
+                        className={
+                          "form-field" + (errors.email ? " has-error" : "")
+                        }
+                      />
+                    )}
                   />
                   {errors.email && (
-                    <FormText color="danger" className="error-label">
+                    <FormText className="error-label">
                       {errors.email.message}
                     </FormText>
                   )}
                 </FormGroup>
+
                 <FormGroup>
                   <Label for="telephone">
                     {t("common:formulary.telephone")}
