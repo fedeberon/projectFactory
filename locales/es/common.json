@@ -11,6 +11,7 @@
     "search-by-professionals": "Buscar por profesionales"
   },
 
+  "product": "Producto",
   "professional": "Profesional",
   "project": "Proyecto",
   "magazine": "Magazine",
@@ -219,5 +220,7 @@
 
   "photos" : "Fotos",
   "search":"Buscar",
-  "filter-by-option": "Filtrar por opcion"
+  "filter-by-option": "Filtrar por opcion",
+
+  "product-detail": "Detalle del producto"
 }
