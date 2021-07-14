@@ -16,8 +16,9 @@ const Company = (props) => {
       <Col className="col-md-6 col-12">
         <Row className="align-items-center h-100">
           <Col>
+          <h3>{company.name}</h3>
             <p>
-              {/*company.name*/} Lorem ipsum dolor sit amet, consectetur
+              Lorem ipsum dolor sit amet, consectetur
               adipiscing elit, sed do eiusmod tempor incididunt ut labore et
               dolore magna aliqua. Facilisis sed odio morbi quis commodo. Quam
               lacus suspendisse faucibus interdum posuere lorem ipsum dolor sit.

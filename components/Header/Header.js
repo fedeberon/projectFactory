@@ -1,35 +1,22 @@
 import React, { useState } from "react";
 import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
   Nav,
   NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Col,
-  Row,
-  Dropdown,
-  Container,
 } from "reactstrap";
-import NavSearch from "../NavSearch/NavSearch";
 
 import useTranslation from "next-translate/useTranslation";
-import { signOut, useSession } from "next-auth/client";
+import { useSession } from "next-auth/client";
 import Link from "next/link";
 
 import HeaderStyle from "./Header.module.css";
 
 export default function Header() {
-  const [dropdown, setDropdown] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [session, loading] = useSession();
   const { t } = useTranslation("common");
-
-  const toggle = () => setDropdown((dropdown) => !dropdown);
-  const toggle2 = () => setDropdownOpen((dropdownOpen) => !dropdownOpen);
 
   const isRole = (role) => {
     if (session) {
@@ -56,7 +43,7 @@ export default function Header() {
 
             <DropdownItem>
               <Link href="/companies">
-                <a>{t("companies")}</a> 
+                <NavLink>{t("company")}</NavLink>
               </Link>
             </DropdownItem>
 
@@ -65,51 +52,6 @@ export default function Header() {
           </DropdownMenu>
         </UncontrolledDropdown>
 
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  {t("project")}
-                </DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem>
-                    <Link href="/project">
-                      <NavLink>{t("project")}</NavLink>
-                    </Link>
-                  </DropdownItem>
-                  <DropdownItem>Option 2</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Reset</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  {t("magazine")}
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem>
-                    <Link href="/magazine">
-                      <NavLink>{t("magazine")}</NavLink>
-                    </Link>
-                  </DropdownItem>
-                  <DropdownItem>Option 2</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Reset</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-
-              <Link href="/about">
-                <NavLink className={`${HeaderStyle.pointer}`}>
-                  {t("about-us")}
-                </NavLink>
-              </Link>
-              
-        <UncontrolledDropdown>
-          <DropdownMenu>
-            <DropdownItem>Option 2</DropdownItem>
-            <DropdownItem divider />
-            <DropdownItem>Reset</DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
         <UncontrolledDropdown nav inNavbar>
           <DropdownToggle nav caret>
             {t("project")}

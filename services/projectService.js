@@ -16,7 +16,7 @@ export const getById = async (id, token) => {
   return project;
 };
 
-export const addProject = async (project, id, token) => {
+export const addProject = async (project, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const copyProject = Object.assign({}, project);
   delete copyProject.previewImage;
@@ -28,7 +28,7 @@ export const addProject = async (project, id, token) => {
     throw new Error(`Error, link to video invalid: ${err}`);
   }
 
-  const projectUploaded = await API.post(`/projects?professional=${id}`, copyProject);
+  const projectUploaded = await API.post(`/projects`, copyProject);
   
   if (project.previewImage) {
     await addPreviewImage(project.previewImage, projectUploaded.id, token);

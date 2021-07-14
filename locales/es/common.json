@@ -8,11 +8,11 @@
     "portfolio": "Mi portafolio",
     "search-placeholder": "Buscar ideas/ profesionales",
     "search-by-ideas": "Buscar por ideas",
-    "search-by-professionals": "Buscar por profesionales"
+    "search-by-professionals": "Buscar por profesionales",
+    "my-products" : "Mis productos"
   },
 
   "professional": "Profesional",
-  "companies" : "Compañias",
   "project": "Proyecto",
   "magazine": "Magazine",
   "about-us": "Sobre Nosotros",
@@ -90,6 +90,7 @@
     "company-name": "Nombre de la empresa",
     "company-logo": "Logo de la empresa",
     "select-logo": "Seleccione el logo por favor",
+    "select-background-image": "Seleccione una imagen de fondo por favor",
     "select-categories-please": "Seleccione las categorias de la empresa",
     "categories": "Categorias",
     "the-category": "La categoria",
@@ -162,15 +163,20 @@
   "all-rights-reserved": "Todos los derechos reservados",
 
   "LogInForm": "--------------------------------",
+  "username": "Nombre de usuario",
+  "the-username": "El nombre de usuario",
   "password": "Contraseña",
   "the-password": "La contraseña",
-  "log-in-with" : "Ingresar con",
-  "invalid-credentials" : "Nombre de usuario o contraseña invalido",
+  "log-in-with": "Ingresar con",
+  "invalid-credentials": "Nombre de usuario o contraseña invalido",
+  "don't-have-an-account-please": "¿No tienes una cuenta? Por favor",
+  "register-here": "Regístrese aquí.",
+  "go-back": "Volver",
 
   "Authentication": "--------------------------------",
   "log-in": "Ingresar",
   "sign-in": "Registrarse",
-  "username-already-exists" : "El nombre de usuario ya existe",
+  "username-already-exists": "El nombre de usuario ya existe",
 
   "DE DONDE ES?": "--------------------------------",
   "LogOut": "Cerrar sesión",
@@ -210,5 +216,9 @@
     "the-telephone": "El telefono",
     "select-profile-picture": "Seleccione la imagen de perfil",
     "select-background-picture": "Seleccione la imagen de fondo"
-  }
+  },
+
+  "photos" : "Fotos",
+  "search":"Buscar",
+  "filter-by-option": "Filtrar por opcion"
 }

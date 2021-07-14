@@ -13,6 +13,7 @@ import filteredImagesStyles from "./FilteredImages.module.css";
 import { Heart, HeartFill } from "react-bootstrap-icons";
 import { useSession } from "next-auth/client";
 import { setLikePhoto } from "../../services/imageService";
+import Link from "next/link";
 
 const FilteredImages = ({ isLoading, images }) => {
   const [session] = useSession();
@@ -48,6 +49,7 @@ const FilteredImages = ({ isLoading, images }) => {
 
   return (
     <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
+      {console.log(images)}
       {isLoading ? (
         <h1>{t("loading")}...</h1>
       ) : (
@@ -56,12 +58,20 @@ const FilteredImages = ({ isLoading, images }) => {
             <CardDeck className={`${filteredImagesStyles.colCard}`}>
               <Card>
                 <CardBody className="p-0">
-                  <CardImg
-                    className={`${filteredImagesStyles.cardImage}`}
-                    top
-                    src={image.path}
-                    alt="Professional preview"
-                  />
+                  <Link
+                    href={`/building/[id]`}
+                    as={`/building/${image.buildingWork?.name?.replace(
+                      /\s+/g,
+                      "-"
+                    )}-${image.buildingWork.id}`}
+                    passHref
+                  >
+                    <img
+                      className={`${filteredImagesStyles.cardImage}`}
+                      src={image.path}
+                      alt="Professional preview"
+                    />
+                  </Link>
                   <div className={`${filteredImagesStyles.cardText}`}>
                     <Col className="col-auto">
                       <img

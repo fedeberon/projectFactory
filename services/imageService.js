@@ -1,4 +1,3 @@
-import image from "next/image";
 import API from "./api";
 import * as tagService from "./tagService";
 
@@ -63,10 +62,32 @@ export const getProfessionalImagesByTags = async (tags, page, size, token) => {
   return images;
 };
 
+export const getProfessionalImagesByTagsLessFuntions = async (tags, page, size, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  let concatenatedTags = "";
+  tags.forEach((tag) => {
+    concatenatedTags = `${concatenatedTags}tags=${tag.tag}&`;
+  });
+  concatenatedTags = concatenatedTags.substring(0, concatenatedTags.length - 1);
+
+  const images = await API.get(
+    `/images/building-works/tags?page=${page}&size=${size}&${concatenatedTags}`
+  );
+  return images;
+};
+
 export const getImagesByBuildingWorksId = async (id, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const images = await API.get(
     `/images/building-works/${id}?page=${page}&size=${size}`
+  );
+  return images;
+};
+
+export const getImagesByProductId = async (id, page, size, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const images = await API.get(
+    `/images/products/${id}?page=${page}&size=${size}`
   );
   return images;
 };
@@ -87,6 +108,13 @@ export const uploadCompanyPreview = async (image, token) => {
   const imageData = new FormData();
   imageData.append("image", image);
   await API.post(`/images/companies/preview`, imageData);
+};
+
+export const uploadCompanyBackground = async (image, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const imageData = new FormData();
+  imageData.append("image", image);
+  await API.post(`/images/companies/background`, imageData);
 };
 
 export const findCarouselImages = async () => {
@@ -120,12 +148,16 @@ export const addPreviewImageToBuildingWork = async (data, token) => {
   return await API.post(`/images/building-works/${data.id}/preview`, imageData);
 };
 
+export const getPreviewImageToBuildingWork = async (id) => {
+  return await API.get(`/images/building-works/${id}/preview`);
+}
+
 export const addImagesToBuildingWork = async (data, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  return await addImagesRecursive(data.id, Array.from(data.images));
+  return await addImagesRecursive(data.id, Array.from(data.images), addToBuildingWork);
 };
 
-const addImage = async (id, image) => {
+const addToBuildingWork = async (id, image) => {
   const imageData = new FormData();
   const tags = tagService.getTags(image.tags);
   imageData.append("image", image);
@@ -140,11 +172,36 @@ const addImage = async (id, image) => {
   });
 };
 
-const addImagesRecursive = async (id, images) => {
+const addToProduct = async (id, image) => {
+  const imageData = new FormData();
+  imageData.append("image", image);
+  return await API.post(`/images/products/${id}`, imageData, {
+    onUploadProgress: (progressEvent) => {
+      const progress = Math.round(
+        (progressEvent.loaded / progressEvent.total) * 100
+      );
+      image.setProgress(progress);
+    },
+  });
+};
+
+const addImagesRecursive = async (id, images, callback) => {
   const image = images.shift();
-  const response = await addImage(id, image);
+  const response = await callback(id, image);
   if (response && images.length > 0) {
     return await addImagesRecursive(id, images);
   }
   return response;
+};
+
+export const uploadPreviewImageToProduct = async (id, previewImage, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const imageData = new FormData();
+  imageData.append("image", previewImage);
+  await API.post(`/images/products/${id}/preview`, imageData);
+};
+
+export const uploadImagesToProduct = async (productId, images, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await addImagesRecursive(productId, Array.from(images), addToProduct);
 };
