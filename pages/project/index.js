@@ -45,11 +45,10 @@ const Project = ({ data, professionals, filters }) => {
 
   const { t } = useTranslation("common");
 
-  const onAddProject = async (data, id) => {
+  const onAddProject = async (data) => {
     setLoading(true);
     const project = await projectService.addProject(
       data,
-      id,
       session.accessToken
     );
     dispatch(projectActions.addItem(project));
@@ -119,7 +118,6 @@ const Project = ({ data, professionals, filters }) => {
         formBody={
           <FormProject
             onAddProject={onAddProject}
-            professionals={professionals}
             toggle={toggleModal}
           />
         }

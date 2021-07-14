@@ -1,0 +1,21 @@
+.backgroundImg {
+  object-fit: cover;
+}
+
+.previewDiv {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 150px;
+}
+
+.previewImg {
+  border-radius: 50%;
+  position: relative;
+  object-fit: cover;
+  width: 300px;
+  height: 300px;
+  top: -150px;
+  z-index: 100;
+}
