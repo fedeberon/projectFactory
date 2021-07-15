@@ -63,7 +63,9 @@ const CompanyDetails = ({ company, initalBuildingWorks }) => {
 };
 
 export async function getServerSideProps({ params, req, query, res, locale }) {
-  const companyId = "e2733d63-c0f0-48d7-873c-0bf98ca71fb1";
+  let { slug } = params;
+  const split = slug.split("-");
+  const companyId = split[split.length -1];
   const company = await companyService.findById(companyId);
   const initalBuildingWorks = await buildingWorkService.getAllByCompanyId(companyId, 0, 10);
   return {
