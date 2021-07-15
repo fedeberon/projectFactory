@@ -35,3 +35,12 @@ export const addProduct = async (product, token) => {
 export const getById = async (id) => {
   return await API.get(`/products/${id}`);
 };
+
+export const setStatus = async (id, status, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/products/${id}/status/${status}`);
+};
+
+export const findByContactAndStatus = async (contact, status, page, size) => {
+  return await API.get(`/products/contact/${contact}/status/${status}?page=${page}&size=${size}`);
+};

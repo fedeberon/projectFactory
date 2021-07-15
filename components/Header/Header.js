@@ -112,6 +112,12 @@ export default function Header() {
                   <NavLink>{t("professional")}</NavLink>
                 </Link>
               </DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>
+                <Link href="/admin/product">
+                  <NavLink>{t("product")}</NavLink>
+                </Link>
+              </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         )}

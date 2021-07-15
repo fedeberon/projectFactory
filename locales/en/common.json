@@ -116,7 +116,7 @@
 
   "table-admin": {
     "actions": "Action",
-    "there-are-not-more-professional": "There are not more professionals",
+    "there-are-not-more": "There are not more",
     "find-by-contact": "Find by contact",
     "tokens": "Tokens"
   },
@@ -230,5 +230,6 @@
   "product-detail": "Product detail",
   "select-preview-image-for-the-product": "Select preview image for the product",
   "product-form": "Product form",
-  "should-be-greater-than-0": "Should be greater than 0"
+  "should-be-greater-than-0": "Should be greater than 0",
+  "date": "Date"
 }
