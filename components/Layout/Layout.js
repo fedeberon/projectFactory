@@ -58,11 +58,11 @@ const Layout = ({ children, title, footer = true, header = true }) => {
             <Row className="row-cols-4 justify-content-center align-items-center w-100">
               <Col className="p-2">
                 <Image
-                  src={`/logo.svg`}
-                  width={200}
-                  height={"auto"}
+                  src={`/logo-02.svg`}
+                  width={145.295}
+                  height={41.358}
                   alt=""
-                  className={`${LayoutStyles.imgBlackAndWhite} text-muted`}
+                  className={`text-muted`}
                 />
               </Col>
               <Col>
