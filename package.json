@@ -30,7 +30,8 @@
     "react-select": "^4.3.1",
     "react-themeable": "^1.1.0",
     "reactstrap": "^8.9.0",
-    "redux": "^4.1.0"
+    "redux": "^4.1.0",
+    "swiper": "^6.7.5"
   },
   "devDependencies": {
     "css-loader": "^5.2.6"

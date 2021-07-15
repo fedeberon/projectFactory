@@ -9,17 +9,19 @@ import FilterList from "../components/FilterList/FilterList";
 import FilteredImages from "../components/FilteredImages/FilteredImages";
 import Layout from "../components/Layout/Layout";
 import CarouselBanner from "../components/CustomCarousel/CarouselBanner";
+import SliderProducts from "../components/SliderProducts/SliderProducts";
 
 // Services
 import * as tagService from "../services/tagService";
 import * as imageService from "../services/imageService";
+import * as productService from "../services/productService";
 
 // Styles
 import styles from "../styles/Home.module.css";
 import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
 
-const Home = ({ filters, carouselImages, session }) => {
+const Home = ({ filters, carouselImages, session, products }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -88,6 +90,17 @@ const Home = ({ filters, carouselImages, session }) => {
           <FilteredImages isLoading={isLoading} images={filteredImages} />
         </Col>
       </Row>
+      <Row>
+
+        <div className={styles.infoHead}>
+          <h2 className={styles.productsTitle}>{t("products")}
+          <small className={styles.productsSmallTitle}>{t("products-description")}</small>
+          </h2>
+        </div>
+
+        <SliderProducts products={products}/>
+
+      </Row>
     </Layout>
   );
 };
@@ -98,6 +111,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   const filters = await tagService.findAll();
   const carouselImages = await imageService.findCarouselImages();
+  const products = await productService.findAllByStatus(0, 10, "APPROVED");
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -112,6 +126,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
       filters: filters,
       carouselImages,
       session,
+      products,
     },
   };
 }
