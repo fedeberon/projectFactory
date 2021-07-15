@@ -9,7 +9,6 @@ const ProductList = (props) => {
 
   useEffect(() => {
     if (products) {
-      console.log(products);
       setProductsLocal(products);
     }
   }, [products]);

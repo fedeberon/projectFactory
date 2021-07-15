@@ -6,26 +6,29 @@ import * as productService from "../../services/productService";
 import ModalForm from "../../components/ModalForm";
 import Link from "next/link";
 import {
-    ButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    Card,
-    CardDeck,
-    Col,
-    Row,
-    Button,
-    CardBody,
-    CardText,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Card,
+  CardDeck,
+  Col,
+  Row,
+  Button,
+  CardBody,
+  CardText,
 } from "reactstrap";
 
 import FormProduct from "../../components/FormProduct/FormProduct";
 
 import {
-    PlusSquareDotted,
-    Images,
-    ThreeDotsVertical,
-    PencilSquare,
+  PlusSquareDotted,
+  Images,
+  ThreeDotsVertical,
+  PencilSquare,
+  XCircle,
+  ExclamationCircle,
+  Check2Circle,
 } from "react-bootstrap-icons";
 import indexStyles from "./index.module.css";
 import filteredImagesStyles from "../../components/FilteredImages/FilteredImages.module.css";
@@ -75,7 +78,7 @@ const MyProducts = (props) => {
     defaultValues: {
       name: "",
       description: "",
-      price: 0
+      price: 0,
     },
   });
 
@@ -157,7 +160,7 @@ const MyProducts = (props) => {
       defaultValues: {
         name: "",
         description: "",
-        price: 0
+        price: 0,
       },
     };
     setProductData(defaultValues);
@@ -167,12 +170,52 @@ const MyProducts = (props) => {
   };
 
   const onAddProduct = async (data) => {
-    await productService.addProduct(data, session.accessToken);
-    toggleModalProducts();
+    if (session) {
+      try {
+        let productNew = await productService.addProduct(
+          data,
+          session.accessToken
+        );
+
+        const productReload = await productService.findMyProducts(
+          pageSize.page,
+          pageSize.size,
+          session.accessToken
+        );
+
+        setLocalProducts(productReload);
+        toggleModalProducts();
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
-  const onSetProduct = (data) => {
-    console.log(data);
+  const onSetProduct = (data) => {};
+
+  const isState = (product) => {
+    let statusColor;
+    let ico;
+    if (product.status === "PENDING") {
+      statusColor = `bg-warning text-dark`;
+      ico = <ExclamationCircle className={`${statusColor}`} size={15} />;
+    }
+    if (product.status === "APPROVED") {
+      statusColor = "bg-success";
+      ico = <Check2Circle className={`${statusColor}`} size={15} />;
+    }
+    if (product.status === "REJECTED") {
+      statusColor = `bg-danger`;
+      ico = <XCircle className={`${statusColor}`} size={15} />;
+    }
+    return (
+      <>
+        <CardText className={`${indexStyles.itemStatus} ${statusColor} m-0`}>
+          {ico}
+          {t(product.status.toLowerCase())}
+        </CardText>
+      </>
+    );
   };
 
   const imagesCard = (
@@ -182,7 +225,6 @@ const MyProducts = (props) => {
       ) : (
         localProducts.map((product) => (
           <Col key={product.id}>
-            
             <CardDeck className={`${filteredImagesStyles.colCard}`}>
               <Card>
                 <CardBody className="p-0">
@@ -193,11 +235,20 @@ const MyProducts = (props) => {
                     }`}
                   >
                     <img
-                      className={`${filteredImagesStyles.cardImage}`}
+                      className={`${filteredImagesStyles.cardImage} ${
+                        indexStyles.cursorPointer
+                      } ${
+                        product.status === "PENDING"
+                          ? `${indexStyles.imgGray}`
+                          : product.status === "REJECTED"
+                          ? `${indexStyles.imgRejected}`
+                          : ``
+                      }`}
                       src={product.previewImage}
                       alt="preview"
                     />
                   </Link>
+                  {isState(product)}
                   <div className={`${filteredImagesStyles.cardText}`}>
                     <Col className="col-auto">
                       <img
@@ -234,76 +285,76 @@ const MyProducts = (props) => {
   );
 
   return (
-  <Layout>
+    <Layout>
       <Row className="row-cols-2 g-2">
         <Col className="col-auto">
           <Button outline color="primary" onClick={openModalProduct}>
             <PlusSquareDotted size={100} />
           </Button>
         </Col>
-        <Col className="col-auto">{imagesCard}</Col>
-    </Row>
+        <Col className="col-12">{imagesCard}</Col>
+      </Row>
 
-    <ModalForm
+      <ModalForm
         size={"xl"}
-        modalTitle={t("work-form")}
+        modalTitle={t("product-form")}
         className={"Button mt-50"}
         formBody={
-        <>
-          <FormProduct
-            onAddProduct={onAddProduct}
-            onSetProduct={onSetProduct}
-            toggle={toggleModalProducts}
-            productData={productData}
-            previewImage={previewImage}
-            setPreviewImage={setPreviewImage}
-            images={images}
-            setImages={setImages}
-            changeState={{ stateFormProduct, function: setStateFormProduct }}
-            productId={productId}
-          />
-        </>
+          <>
+            <FormProduct
+              onAddProduct={onAddProduct}
+              onSetProduct={onSetProduct}
+              toggle={toggleModalProducts}
+              productData={productData}
+              previewImage={previewImage}
+              setPreviewImage={setPreviewImage}
+              images={images}
+              setImages={setImages}
+              changeState={{ stateFormProduct, function: setStateFormProduct }}
+              productId={productId}
+            />
+          </>
         }
         modalOpen={{ open: modalProducts, function: setModalProducts }}
       />
-  </Layout>
+    </Layout>
   );
 };
 
 export async function getServerSideProps({ params, req, res, locale }) {
-    const session = await getSession({ req });
+  const session = await getSession({ req });
 
-    if (
-      !session ||
-      !session.authorities.includes(process.env.NEXT_PUBLIC_ROLE_COMPANY)
-    ) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
-
-    let { page, size } = req.__NEXT_INIT_QUERY;
-
-    if (!page || page <= 0) {
-      page = 0;
-    }
-    if (!size || size <= 0) {
-      size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
-    }
-
-    const data = await productService.findMyProducts(
-      page,
-      size,
-      session.accessToken
-    );
-
+  if (
+    !session ||
+    !session.authorities.includes(process.env.NEXT_PUBLIC_ROLE_COMPANY)
+  ) {
     return {
-      props: {
-        data
+      redirect: {
+        destination: "/",
+        permanent: false,
       },
     };
-};
+  }
+
+  let { page, size } = req.__NEXT_INIT_QUERY;
+
+  if (!page || page <= 0) {
+    page = 0;
+  }
+  if (!size || size <= 0) {
+    size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
+  }
+
+  const data = await productService.findMyProducts(
+    page,
+    size,
+    session.accessToken
+  );
+
+  return {
+    props: {
+      data,
+    },
+  };
+}
 export default MyProducts;

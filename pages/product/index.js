@@ -27,7 +27,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   let products = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
-
+  let status = "APPROVED";
   if (!page || page <= 0) {
     page = 0;
   }
@@ -35,7 +35,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  products = await productService.findAll(page, size);
+  products = await productService.findAll(status, page, size);
 
   return {
     props: {

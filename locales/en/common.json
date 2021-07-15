@@ -9,7 +9,7 @@
     "search-placeholder": "Find ideas/ professionals",
     "search-by-ideas": "Search by ideas",
     "search-by-professionals": "Search by professionals",
-    "my-products" : "My products"
+    "my-products": "My products"
   },
 
   "product": "Product",
@@ -68,6 +68,10 @@
   "upload-files": "Upload files",
   "upload-images": "Upload images",
   "send": "Send",
+
+  "pending": "Pending",
+  "approved": "Approved",
+  "rejected": "Rejected",
 
   "administrator-creator": {
     "add-administrator": "Add administrator",
@@ -219,9 +223,12 @@
     "select-background-picture": "Select background picture"
   },
 
-  "photos" : "Photos",
-  "search":"Search",
+  "photos": "Photos",
+  "search": "Search",
   "filter-by-option": "Filter by option",
 
-  "product-detail": "Product detail"
+  "product-detail": "Product detail",
+  "select-preview-image-for-the-product": "Select preview image for the product",
+  "product-form": "Product form",
+  "should-be-greater-than-0": "Should be greater than 0"
 }
