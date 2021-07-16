@@ -18,6 +18,7 @@ import {
 } from "../../../services/professionalService";
 import * as professionalService from "../../../services/professionalService";
 import * as imageService from "../../../services/imageService";
+import Link from "next/link";
 
 const ProfessionalAdmin = ({
   professionalNotApproved,
@@ -78,13 +79,22 @@ const ProfessionalAdmin = ({
    */
   const buttonAcceptImages = (professionalId) => {
     return (
-      <Button
-        outline
-        color={"success"}
-        onClick={async () => changeStateImages(professionalId, true)}
-      >
-        <CheckCircle size={25} /> {t("accept-images")}
-      </Button>
+      // <Button
+      //   outline
+      //   color={"success"}
+      //   onClick={async () => changeStateImages(professionalId, true)}
+      // >
+      //   <CheckCircle size={25} /> {t("accept-images")}
+      // </Button>
+      <Link href={"/admin/building"}>
+        <Button
+          outline
+          color={"success"}
+          // onClick={async () => changeStateImages(professionalId, true)}
+        >
+          <CheckCircle size={25} /> {t("managing-images")}
+        </Button>
+      </Link>
     );
   };
 
@@ -161,7 +171,6 @@ const ProfessionalAdmin = ({
   const renderApprovedProfessionals = (professionals) => {
     const professionalsList = getList(professionals, [
       (professionalId) => buttonReject(professionalId),
-      (professionalId) => buttonAcceptImages(professionalId),
     ]);
     setProfessionalListAppoved(professionalsList);
   };
@@ -301,7 +310,6 @@ const ProfessionalAdmin = ({
     if (professionalApproved) {
       const professionalList = getList(professionalApproved, [
         (professionalId) => buttonReject(professionalId),
-        (professionalId) => buttonAcceptImages(professionalId),
       ]);
       setProfessionalListAppoved(professionalList);
     }

@@ -22,7 +22,6 @@ import * as companyService from "../../services/companyService";
 
 const Admin = ({
   professionalNotApproved,
-  companiesNotApproved,
   professionalApproved,
   professionalRejected,
   session,
@@ -31,8 +30,6 @@ const Admin = ({
   const [professionalListNotAppoved, setProfessionalListNotAppoved] = useState(
     []
   );
-  const [companyListNotAppoved, setCompanyListNotAppoved] =
-    useState(companiesNotApproved);
   const [professionalListAppoved, setProfessionalListAppoved] = useState([]);
   const [professionalListRejected, setProfessionalListRejected] = useState([]);
 
@@ -207,19 +204,17 @@ const Admin = ({
     }
   };
 
-  const getCompaniesForApproved = async (status) => {
-    try {
-      const companiesNotApproved = await companyService.findAll(
-        status,
-        pageSize.page,
-        pageSize.size,
-        session?.accessToken
-      );
-      return companiesNotApproved;
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const listHead = (
+    <>
+      <th>{t("common:image")}</th>
+      <th>{t("common:contact")}</th>
+      <th>{t("common:company")}</th>
+      <th>{t("common:email")}</th>
+      <th>{t("common:date")}</th>
+      <th>{t("common:table-admin.tokens")}</th>
+      <th>{t("common:table-admin.actions")}</th>
+    </>
+  );
 
   /**
    * Complete the body part of the table showing the result of the pending,
@@ -246,12 +241,13 @@ const Admin = ({
           <td>{professional.contact}</td>
           <td>{professional.company.name}</td>
           <td>{professional.email}</td>
+          <td>{professional.statusUpdate}</td>
           <td>
             <Input
               min="0"
               type="number"
               className="d-inline-block w-50 mr-2"
-              defaultValue={professional.tokens}
+              defaultValue={professional.tokensAsigned}
             />
             <Button
               onClick={(e) =>
@@ -269,25 +265,6 @@ const Admin = ({
               return <div key={index}>{button(professional.id)}</div>;
             })}
           </td>
-        </tr>
-      );
-    });
-    const companyList = companyListNotAppoved.map((company, index) => {
-      return (
-        <tr key={index}>
-          <td scope="row">{index + 1}</td>
-          <td width="150px">
-            <figure className="figure mx-auto">
-              <img
-                className="img-fluid rounded"
-                src={company.previewImage}
-                alt=""
-              />
-            </figure>
-          </td>
-          <td>{company.contact}</td>
-          <td>{company.name}</td>
-          <td>{company.email}</td>
         </tr>
       );
     });
@@ -315,7 +292,7 @@ const Admin = ({
       ]);
       setProfessionalListNotAppoved(professionalList);
     }
-  }, [professionalNotApproved, companiesNotApproved]);
+  }, [professionalNotApproved]);
 
   /**
    * This is for when using the SSR and loading the tableAdmin component properly
@@ -384,21 +361,24 @@ const Admin = ({
         <Col>
           <Tabs titles={titles}>
             <TableAdmin
-              professionalList={professionalListNotAppoved}
+              listHead={listHead}
+              listBody={professionalListNotAppoved}
               title={titles[0]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "PENDING")
               }
             />
             <TableAdmin
-              professionalList={professionalListAppoved}
+              listHead={listHead}
+              listBody={professionalListAppoved}
               title={titles[1]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "APPROVED")
               }
             />
             <TableAdmin
-              professionalList={professionalListRejected}
+              listHead={listHead}
+              listBody={professionalListRejected}
               title={titles[2]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "REJECTED")
@@ -432,7 +412,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
   let professionalNotApproved = [];
   let professionalApproved = [];
   let professionalRejected = [];
-  let companiesNotApproved = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -451,13 +430,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
       size,
       token
     );
-    companiesNotApproved = await companyService.findAll(
-      status,
-      page,
-      size,
-      session?.accessToken
-    );
-
     status = "APPROVED";
     professionalApproved = await getProfessionalForApproved(
       status,
@@ -477,7 +449,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
   return {
     props: {
       professionalNotApproved,
-      companiesNotApproved,
       professionalApproved,
       professionalRejected,
       session,

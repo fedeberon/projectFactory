@@ -1,9 +1,9 @@
 import API from "./api";
 import * as tagService from "./tagService";
 
-export const findAll = async (page, size, token) => {
+export const findAll = async (status, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  return await API.get(`/building-works?page=${page}&size=${size}`);
+  return await API.get(`/building-works/status/${status}?page=${page}&size=${size}`);
 };
 
 export const getByProfessionalId = async (
@@ -70,4 +70,13 @@ export const editTags = async (image, token) => {
   const tags = tagService.getTags(image.tags);
   imageData.append("tags", tags);
   return await API.put(`/images/${image.id}/building-works/tags`, imageData);
+};
+
+export const setStatus = async (id, status, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/building-works/${id}/status/${status}`);
+};
+
+export const findByContactAndStatus = async (contact, status, page, size) => {
+  return await API.get(`/building-works/contact/${contact}/status/${status}?page=${page}&size=${size}`);
 };
