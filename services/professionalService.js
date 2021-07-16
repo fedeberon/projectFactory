@@ -87,7 +87,7 @@ export const become = async (professional, token) => {
   return response.token;
 };
 
-export const getProfessionalForApproved = async (status, page, size, token) => {
+export const getForApproved = async (status, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.get(
     `/professionals/status/${status}?page=${page}&size=${size}`

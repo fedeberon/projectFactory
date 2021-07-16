@@ -12,10 +12,6 @@ import TableAdmin from "../../../components/TableAdmin/TableAdmin";
 import { Input } from "reactstrap";
 
 //Services
-import {
-  getProfessionalForApproved,
-  setEnebleProfessional,
-} from "../../../services/professionalService";
 import * as professionalService from "../../../services/professionalService";
 import * as imageService from "../../../services/imageService";
 import Link from "next/link";
@@ -200,7 +196,7 @@ const ProfessionalAdmin = ({
    */
   const getProfessional = async (status) => {
     try {
-      const professionalNotApproved = await getProfessionalForApproved(
+      const professionalNotApproved = await professionalService.getForApproved(
         status,
         pageSize.page,
         pageSize.size,
@@ -431,7 +427,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (session) {
     let status = "PENDING";
     token = session.accessToken;
-    professionalNotApproved = await getProfessionalForApproved(
+    professionalNotApproved = await professionalService.getForApproved(
       status,
       page,
       size,
@@ -439,14 +435,14 @@ export async function getServerSideProps({ params, req, res, locale }) {
     );
 
     status = "APPROVED";
-    professionalApproved = await getProfessionalForApproved(
+    professionalApproved = await professionalService.getForApproved(
       status,
       page,
       size,
       token
     );
     status = "REJECTED";
-    professionalRejected = await getProfessionalForApproved(
+    professionalRejected = await professionalService.getForApproved(
       status,
       page,
       size,
