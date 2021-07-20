@@ -24,9 +24,9 @@ const Profile = ({ data, imagesLiked, status }) => {
     }
   }, [session]);
 
-  const saveProfessional = async (data, token) => {
+  const saveProfessional = async (data) => {
     try {
-      const professionalToken = await professionalService.become(data, token);
+      const professionalToken = await professionalService.become(data, session.accessToken);
 
       return professionalToken;
     } catch (error) {
@@ -67,13 +67,11 @@ const Profile = ({ data, imagesLiked, status }) => {
     data.category = category;
     const previewImage = data.previewImage;
     const backgroundImage = data.backgroundImage;
-    const images = data.images;
     delete data.previewImage;
     delete data.backgroundImage;
     delete data.images;
-
-    const token = await saveProfessional(data, session?.accessToken);
-
+    const token = await saveProfessional(data);
+    
     if (token != null) {
       if (previewImage) {
         await savePreviewImage(token, previewImage);
@@ -81,11 +79,8 @@ const Profile = ({ data, imagesLiked, status }) => {
       if (backgroundImage) {
         await saveBackgroundImage(token, backgroundImage);
       }
-      if (images.length > 0) {
-        await saveImages(images, token);
-      }
     }
-
+    await professionalService.updateToken(token, session.user.id);
     return token;
   };
 

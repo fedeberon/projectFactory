@@ -231,5 +231,11 @@
   "select-preview-image-for-the-product": "Seleccione la imagen de vista previa para el producto",
   "product-form": "Formulario de producto",
   "should-be-greater-than-0": "Debe ser superior a 0",
-  "date": "Fecha"
+  "date": "Fecha",
+
+  "about-home":{
+    "a-factory-of-ideas":"Una fabrica de ideas",
+    "we-are-an-online-platform":"Somos una plataforma online conecta a miles de propietarios de viviendas con los profesionales del diseño."
+  }
+
 }

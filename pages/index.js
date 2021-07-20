@@ -9,6 +9,7 @@ import FilterList from "../components/FilterList/FilterList";
 import FilteredImages from "../components/FilteredImages/FilteredImages";
 import Layout from "../components/Layout/Layout";
 import CarouselBanner from "../components/CustomCarousel/CarouselBanner";
+import AboutHome from "../components/AboutHome";
 
 // Services
 import * as tagService from "../services/tagService";
@@ -88,6 +89,7 @@ const Home = ({ filters, carouselImages, session }) => {
           <FilteredImages isLoading={isLoading} images={filteredImages} />
         </Col>
       </Row>
+      <AboutHome/>
     </Layout>
   );
 };

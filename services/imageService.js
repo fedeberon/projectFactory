@@ -12,6 +12,11 @@ export const getProjectImages = async (id, token, page, size) => {
   return images;
 };
 
+export const increaseVisit = async (image) => {
+  image.seen = true;
+  await API.put(`/images/${image.id}/visit`);
+};
+
 export const getProjectsImagesFiltered = async (token, page, size) => {
   API.defaults.headers.common["Authorization"] = token;
   let images = await API.get(
