@@ -126,7 +126,8 @@ const CompanyCreator = () => {
             previewImage[0],
             backgroundImage[0],
             tagsCategories,
-            session?.accessToken
+            session?.accessToken,
+            session.user.id
           );
           setTagsCategories([]);
           setPreviewImage([]);
