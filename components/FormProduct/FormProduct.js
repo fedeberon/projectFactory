@@ -12,10 +12,7 @@ import {
     Button,
     Form,
     FormGroup,
-    Label,
-    Input,
-    FormText,
-  } from "reactstrap";
+  } from "react-bootstrap";
 
 const FormProduct = ({
     toggle,
@@ -98,7 +95,7 @@ const FormProduct = ({
                         <Row>
                             <Col>
                                 <FormGroup>
-                                    <Label for="name">{t("name")}</Label>
+                                    <Form.Label htmlFor="name">{t("name")}</Form.Label>
                                     <Controller
                                         name="name"
                                         control={control}
@@ -119,7 +116,7 @@ const FormProduct = ({
                                         }}
                                         defaultValue=""
                                         render={({ field }) => (
-                                            <Input
+                                            <Form.Control
                                                 {...field}
                                                 type="text"
                                                 id="name"
@@ -133,16 +130,16 @@ const FormProduct = ({
                                         )}
                                     />
                                     {errors.name && (
-                                        <FormText
-                                            color="danger"
+                                        <Form.Text
+                                            variant="danger"
                                             className="invalid error-label text-danger"
                                         >
                                             {errors.name.message}
-                                        </FormText>
+                                        </Form.Text>
                                     )}
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="description">{t("description")}</Label>
+                                    <Form.Label htmlFor="description">{t("description")}</Form.Label>
                                     <Controller
                                         name="description"
                                         control={control}
@@ -170,7 +167,7 @@ const FormProduct = ({
                                         }}
                                         defaultValue=""
                                         render={({ field }) => (
-                                            <Input
+                                            <Form.Control
                                                 {...field}
                                                 type="textarea"
                                                 id="description"
@@ -188,16 +185,16 @@ const FormProduct = ({
                                         )}
                                     />
                                     {errors.description && (
-                                        <FormText
-                                            color="danger"
+                                        <Form.Text
+                                            variant="danger"
                                             className="invalid error-label text-danger"
                                         >
                                             {errors.description.message}
-                                        </FormText>
+                                        </Form.Text>
                                     )}
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="price">{t("price")}</Label>
+                                    <Form.Label htmlFor="price">{t("price")}</Form.Label>
                                     <Controller
                                         name="price"
                                         control={control}
@@ -211,7 +208,7 @@ const FormProduct = ({
                                         }}
                                         defaultValue=""
                                         render={({ field }) => (
-                                            <Input
+                                            <Form.Control
                                                 {...field}
                                                 type="number"
                                                 id="price"
@@ -229,20 +226,20 @@ const FormProduct = ({
                                         )}
                                     />
                                     {errors.price && (
-                                        <FormText
-                                            color="danger"
+                                        <Form.Text
+                                            variant="danger"
                                             className="invalid error-label text-danger"
                                         >
                                             {errors.price.message}
-                                        </FormText>
+                                        </Form.Text>
                                     )}
                                 </FormGroup>
                             </Col>
                             <Col>
                                 <FormGroup>
-                                    <Label for="filePreview">
+                                    <Form.Label htmlFor="filePreview">
                                         {t("select-preview-image-for-building-work")}
-                                    </Label>
+                                    </Form.Label>
                                     <Dropzone
                                         newFiles={previewImage}
                                         setFile={setPreviewImage}
@@ -257,7 +254,7 @@ const FormProduct = ({
                         <Row>
                             <Col className="p-0">
                                 <FormGroup className="text-center">
-                                    <Label for="uploadFiles">{t("common:upload-images")}</Label>
+                                    <Form.Label htmlFor="uploadFiles">{t("common:upload-images")}</Form.Label>
                                     <InputImages
                                         images={images}
                                         accept={"image/*"}
@@ -270,12 +267,12 @@ const FormProduct = ({
                             </Col>
                         </Row>
                         {changeState.stateFormProduct.post && (
-                            <Button type="submit" color="primary mt-1">
+                            <Button type="submit" variant="primary mt-1">
                                 {t("common:send")}
                             </Button>
                         )}
                         {changeState.stateFormProduct.put && (
-                            <Button type="submit" color="warning mt-1">
+                            <Button type="submit" variant="warning mt-1">
                                 {t("common:send")}
                             </Button>
                         )}

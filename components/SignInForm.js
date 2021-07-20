@@ -4,14 +4,10 @@ import {
   Button,
   Form,
   FormGroup,
-  Label,
-  Input,
-  FormText,
   Card,
-  CardBody,
   Row,
   Col,
-} from "reactstrap";
+} from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import { signIn } from "next-auth/client";
 import { Google, Facebook, Instagram } from "react-bootstrap-icons";
@@ -40,11 +36,11 @@ const SignInForm = (props) => {
     <Row className="d-flex justify-content-center">
       <Col xs={6}>
         <Card>
-          <CardBody>
+          <Card.Body>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <FormGroup>
-                <Label for="email">{t("email")}</Label>
-                <Input
+                <Form.Label htmlFor="email">{t("email")}</Form.Label>
+                <Form.Control
                   type="email"
                   name="email"
                   onClick={resetAlert}
@@ -70,14 +66,14 @@ const SignInForm = (props) => {
                   className={"form-field" + (errors.email ? " has-error" : "")}
                 />
                 {errors.email && (
-                  <FormText color="danger" className="error-label">
+                  <Form.Text variant="danger" className="error-label">
                     {errors.email.message}
-                  </FormText>
+                  </Form.Text>
                 )}
               </FormGroup>
               <FormGroup>
-                <Label for="name">{t("name")}</Label>
-                <Input
+                <Form.Label htmlFor="name">{t("name")}</Form.Label>
+                <Form.Control
                   type="text"
                   onClick={resetAlert}
                   id="name"
@@ -102,14 +98,14 @@ const SignInForm = (props) => {
                   className={"form-field" + (errors.name ? " has-error" : "")}
                 />
                 {errors.name && (
-                  <FormText color="danger" className="error-label">
+                  <Form.Text variant="danger" className="error-label">
                     {errors.name.message}
-                  </FormText>
+                  </Form.Text>
                 )}
               </FormGroup>
               <FormGroup>
-                <Label for="password">{t("password")}</Label>
-                <Input
+                <Form.Label htmlFor="password">{t("password")}</Form.Label>
+                <Form.Control
                   type="password"
                   id="password"
                   onClick={resetAlert}
@@ -136,12 +132,12 @@ const SignInForm = (props) => {
                   }
                 />
                 {errors.password && (
-                  <FormText color="danger" className="error-label">
+                  <Form.Text variant="danger" className="error-label">
                     {errors.password.message}
-                  </FormText>
+                  </Form.Text>
                 )}
               </FormGroup>
-              <Button type="submit" color="primary" className="mt-2">
+              <Button type="submit" variant="primary" className="mt-2">
                 {t("common:sign-in")}
               </Button>
               {usernameAlreadyExists && (
@@ -150,24 +146,24 @@ const SignInForm = (props) => {
                 </div>
               )}
             </Form>
-            <Label for="Registrarse">Registrarse con:</Label>
+            <Form.Label htmlFor="Registrarse">Registrarse con:</Form.Label>
             <Button
               onClick={() => signIn("google")}
-              color="danger"
+              variant="danger"
               className="mx-2"
             >
               <Google size={25} />
             </Button>
             <Button
               onClick={() => signIn("facebook")}
-              color="primary"
+              variant="primary"
               className="mx-2"
             >
               <Facebook size={25} />
             </Button>
             <Button
               onClick={() => signIn("instagram")}
-              color="secondary"
+              variant="secondary"
               className="mx-2"
             >
               <Instagram size={25} />
@@ -179,7 +175,7 @@ const SignInForm = (props) => {
                 </Link>
               </Col>
             </Row>
-          </CardBody>
+          </Card.Body>
         </Card>
       </Col>
     </Row>

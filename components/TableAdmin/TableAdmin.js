@@ -1,8 +1,8 @@
 import React from "react";
 import { InfoCircleFill } from "react-bootstrap-icons";
-import { Alert, Table } from "reactstrap";
+import { Alert, Table } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
-import { Input } from "reactstrap";
+import { Form } from "react-bootstrap";
 
 const TableAdmin = ({ professionalList, title, onSearch }) => {
   const { t, lang } = useTranslation("common");
@@ -16,7 +16,7 @@ const TableAdmin = ({ professionalList, title, onSearch }) => {
       <thead>
         <tr className="text-center">
           <th>
-            <Input
+            <Form.Control
               type="search"
               placeholder={t("table-admin.find-by-contact")}
               onChange={handleChangeInput}
@@ -36,7 +36,7 @@ const TableAdmin = ({ professionalList, title, onSearch }) => {
         ) : (
           <tr>
             <td colSpan="7" className="p-0">
-              <Alert color="primary text-center">
+              <Alert variant="primary text-center">
                 <InfoCircleFill size={25} />
                 {`${t(
                   "table-admin.there-are-not-more-professional"

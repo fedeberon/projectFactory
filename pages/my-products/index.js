@@ -6,26 +6,22 @@ import * as productService from "../../services/productService";
 import ModalForm from "../../components/ModalForm";
 import Link from "next/link";
 import {
-    ButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    Card,
-    CardDeck,
-    Col,
-    Row,
-    Button,
-    CardBody,
-    CardText,
-} from "reactstrap";
+  Dropdown,
+  Card,
+  CardDeck,
+  Col,
+  Row,
+  Button,
+  DropdownButton,
+} from "react-bootstrap";
 
 import FormProduct from "../../components/FormProduct/FormProduct";
 
 import {
-    PlusSquareDotted,
-    Images,
-    ThreeDotsVertical,
-    PencilSquare,
+  PlusSquareDotted,
+  Images,
+  ThreeDotsVertical,
+  PencilSquare,
 } from "react-bootstrap-icons";
 import indexStyles from "./index.module.css";
 import filteredImagesStyles from "../../components/FilteredImages/FilteredImages.module.css";
@@ -36,21 +32,23 @@ const CustomButtonTogle = ({ id, editProduct }) => {
   const [dropdownOpen, setOpen] = useState(false);
   const toggle = () => setOpen((dropdownOpen) => !dropdownOpen);
   return (
-    <ButtonDropdown direction="left" isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle outline color="light">
-        <ThreeDotsVertical color={"dark"} size={25} />
-      </DropdownToggle>
-      <DropdownMenu>
-        <DropdownItem
+    <DropdownButton 
+      variant="start" 
+      drop="left" 
+      align="end" 
+      title={<ThreeDotsVertical color={"dark"} size={25} />
+    }>
+      <Dropdown.Menu>
+        <Dropdown.Item
           onClick={() => {
             editProduct(id);
           }}
         >
           <PencilSquare color={"red"} size={25} />
           {` Edit`}
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </DropdownButton>
   );
 };
 
@@ -182,51 +180,47 @@ const MyProducts = (props) => {
       ) : (
         localProducts.map((product) => (
           <Col key={product.id}>
-            
-            <CardDeck className={`${filteredImagesStyles.colCard}`}>
-              <Card>
-                <CardBody className="p-0">
-                  <Link
-                    href={`/product/[id]`}
-                    as={`/product/${product.name.replace(/\s+/g, "-")}-${
-                      product.id
+            <Card className={`${filteredImagesStyles.colCard}`}>
+              <Card.Body className="p-0">
+                <Link
+                  href={`/product/[id]`}
+                  as={`/product/${product.name.replace(/\s+/g, "-")}-${product.id
                     }`}
-                  >
+                >
+                  <img
+                    className={`${filteredImagesStyles.cardImage}`}
+                    src={product.previewImage}
+                    alt="preview"
+                  />
+                </Link>
+                <div className={`${filteredImagesStyles.cardText}`}>
+                  <Col className="col-auto">
                     <img
-                      className={`${filteredImagesStyles.cardImage}`}
-                      src={product.previewImage}
-                      alt="preview"
+                      className={`${filteredImagesStyles.imgProfile} rounded-circle`}
                     />
-                  </Link>
-                  <div className={`${filteredImagesStyles.cardText}`}>
-                    <Col className="col-auto">
-                      <img
-                        className={`${filteredImagesStyles.imgProfile} rounded-circle`}
-                      />
-                    </Col>
-                    <Col className={`col-auto`}>
-                      <CardText
-                        className={`${filteredImagesStyles.textShadowSm} fw-bold`}
-                      >
-                        {product.name}
-                      </CardText>
-                    </Col>
-                    <Col
-                      className={`col-auto ${filteredImagesStyles.containerHeart}`}
+                  </Col>
+                  <Col className={`col-auto`}>
+                    <Card.Text
+                      className={`${filteredImagesStyles.textShadowSm} fw-bold`}
                     >
-                      {session && (
-                        <div>
-                          <CustomButtonTogle
-                            id={product.id}
-                            editProduct={editProduct}
-                          />
-                        </div>
-                      )}
-                    </Col>
-                  </div>
-                </CardBody>
-              </Card>
-            </CardDeck>
+                      {product.name}
+                    </Card.Text>
+                  </Col>
+                  <Col
+                    className={`col-auto ${filteredImagesStyles.containerHeart}`}
+                  >
+                    {session && (
+                      <div>
+                        <CustomButtonTogle
+                          id={product.id}
+                          editProduct={editProduct}
+                        />
+                      </div>
+                    )}
+                  </Col>
+                </div>
+              </Card.Body>
+            </Card>
           </Col>
         ))
       )}
@@ -234,55 +228,57 @@ const MyProducts = (props) => {
   );
 
   return (
-  <Layout>
-      <Row className="row-cols-2 g-2">
-        <Col className="col-auto">
-          <Button outline color="primary" onClick={openModalProduct}>
-            <PlusSquareDotted size={100} />
-          </Button>
-        </Col>
-        <Col className="col-auto">{imagesCard}</Col>
-    </Row>
+    <Layout>
+      <section className="container py-2">
+        <Row className="row-cols-2 g-2">
+          <Col className="col-auto">
+            <Button variant="outline-primary" onClick={openModalProduct}>
+              <PlusSquareDotted size={100} />
+            </Button>
+          </Col>
+          <Col className="col-auto">{imagesCard}</Col>
+        </Row>
 
-    <ModalForm
-        size={"xl"}
-        modalTitle={t("work-form")}
-        className={"Button mt-50"}
-        formBody={
-        <>
-          <FormProduct
-            onAddProduct={onAddProduct}
-            onSetProduct={onSetProduct}
-            toggle={toggleModalProducts}
-            productData={productData}
-            previewImage={previewImage}
-            setPreviewImage={setPreviewImage}
-            images={images}
-            setImages={setImages}
-            changeState={{ stateFormProduct, function: setStateFormProduct }}
-            productId={productId}
-          />
-        </>
-        }
-        modalOpen={{ open: modalProducts, function: setModalProducts }}
-      />
-  </Layout>
+        <ModalForm
+          size={"xl"}
+          modalTitle={t("work-form")}
+          className={"Button mt-50"}
+          formBody={
+            <>
+              <FormProduct
+                onAddProduct={onAddProduct}
+                onSetProduct={onSetProduct}
+                toggle={toggleModalProducts}
+                productData={productData}
+                previewImage={previewImage}
+                setPreviewImage={setPreviewImage}
+                images={images}
+                setImages={setImages}
+                changeState={{ stateFormProduct, function: setStateFormProduct }}
+                productId={productId}
+              />
+            </>
+          }
+          modalOpen={{ open: modalProducts, function: setModalProducts }}
+        />
+      </section>
+    </Layout>
   );
 };
 
 export async function getServerSideProps({ params, req, res, locale }) {
-    const session = await getSession({ req });
+  const session = await getSession({ req });
 
-    const data = await productService.findMyProducts(
-      0,
-      10,
-      session.accessToken
-    );
+  const data = await productService.findMyProducts(
+    0,
+    10,
+    session.accessToken
+  );
 
-    return {
-      props: {
-        data
-      },
-    };
+  return {
+    props: {
+      data
+    },
+  };
 };
 export default MyProducts;

@@ -125,16 +125,18 @@ const Profile = ({ data, imagesLiked, status }) => {
 
   return (
     <Layout title={`${t("header.profile")}`}>
-      <ProfileData
-        onBecomeProfessional={onBecomeProfessional}
-        error={error}
-        setError={setError}
-        data={data}
-        onBuyPlan={onBuyPlan}
-        linkToMercadopago={linkToMercadopago}
-        status={status}
-      />
-      <SeeImagesLiked imagesLiked={imagesLiked} />
+      <section className="container py-2">
+        <ProfileData
+          onBecomeProfessional={onBecomeProfessional}
+          error={error}
+          setError={setError}
+          data={data}
+          onBuyPlan={onBuyPlan}
+          linkToMercadopago={linkToMercadopago}
+          status={status}
+        />
+        <SeeImagesLiked imagesLiked={imagesLiked} />
+      </section>
     </Layout>
   );
 };

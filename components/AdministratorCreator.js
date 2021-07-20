@@ -3,9 +3,9 @@ import { useSession } from "next-auth/client";
 import {
   Button,
   Col,
-  Label,
   Row,
-} from "reactstrap";
+  Form,
+} from "react-bootstrap";
 import ModalForm from "./ModalForm";
 import Autosuggest from "react-autosuggest";
 import useTranslation from "next-translate/useTranslation";
@@ -117,9 +117,9 @@ const AdministratorCreator = () => {
         formBody={
           <>
             <h6>{t("administrator-creator.please-select-administrator")}</h6>
-            <Label for="administrator">
+            <Form.Label htmlfor="administrator">
               {t("administrator-creator.username")}
-            </Label>
+            </Form.Label>
 
             <Autosuggest
               suggestions={suggestions}

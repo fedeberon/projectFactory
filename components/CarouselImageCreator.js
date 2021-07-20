@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
-import { Button, Container, FormGroup, Input, Label } from "reactstrap";
+import { Button, Container, Form } from "react-bootstrap";
 import ModalForm from "./ModalForm";
 import useTranslation from "next-translate/useTranslation";
 import InputImages from "./InputImages/InputImages";
@@ -83,26 +83,26 @@ const CarouselImageCreator = ({ onAddCarouselImages }) => {
               src={currentImage.preview}
               alt="image-selected"
             ></img>
-            <FormGroup>
-              <Label for="input-title">
+            <Form.Group>
+              <Form.Label htmlfor="input-title">
                 {t("carousel-image-creator.title")}
-              </Label>
+              </Form.Label>
               <br></br>
-              <Input id="input-title" />
+              <Form.Control id="input-title" />
               <br></br>
-              <Label for="input-subTitle">
+              <Form.Label htmlfor="input-subTitle">
                 {t("carousel-image-creator.sub-title")}
-              </Label>
+              </Form.Label>
               <br></br>
-              <Input id="input-subTitle" />
-              <Label for="input-link">{t("link")}</Label>
+              <Form.Control id="input-subTitle" />
+              <Form.Label htmlfor="input-link">{t("link")}</Form.Label>
               <br></br>
-              <Input id="input-link" />
-            </FormGroup>
+              <Form.Control id="input-link" />
+            </Form.Group>
 
             <Button
               onClick={() => onAddTitle(currentImage)}
-              color="primary mt-1"
+              variant="primary mt-1"
             >
               {t("add-title")}
             </Button>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Container } from "reactstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import ImageLiked from "./ImageLiked";
 import useTranslation from "next-translate/useTranslation";
 

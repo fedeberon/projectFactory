@@ -27,14 +27,16 @@ const Companies = (props) => {
 
   return (
     <Layout title={t("company")}>
-      <FormFilterCompany
-        onGetFilterCompanies={onGetFilterCompanies}
-        setCompanies={setCompanies}
-      />
+      <section className="container py-2">
+        <FormFilterCompany
+          onGetFilterCompanies={onGetFilterCompanies}
+          setCompanies={setCompanies}
+        />
 
-      {companies.map((company) => (
-        <Company key={company.id} company={company} />
-      ))}
+        {companies.map((company) => (
+          <Company key={company.id} company={company} />
+        ))}
+      </section>
     </Layout>
   );
 };

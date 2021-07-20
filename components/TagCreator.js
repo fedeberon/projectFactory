@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSession } from "next-auth/client";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import ModalForm from "./ModalForm";
 import useTranslation from "next-translate/useTranslation";
 import * as tagService from "../services/tagService";

@@ -1,14 +1,10 @@
 import React, { useRef } from "react";
 import useTranslation from "next-translate/useTranslation";
 import {
-  Card,
-  CardBody,
-  CardDeck,
-  CardImg,
-  CardText,
+Card,
   Col,
   Row,
-} from "reactstrap";
+} from "react-bootstrap";
 import filteredImagesStyles from "./FilteredImages.module.css";
 import { Heart, HeartFill } from "react-bootstrap-icons";
 import { useSession } from "next-auth/client";
@@ -49,15 +45,13 @@ const FilteredImages = ({ isLoading, images }) => {
 
   return (
     <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
-      {console.log(images)}
       {isLoading ? (
         <h1>{t("loading")}...</h1>
       ) : (
         images.map((image, index) => (
           <Col key={index}>
-            <CardDeck className={`${filteredImagesStyles.colCard}`}>
-              <Card>
-                <CardBody className="p-0">
+              <Card className={`${filteredImagesStyles.colCard}`}>
+                <Card.Body className="p-0">
                   <Link
                     href={`/building/[id]`}
                     as={`/building/${image.buildingWork?.name?.replace(
@@ -80,11 +74,11 @@ const FilteredImages = ({ isLoading, images }) => {
                       />
                     </Col>
                     <Col className={`col-auto`}>
-                      <CardText
+                      <Card.Text
                         className={`${filteredImagesStyles.textShadowSm} fw-bold`}
                       >
                         {`${image.professional.contact}`}
-                      </CardText>
+                      </Card.Text>
                     </Col>
                     <Col
                       className={`col-auto ${filteredImagesStyles.containerHeart}`}
@@ -122,9 +116,8 @@ const FilteredImages = ({ isLoading, images }) => {
                       )}
                     </Col>
                   </div>
-                </CardBody>
+                </Card.Body>
               </Card>
-            </CardDeck>
           </Col>
         ))
       )}

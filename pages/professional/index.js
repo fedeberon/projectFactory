@@ -5,13 +5,9 @@ import useTranslation from "next-translate/useTranslation";
 import {
   Button,
   Card,
-  CardBody,
-  CardDeck,
-  CardImg,
-  CardText,
   Col,
   Row,
-} from "reactstrap";
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 
@@ -121,43 +117,43 @@ const Professional = ({ data }) => {
 
   return (
     <Layout title={`${t("common:professional")}`}>
-      <Row className="row-cols-md-3 g-4">
-        {isLoading ? (
-          <h1>{t("loading")}...</h1>
-        ) : (
-          professionals.map((professional, index) => (
-            <Col key={index}>
-              <CardDeck>
+      <section className="container py-2">
+        <Row className="row-cols-md-3 g-4">
+          {isLoading ? (
+            <h1>{t("loading")}...</h1>
+          ) : (
+            professionals.map((professional, index) => (
+              <Col key={index}>
                 <Card>
-                  <CardImg
+                  <Card.Img
                     className="img-fluid"
                     top
                     src={professional.previewImage}
                     alt="Professional preview"
                   />
-                  <CardBody>
-                    <CardText>
+                  <Card.Body>
+                    <Card.Text>
                       {t("common:contact")}: {professional.contact}
-                    </CardText>
-                    <CardText>
+                    </Card.Text>
+                    <Card.Text>
                       {t("common:company")}: {professional.company.name}
-                    </CardText>
-                    <CardText>
+                    </Card.Text>
+                    <Card.Text>
                       {t("common:email")}: {professional.email}
-                    </CardText>
-                    <CardText>
+                    </Card.Text>
+                    <Card.Text>
                       {t("common:province")}: {professional.province}
-                    </CardText>
-                    <CardText>
+                    </Card.Text>
+                    <Card.Text>
                       {t("common:location")}: {professional.location}
-                    </CardText>
-                  </CardBody>
+                    </Card.Text>
+                  </Card.Body>
                 </Card>
-              </CardDeck>
-            </Col>
-          ))
-        )}
-      </Row>
+              </Col>
+            ))
+          )}
+        </Row>
+      </section>
     </Layout>
   );
 };

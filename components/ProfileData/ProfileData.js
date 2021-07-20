@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ListGroupItem,
   ListGroup,
@@ -6,9 +6,10 @@ import {
   Row,
   Col,
   Button,
-} from "reactstrap";
-import { useSession } from "next-auth/client";
+} from "react-bootstrap";
+import { useSession, getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
+import * as userService from "../../services/userService";
 
 // Components
 import ModalForm from "../ModalForm";
@@ -24,6 +25,7 @@ import ProfileDataStyles from "./ProfileData.module.css";
 const ProfileData = (props) => {
   const [session] = useSession();
   const [modalOpen, setModalOpen] = useState(false);
+  const [amountTokens, setAmountTokens] = useState(-1);
   const { t } = useTranslation("profile");
   const {
     onBecomeProfessional,
@@ -42,6 +44,12 @@ const ProfileData = (props) => {
     setShowModalPlan(!showModalPlan);
   };
 
+  useEffect( async () => {
+    const session = await getSession();
+    const tokens = await userService.getAmountTokens(session.accessToken);
+    setAmountTokens(tokens);
+  }, []);
+
   const toggleModal = () => setModalOpen(!modalOpen);
 
   return (
@@ -56,7 +64,7 @@ const ProfileData = (props) => {
                 !session.authorities.includes("ROLE_COMPANY") ? (
                   <>
                     <Col className="col-auto">
-                      <Button color="primary" onClick={toggleModal}>
+                      <Button variant="primary" onClick={toggleModal}>
                         <Briefcase size={25} />
                         {` `}
                         {t("become-professional")}
@@ -68,6 +76,7 @@ const ProfileData = (props) => {
                   </>
                 ) : (
                   <div>
+                    <span className="d-block">{`${t("your-tokens")}: ${amountTokens}`}</span>
                     <Button onClick={toggleModalPlan}>
                       {t("buy-more-tokens")}
                     </Button>

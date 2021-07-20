@@ -13,13 +13,18 @@
   },
 
   "professional": "Professional",
+  "professionals": "Professionals",
   "project": "Project",
+  "products": "Products",
+  "buildings": "Buildings",
+  "projects": "Projects",
   "magazine": "Magazine",
   "about-us": "About Us",
   "contact": "Contact",
   "administrator": "Administrator",
   "email": "Email",
   "company": "Company",
+  "companies": "companies",
   "add-tags": "Add tags",
   "add-title": "Add title",
   "province": "Province",
@@ -220,5 +225,8 @@
 
   "photos" : "Photos",
   "search":"Search",
-  "filter-by-option": "Filter by option"
+  "filter-by-option": "Filter by option",
+  "edit" : "Edit",
+
+  "assign-tokens": "Assign tokens"
 }

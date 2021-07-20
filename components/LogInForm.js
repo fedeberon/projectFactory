@@ -3,16 +3,10 @@ import { useForm } from "react-hook-form";
 import {
   Button,
   Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
   Card,
-  CardBody,
   Row,
   Col,
-  CardText,
-} from "reactstrap";
+} from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import { signIn } from "next-auth/client";
 import { Google, Facebook, Instagram } from "react-bootstrap-icons";
@@ -42,11 +36,11 @@ const LogInForm = (props) => {
     <Row className="d-flex justify-content-center">
       <Col xs={6}>
         <Card>
-          <CardBody>
+          <Card.Body>
             <Form onSubmit={handleSubmit(onSubmit)}>
-              <FormGroup>
-                <Label for="username">{t("username")}</Label>
-                <Input
+              <Form.Group>
+                <Form.Label htmlFor="username">{t("username")}</Form.Label>
+                <Form.Control
                   type="text"
                   onClick={resetInvalidCredentials}
                   name="username"
@@ -74,14 +68,14 @@ const LogInForm = (props) => {
                   }
                 />
                 {errors.username && (
-                  <FormText color="danger" className="error-label">
+                  <Form.Text variant="danger" className="error-label">
                     {errors.username.message}
-                  </FormText>
+                  </Form.Text>
                 )}
-              </FormGroup>
-              <FormGroup>
-                <Label for="password">{t("password")}</Label>
-                <Input
+              </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor="password">{t("password")}</Form.Label>
+                <Form.Control
                   type="password"
                   id="password"
                   onClick={resetInvalidCredentials}
@@ -108,12 +102,12 @@ const LogInForm = (props) => {
                   }
                 />
                 {errors.password && (
-                  <FormText color="danger" className="error-label">
+                  <Form.Text variant="danger" className="error-label">
                     {errors.password.message}
-                  </FormText>
+                  </Form.Text>
                 )}
-              </FormGroup>
-              <Button color="primary" className="mt-2">
+              </Form.Group>
+              <Button type="submit" variant="primary" className="mt-2">
                 {t("log-in")}
               </Button>
               {invalidCredentials && (
@@ -122,36 +116,36 @@ const LogInForm = (props) => {
                 </div>
               )}
             </Form>
-            <Label for="Registrarse">{t("log-in-with")}:</Label>
+            <Form.Label htmlFor="Registrarse">{t("log-in-with")}:</Form.Label>
             <Button
               onClick={() => signIn("google")}
-              color="danger"
+              variant="danger"
               className="mx-2"
             >
               <Google size={25} />
             </Button>
             <Button
               onClick={() => signIn("facebook")}
-              color="primary"
+              variant="primary"
               className="mx-2"
             >
               <Facebook size={25} />
             </Button>
             <Button
               onClick={() => signIn("instagram")}
-              color="secondary"
+              variant="secondary"
               className="mx-2"
             >
               <Instagram size={25} />
             </Button>
             <Row>
               <Col>
-                <CardText>
+                <Card.Text>
                   {t("don't-have-an-account-please")}
                   <Link href={"/signIn"}>
                     <a>{` ${t("register-here").toLowerCase()}`}</a>
                   </Link>
-                </CardText>
+                </Card.Text>
               </Col>
             </Row>
             <Row className="justify-content-end">
@@ -161,7 +155,7 @@ const LogInForm = (props) => {
                 </Link>
               </Col>
             </Row>
-          </CardBody>
+          </Card.Body>
         </Card>
       </Col>
     </Row>

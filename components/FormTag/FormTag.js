@@ -5,10 +5,7 @@ import {
   Button,
   Container,
   Form,
-  FormGroup,
-  FormText,
-  Label,
-} from "reactstrap";
+} from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import TagList from "../TagList/TagList";
 import Autosuggest from "react-autosuggest";
@@ -111,8 +108,8 @@ const FormTag = ({ toggle, image }) => {
     <Container fluid="sm">
       <Form onSubmit={handleSubmit(onSubmit)}>
         <img className="w-100" src={image.preview} alt="image-selected"></img>
-        <FormGroup>
-          <Label for="tag">{t("form-tag.tag")}</Label>
+        <Form.Group>
+          <Form.Label htmlFor="tag">{t("form-tag.tag")}</Form.Label>
 
           <Autosuggest
             suggestions={suggestions}
@@ -126,15 +123,15 @@ const FormTag = ({ toggle, image }) => {
           />
 
           {errors.tag && (
-            <FormText color="danger" className="error-label">{errors.tag.message}</FormText>
+            <Form.Text variant="danger" className="error-Form.Label">{errors.tag.message}</Form.Text>
           )}
-        </FormGroup>
+        </Form.Group>
 
         <div className="my-3">
           <TagList tags={tags} onDeleteTag={removeTag} />
         </div>
 
-        <Button type="submit" disabled={tags.length == 0} color="primary mt-1">
+        <Button type="submit" disabled={tags.length == 0} variant="primary mt-1">
           {t("add-tags")}
         </Button>
       </Form>

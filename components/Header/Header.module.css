@@ -1,3 +1,10 @@
+.imgProfile {
+  object-fit: cover;
+  width: 40px;
+  height: 40px;
+  position: relative;
+}
+
 .flag {
   height: 36px;
 }
@@ -9,4 +16,20 @@
 
 .pointer {
   cursor: pointer;
+}
+
+.inputSearch {
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+}
+
+.buttonSearch {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  height: 100%;
+}
+
+.navbar {
+  padding: 0;
+  background-color: #EAEAEA;
 }

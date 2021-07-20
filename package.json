@@ -11,7 +11,7 @@
     "@reduxjs/toolkit": "^1.5.1",
     "@zeit/next-css": "^1.0.1",
     "axios": "^0.21.1",
-    "bootstrap": "^5.0.0-beta3",
+    "bootstrap": "^5.0.2",
     "dotenv": "^8.2.0",
     "jwt-decode": "^3.1.2",
     "next": "^10.2.0",
@@ -21,6 +21,7 @@
     "nprogress": "^0.2.0",
     "react": "^17.0.2",
     "react-autosuggest": "^10.1.0",
+    "react-bootstrap": "^1.6.1",
     "react-bootstrap-icons": "^1.5.0",
     "react-dom": "^17.0.2",
     "react-dropzone": "^11.3.2",
@@ -29,8 +30,8 @@
     "react-redux": "^7.2.4",
     "react-select": "^4.3.1",
     "react-themeable": "^1.1.0",
-    "reactstrap": "^8.9.0",
-    "redux": "^4.1.0"
+    "redux": "^4.1.0",
+    "swiper": "^6.7.5"
   },
   "devDependencies": {
     "css-loader": "^5.2.6"

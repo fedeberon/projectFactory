@@ -3,18 +3,14 @@ import { getSession, useSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 import Layout from "../../components/Layout/Layout";
 import {
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Card,
+  Dropdown,
+  DropdownButton,
   CardDeck,
   Col,
   Row,
   Button,
-  CardBody,
-  CardText,
-} from "reactstrap";
+} from "react-bootstrap";
 import Link from "next/link";
 
 import {
@@ -41,31 +37,34 @@ import image from "next/image";
 const CustomButtonTogle = ({ id, editBuildingWork, imageSize }) => {
   const [dropdownOpen, setOpen] = useState(false);
   const toggle = () => setOpen((dropdownOpen) => !dropdownOpen);
-  return (
-    <ButtonDropdown direction="left" isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle outline color="light">
-        <ThreeDotsVertical color={"dark"} size={25} />
-      </DropdownToggle>
-      <DropdownMenu>
-        <DropdownItem header>
-          <Images
-            className={`${filteredImagesStyles.heart}`}
-            color={"white"}
-            size={25}
-          />
-          {` ${imageSize} Photos`}
-        </DropdownItem>
-        <DropdownItem divider />
-        <DropdownItem
-          onClick={() => {
-            editBuildingWork(id);
-          }}
-        >
-          <PencilSquare color={"red"} size={25} />
-          {` Edit`}
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
+
+  return (<>
+    <DropdownButton
+      variant="start"
+      drop="left"
+      align="end"
+      title={<ThreeDotsVertical color={"dark"} size={25} />
+      }>
+
+      <Dropdown.Header>
+        <Images
+          className={`${filteredImagesStyles.heart}`}
+          color={"white"}
+          size={25}
+        />
+        {` ${imageSize} Photos`}
+      </Dropdown.Header>
+      <Dropdown.Divider />
+      <Dropdown.Item
+        onClick={() => {
+          editBuildingWork(id);
+        }}
+      >
+        <PencilSquare color={"red"} size={25} />
+        {` Edit`}
+      </Dropdown.Item>
+    </DropdownButton>
+  </>
   );
 };
 
@@ -314,52 +313,49 @@ const Portfolio = ({ professional, buildingWorks }) => {
       ) : (
         localBuildingWorks.map((buildingWork, index) => (
           <Col key={index}>
-            <CardDeck className={`${filteredImagesStyles.colCard}`}>
-              <Card>
-                <CardBody className="p-0">
-                  <Link
-                    href={`/building/[id]`}
-                    as={`/building/${buildingWork.name.replace(/\s+/g, "-")}-${
-                      buildingWork.id
+            <Card className={`${filteredImagesStyles.colCard}`}>
+              <Card.Body className="p-0">
+                <Link
+                  href={`/building/[id]`}
+                  as={`/building/${buildingWork.name.replace(/\s+/g, "-")}-${buildingWork.id
                     }`}
-                  >
+                >
+                  <img
+                    className={`${filteredImagesStyles.cardImage}`}
+                    src={buildingWork.previewImage}
+                    alt="Professional preview"
+                  />
+                </Link>
+                <div className={`${filteredImagesStyles.cardText}`}>
+                  <Col className="col-auto">
                     <img
-                      className={`${filteredImagesStyles.cardImage}`}
-                      src={buildingWork.previewImage}
-                      alt="Professional preview"
+                      className={`${filteredImagesStyles.imgProfile} rounded-circle`}
+                    // src={buildingWork.entity.previewImage}
                     />
-                  </Link>
-                  <div className={`${filteredImagesStyles.cardText}`}>
-                    <Col className="col-auto">
-                      <img
-                        className={`${filteredImagesStyles.imgProfile} rounded-circle`}
-                        // src={buildingWork.entity.previewImage}
-                      />
-                    </Col>
-                    <Col className={`col-auto`}>
-                      <CardText
-                        className={`${filteredImagesStyles.textShadowSm} fw-bold`}
-                      >
-                        {buildingWork.name}
-                      </CardText>
-                    </Col>
-                    <Col
-                      className={`col-auto ${filteredImagesStyles.containerHeart}`}
+                  </Col>
+                  <Col className={`col-auto`}>
+                    <Card.Text
+                      className={`${filteredImagesStyles.textShadowSm} fw-bold`}
                     >
-                      {session && (
-                        <div>
-                          <CustomButtonTogle
-                            id={buildingWork.id}
-                            editBuildingWork={editBuildingWork}
-                            imageSize={buildingWork.countImages}
-                          />
-                        </div>
-                      )}
-                    </Col>
-                  </div>
-                </CardBody>
-              </Card>
-            </CardDeck>
+                      {buildingWork.name}
+                    </Card.Text>
+                  </Col>
+                  <Col
+                    className={`col-auto ${filteredImagesStyles.containerHeart}`}
+                  >
+                    {session && (
+                      <div>
+                        <CustomButtonTogle
+                          id={buildingWork.id}
+                          editBuildingWork={editBuildingWork}
+                          imageSize={buildingWork.countImages}
+                        />
+                      </div>
+                    )}
+                  </Col>
+                </div>
+              </Card.Body>
+            </Card>
           </Col>
         ))
       )}
@@ -368,58 +364,60 @@ const Portfolio = ({ professional, buildingWorks }) => {
 
   return (
     <Layout>
-      <Row className="row-cols-1">
-        <Col>
-          <img
-            width={"100%"}
-            height={"300px"}
-            src={`${professional.backgroundImage}`}
-            className={indexStyles.backgroundImg}
-          />
-          <div className={indexStyles.previewDiv}>
+      <section className="container py-2">
+        <Row className="row-cols-1">
+          <Col>
             <img
-              src={professional.previewImage}
-              className={indexStyles.previewImg}
-            ></img>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <div className="text-center">
-            <h1>{`${professional.contact}`}</h1>
-            <h1>{`${professional.company?.name}`}</h1>
-          </div>
-        </Col>
-      </Row>
-      <Row className="row-cols-2 g-2">
-        <Col className="col-auto">
-          <Button outline color="primary" onClick={openModalBuilderWork}>
-            <PlusSquareDotted size={100} />
-          </Button>
-        </Col>
-        <Col className="col-auto">{imagesCard}</Col>
-      </Row>
-      <ModalForm
-        size={"xl"}
-        modalTitle={t("work-form")}
-        className={"Button mt-50"}
-        formBody={
-          <FormObra
-            onAddbuildingWork={onAddbuildingWork}
-            onSetbuildingWork={onSetbuildingWork}
-            toggle={toggleModal}
-            buildingWorkData={buildingWorkData}
-            previewImage={previewImage}
-            setPreviewImage={setPreviewImage}
-            images={images}
-            setImages={setImages}
-            changeState={{ stateFormObra, function: setStateFormObra }}
-            buildingWorkId={buildingWorkId}
-          />
-        }
-        modalOpen={{ open: modalOpen, function: setModalOpen }}
-      />
+              width={"100%"}
+              height={"300px"}
+              src={`${professional.backgroundImage}`}
+              className={indexStyles.backgroundImg}
+            />
+            <div className={indexStyles.previewDiv}>
+              <img
+                src={professional.previewImage}
+                className={indexStyles.previewImg}
+              ></img>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <div className="text-center">
+              <h1>{`${professional.contact}`}</h1>
+              <h1>{`${professional.company?.name}`}</h1>
+            </div>
+          </Col>
+        </Row>
+        <Row className="row-cols-2 g-2">
+          <Col className="col-auto">
+            <Button variant="outline-primary" onClick={openModalBuilderWork}>
+              <PlusSquareDotted size={100} />
+            </Button>
+          </Col>
+          <Col className="col-auto">{imagesCard}</Col>
+        </Row>
+        <ModalForm
+          size={"xl"}
+          modalTitle={t("work-form")}
+          className={"Button mt-50"}
+          formBody={
+            <FormObra
+              onAddbuildingWork={onAddbuildingWork}
+              onSetbuildingWork={onSetbuildingWork}
+              toggle={toggleModal}
+              buildingWorkData={buildingWorkData}
+              previewImage={previewImage}
+              setPreviewImage={setPreviewImage}
+              images={images}
+              setImages={setImages}
+              changeState={{ stateFormObra, function: setStateFormObra }}
+              buildingWorkId={buildingWorkId}
+            />
+          }
+          modalOpen={{ open: modalOpen, function: setModalOpen }}
+        />
+      </section>
     </Layout>
   );
 };

@@ -6,11 +6,8 @@ import {
   Container,
   Form,
   FormGroup,
-  FormText,
-  Input,
-  Label,
   Row,
-} from "reactstrap";
+} from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import InputImages from "../components/InputImages/InputImages";
 import Dropzone from "../components/Dropzone/Dropzone";
@@ -103,7 +100,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           </Col>
         </Row>
         <FormGroup>
-          <Label for="name">{t("name")}</Label>
+          <Form.Label htmlFor="name">{t("name")}</Form.Label>
           <Controller
             name="name"
             control={control}
@@ -124,7 +121,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             }}
             defaultValue=""
             render={({ field }) => (
-              <Input
+              <Form.Control
                 {...field}
                 type="text"
                 id="name"
@@ -136,13 +133,13 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.name && (
-            <FormText color="danger" className="invalid error-label">
+            <Form.Text variant="danger" className="invalid error-label">
               {errors.name.message}
-            </FormText>
+            </Form.Text>
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="description">{t("description")}</Label>
+          <Form.Label htmlFor="description">{t("description")}</Form.Label>
           <Controller
             name="description"
             control={control}
@@ -163,7 +160,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             }}
             defaultValue=""
             render={({ field }) => (
-              <Input
+              <Form.Control
                 {...field}
                 type="text"
                 id="description"
@@ -177,13 +174,13 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.description && (
-            <FormText color="danger" className="error-label">
+            <Form.Text variant="danger" className="error-label">
               {errors.description.message}
-            </FormText>
+            </Form.Text>
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="totalArea">{t("total-area")}</Label>
+          <Form.Label htmlFor="totalArea">{t("total-area")}</Form.Label>
           <Controller
             name="totalArea"
             control={control}
@@ -204,7 +201,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             }}
             defaultValue=""
             render={({ field }) => (
-              <Input
+              <Form.Control
                 {...field}
                 type="number"
                 id="totalArea"
@@ -218,13 +215,13 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.totalArea && (
-            <FormText color="danger" className="error-label">
+            <Form.Text variant="danger" className="error-label">
               {errors.totalArea.message}
-            </FormText>
+            </Form.Text>
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="email">{t("web-site")}</Label>
+          <Form.Label htmlFor="email">{t("web-site")}</Form.Label>
           <Controller
             name="website"
             control={control}
@@ -245,7 +242,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             }}
             defaultValue=""
             render={({ field }) => (
-              <Input
+              <Form.Control
                 {...field}
                 type="email"
                 id="email"
@@ -257,13 +254,13 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.website && (
-            <FormText color="danger" className="error-label">
+            <Form.Text variant="danger" className="error-label">
               {errors.website.message}
-            </FormText>
+            </Form.Text>
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="year">{t("year")}</Label>
+          <Form.Label htmlFor="year">{t("year")}</Form.Label>
           <Controller
             name="year"
             control={control}
@@ -284,7 +281,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             }}
             defaultValue=""
             render={({ field }) => (
-              <Input
+              <Form.Control
                 {...field}
                 type="number"
                 id="year"
@@ -296,13 +293,13 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.year && (
-            <FormText color="danger" className="error-label">
+            <Form.Text variant="danger" className="error-label">
               {errors.year.message}
-            </FormText>
+            </Form.Text>
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="videoPath">{t("video-path")}</Label>
+          <Form.Label htmlFor="videoPath">{t("video-path")}</Form.Label>
           <Controller
             name="videoPath"
             control={control}
@@ -323,7 +320,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             }}
             defaultValue=""
             render={({ field }) => (
-              <Input
+              <Form.Control
                 {...field}
                 type="text"
                 id="videoPath"
@@ -337,15 +334,15 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             )}
           />
           {errors.videoPath && (
-            <FormText color="danger" className="invalid error-label">
+            <Form.Text variant="danger" className="invalid error-label">
               {errors.videoPath.message}
-            </FormText>
+            </Form.Text>
           )}
         </FormGroup>
         <FormGroup>
-          <Label for="filePreview">
+          <Form.Label htmlFor="filePreview">
             {t("select-preview-image-for-project")}
-          </Label>
+          </Form.Label>
           <br></br>
           <Dropzone
             newFiles={previewImage}
@@ -357,7 +354,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
           />
         </FormGroup>
         <FormGroup>
-          <Label for="uploadFiles">{t("upload-images")}</Label>
+          <Form.Label htmlFor="uploadFiles">{t("upload-images")}</Form.Label>
           <br></br>
           <InputImages
             images={images}
@@ -368,7 +365,7 @@ const FormEditProject = ({ project, onEdit, toggle }) => {
             imagesEdited={setImagesEdited}
           />
         </FormGroup>
-        <Button type="submit" color="primary">
+        <Button type="submit" variant="primary">
           {t("send")}
         </Button>
       </Form>

@@ -7,7 +7,7 @@ import {
   NavLink,
   Row,
   Col,
-} from "reactstrap";
+} from "react-bootstrap";
 import classnames from "classnames";
 import useTranslation from "next-translate/useTranslation";
 

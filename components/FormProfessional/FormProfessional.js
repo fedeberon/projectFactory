@@ -4,13 +4,9 @@ import useTranslation from "next-translate/useTranslation";
 import {
   Button,
   Form,
-  FormGroup,
-  FormText,
-  Input,
-  Label,
   Row,
   Col,
-} from "reactstrap";
+} from "react-bootstrap";
 import Dropzone from "../Dropzone/Dropzone";
 import ModalForm from "../ModalForm";
 import FormTag from "../FormTag/FormTag";
@@ -115,8 +111,8 @@ const FormProfessional = ({
             </Row>
             <Row className="row-cols-1 row-cols-md-2 row-cols-xl-4 g-3">
               <Col>
-                <FormGroup>
-                  <Label for="company">{t("common:formulary.company")}</Label>
+                <Form.Group>
+                  <Form.Label htmlFor="company">{t("common:formulary.company")}</Form.Label>
                   <Controller
                     name="company"
                     control={control}
@@ -145,14 +141,14 @@ const FormProfessional = ({
                     )}
                   />
                   {errors.company && optionSelect && (
-                    <FormText color="danger" className="error-label">
+                    <Form.Text variant="danger" className="error-label">
                       {errors.company.message}
-                    </FormText>
+                    </Form.Text>
                   )}
-                </FormGroup>
-                <FormGroup>
-                  <Label for="contact">{t("common:formulary.contact")}</Label>
-                  <Input
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label htmlFor="contact">{t("common:formulary.contact")}</Form.Label>
+                  <Form.Control
                     type="text"
                     name="contact"
                     id="contact"
@@ -181,19 +177,19 @@ const FormProfessional = ({
                     }
                   />
                   {errors.contact && (
-                    <FormText
-                      color="danger"
+                    <Form.Text
+                      variant="danger"
                       className="invalid error-label text-danger"
                     >
                       {errors.contact.message}
-                    </FormText>
+                    </Form.Text>
                   )}
-                </FormGroup>
-                <FormGroup>
-                  <Label for="email">
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label htmlFor="email">
                     {t("common:formulary.contact-email")}
-                  </Label>
-                  <Input
+                  </Form.Label>
+                  <Form.Control
                     type="email"
                     name="email"
                     id="email"
@@ -222,16 +218,16 @@ const FormProfessional = ({
                     }
                   />
                   {errors.email && (
-                    <FormText color="danger" className="error-label">
+                    <Form.Text variant="danger" className="error-label">
                       {errors.email.message}
-                    </FormText>
+                    </Form.Text>
                   )}
-                </FormGroup>
-                <FormGroup>
-                  <Label for="telephone">
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label htmlFor="telephone">
                     {t("common:formulary.telephone")}
-                  </Label>
-                  <Input
+                  </Form.Label>
+                  <Form.Control
                     type="tel"
                     name="telephone"
                     id="telephone"
@@ -260,11 +256,11 @@ const FormProfessional = ({
                     }
                   />
                   {errors.telephone && (
-                    <FormText color="danger" className="error-label">
+                    <Form.Text variant="danger" className="error-label">
                       {errors.telephone.message}
-                    </FormText>
+                    </Form.Text>
                   )}
-                </FormGroup>
+                </Form.Group>
                 {/* <PhoneInput
                   placeholder="Enter phone number"
                   value={value}
@@ -272,10 +268,10 @@ const FormProfessional = ({
                 /> */}
               </Col>
               <Col>
-                <FormGroup>
-                  <Label for="companyCategory">
+                <Form.Group>
+                  <Form.Label htmlFor="companyCategory">
                     {t("common:formulary.company-category")}
-                  </Label>
+                  </Form.Label>
                   <Controller
                     name="companyCategory"
                     control={control}
@@ -305,16 +301,16 @@ const FormProfessional = ({
                     )}
                   />
                   {errors.companyCategory && (
-                    <FormText color="danger" className="error-label">
+                    <Form.Text variant="danger" className="error-label">
                       {errors.companyCategory.message}
-                    </FormText>
+                    </Form.Text>
                   )}
-                </FormGroup>
-                <FormGroup>
-                  <Label for="contactLoad">
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label htmlFor="contactLoad">
                     {t("common:formulary.contact-charge")}
-                  </Label>
-                  <Input
+                  </Form.Label>
+                  <Form.Control
                     type="text"
                     name="contactLoad"
                     id="contactLoad"
@@ -345,14 +341,14 @@ const FormProfessional = ({
                     }
                   />
                   {errors.contactLoad && (
-                    <FormText color="danger" className="invalid error-label">
+                    <Form.Text variant="danger" className="invalid error-label">
                       {errors.contactLoad.message}
-                    </FormText>
+                    </Form.Text>
                   )}
-                </FormGroup>
-                <FormGroup>
-                  <Label for="website">{t("common:formulary.web-page")}</Label>
-                  <Input
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label htmlFor="website">{t("common:formulary.web-page")}</Form.Label>
+                  <Form.Control
                     type="website"
                     name="website"
                     id="website"
@@ -381,17 +377,17 @@ const FormProfessional = ({
                     }
                   />
                   {errors.website && (
-                    <FormText color="danger" className="error-label">
+                    <Form.Text variant="danger" className="error-label">
                       {errors.website.message}
-                    </FormText>
+                    </Form.Text>
                   )}
-                </FormGroup>
+                </Form.Group>
               </Col>
               <Col>
-                <FormGroup className="text-center">
-                  <Label for="file">
+                <Form.Group className="text-center">
+                  <Form.Label htmlFor="file">
                     {t("common:formulary.select-profile-picture")}
-                  </Label>
+                  </Form.Label>
                   <Dropzone
                     newFiles={previewImage}
                     setFile={setPreviewImage}
@@ -400,13 +396,13 @@ const FormProfessional = ({
                     name={"images"}
                     height={"123px"}
                   />
-                </FormGroup>
+                </Form.Group>
               </Col>
               <Col>
-                <FormGroup className="text-center">
-                  <Label for="file">
+                <Form.Group className="text-center">
+                  <Form.Label htmlFor="file">
                     {t("common:formulary.select-background-picture")}
-                  </Label>
+                  </Form.Label>
                   <Dropzone
                     newFiles={backgroundImage}
                     setFile={setBackgroundImage}
@@ -415,12 +411,12 @@ const FormProfessional = ({
                     name={"images"}
                     height={"123px"}
                   />
-                </FormGroup>
+                </Form.Group>
               </Col>
             </Row>
           </Col>
           <Col>
-            <Button type="submit" color="primary mt-1">
+            <Button type="submit" variant="primary mt-1">
               {t("common:send")}
             </Button>
           </Col>

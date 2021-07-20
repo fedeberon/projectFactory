@@ -5,13 +5,13 @@ import PropTypes from "prop-types";
 import NProgress from "nprogress";
 import nProgress from "nprogress";
 import useTranslation from "next-translate/useTranslation";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import Image from "next/image";
 import { Instagram, Facebook } from "react-bootstrap-icons";
 import Link from "next/link";
 
 // Components
-import NavSearch from "../NavSearch/NavSearch";
+import Header from "../Header/Header";
 
 // Styles
 import LayoutStyles from "./Layout.module.css";
@@ -40,11 +40,11 @@ const Layout = ({ children, title, footer = true, header = true }) => {
     <>
       {header && (
         <div className="bg-light">
-          <NavSearch />
+          <Header />
         </div>
       )}
 
-      <main className="container py-2">
+      <main>
         {/* Title */}
         {title && <h1 className="text-center">{title}</h1>}
 
@@ -58,7 +58,7 @@ const Layout = ({ children, title, footer = true, header = true }) => {
             <Row className="row-cols-4 justify-content-center align-items-center w-100">
               <Col className="p-2">
                 <Image
-                  src={`/logo.svg`}
+                  src={`/logo-02.svg`}
                   width={200}
                   height={"auto"}
                   alt=""

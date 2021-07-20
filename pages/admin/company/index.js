@@ -1,7 +1,7 @@
 // Frameworks
 import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import { CheckCircle, XCircle } from "react-bootstrap-icons";
 import useTranslation from "next-translate/useTranslation";
 
@@ -9,7 +9,6 @@ import useTranslation from "next-translate/useTranslation";
 import Layout from "../../../components/Layout/Layout";
 import Tabs from "../../../components/Tabs/Tabs";
 import TableAdmin from "../../../components/TableAdmin/TableAdmin";
-import { Input } from "reactstrap";
 
 //Services
 import * as professionalService from "../../../services/professionalService";
@@ -38,8 +37,7 @@ const CompanyAdmin = ({
   const buttonAccept = (companylId) => {
     return (
       <Button
-        outline
-        color={"success"}
+        variant={"outline-success"}
         onClick={() => changeState(companylId, "APPROVED")}
       >
         <CheckCircle size={25} /> {t("accept")}
@@ -56,8 +54,7 @@ const CompanyAdmin = ({
   const buttonReject = (companyId) => {
     return (
       <Button
-        outline
-        color={"danger"}
+        variant={"outline-danger"}
         onClick={() => changeState(companyId, "REJECTED")}
       >
         <XCircle size={25} /> {t("reject")}
@@ -74,8 +71,7 @@ const CompanyAdmin = ({
   const buttonAcceptImages = (professionalId) => {
     return (
       <Button
-        outline
-        color={"success"}
+        variant={"outline-success"}
         onClick={async () => changeStateImages(professionalId, true)}
       >
         <CheckCircle size={25} /> {t("accept-images")}
@@ -237,7 +233,7 @@ const CompanyAdmin = ({
           <td>{company.name}</td>
           <td>{company.email}</td>
           <td>
-            <Input
+            <Form.Control
               min="0"
               type="number"
               className="d-inline-block w-50 mr-2"
@@ -350,33 +346,35 @@ const CompanyAdmin = ({
 
   return (
     <Layout title={t("managing-companies")}>
-      <Row>
-        <Col>
-          <Tabs titles={titles}>
-            <TableAdmin
-              professionalList={companyListNotAppoved}
-              title={titles[0]}
-              onSearch={(username) =>
-                findByContactAndStatus(username, "PENDING")
-              }
-            />
-            <TableAdmin
-              professionalList={companiesListAppoved}
-              title={titles[1]}
-              onSearch={(username) =>
-                findByContactAndStatus(username, "APPROVED")
-              }
-            />
-            <TableAdmin
-              professionalList={companiesListRejected}
-              title={titles[2]}
-              onSearch={(username) =>
-                findByContactAndStatus(username, "REJECTED")
-              }
-            />
-          </Tabs>
-        </Col>
-      </Row>
+      <section className="container py-2">
+        <Row>
+          <Col>
+            <Tabs titles={titles}>
+              <TableAdmin
+                professionalList={companyListNotAppoved}
+                title={titles[0]}
+                onSearch={(username) =>
+                  findByContactAndStatus(username, "PENDING")
+                }
+              />
+              <TableAdmin
+                professionalList={companiesListAppoved}
+                title={titles[1]}
+                onSearch={(username) =>
+                  findByContactAndStatus(username, "APPROVED")
+                }
+              />
+              <TableAdmin
+                professionalList={companiesListRejected}
+                title={titles[2]}
+                onSearch={(username) =>
+                  findByContactAndStatus(username, "REJECTED")
+                }
+              />
+            </Tabs>
+          </Col>
+        </Row>
+      </section>
     </Layout>
   );
 };

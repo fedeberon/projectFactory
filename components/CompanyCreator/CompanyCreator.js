@@ -4,12 +4,8 @@ import {
   Button,
   Row,
   Col,
-  Label,
   Form,
-  FormGroup,
-  FormText,
-  Input,
-} from "reactstrap";
+} from "react-bootstrap";
 import ModalForm from "../ModalForm";
 import useTranslation from "next-translate/useTranslation";
 import * as companyService from "../../services/companyService";
@@ -156,7 +152,7 @@ const CompanyCreator = () => {
 
   return (
     <>
-      <Button color="dark" onClick={toggle}>
+      <Button variant="dark" onClick={toggle}>
         <Building size={25} />
         {` `}
         {t("profile:become-in-a-company")}
@@ -180,11 +176,11 @@ const CompanyCreator = () => {
               </Row>
               <Row className="g-3">
                 <Col className="col-6">
-                  <FormGroup>
-                    <Label for="company">
+                  <Form.Group>
+                    <Form.Label htmlFor="company">
                       {t("company-creator.company-name")}
-                    </Label>
-                    <Input
+                    </Form.Label>
+                    <Form.Control
                       type="text"
                       name="name"
                       id="name"
@@ -211,19 +207,19 @@ const CompanyCreator = () => {
                       }
                     />
                     {errors.name && (
-                      <FormText
-                        color="danger"
-                        className="invalid error-label text-danger"
+                      <Form.Text
+                        variant="danger"
+                        className="invalid error-Form.Label text-danger"
                       >
                         {errors.name.message}
-                      </FormText>
+                      </Form.Text>
                     )}
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="website">
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label htmlFor="website">
                       {t("common:formulary.web-page")}
-                    </Label>
-                    <Input
+                    </Form.Label>
+                    <Form.Control
                       type="website"
                       name="website"
                       id="website"
@@ -252,14 +248,14 @@ const CompanyCreator = () => {
                       }
                     />
                     {errors.website && (
-                      <FormText color="danger" className="error-label">
+                      <Form.Text variant="danger" className="error-Form.Label">
                         {errors.website.message}
-                      </FormText>
+                      </Form.Text>
                     )}
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="contact">{t("contact")}</Label>
-                    <Input
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label htmlFor="contact">{t("contact")}</Form.Label>
+                    <Form.Control
                       type="text"
                       name="contact"
                       id="contact"
@@ -288,19 +284,19 @@ const CompanyCreator = () => {
                       }
                     />
                     {errors.contact && (
-                      <FormText
-                        color="danger"
-                        className="invalid error-label text-danger"
+                      <Form.Text
+                        variant="danger"
+                        className="invalid error-Form.Label text-danger"
                       >
                         {errors.contact.message}
-                      </FormText>
+                      </Form.Text>
                     )}
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="contactLoad">
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label htmlFor="contactLoad">
                       {t("common:formulary.contact-charge")}
-                    </Label>
-                    <Input
+                    </Form.Label>
+                    <Form.Control
                       type="text"
                       name="contactLoad"
                       id="contactLoad"
@@ -331,16 +327,16 @@ const CompanyCreator = () => {
                       }
                     />
                     {errors.contactLoad && (
-                      <FormText color="danger" className="invalid error-label">
+                      <Form.Text variant="danger" className="invalid error-Form.Label">
                         {errors.contactLoad.message}
-                      </FormText>
+                      </Form.Text>
                     )}
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="email">
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label htmlFor="email">
                       {t("common:formulary.contact-email")}
-                    </Label>
-                    <Input
+                    </Form.Label>
+                    <Form.Control
                       type="email"
                       name="email"
                       id="email"
@@ -371,17 +367,17 @@ const CompanyCreator = () => {
                       }
                     />
                     {errors.email && (
-                      <FormText color="danger" className="error-label">
+                      <Form.Text variant="danger" className="error-Form.Label">
                         {errors.email.message}
-                      </FormText>
+                      </Form.Text>
                     )}
-                  </FormGroup>
+                  </Form.Group>
                 </Col>
                 <Col className="col-6">
-                  <FormGroup>
-                    <Label htmlFor="logo">
+                  <Form.Group>
+                    <Form.Label htmlFor="logo">
                       {t("company-creator.select-logo")}
-                    </Label>
+                    </Form.Label>
 
                     <Dropzone
                       newFiles={previewImage}
@@ -391,12 +387,12 @@ const CompanyCreator = () => {
                       name={"filePreview"}
                       height={"145px"}
                     />
-                  </FormGroup>
+                  </Form.Group>
 
-                  <FormGroup>
-                    <Label htmlFor="backgroundImage" className="mt-4">
+                  <Form.Group>
+                    <Form.Label htmlFor="backgroundImage" className="mt-4">
                       {t("company-creator.select-background-image")}
-                    </Label>
+                    </Form.Label>
 
                     <Dropzone
                       newFiles={backgroundImage}
@@ -406,17 +402,17 @@ const CompanyCreator = () => {
                       name={"filePreview"}
                       height={"145px"}
                     />
-                  </FormGroup>
+                  </Form.Group>
                 </Col>
                 
 
                 <Col className="col-auto">
-                  <FormGroup>
-                    <Label>
+                  <Form.Group>
+                    <Form.Label>
                       {t("company-creator.select-categories-please")}
-                    </Label>
+                    </Form.Label>
                     <Col className="col-12 d-flex">
-                      <Input type="text" id="category" />
+                      <Form.Control type="text" id="category" />
                       <Button className="mx-4" onClick={AddCategory}>
                         {t("company-creator.add-category")}
                       </Button>
@@ -429,7 +425,7 @@ const CompanyCreator = () => {
                         />
                       </div>
                     </Col>
-                  </FormGroup>
+                  </Form.Group>
                 </Col>
               </Row>
               <Row>
@@ -439,9 +435,9 @@ const CompanyCreator = () => {
               </Row>
               <Row className="row-cols-1 row-cols-md-2 g-3">
                 <Col>
-                  <FormGroup>
-                    <Label for="province">{t("common:province")}</Label>
-                    <Input
+                  <Form.Group>
+                    <Form.Label htmlFor="province">{t("common:province")}</Form.Label>
+                    <Form.Control
                       type="text"
                       name="province"
                       id="province"
@@ -470,16 +466,16 @@ const CompanyCreator = () => {
                       }
                     />
                     {errors.province && (
-                      <FormText color="danger" className="error-label">
+                      <Form.Text variant="danger" className="error-Form.Label">
                         {errors.province.message}
-                      </FormText>
+                      </Form.Text>
                     )}
-                  </FormGroup>
+                  </Form.Group>
                 </Col>
                 <Col>
-                  <FormGroup>
-                    <Label for="location">{t("common:location")}</Label>
-                    <Input
+                  <Form.Group>
+                    <Form.Label htmlFor="location">{t("common:location")}</Form.Label>
+                    <Form.Control
                       type="text"
                       name="location"
                       id="location"
@@ -508,16 +504,16 @@ const CompanyCreator = () => {
                       }
                     />
                     {errors.location && (
-                      <FormText color="danger" className="invalid error-label">
+                      <Form.Text variant="danger" className="invalid error-Form.Label">
                         {errors.location.message}
-                      </FormText>
+                      </Form.Text>
                     )}
-                  </FormGroup>
+                  </Form.Group>
                 </Col>
               </Row>
               <Row>
                 <Col>
-                  <Button type="submit" color="primary mt-1">
+                  <Button type="submit" variant="primary mt-1">
                     {t("company-creator.add-company")}
                   </Button>
                 </Col>

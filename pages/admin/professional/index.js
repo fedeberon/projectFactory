@@ -1,7 +1,7 @@
 // Frameworks
 import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { CheckCircle, XCircle } from "react-bootstrap-icons";
 import useTranslation from "next-translate/useTranslation";
 
@@ -9,7 +9,7 @@ import useTranslation from "next-translate/useTranslation";
 import Layout from "../../../components/Layout/Layout";
 import Tabs from "../../../components/Tabs/Tabs";
 import TableAdmin from "../../../components/TableAdmin/TableAdmin";
-import { Input } from "reactstrap";
+import { Input } from "react-bootstrap";
 
 //Services
 import {
@@ -43,8 +43,7 @@ const ProfessionalAdmin = ({
   const buttonAccept = (professionalId) => {
     return (
       <Button
-        outline
-        color={"success"}
+        variant={"outline-success"}
         onClick={() => changeStateProfessional(professionalId, "APPROVED")}
       >
         <CheckCircle size={25} /> {t("accept")}
@@ -61,8 +60,7 @@ const ProfessionalAdmin = ({
   const buttonReject = (professionalId) => {
     return (
       <Button
-        outline
-        color={"danger"}
+        variant={"outline-danger"}
         onClick={() => changeStateProfessional(professionalId, "REJECTED")}
       >
         <XCircle size={25} /> {t("reject")}
@@ -79,8 +77,7 @@ const ProfessionalAdmin = ({
   const buttonAcceptImages = (professionalId) => {
     return (
       <Button
-        outline
-        color={"success"}
+        variant={"outline-success"}
         onClick={async () => changeStateImages(professionalId, true)}
       >
         <CheckCircle size={25} /> {t("accept-images")}
@@ -229,7 +226,7 @@ const ProfessionalAdmin = ({
           <td>{professional.company.name}</td>
           <td>{professional.email}</td>
           <td>
-            <Input
+            <Form.Control
               min="0"
               type="number"
               className="d-inline-block w-50 mr-2"
@@ -343,33 +340,35 @@ const ProfessionalAdmin = ({
 
   return (
     <Layout title={t("managing-professionals")}>
-      <Row>
-        <Col>
-          <Tabs titles={titles}>
-            <TableAdmin
-              professionalList={professionalListNotAppoved}
-              title={titles[0]}
-              onSearch={(username) =>
-                findByContactAndStatus(username, "PENDING")
-              }
-            />
-            <TableAdmin
-              professionalList={professionalListAppoved}
-              title={titles[1]}
-              onSearch={(username) =>
-                findByContactAndStatus(username, "APPROVED")
-              }
-            />
-            <TableAdmin
-              professionalList={professionalListRejected}
-              title={titles[2]}
-              onSearch={(username) =>
-                findByContactAndStatus(username, "REJECTED")
-              }
-            />
-          </Tabs>
-        </Col>
-      </Row>
+      <section className="container py-2">
+        <Row>
+          <Col>
+            <Tabs titles={titles}>
+              <TableAdmin
+                professionalList={professionalListNotAppoved}
+                title={titles[0]}
+                onSearch={(username) =>
+                  findByContactAndStatus(username, "PENDING")
+                }
+              />
+              <TableAdmin
+                professionalList={professionalListAppoved}
+                title={titles[1]}
+                onSearch={(username) =>
+                  findByContactAndStatus(username, "APPROVED")
+                }
+              />
+              <TableAdmin
+                professionalList={professionalListRejected}
+                title={titles[2]}
+                onSearch={(username) =>
+                  findByContactAndStatus(username, "REJECTED")
+                }
+              />
+            </Tabs>
+          </Col>
+        </Row>
+      </section>
     </Layout>
   );
 };

@@ -5,17 +5,14 @@ import FormEditProject from "../FormEditProject";
 import { useRouter } from "next/router";
 import FormTwoFactorAuthentication from "../FormTwoFactorAuthentication";
 import {
+  Form,
   Button,
   Card,
-  CardBody,
-  CardSubtitle,
-  CardText,
-  CardTitle,
   Col,
   Container,
   Label,
   Row,
-} from "reactstrap";
+} from "react-bootstrap";
 import CarouselProject from "../CarouselProject/CarouselProject";
 import SeeProjectStyle from "./SeeProject.module.css";
 
@@ -56,49 +53,49 @@ const SeeProject = ({ project, onEditProject, id, onBuyProyect, status }) => {
         <Row>
           <Col>
             <Card>
-              <CardBody>
-                <CardTitle tag="h5">{project.name}</CardTitle>
-                <CardSubtitle tag="h6" className="mb-2 text-muted">
+              <Card.Body>
+                <Card.Title tag="h5">{project.name}</Card.Title>
+                <Card.Subtitle tag="h6" className="mb-2 text-muted">
                   <div id="project-data">
                     <Row>
                       <Col>
-                        <Label>{t("professional-contact")}:</Label>
+                        <Form.Label>{t("professional-contact")}:</Form.Label>
                         <p>{project.professional?.contact}</p>
                       </Col>
                       <Col>
-                        <Label>{t("total-area")}:</Label>
+                        <Form.Label>{t("total-area")}:</Form.Label>
                         <p>{project.totalArea}</p>
                       </Col>
                       <Col>
-                        <Label>{t("year")}:</Label>
+                        <Form.Label>{t("year")}:</Form.Label>
                         <p>{project.year}</p>
                       </Col>
                       <Col>
-                        <Label>{t("web-site")}:</Label>
+                        <Form.Label>{t("web-site")}:</Form.Label>
                         <p>{project.website}</p>
                       </Col>
                       <Col>
-                        <Label>{t("professional-email")}:</Label>
+                        <Form.Label>{t("professional-email")}:</Form.Label>
                         <p>{project.professional?.email}</p>
                       </Col>
                     </Row>
                   </div>
-                </CardSubtitle>
+                </Card.Subtitle>
                 <img
                   className={`${SeeProjectStyle.img}`}
                   src={project.previewImage}
                   width="100%"
                   alt="preview-image"
                 ></img>
-                <CardText>{project.description}</CardText>
-              </CardBody>
+                <Card.Text>{project.description}</Card.Text>
+              </Card.Body>
             </Card>
             <Row className="my-2">
               <Col>
                 {!project.purchased && (
                   <Button
                     className="mx-1"
-                    color={"success"}
+                    variant={"success"}
                     id="btn-show-buy-project"
                     onClick={onBuyProyect}
                   >
@@ -106,13 +103,13 @@ const SeeProject = ({ project, onEditProject, id, onBuyProyect, status }) => {
                   </Button>
                 )}
                 {project.purchased && (
-                  <Button color={"primary"} id="btn-show-2FA" onClick={show2FA}>
+                  <Button variant={"primary"} id="btn-show-2FA" onClick={show2FA}>
                     {t("download-project")}
                   </Button>
                 )}
                 <Button
                   className="mx-1"
-                  color={"warning"}
+                  variant={"warning"}
                   onClick={toggleModal}
                 >
                   {t("project-edit")}
@@ -130,7 +127,8 @@ const SeeProject = ({ project, onEditProject, id, onBuyProyect, status }) => {
             </div>
             <div className="d-flex justify-content-center align-items-center my-3">
               <Col md={"12"}>
-                <CarouselProject className="w-auto" images={project.images} />
+                {project?.images?.map(image => 
+                <img key={image.id} src={image.path}/>)}
               </Col>
             </div>
             <iframe

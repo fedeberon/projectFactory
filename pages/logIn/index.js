@@ -8,7 +8,9 @@ const LogIn = () => {
   const { t } = useTranslation("common");
   return (
     <Layout title={t("log-in")} header={false} footer={false}>
-      <LogInForm />
+      <section className="container py-2">
+        <LogInForm />
+      </section>
     </Layout>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardImg, CardBody } from "reactstrap";
+import { Card } from "react-bootstrap";
 
 const ImageLiked = ({ image }) => {
   const imgStyles = {
@@ -10,14 +10,14 @@ const ImageLiked = ({ image }) => {
 
   return (
     <Card>
-      <CardImg
+      <Card.Img
         top
         width="100%"
         style={imgStyles}
         src={image.path}
         alt="Card image cap"
       />
-      <CardBody></CardBody>
+      <Card.Body></Card.Body>
     </Card>
   );
 };

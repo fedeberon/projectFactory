@@ -3,16 +3,11 @@ import React, { useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { getSession, useSession } from "next-auth/client";
 import {
-  CardDeck,
   Button,
   Col,
   Row,
   Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardFooter,
-} from "reactstrap";
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -102,76 +97,75 @@ const Project = ({ data, professionals, filters }) => {
 
   return (
     <Layout title={t("project")}>
-      {session && (
-        <Button
-          className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"
-          color="danger"
-          onClick={toggleModal}
-        >
-          +
-        </Button>
-      )}
-      <ModalForm
-        size={"xl"}
-        className={"Button"}
-        modalTitle={t("form-project")}
-        formBody={
-          <FormProject
-            onAddProject={onAddProject}
-            toggle={toggleModal}
-          />
-        }
-        modalOpen={{ open: modalOpen, function: setModalOpen }}
-      />
+      <section className="container py-2">
+        {session && (
+          <Button
+            className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"
+            variant="danger"
+            onClick={toggleModal}
+          >
+            +
+          </Button>
+        )}
+        <ModalForm
+          size={"xl"}
+          className={"Button"}
+          modalTitle={t("form-project")}
+          formBody={
+            <FormProject
+              onAddProject={onAddProject}
+              toggle={toggleModal}
+            />
+          }
+          modalOpen={{ open: modalOpen, function: setModalOpen }}
+        />
 
-      <Row className="row-cols-md-3 g-4">
-        {isLoading ? (
-          <h1>{t("loading")}...</h1>
-        ) : (
-          projects.map((project) => (
-            <Col key={project.id}>
-              <CardDeck>
+        <Row className="row-cols-md-3 g-4">
+          {isLoading ? (
+            <h1>{t("loading")}...</h1>
+          ) : (
+            projects.map((project) => (
+              <Col key={project.id}>
                 <Card>
-                  <CardImg
+                  <Card.Img
                     top
                     className="img-fluid"
                     src={project.previewImage}
                     alt="Card image cap"
                   />
-                  <CardBody>
-                    <CardText>
+                  <Card.Body>
+                    <Card.Text>
                       {t("name")}: {project.name}
-                    </CardText>
-                    <CardText>
+                    </Card.Text>
+                    <Card.Text>
                       {t("description")}: {project.description}
-                    </CardText>
-                    <CardText>
+                    </Card.Text>
+                    <Card.Text>
                       {t("total-area")}: {project.totalArea}
-                    </CardText>
-                    <CardText>
+                    </Card.Text>
+                    <Card.Text>
                       {t("year")}: {project.year}
-                    </CardText>
-                    <CardText>
+                    </Card.Text>
+                    <Card.Text>
                       {t("web-site")}: {project.website}
-                    </CardText>
-                  </CardBody>
-                  <CardFooter className="d-flex justify-content-end">
+                    </Card.Text>
+                  </Card.Body>
+                  <Card.Footer className="d-flex justify-content-end">
                     <Link
                       href={`/project/[id]`}
-                      as={`/project/${project.name.replace(/\s+/g, "-")}-${
-                        project.id
-                      }`}
+                      as={`/project/${project.name.replace(/\s+/g, "-")}-${project.id
+                        }`}
                       passHref
                     >
-                      <Button color={"primary"}>{t("view-more")}</Button>
+                      <Button variant={"primary"}>{t("view-more")}</Button>
                     </Link>
-                  </CardFooter>
+                  </Card.Footer>
                 </Card>
-              </CardDeck>
-            </Col>
-          ))
-        )}
-      </Row>
+              </Col>
+            ))
+          )}
+        </Row>
+      </section>
     </Layout>
   );
 };
