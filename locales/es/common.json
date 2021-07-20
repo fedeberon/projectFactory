@@ -220,5 +220,10 @@
 
   "photos" : "Fotos",
   "search":"Buscar",
-  "filter-by-option": "Filtrar por opcion"
+  "filter-by-option": "Filtrar por opcion",
+
+  "about-home":{
+    "a-factory-of-ideas":"Una fabrica de ideas",
+    "we-are-an-online-platform":"Somos una plataforma online conecta a miles de propietarios de viviendas con los profesionales del diseño."
+  }
 }
