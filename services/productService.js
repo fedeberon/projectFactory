@@ -42,5 +42,11 @@ export const setStatus = async (id, status, token) => {
 };
 
 export const findByContactAndStatus = async (contact, status, page, size) => {
-  return await API.get(`/products/contact/${contact}/status/${status}?page=${page}&size=${size}`);
+  return await API.get(
+    `/products/contact/${contact}/status/${status}?page=${page}&size=${size}`
+  );
+};
+
+export const findAllByStatus = async (page, size, status) => {
+  return await API.get(`/products/status/${status}?page=${page}&size=${size}`);
 };

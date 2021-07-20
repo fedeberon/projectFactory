@@ -16,7 +16,6 @@ SwiperCore.use([Autoplay, Pagination, Navigation]);
 const SwipperEmpresas = (props) => {
   const { items } = props;
   const { t } = useTranslation("common");
-  // console.log(items())
 
   return (
     <div className="container">

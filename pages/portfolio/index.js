@@ -313,7 +313,6 @@ const Portfolio = ({ professional, buildingWorks }) => {
   const isState = (buildingWork) => {
     let statusColor;
     let ico;
-    console.log(buildingWork);
     // if (product.status === "PENDING") {
     //   statusColor = `bg-warning text-dark`;
     //   ico = <ExclamationCircle className={`${statusColor}`} size={15} />;

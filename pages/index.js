@@ -10,6 +10,8 @@ import FilteredImages from "../components/FilteredImages/FilteredImages";
 import Layout from "../components/Layout/Layout";
 import CarouselBanner from "../components/CustomCarousel/CarouselBanner";
 import SwipperEmpresas from "../components/SwipperEmpresas/SwipperEmpresas";
+import SliderProducts from "../components/SliderProducts/SliderProducts";
+import AboutHome from "../components/AboutHome";
 
 // Services
 import * as tagService from "../services/tagService";
@@ -22,7 +24,7 @@ import styles from "../styles/Home.module.css";
 import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
 
-const Home = ({ filters, carouselImages, session, companies }) => {
+const Home = ({ filters, carouselImages, session, products, companies }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -96,6 +98,18 @@ const Home = ({ filters, carouselImages, session, companies }) => {
             </Col>
           </Row>
         </Col>
+        <AboutHome />
+        <Col>
+          <div className={styles.infoHead}>
+            <h2 className={styles.productsTitle}>
+              {t("products")}
+              <small className={styles.productsSmallTitle}>
+                {t("products-description")}
+              </small>
+            </h2>
+          </div>
+          <SliderProducts products={products} />
+        </Col>
         <Col>
           <div className={styles.infoHead}>
             <h2 className={styles.itemsTitle}>
@@ -116,8 +130,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
 
-  const filters = await tagService.findAll();
-  const carouselImages = await imageService.findCarouselImages();
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -127,6 +139,9 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
+  const filters = await tagService.findAll();
+  const carouselImages = await imageService.findCarouselImages();
+  const products = await productService.findAllByStatus(page, size, "APPROVED");
   const companies = await companyService.findAll("APPROVED", page, size);
 
   return {
@@ -135,6 +150,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
       carouselImages,
       session,
       companies,
+      products,
     },
   };
 }

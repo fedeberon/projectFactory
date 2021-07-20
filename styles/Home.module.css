@@ -122,16 +122,18 @@
 
 .inlineCode::before,
 .inlineCode::after {
-  content: '`';
+  content: "`";
 }
 
-.itemsTitle {
+.itemsTitle,
+.productsTitle {
   margin: auto;
   font-size: 15px;
   font-weight: 600;
 }
 
-.itemsSmallTitle {
+.itemsSmallTitle,
+.productsSmallTitle {
   font-size: 12px;
   font-weight: 400;
   display: block;
@@ -141,4 +143,4 @@
 .infoHead {
   text-align: center;
   margin-bottom: 30px;
-} 
+}
