@@ -1,7 +1,9 @@
 import API from "./api";
 import * as imageService from "./imageService";
+import { signIn } from "next-auth/client";
+import { getById } from "./professionalService";
 
-export const create = async (data, logo, backgroundImage, categories, token) => {
+export const create = async (data, logo, backgroundImage, categories, token, userId) => {
   API.defaults.headers.common["Authorization"] = token;
   const newCategories = [];
   categories.map((category) => newCategories.push({ name: category.tag }));
@@ -15,17 +17,24 @@ export const create = async (data, logo, backgroundImage, categories, token) => 
     province: data.province,
     location: data.location,
   };
-  const company = await API.post(`/companies/become`, companyRequest);
+  const response = await API.post(`/companies/become`, companyRequest);
   await imageService.uploadCompanyPreview(logo, token);
   await imageService.uploadCompanyBackground(backgroundImage, token);
+  const company = await findById(userId);
+  signIn("credentials", {
+    accessToken: response.token,
+    name: data.contact,
+    email: data.email,
+    image: company.previewImage,
+    callbackUrl: `${window.location.origin}/profile`,
+  });
 };
 
 export const getStartsWith = async (value, page, size) => {
   return await API.get(`/companies/name/${value}?page=${page}&size=${size}`);
 };
 
-export const findAll = async (status, page, size, token) => {
-  API.defaults.headers.common["Authorization"] = token;
+export const findAll = async (status, page, size) => {
   return await API.get(`/companies/status/${status}?page=${page}&size=${size}`);
 };
 

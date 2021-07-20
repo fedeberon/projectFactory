@@ -116,7 +116,7 @@ const SeeProject = ({ project, onEditProject, id, onBuyProyect, status }) => {
                 </Button>
               </Col>
               {status == "approved"  &&
-              <div class="alert alert-success" role="alert">
+              <div className="alert alert-success" role="alert">
                 {t("you-bought-this-project")}
               </div>
               }

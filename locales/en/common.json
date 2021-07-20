@@ -9,9 +9,10 @@
     "search-placeholder": "Find ideas/ professionals",
     "search-by-ideas": "Search by ideas",
     "search-by-professionals": "Search by professionals",
-    "my-products" : "My products"
+    "my-products": "My products"
   },
 
+  "product": "Product",
   "professional": "Professional",
   "professionals": "Professionals",
   "project": "Project",
@@ -24,7 +25,7 @@
   "administrator": "Administrator",
   "email": "Email",
   "company": "Company",
-  "companies": "companies",
+  "companies": "Companies",
   "add-tags": "Add tags",
   "add-title": "Add title",
   "province": "Province",
@@ -73,6 +74,10 @@
   "upload-images": "Upload images",
   "send": "Send",
 
+  "pending": "Pending",
+  "approved": "Approved",
+  "rejected": "Rejected",
+
   "administrator-creator": {
     "add-administrator": "Add administrator",
     "insert-username": "Insert username",
@@ -116,7 +121,7 @@
 
   "table-admin": {
     "actions": "Action",
-    "there-are-not-more-professional": "There are not more professionals",
+    "there-are-not-more": "There are not more",
     "find-by-contact": "Find by contact",
     "tokens": "Tokens"
   },
@@ -222,6 +227,19 @@
     "select-profile-picture": "Select profile picture",
     "select-background-picture": "Select background picture"
   },
+
+  "product-detail": "Product detail",
+  "select-preview-image-for-the-product": "Select preview image for the product",
+  "product-form": "Product form",
+  "should-be-greater-than-0": "Should be greater than 0",
+  "date": "Date",
+  "building-work": "Building work",
+
+  "about-home":{
+    "a-factory-of-ideas":"A factory of ideas",
+    "we-are-an-online-platform":"We are an online platform connecting thousands of homeowners with design professionals."
+  },
+
 
   "photos" : "Photos",
   "search":"Search",

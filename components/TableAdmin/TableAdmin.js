@@ -4,7 +4,7 @@ import { Alert, Table } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import { Form } from "react-bootstrap";
 
-const TableAdmin = ({ professionalList, title, onSearch }) => {
+const TableAdmin = ({ listHead, listBody, title, onSearch }) => {
   const { t, lang } = useTranslation("common");
 
   const handleChangeInput = async (e) => {
@@ -22,24 +22,19 @@ const TableAdmin = ({ professionalList, title, onSearch }) => {
               onChange={handleChangeInput}
             />
           </th>
-          <th>{t("image")}</th>
-          <th>{t("contact")}</th>
-          <th>{t("company")}</th>
-          <th>{t("email")}</th>
-          <th>{t("table-admin.tokens")}</th>
-          <th>{t("table-admin.actions")}</th>
+          {listHead}
         </tr>
       </thead>
       <tbody>
-        {professionalList.length > 0 ? (
-          professionalList
+        {listBody.length > 0 ? (
+          listBody
         ) : (
           <tr>
-            <td colSpan="7" className="p-0">
-              <Alert variant="primary text-center">
+            <td colSpan="8" className="p-0">
+              <Alert color="primary" className="d-flex justify-content-center gap-2 ">
                 <InfoCircleFill size={25} />
                 {`${t(
-                  "table-admin.there-are-not-more-professional"
+                  "table-admin.there-are-not-more"
                 )} ${title.toLowerCase()}`}
               </Alert>
             </td>

@@ -56,16 +56,16 @@ const Layout = ({ children, title, footer = true, header = true }) => {
         <footer className="bg-light text-dark">
           <Container>
             <Row className="row-cols-4 justify-content-center align-items-center w-100">
-              <Col className="p-2">
+              <Col className="p-2 col-12 col-md-3">
                 <Image
                   src={`/logo-02.svg`}
-                  width={200}
-                  height={"auto"}
+                  width={145.295}
+                  height={41.358}
                   alt=""
-                  className={`${LayoutStyles.imgBlackAndWhite} text-muted`}
+                  className={`text-muted`}
                 />
               </Col>
-              <Col>
+              <Col className="col-12 col-md-3 my-2 my-md-0">
                 <Link href="/about">
                   <a className="m-0 text-muted text-decoration-none list-group-item border-0 p-0 bg-transparent">
                     {t("who-we-are")}
@@ -87,13 +87,13 @@ const Layout = ({ children, title, footer = true, header = true }) => {
                   </a>
                 </Link>
               </Col>
-              <Col>
+              <Col className="col-6 col-md-3">
                 <p className="m-0 text-muted">
                   LaFabricaDeProyectosBolivar@gmail.com
                 </p>
                 <p className="m-0 text-muted">+54 9 11 4545 4545</p>
               </Col>
-              <Col>
+              <Col className="col-6 col-md-3">
                 <Row className="justify-content-center">
                   <Col className="col-auto">
                     <Instagram size={25} className="text-muted" />
@@ -104,7 +104,7 @@ const Layout = ({ children, title, footer = true, header = true }) => {
                 </Row>
               </Col>
             </Row>
-            <Row>
+            <Row className="mt-2 mt-md-0">
               <Col>
                 <p className="text-muted">
                   &copy; Fabrica de Proyectos 2021 - {new Date().getFullYear()}{" "}

@@ -9,15 +9,12 @@ import useTranslation from "next-translate/useTranslation";
 import Layout from "../../../components/Layout/Layout";
 import Tabs from "../../../components/Tabs/Tabs";
 import TableAdmin from "../../../components/TableAdmin/TableAdmin";
-import { Input } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 //Services
-import {
-  getProfessionalForApproved,
-  setEnebleProfessional,
-} from "../../../services/professionalService";
 import * as professionalService from "../../../services/professionalService";
 import * as imageService from "../../../services/imageService";
+import Link from "next/link";
 
 const ProfessionalAdmin = ({
   professionalNotApproved,
@@ -76,12 +73,22 @@ const ProfessionalAdmin = ({
    */
   const buttonAcceptImages = (professionalId) => {
     return (
-      <Button
-        variant={"outline-success"}
-        onClick={async () => changeStateImages(professionalId, true)}
-      >
-        <CheckCircle size={25} /> {t("accept-images")}
-      </Button>
+      // <Button
+      //   outline
+      //   color={"success"}
+      //   onClick={async () => changeStateImages(professionalId, true)}
+      // >
+      //   <CheckCircle size={25} /> {t("accept-images")}
+      // </Button>
+      <Link href={"/admin/building"}>
+        <Button
+          outline
+          color={"success"}
+        // onClick={async () => changeStateImages(professionalId, true)}
+        >
+          <CheckCircle size={25} /> {t("managing-images")}
+        </Button>
+      </Link>
     );
   };
 
@@ -123,7 +130,7 @@ const ProfessionalAdmin = ({
    */
   const saveChangeProfessional = async (id, status) => {
     try {
-      await setEnebleProfessional(id, status, session?.accessToken);
+      await professionalService.setEnebleProfessional(id, status, session?.accessToken);
       return true;
     } catch (error) {
       console.error(error);
@@ -158,7 +165,6 @@ const ProfessionalAdmin = ({
   const renderApprovedProfessionals = (professionals) => {
     const professionalsList = getList(professionals, [
       (professionalId) => buttonReject(professionalId),
-      (professionalId) => buttonAcceptImages(professionalId),
     ]);
     setProfessionalListAppoved(professionalsList);
   };
@@ -188,7 +194,7 @@ const ProfessionalAdmin = ({
    */
   const getProfessional = async (status) => {
     try {
-      const professionalNotApproved = await getProfessionalForApproved(
+      const professionalNotApproved = await professionalService.getForApproved(
         status,
         pageSize.page,
         pageSize.size,
@@ -199,6 +205,18 @@ const ProfessionalAdmin = ({
       console.error(error);
     }
   };
+
+  const getListHead = (
+    <>
+      <th>{t("common:image")}</th>
+      <th>{t("common:contact")}</th>
+      <th>{t("common:company")}</th>
+      <th>{t("common:email")}</th>
+      <th>{t("common:date")}</th>
+      <th>{t("common:table-admin.tokens")}</th>
+      <th>{t("common:table-admin.actions")}</th>
+    </>
+  );
 
   /**
    * Complete the body part of the table showing the result of the pending,
@@ -225,6 +243,7 @@ const ProfessionalAdmin = ({
           <td>{professional.contact}</td>
           <td>{professional.company.name}</td>
           <td>{professional.email}</td>
+          <td>{professional.statusUpdate}</td>
           <td>
             <Form.Control
               min="0"
@@ -285,7 +304,6 @@ const ProfessionalAdmin = ({
     if (professionalApproved) {
       const professionalList = getList(professionalApproved, [
         (professionalId) => buttonReject(professionalId),
-        (professionalId) => buttonAcceptImages(professionalId),
       ]);
       setProfessionalListAppoved(professionalList);
     }
@@ -345,21 +363,24 @@ const ProfessionalAdmin = ({
           <Col>
             <Tabs titles={titles}>
               <TableAdmin
-                professionalList={professionalListNotAppoved}
+                listHead={getListHead}
+                listBody={professionalListNotAppoved}
                 title={titles[0]}
                 onSearch={(username) =>
                   findByContactAndStatus(username, "PENDING")
                 }
               />
               <TableAdmin
-                professionalList={professionalListAppoved}
+                listHead={getListHead}
+                listBody={professionalListAppoved}
                 title={titles[1]}
                 onSearch={(username) =>
                   findByContactAndStatus(username, "APPROVED")
                 }
               />
               <TableAdmin
-                professionalList={professionalListRejected}
+                listHead={getListHead}
+                listBody={professionalListRejected}
                 title={titles[2]}
                 onSearch={(username) =>
                   findByContactAndStatus(username, "REJECTED")
@@ -406,7 +427,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (session) {
     let status = "PENDING";
     token = session.accessToken;
-    professionalNotApproved = await getProfessionalForApproved(
+    professionalNotApproved = await professionalService.getForApproved(
       status,
       page,
       size,
@@ -414,14 +435,14 @@ export async function getServerSideProps({ params, req, res, locale }) {
     );
 
     status = "APPROVED";
-    professionalApproved = await getProfessionalForApproved(
+    professionalApproved = await professionalService.getForApproved(
       status,
       page,
       size,
       token
     );
     status = "REJECTED";
-    professionalRejected = await getProfessionalForApproved(
+    professionalRejected = await professionalService.getForApproved(
       status,
       page,
       size,

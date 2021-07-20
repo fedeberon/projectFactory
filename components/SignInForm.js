@@ -141,7 +141,7 @@ const SignInForm = (props) => {
                 {t("common:sign-in")}
               </Button>
               {usernameAlreadyExists && (
-                <div class="alert alert-danger" role="alert">
+                <div className="alert alert-danger" role="alert">
                   {t("common:username-already-exists")}
                 </div>
               )}

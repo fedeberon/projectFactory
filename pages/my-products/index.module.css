@@ -19,3 +19,31 @@
   top: -150px;
   z-index: 100;
 }
+.itemStatus {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 0 5px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border: 0;
+  border-radius: 0.325em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.cursorPointer {
+  cursor: pointer;
+}
+
+.imgRejected {
+  filter: opacity(15%);
+}
+
+.imgGray {
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+}

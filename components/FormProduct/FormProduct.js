@@ -12,7 +12,7 @@ import {
     Button,
     Form,
     FormGroup,
-  } from "react-bootstrap";
+} from "react-bootstrap";
 
 const FormProduct = ({
     toggle,
@@ -24,7 +24,7 @@ const FormProduct = ({
     images,
     setImages,
     changeState,
-    productId
+    productId,
 }) => {
     const { t } = useTranslation("common");
     const [error, setError] = useState("");
@@ -53,7 +53,7 @@ const FormProduct = ({
             images,
             name,
             description,
-            price
+            price,
         };
         if (previewImage.length > 0) {
             if (changeState.stateFormProduct.post) {
@@ -199,12 +199,16 @@ const FormProduct = ({
                                         name="price"
                                         control={control}
                                         rules={{
-                                            required: {
-                                                value: true,
-                                                message: `${t("is-required", {
-                                                    nameRequired: t("the-price"),
-                                                })}`,
-                                            },
+                                        required: {
+                                            value: true,
+                                            message: `${t("is-required", {
+                                            nameRequired: t("the-price"),
+                                            })}`,
+                                        },
+                                        validate: {
+                                            positive: (v) =>
+                                            parseInt(v) > 0 || t("should-be-greater-than-0"),
+                                        },
                                         }}
                                         defaultValue=""
                                         render={({ field }) => (
@@ -261,7 +265,7 @@ const FormProduct = ({
                                         multiple={true}
                                         imagesEdited={setImages}
                                         withTags={true}
-                                        onAdd={()=>{}}
+                                        onAdd={() => { }}
                                     />
                                 </FormGroup>
                             </Col>
@@ -279,6 +283,13 @@ const FormProduct = ({
                     </Col>
                 </Row>
             </Form>
+            {error && (
+                <Row className="mt-2">
+                    <Col>
+                        <Error error={error} />
+                    </Col>
+                </Row>
+            )}
             {error && (
                 <Row className="mt-2">
                     <Col>

@@ -11,7 +11,6 @@ const ImageLiked = ({ image }) => {
   return (
     <Card>
       <Card.Img
-        top
         width="100%"
         style={imgStyles}
         src={image.path}

@@ -75,19 +75,24 @@ export const addBackgroundImage = async (image, token) => {
   return await API.post(`/images/professionals/background`, imageData);
 };
 
-export const become = async (professional, token) => {
+export const become = async (data, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  const response = await API.post(`/professionals/become`, professional);
-  signIn("credentials", {
-    accessToken: response.token,
-    name: professional.contact,
-    email: professional.email,
-    callbackUrl: `${window.location.origin}/profile`,
-  });
+  const response = await API.post(`/professionals/become`, data);
   return response.token;
 };
 
-export const getProfessionalForApproved = async (status, page, size, token) => {
+export const updateToken = async (token, userId) => {
+  const professional = await getById(userId, token);
+  signIn("credentials", {
+    accessToken: token,
+    name: professional.contact,
+    email: professional.email,
+    image: professional.previewImage,
+    callbackUrl: `${window.location.origin}/profile`,
+  });
+};
+
+export const getForApproved = async (status, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.get(
     `/professionals/status/${status}?page=${page}&size=${size}`

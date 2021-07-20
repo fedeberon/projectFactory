@@ -7,7 +7,7 @@ import Layout from "../../components/Layout/Layout";
 // Services
 import * as professionalService from "../../services/professionalService";
 import * as companyService from "../../services/companyService";
-import { getLikePhotos } from "../../services/imageService";
+import * as imageService from "../../services/imageService";
 
 // Components
 import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
@@ -24,9 +24,9 @@ const Profile = ({ data, imagesLiked, status }) => {
     }
   }, [session]);
 
-  const saveProfessional = async (data, token) => {
+  const saveProfessional = async (data) => {
     try {
-      const professionalToken = await professionalService.become(data, token);
+      const professionalToken = await professionalService.become(data, session.accessToken);
 
       return professionalToken;
     } catch (error) {
@@ -67,13 +67,11 @@ const Profile = ({ data, imagesLiked, status }) => {
     data.category = category;
     const previewImage = data.previewImage;
     const backgroundImage = data.backgroundImage;
-    const images = data.images;
     delete data.previewImage;
     delete data.backgroundImage;
     delete data.images;
-
-    const token = await saveProfessional(data, session?.accessToken);
-
+    const token = await saveProfessional(data);
+    
     if (token != null) {
       if (previewImage) {
         await savePreviewImage(token, previewImage);
@@ -81,11 +79,8 @@ const Profile = ({ data, imagesLiked, status }) => {
       if (backgroundImage) {
         await saveBackgroundImage(token, backgroundImage);
       }
-      if (images.length > 0) {
-        await saveImages(images, token);
-      }
     }
-
+    await professionalService.updateToken(token, session.user.id);
     return token;
   };
 
@@ -171,7 +166,7 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
   if (session) {
     token = session.accessToken;
     companies = await companyService.findAll("APPROVED", page, size, token);
-    imagesLiked = await getLikePhotos(page, size, token);
+    imagesLiked = await imageService.getLikePhotos(page, size, token);
   }
 
   return {

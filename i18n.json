@@ -11,6 +11,9 @@
     "/project": ["project"],
     "/admin/professional": ["administrator"],
     "/admin/company": ["administrator"],
+    "/admin/product": ["administrator"],
+    "/admin/building": ["administrator"],
+    "/admin": ["administrator"],
     "/policies":["policies"]
   }
 }

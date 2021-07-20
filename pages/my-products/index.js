@@ -6,38 +6,36 @@ import * as productService from "../../services/productService";
 import ModalForm from "../../components/ModalForm";
 import Link from "next/link";
 import {
-  Dropdown,
   Card,
-  CardDeck,
   Col,
   Row,
   Button,
   DropdownButton,
+  Dropdown,
 } from "react-bootstrap";
 
 import FormProduct from "../../components/FormProduct/FormProduct";
 
 import {
   PlusSquareDotted,
-  Images,
   ThreeDotsVertical,
   PencilSquare,
+  XCircle,
+  ExclamationCircle,
+  Check2Circle,
 } from "react-bootstrap-icons";
 import indexStyles from "./index.module.css";
 import filteredImagesStyles from "../../components/FilteredImages/FilteredImages.module.css";
-import image from "next/image";
 import * as imageService from "../../services/imageService";
 
 const CustomButtonTogle = ({ id, editProduct }) => {
-  const [dropdownOpen, setOpen] = useState(false);
-  const toggle = () => setOpen((dropdownOpen) => !dropdownOpen);
   return (
-    <DropdownButton 
-      variant="start" 
-      drop="left" 
-      align="end" 
+    <DropdownButton
+      variant="start"
+      drop="left"
+      align="end"
       title={<ThreeDotsVertical color={"dark"} size={25} />
-    }>
+      }>
       <Dropdown.Menu>
         <Dropdown.Item
           onClick={() => {
@@ -73,7 +71,7 @@ const MyProducts = (props) => {
     defaultValues: {
       name: "",
       description: "",
-      price: 0
+      price: 0,
     },
   });
 
@@ -155,7 +153,7 @@ const MyProducts = (props) => {
       defaultValues: {
         name: "",
         description: "",
-        price: 0
+        price: 0,
       },
     };
     setProductData(defaultValues);
@@ -165,12 +163,52 @@ const MyProducts = (props) => {
   };
 
   const onAddProduct = async (data) => {
-    await productService.addProduct(data, session.accessToken);
-    toggleModalProducts();
+    if (session) {
+      try {
+        let productNew = await productService.addProduct(
+          data,
+          session.accessToken
+        );
+
+        const productReload = await productService.findMyProducts(
+          pageSize.page,
+          pageSize.size,
+          session.accessToken
+        );
+
+        setLocalProducts(productReload);
+        toggleModalProducts();
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
-  const onSetProduct = (data) => {
-    console.log(data);
+  const onSetProduct = (data) => { };
+
+  const isState = (product) => {
+    let statusColor;
+    let ico;
+    if (product.status === "PENDING") {
+      statusColor = `bg-warning text-dark`;
+      ico = <ExclamationCircle className={`${statusColor}`} size={15} />;
+    }
+    if (product.status === "APPROVED") {
+      statusColor = "bg-success";
+      ico = <Check2Circle className={`${statusColor}`} size={15} />;
+    }
+    if (product.status === "REJECTED") {
+      statusColor = `bg-danger`;
+      ico = <XCircle className={`${statusColor}`} size={15} />;
+    }
+    return (
+      <>
+        <Card.Text className={`${indexStyles.itemStatus} ${statusColor} m-0`}>
+          {ico}
+          {t(product.status.toLowerCase())}
+        </Card.Text>
+      </>
+    );
   };
 
   const imagesCard = (
@@ -188,11 +226,18 @@ const MyProducts = (props) => {
                     }`}
                 >
                   <img
-                    className={`${filteredImagesStyles.cardImage}`}
+                    className={`${filteredImagesStyles.cardImage} ${indexStyles.cursorPointer
+                      } ${product.status === "PENDING"
+                        ? `${indexStyles.imgGray}`
+                        : product.status === "REJECTED"
+                          ? `${indexStyles.imgRejected}`
+                          : ``
+                      }`}
                     src={product.previewImage}
                     alt="preview"
                   />
                 </Link>
+                {isState(product)}
                 <div className={`${filteredImagesStyles.cardText}`}>
                   <Col className="col-auto">
                     <img
@@ -232,16 +277,16 @@ const MyProducts = (props) => {
       <section className="container py-2">
         <Row className="row-cols-2 g-2">
           <Col className="col-auto">
-            <Button variant="outline-primary" onClick={openModalProduct}>
+            <Button outline color="primary" onClick={openModalProduct}>
               <PlusSquareDotted size={100} />
             </Button>
           </Col>
-          <Col className="col-auto">{imagesCard}</Col>
+          <Col className="col-12">{imagesCard}</Col>
         </Row>
 
         <ModalForm
           size={"xl"}
-          modalTitle={t("work-form")}
+          modalTitle={t("product-form")}
           className={"Button mt-50"}
           formBody={
             <>
@@ -269,16 +314,37 @@ const MyProducts = (props) => {
 export async function getServerSideProps({ params, req, res, locale }) {
   const session = await getSession({ req });
 
+  if (
+    !session ||
+    !session.authorities.includes(process.env.NEXT_PUBLIC_ROLE_COMPANY)
+  ) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  let { page, size } = req.__NEXT_INIT_QUERY;
+
+  if (!page || page <= 0) {
+    page = 0;
+  }
+  if (!size || size <= 0) {
+    size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
+  }
+
   const data = await productService.findMyProducts(
-    0,
-    10,
+    page,
+    size,
     session.accessToken
   );
 
   return {
     props: {
-      data
+      data,
     },
   };
-};
+}
 export default MyProducts;

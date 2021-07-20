@@ -3,14 +3,19 @@ import useTranslation from "next-translate/useTranslation";
 import Layout from "../../components/Layout/Layout";
 import * as companyService from "../../services/companyService";
 import Company from "../../components/Company/Company";
+import CardList from "../../components/CardList";
+import { Col, Row, Spinner } from "react-bootstrap";
+
 import FormFilterCompany from "../../components/FormFilterCompany/FormFilterCompany";
 
 const Companies = (props) => {
   const { data } = props;
   const { t } = useTranslation("common");
   const [companies, setCompanies] = useState(data);
+  const [isLoading, setLoading] = useState(false);
 
   const onGetFilterCompanies = async (data, status, page, size) => {
+    setLoading(true);
     try {
       const companies = await companyService.findAllByFieldAndStatus(
         data,
@@ -18,24 +23,30 @@ const Companies = (props) => {
         page,
         size
       );
-      console.log(companies);
+      setLoading(false);
       return companies;
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
   return (
-    <Layout title={t("company")}>
+    <Layout title={t("companies")}>
       <section className="container py-2">
         <FormFilterCompany
           onGetFilterCompanies={onGetFilterCompanies}
           setCompanies={setCompanies}
         />
-
-        {companies.map((company) => (
-          <Company key={company.id} company={company} />
-        ))}
+        {isLoading ? (
+          <Spinner type="grow" color="primary" children={""} />
+        ) : (
+          <Row>
+            <Col className="col-10">
+              <CardList companies={companies} />
+            </Col>
+          </Row>
+        )}
       </section>
     </Layout>
   );
