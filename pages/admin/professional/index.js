@@ -12,12 +12,9 @@ import TableAdmin from "../../../components/TableAdmin/TableAdmin";
 import { Input } from "reactstrap";
 
 //Services
-import {
-  getProfessionalForApproved,
-  setEnebleProfessional,
-} from "../../../services/professionalService";
 import * as professionalService from "../../../services/professionalService";
 import * as imageService from "../../../services/imageService";
+import Link from "next/link";
 
 const ProfessionalAdmin = ({
   professionalNotApproved,
@@ -78,13 +75,22 @@ const ProfessionalAdmin = ({
    */
   const buttonAcceptImages = (professionalId) => {
     return (
-      <Button
-        outline
-        color={"success"}
-        onClick={async () => changeStateImages(professionalId, true)}
-      >
-        <CheckCircle size={25} /> {t("accept-images")}
-      </Button>
+      // <Button
+      //   outline
+      //   color={"success"}
+      //   onClick={async () => changeStateImages(professionalId, true)}
+      // >
+      //   <CheckCircle size={25} /> {t("accept-images")}
+      // </Button>
+      <Link href={"/admin/building"}>
+        <Button
+          outline
+          color={"success"}
+          // onClick={async () => changeStateImages(professionalId, true)}
+        >
+          <CheckCircle size={25} /> {t("managing-images")}
+        </Button>
+      </Link>
     );
   };
 
@@ -126,7 +132,7 @@ const ProfessionalAdmin = ({
    */
   const saveChangeProfessional = async (id, status) => {
     try {
-      await setEnebleProfessional(id, status, session?.accessToken);
+      await professionalService.setEnebleProfessional(id, status, session?.accessToken);
       return true;
     } catch (error) {
       console.error(error);
@@ -161,7 +167,6 @@ const ProfessionalAdmin = ({
   const renderApprovedProfessionals = (professionals) => {
     const professionalsList = getList(professionals, [
       (professionalId) => buttonReject(professionalId),
-      (professionalId) => buttonAcceptImages(professionalId),
     ]);
     setProfessionalListAppoved(professionalsList);
   };
@@ -191,7 +196,7 @@ const ProfessionalAdmin = ({
    */
   const getProfessional = async (status) => {
     try {
-      const professionalNotApproved = await getProfessionalForApproved(
+      const professionalNotApproved = await professionalService.getForApproved(
         status,
         pageSize.page,
         pageSize.size,
@@ -301,7 +306,6 @@ const ProfessionalAdmin = ({
     if (professionalApproved) {
       const professionalList = getList(professionalApproved, [
         (professionalId) => buttonReject(professionalId),
-        (professionalId) => buttonAcceptImages(professionalId),
       ]);
       setProfessionalListAppoved(professionalList);
     }
@@ -423,7 +427,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (session) {
     let status = "PENDING";
     token = session.accessToken;
-    professionalNotApproved = await getProfessionalForApproved(
+    professionalNotApproved = await professionalService.getForApproved(
       status,
       page,
       size,
@@ -431,14 +435,14 @@ export async function getServerSideProps({ params, req, res, locale }) {
     );
 
     status = "APPROVED";
-    professionalApproved = await getProfessionalForApproved(
+    professionalApproved = await professionalService.getForApproved(
       status,
       page,
       size,
       token
     );
     status = "REJECTED";
-    professionalRejected = await getProfessionalForApproved(
+    professionalRejected = await professionalService.getForApproved(
       status,
       page,
       size,

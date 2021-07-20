@@ -231,10 +231,13 @@
   "product-form": "Product form",
   "should-be-greater-than-0": "Should be greater than 0",
   "date": "Date",
+  "building-work": "Building work",
 
   "about-home":{
     "a-factory-of-ideas":"A factory of ideas",
     "we-are-an-online-platform":"We are an online platform connecting thousands of homeowners with design professionals."
-  }
+  },
+
+  "companies":"Companies"
 
 }

@@ -13,33 +13,33 @@ import { Input } from "reactstrap";
 
 //Services
 import * as imageService from "../../../services/imageService";
-import * as productService from "../../../services/productService";
+import * as buildingWorkService from "../../../services/buildingWorkService";
 
-const ProductAdmin = ({
-  productsNotApproved,
-  productsApproved,
-  productsRejected,
+const BuildingAdmin = ({
+  buildingWorksNotApproved,
+  buildingWorksApproved,
+  buildingWorksRejected,
   session,
 }) => {
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
-  const [productListNotAppoved, setProductListNotAppoved] = useState([]);
-  const [productsListAppoved, setListAppoved] = useState([]);
-  const [productsListRejected, setProductsListRejected] = useState([]);
-
+  const [buildingWorkListNotAppoved, setBuildingWorkListNotAppoved] = useState([]);
+  const [buildingWorksListAppoved, setListAppoved] = useState([]);
+  const [buildingWorksListRejected, setBuildingWorksListRejected] = useState([]);
+  
   const { t } = useTranslation("administrator");
 
   /**
    * Component button accept to add it to the table that requires it.
-   * @param {*} productlId String necessary to identify the products
+   * @param {*} buildingWorklId String necessary to identify the buildingWorks
    * in changeState
    * @returns A button armed with the functionality to change the state to Id
    */
-  const buttonAccept = (productlId) => {
+  const buttonAccept = (buildingWorklId) => {
     return (
       <Button
         outline
         color={"success"}
-        onClick={() => changeState(productlId, "APPROVED")}
+        onClick={() => changeState(buildingWorklId, "APPROVED")}
       >
         <CheckCircle size={25} /> {t("accept")}
       </Button>
@@ -48,16 +48,16 @@ const ProductAdmin = ({
 
   /**
    * Component button reject to add it to the table that requires it.
-   * @param {*} productId String necessary to identify the profesisonal
+   * @param {*} buildingWorkId String necessary to identify the profesisonal
    * in changeState
    * @returns A button armed with the functionality to change the state to Id.
    */
-  const buttonReject = (productId) => {
+  const buttonReject = (buildingWorkId) => {
     return (
       <Button
         outline
         color={"danger"}
-        onClick={() => changeState(productId, "REJECTED")}
+        onClick={() => changeState(buildingWorkId, "REJECTED")}
       >
         <XCircle size={25} /> {t("reject")}
       </Button>
@@ -65,17 +65,17 @@ const ProductAdmin = ({
   };
 
   /**
-   * Component button that accept all images of one productId.
-   * @param {*} productId String necessary to identify the profesisonal
+   * Component button that accept all images of one buildingWorkId.
+   * @param {*} buildingWorkId String necessary to identify the profesisonal
    * in acceptImages
    * @returns A button armed with the functionality to change the state to Id.
    */
-  const buttonAcceptImages = (productId) => {
+  const buttonAcceptImages = (buildingWorkId) => {
     return (
       <Button
         outline
         color={"success"}
-        onClick={async () => changeStateImages(productId, true)}
+        onClick={async () => changeStateImages(buildingWorkId, true)}
       >
         <CheckCircle size={25} /> {t("accept-images")}
       </Button>
@@ -83,7 +83,7 @@ const ProductAdmin = ({
   };
 
   const changeStateImages = async (id, approved) => {
-    await imageService.changeStateImagesByProductIdId(
+    await imageService.changeStateImagesByBuildingWorkId(
       id,
       approved,
       session.accessToken
@@ -96,15 +96,15 @@ const ProductAdmin = ({
 
   /**
    * Funtionality to buttonAcept and buttonReject components
-   * to change the status of a product in a tabs pending, approved and
+   * to change the status of a buildingWork in a tabs pending, approved and
    * disapproved.
-   * @param {*} id String necessary to identify of a product.
+   * @param {*} id String necessary to identify of a buildingWork.
    * @param {*} status String to show that you want it to see.
    * The states are : PENDING APPROVED REJECTED DELETED
    */
   const changeState = async (id, status) => {
-    const productChange = await saveChangeStatus(id, status);
-    if (productChange) {
+    const buildingWorkChange = await saveChangeStatus(id, status);
+    if (buildingWorkChange) {
       pendingTab();
       approvedTab();
       disapprovedTab();
@@ -112,15 +112,15 @@ const ProductAdmin = ({
   };
 
   /**
-   * Request "fetch" to the DB that changes the status of a product.
-   * @param {*} id String is necessary to identify a product
+   * Request "fetch" to the DB that changes the status of a buildingWork.
+   * @param {*} id String is necessary to identify a buildingWork
    * @param {*} status String to show that you want it to see.
    * The states are : PENDING APPROVED REJECTED DELETED
    * @returns true or false to obtein if save change or not
    */
   const saveChangeStatus = async (id, status) => {
     try {
-      await productService.setStatus(id, status, session?.accessToken);
+      await buildingWorkService.setStatus(id, status, session?.accessToken);
       return true;
     } catch (error) {
       console.error(error);
@@ -129,82 +129,82 @@ const ProductAdmin = ({
   };
 
   /**
-   * Funtionality to refresh the pending tab when a product is accepted.
+   * Funtionality to refresh the pending tab when a buildingWork is accepted.
    */
   const pendingTab = async () => {
-    const products = await getAllProducts("PENDING");
-    renderPending(products);
+    const buildingWorks = await getAllBuildingWorks("PENDING");
+    renderPending(buildingWorks);
   };
 
-  const renderPending = (products) => {
-    const productsList = getList(products, [
-      (productId) => buttonAccept(productId),
-      (productId) => buttonReject(productId),
+  const renderPending = (buildingWorks) => {
+    const buildingWorksList = getList(buildingWorks, [
+      (buildingWorkId) => buttonAccept(buildingWorkId),
+      (buildingWorkId) => buttonReject(buildingWorkId),
     ]);
-    setProductListNotAppoved(productsList);
+    setBuildingWorkListNotAppoved(buildingWorksList);
   };
 
   /**
-   * Funcionality to refresh the approved tab when a product is rejected.
+   * Funcionality to refresh the approved tab when a buildingWork is rejected.
    */
   const approvedTab = async () => {
-    const products = await getAllProducts("APPROVED");
-    renderApproved(products);
+    const buildingWorks = await getAllBuildingWorks("APPROVED");
+    renderApproved(buildingWorks);
   };
 
-  const renderApproved = (products) => {
-    const productsList = getList(products, [
-      (productId) => buttonReject(productId),
+  const renderApproved = (buildingWorks) => {
+    const buildingWorksList = getList(buildingWorks, [
+      (buildingWorkId) => buttonReject(buildingWorkId),
     ]);
-    setListAppoved(productsList);
+    setListAppoved(buildingWorksList);
   };
 
   /**
    * Funcionality to refresh the disapproved tab when you want to accept
-   * a product again.
+   * a buildingWork again.
    */
   const disapprovedTab = async () => {
-    const products = await getAllProducts("REJECTED");
-    renderRejectedProductIds(products);
+    const buildingWorks = await getAllBuildingWorks("REJECTED");
+    renderRejectedBuildingWorkIds(buildingWorks);
   };
 
-  const renderRejectedProductIds = (products) => {
-    const productsList = getList(products, [
-      (productId) => buttonAccept(productId),
+  const renderRejectedBuildingWorkIds = (buildingWorks) => {
+    const buildingWorksList = getList(buildingWorks, [
+      (buildingWorkId) => buttonAccept(buildingWorkId),
     ]);
-    setProductsListRejected(productsList);
+    setBuildingWorksListRejected(buildingWorksList);
   };
 
   /**
    * Request "fetch" to obtain approved, disapproved, rejected or deleted
-   * products, depends on the "status" parameter and with error control.
+   * buildingWorks, depends on the "status" parameter and with error control.
    * @param {*} status String to show that you want it to see.
    * The states are: PENDING APPROVED REJECTED DELETED
-   * @returns arrangement of productly limited for page.
+   * @returns arrangement of buildingWorkly limited for page.
    */
-  const getAllProducts = async (status) => {
+  const getAllBuildingWorks = async (status) => {
     try {
-      const productsNotAppoved = await productService.findAll(
+      const buildingWorksNotAppoved = await buildingWorkService.findAll(
         status,
         pageSize.page,
         pageSize.size,
         session?.accessToken
       );
-      return productsNotAppoved;
+      return buildingWorksNotAppoved;
     } catch (error) {
       console.error(error);
     }
   };
 
-  const getProductsForApproved = async (status) => {
+  const getBuildingWorksForApproved = async (status) => {
     try {
-      const productsNotApproved = await productService.findAll(
+      const buildingWorksNotApproved = await buildingWorkService.findAll(
         status,
         pageSize.page,
         pageSize.size,
         session?.accessToken
       );
-      return productsNotApproved;
+      return buildingWorksNotApproved;
     } catch (error) {
       console.error(error);
     }
@@ -214,9 +214,8 @@ const ProductAdmin = ({
     <>
       <th>{t("common:image")}</th>
       <th>{t("common:name")}</th>
-      <th>{t("common:price")}</th>
       <th>{t("common:date")}</th>
-      <th>{t("common:company")}</th>
+      <th>{t("common:professional")}</th>
       <th>{t("common:table-admin.tokens")}</th>
       <th>{t("common:table-admin.actions")}</th>
     </>
@@ -224,14 +223,14 @@ const ProductAdmin = ({
 
   /**
    * Complete the body part of the table showing the result of the pending,
-   * approved or rejected product consultations.
-   * @param {*} products these are the products who arrive
+   * approved or rejected buildingWork consultations.
+   * @param {*} buildingWorks these are the buildingWorks who arrive
    * from a request "fetch" from the BD
    * @param {*} buttons is the buttons you want to display in the table as actions.
    * @returns the body of the table.
    */
-  const getList = (products, buttons) => {
-    const productsList = products.map((product, index) => {
+  const getList = (buildingWorks, buttons) => {
+    const buildingWorksList = buildingWorks.map((buildingWork, index) => {
       return (
         <tr key={index} className="align-middle text-center">
           <td scope="row">{index + 1}</td>
@@ -239,27 +238,26 @@ const ProductAdmin = ({
             <figure className="figure mx-auto">
               <img
                 className="img-fluid rounded"
-                src={product.previewImage}
+                src={buildingWork.previewImage}
                 alt=""
               />
             </figure>
           </td>
-          <td>{product.name}</td>
-          <td>{product.price}</td>
-          <td>{product.statusUpdate}</td>
-          <td>{product.company.name}</td>
+          <td>{buildingWork.name}</td>
+          <td>{buildingWork.statusUpdate}</td>
+          <td>{buildingWork.professional.contact}</td>
           <td>
             <Input
               min="0"
               type="number"
               className="d-inline-block w-50 mr-2"
-              defaultValue={product.tokensAsigned}
+              defaultValue={buildingWork.tokensAsigned}
             />
             <Button
             // onClick={(e) =>
-            //   setNewTokensToproduct(
+            //   setNewTokensToBuildingWork(
             //     e.target.previousElementSibling.value,
-            //     product.id
+            //     buildingWork.id
             //   )
             // }
             >
@@ -268,19 +266,19 @@ const ProductAdmin = ({
           </td>
           <td>
             {buttons.map((button, index) => {
-              return <div key={index}>{button(product.id)}</div>;
+              return <div key={index}>{button(buildingWork.id)}</div>;
             })}
           </td>
         </tr>
       );
     });
-    return productsList;
+    return buildingWorksList;
   };
 
-  const setNewTokensToProduct = async (tokens, productId) => {
-    // await productService.setNewTokensToProductId(
+  const setNewTokensToBuildingWork = async (tokens, buildingWorkId) => {
+    // await buildingWorkService.setNewTokensToBuildingWorkId(
     //   tokens,
-    //   productId,
+    //   buildingWorkId,
     //   session.accessToken
     // );
     alert(t("tokens-setted"));
@@ -288,43 +286,43 @@ const ProductAdmin = ({
 
   /**
    * This is for when using the SSR and loading the tableAdmin component properly
-   * with the list of pending products.
+   * with the list of pending buildingWorks.
    */
   useEffect(async () => {
-    if (productsNotApproved) {
-      const productsList = getList(productsNotApproved, [
-        (productId) => buttonAccept(productId),
-        (productId) => buttonReject(productId),
+    if (buildingWorksNotApproved) {
+      const buildingWorksList = getList(buildingWorksNotApproved, [
+        (buildingWorkId) => buttonAccept(buildingWorkId),
+        (buildingWorkId) => buttonReject(buildingWorkId),
       ]);
-      setProductListNotAppoved(productsList);
+      setBuildingWorkListNotAppoved(buildingWorksList);
     }
-  }, [productsNotApproved]);
+  }, [buildingWorksNotApproved]);
 
   /**
    * This is for when using the SSR and loading the tableAdmin component properly
    * with the list of approved proffesional.
    */
   useEffect(async () => {
-    if (productsApproved) {
-      const productList = getList(productsApproved, [
-        (productId) => buttonReject(productId),
+    if (buildingWorksApproved) {
+      const buildingWorkList = getList(buildingWorksApproved, [
+        (buildingWorkId) => buttonReject(buildingWorkId),
       ]);
-      setListAppoved(productList);
+      setListAppoved(buildingWorkList);
     }
-  }, [productsApproved]);
+  }, [buildingWorksApproved]);
 
   /**
    * This is for when using the SSR and loading the tableAdmin component properly
    * with the list of disapproved proffesional.
    */
   useEffect(async () => {
-    if (productsRejected) {
-      const productList = getList(productsRejected, [
-        (productId) => buttonAccept(productId),
+    if (buildingWorksRejected) {
+      const buildingWorkList = getList(buildingWorksRejected, [
+        (buildingWorkId) => buttonAccept(buildingWorkId),
       ]);
-      setProductsListRejected(productList);
+      setBuildingWorksListRejected(buildingWorkList);
     }
-  }, [productsRejected]);
+  }, [buildingWorksRejected]);
 
   /**
    * These are the titles of the tabs needed to describe each other.
@@ -332,42 +330,42 @@ const ProductAdmin = ({
   const titles = [t("pending"), t("approved"), t("disapproved")];
 
   /**
-   * Find all products by username and status, if username is empty, only find by status
-   * when get all products, the method will render them
+   * Find all buildingWorks by username and status, if username is empty, only find by status
+   * when get all buildingWorks, the method will render them
    */
   const findByContactAndStatus = async (username, status) => {
-    let newProducts;
+    let newBuildingWorks;
 
     if (username != "")
-      newProducts = await productService.findByContactAndStatus(
+      newBuildingWorks = await buildingWorkService.findByContactAndStatus(
         username,
         status,
         pageSize.page,
         pageSize.size
       );
-    else newProducts = await getProduct(status);
+    else newBuildingWorks = await getBuildingWork(status);
 
     switch (status) {
       case "PENDING":
-        renderPending(newProducts);
+        renderPending(newBuildingWorks);
         break;
       case "APPROVED":
-        renderApproved(newProducts);
+        renderApproved(newBuildingWorks);
         break;
       case "REJECTED":
-        renderRejectedProducts(newProducts);
+        renderRejectedBuildingWorks(newBuildingWorks);
         break;
     }
   };
 
   return (
-    <Layout title={t("managing-products")}>
+    <Layout title={t("managing-buildingWorks")}>
       <Row>
         <Col>
           <Tabs titles={titles}>
             <TableAdmin
               listHead={getListHead}
-              listBody={productListNotAppoved}
+              listBody={buildingWorkListNotAppoved}
               title={titles[0]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "PENDING")
@@ -375,7 +373,7 @@ const ProductAdmin = ({
             />
             <TableAdmin
               listHead={getListHead}
-              listBody={productsListAppoved}
+              listBody={buildingWorksListAppoved}
               title={titles[1]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "APPROVED")
@@ -383,7 +381,7 @@ const ProductAdmin = ({
             />
             <TableAdmin
               listHead={getListHead}
-              listBody={productsListRejected}
+              listBody={buildingWorksListRejected}
               title={titles[2]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "REJECTED")
@@ -414,9 +412,9 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   let token;
 
-  let productsApproved = [];
-  let productsRejected = [];
-  let productsNotApproved = [];
+  let buildingWorksApproved = [];
+  let buildingWorksRejected = [];
+  let buildingWorksNotApproved = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -429,7 +427,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (session) {
     let status = "PENDING";
     token = session.accessToken;
-    productsNotApproved = await productService.findAll(
+    buildingWorksNotApproved = await buildingWorkService.findAll(
       status,
       page,
       size,
@@ -437,18 +435,18 @@ export async function getServerSideProps({ params, req, res, locale }) {
     );
 
     status = "APPROVED";
-    productsApproved = await productService.findAll(status, page, size, token);
+    buildingWorksApproved = await buildingWorkService.findAll(status, page, size, token);
     status = "REJECTED";
-    productsRejected = await productService.findAll(status, page, size, token);
+    buildingWorksRejected = await buildingWorkService.findAll(status, page, size, token);
   }
 
   return {
     props: {
-      productsNotApproved,
-      productsApproved,
-      productsRejected,
+      buildingWorksNotApproved,
+      buildingWorksApproved,
+      buildingWorksRejected,
       session,
     },
   };
 }
-export default ProductAdmin;
+export default BuildingAdmin;

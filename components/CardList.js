@@ -4,7 +4,6 @@ import Company from "../components/Company/Company";
 
 const CardList = (props) => {
   const { companies } = props;
-  console.log(companies);
   return (
     <Row className="row-cols-1 g-2">
       {companies.map((company) => (

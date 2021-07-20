@@ -5,11 +5,13 @@
   "managing-professionals": "Administrar profesionales",
   "managing-companies": "Administrar empresas",
   "managing-products": "Administrar productos",
+  "managing-buildingWorks": "Administrar obras",
 
   "accept": "Aceptar",
   "reject": "Rechazar",
   "list-of": "Lista de",
   "accept-images": "Aceptar imagenes",
+  "managing-images": "Administrar imagenes",
   "images-accepted": "Imagenes aceptadas",
   "tokens-setted" : "Tokens establecidos",
   "apply" : "Aplicar"

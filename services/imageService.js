@@ -151,6 +151,15 @@ export const changeStateImagesByProductIdId = async (
   await API.put(`/images/products/${professionalId}/approved/${approved}`);
 };
 
+export const changeStateImagesByBuildingWorkId = async (
+  professionalId,
+  approved,
+  token
+) => {
+  API.defaults.headers.common["Authorization"] = token;
+  await API.put(`/images/building/${professionalId}/approved/${approved}`);
+};
+
 export const setLikePhoto = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
   await API.put(`/images/${image.id}/like/${image.liked}`);

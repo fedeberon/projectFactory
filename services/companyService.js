@@ -34,8 +34,7 @@ export const getStartsWith = async (value, page, size) => {
   return await API.get(`/companies/name/${value}?page=${page}&size=${size}`);
 };
 
-export const findAll = async (status, page, size, token) => {
-  API.defaults.headers.common["Authorization"] = token;
+export const findAll = async (status, page, size) => {
   return await API.get(`/companies/status/${status}?page=${page}&size=${size}`);
 };
 

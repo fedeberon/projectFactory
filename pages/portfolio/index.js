@@ -22,6 +22,9 @@ import {
   Images,
   ThreeDotsVertical,
   PencilSquare,
+  XCircle,
+  ExclamationCircle,
+  Check2Circle,
 } from "react-bootstrap-icons";
 
 //Components
@@ -307,6 +310,31 @@ const Portfolio = ({ professional, buildingWorks }) => {
     }
   }, [buildingWorks]);
 
+  const isState = (buildingWork) => {
+    let statusColor;
+    let ico;
+    // if (product.status === "PENDING") {
+    //   statusColor = `bg-warning text-dark`;
+    //   ico = <ExclamationCircle className={`${statusColor}`} size={15} />;
+    // }
+    // if (product.status === "APPROVED") {
+    //   statusColor = "bg-success";
+    //   ico = <Check2Circle className={`${statusColor}`} size={15} />;
+    // }
+    // if (product.status === "REJECTED") {
+    //   statusColor = `bg-danger`;
+    //   ico = <XCircle className={`${statusColor}`} size={15} />;
+    // }
+    // return (
+    //   <>
+    //     <CardText className={`${indexStyles.itemStatus} ${statusColor} m-0`}>
+    //       {ico}
+    //       {t(product.status.toLowerCase())}
+    //     </CardText>
+    //   </>
+    // );
+  };
+
   const imagesCard = (
     <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
       {isLoading ? (
@@ -329,6 +357,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
                       alt="Professional preview"
                     />
                   </Link>
+                  {isState(buildingWork)}
                   <div className={`${filteredImagesStyles.cardText}`}>
                     <Col className="col-auto">
                       <img

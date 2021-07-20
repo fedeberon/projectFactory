@@ -31,7 +31,7 @@ const SlederProducts = (props) => {
       <SwiperSlide key={product.id}>
         <div className="swiper-slide">
             <div className={styles.productList}>
-                <a href={`/${product.name.replace(/\s+/g, "-")}-${product.id}`} className={styles.ancor}>
+                <a href={`/product/${product.name.replace(/\s+/g, "-")}-${product.id}`} className={styles.ancor}>
                     <figure className={styles.figure}><img src={product.previewImage} className={styles.photo}/></figure>
                     <div className={`${styles.info} ${styles.blockAndWeight}`}>
                         <div className={`${styles.name} ${styles.blockAndWeight}`}><strong className={styles.blockAndWeight}>{product.name}</strong>{product.company.name}</div>
@@ -43,7 +43,7 @@ const SlederProducts = (props) => {
       </SwiperSlide>
     ))}
     <div className={`swiper-button-next ${styles.swiperButtonNext}`}></div>
-    <div class={`swiper-button-prev ${styles.swiperButtonPrev}`}></div>
+    <div className={`swiper-button-prev ${styles.swiperButtonPrev}`}></div>
     </Swiper>
         
 </div>
