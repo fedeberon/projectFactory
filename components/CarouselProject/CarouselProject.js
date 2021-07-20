@@ -9,6 +9,7 @@ import {
 } from "reactstrap";
 import ModalImage from "../ModalImage/ModalImage";
 import CarouselProjectStyle from "./CarouselProject.module.css";
+import * as imageService from "../../services/imageService";
 
 const CarouselProject = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -57,20 +58,30 @@ const CarouselProject = (props) => {
 
   const next = () => {
     if (animating) return;
+    
     const nextIndex = activeIndex === images.length - 1 ? 0 : activeIndex + 1;
-    if (images.length > 0) {
-      setCurrentImageId(images[nextIndex].id);
-      setAppliedFilters(images[nextIndex].tags);
-    }
+    const currentImage = images[nextIndex];
+    
     setActiveIndex(nextIndex);
+    if (images.length > 0) {
+      setCurrentImage(currentImage);
+    }
   };
 
   const previous = () => {
     if (animating) return;
+    
     const nextIndex = activeIndex === 0 ? images.length - 1 : activeIndex - 1;
-    setCurrentImageId(images[nextIndex].id);
-    setAppliedFilters(images[nextIndex].tags);
+    const currentImage = images[nextIndex];
     setActiveIndex(nextIndex);
+    setCurrentImage(currentImage);
+  };
+
+  const setCurrentImage = (image) => {
+    setCurrentImageId(image.id);
+    setAppliedFilters(image.tags);
+    if (!image.seen)
+      imageService.increaseVisit(image);
   };
 
   const goToIndex = (newIndex) => {

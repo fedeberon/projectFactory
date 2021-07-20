@@ -49,7 +49,6 @@ const FilteredImages = ({ isLoading, images }) => {
 
   return (
     <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
-      {console.log(images)}
       {isLoading ? (
         <h1>{t("loading")}...</h1>
       ) : (

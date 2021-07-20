@@ -10,6 +10,7 @@ import FilteredImages from "../components/FilteredImages/FilteredImages";
 import Layout from "../components/Layout/Layout";
 import CarouselBanner from "../components/CustomCarousel/CarouselBanner";
 import SliderProducts from "../components/SliderProducts/SliderProducts";
+import AboutHome from "../components/AboutHome";
 
 // Services
 import * as tagService from "../services/tagService";
@@ -101,6 +102,7 @@ const Home = ({ filters, carouselImages, session, products }) => {
         <SliderProducts products={products}/>
 
       </Row>
+      <AboutHome/>
     </Layout>
   );
 };

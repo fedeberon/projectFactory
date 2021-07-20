@@ -58,6 +58,7 @@ const BuildingDetail = ({ data, session }) => {
         const imageInBlob = await imageInBytes.blob();
         const imageSrc = URL.createObjectURL(imageInBlob);
         image.path = imageSrc;
+        image.seen = false;
         newArray.push(image);
       })
     );
