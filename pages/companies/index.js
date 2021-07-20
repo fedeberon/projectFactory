@@ -3,6 +3,9 @@ import useTranslation from "next-translate/useTranslation";
 import Layout from "../../components/Layout/Layout";
 import * as companyService from "../../services/companyService";
 import Company from "../../components/Company/Company";
+import CardList from "../../components/CardList";
+import { Col, Row } from "reactstrap";
+
 import FormFilterCompany from "../../components/FormFilterCompany/FormFilterCompany";
 
 const Companies = (props) => {
@@ -26,6 +29,23 @@ const Companies = (props) => {
   };
 
   return (
+    <Layout title={t("companies")}>
+          <FormFilterCompany
+            onGetFilterCompanies={onGetFilterCompanies}
+            setCompanies={setCompanies}
+          />
+      <Row>
+        <Col>
+        </Col>
+        <Col className="col-10">
+          <CardList companies={companies} />
+        </Col>
+      </Row>
+    </Layout>
+  );
+
+  {
+    /* return (
     <Layout title={t("company")}>
       <FormFilterCompany
         onGetFilterCompanies={onGetFilterCompanies}
@@ -36,7 +56,8 @@ const Companies = (props) => {
         <Company key={company.id} company={company} />
       ))}
     </Layout>
-  );
+  ); */
+  }
 };
 
 export async function getServerSideProps({ params, req, res, locale }) {
