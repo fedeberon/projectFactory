@@ -21,3 +21,7 @@ export const addProduct = async (product, token) => {
     if (images.length > 0)
         imageService.uploadImagesToProduct(response.id, images, token);
 };
+
+export const findAllByStatus = async (page, size, status) => {
+    return await API.get(`/products/status/${status}?page=${page}&size=${size}`);
+};
