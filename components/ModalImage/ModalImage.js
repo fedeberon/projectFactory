@@ -5,7 +5,7 @@ import {
   ModalBody,
   Col,
   Row,
-} from "reactstrap";
+} from "react-bootstrap";
 import ModalImageStyle from "./ModalImage.module.css";
 
 const ModalImage = (props) => {

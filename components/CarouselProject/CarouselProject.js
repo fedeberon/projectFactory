@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
   Carousel,
-  CarouselItem,
-  CarouselControl,
-  CarouselIndicators,
-  CarouselCaption,
   Button,
-} from "reactstrap";
+  Modal,
+} from "react-bootstrap";
 import ModalImage from "../ModalImage/ModalImage";
 import CarouselProjectStyle from "./CarouselProject.module.css";
 import * as imageService from "../../services/imageService";
@@ -33,7 +30,7 @@ const CarouselProject = (props) => {
     if (images) {
       const imagesCarousel = images.map((item, index) => {
         return (
-          <CarouselItem
+          <Carousel.Item
             className={`${CarouselProjectStyle.height}`}
             onExiting={() => setAnimating(true)}
             onExited={() => setAnimating(false)}
@@ -47,8 +44,8 @@ const CarouselProject = (props) => {
                 verImagen(event);
               }}
             />
-            <CarouselCaption captionText={""} captionHeader={""} />
-          </CarouselItem>
+            <Carousel.Caption captionText={""} captionHeader={""} />
+          </Carousel.Item>
         );
       });
 
@@ -91,30 +88,30 @@ const CarouselProject = (props) => {
 
   return (
     <>
-      <ModalImage
+      {/* <Modal.Image
         toggle={toggle}
         isOpen={modalImage}
         selectImage={selectImage}
         className={"modal-fullscreen-xxl-down" + " bg-transparent"}
-      />
-      <Carousel activeIndex={activeIndex} next={next} previous={previous}>
-        <CarouselIndicators
+      /> */}
+      {/* <Carousel activeIndex={activeIndex} next={next} previous={previous}>
+        <Carousel.Indicators
           items={slides}
           activeIndex={activeIndex}
           onClickHandler={goToIndex}
         />
         {slides}
-        <CarouselControl
+        <Carousel.Control
           direction="prev"
           directionText="Previous"
           onClickHandler={previous}
         />
-        <CarouselControl
+        <Carousel.Control
           direction="next"
           directionText="Next"
           onClickHandler={next}
         />
-      </Carousel>
+      </Carousel> */}
     </>
   );
 };

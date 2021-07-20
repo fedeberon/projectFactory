@@ -11,14 +11,8 @@ import {
   Col,
   Button,
   Card,
-  CardTitle,
-  CardText,
-  CardGroup,
-  CardImg,
-  CardBody,
-  CardSubtitle,
   CardDeck,
-} from "reactstrap";
+} from "react-bootstrap";
 import buildingStyles from "./building.module.css";
 
 const BuildingDetail = ({ data, session }) => {
@@ -87,51 +81,53 @@ const BuildingDetail = ({ data, session }) => {
 
   return (
     <Layout title={`${t("building-work-detail")}`}>
-      <Row className="row-cols-1 g-2">
-        <Col>
-          <CarouselProject
-            setAppliedFilters={setAppliedFilters}
-            setCurrentImageId={setCurrentImageId}
-            images={imagenes}
-          />
-        </Col>
-        <Col>
-          <Row className="row-cols-md-2 g-4">
-            <Col className="col-md-2 col-12">
-              <Card body outline color="secondary">
-                <CardTitle tag="h5">
-                  {data.buildingWork.professional?.company.name}
-                </CardTitle>
-                <CardText>{data.buildingWork.professional?.province}</CardText>
-                <CardText>{data.buildingWork.professional?.location}</CardText>
-                <Button>Ver Perfil</Button>
-              </Card>
-            </Col>
-            <Col className="col-md-10 col-12">
-              <Card className="border-0">
-                <CardTitle tag="h5">{data.buildingWork.name}</CardTitle>
-                <CardText>{data.buildingWork.description}</CardText>
-              </Card>
-            </Col>
-          </Row>
-          <Row className="row-cols-md-3">
-            {filteredImages.map((image) => (
-              <Col key={image.id} className="col-4">
-                <CardDeck className="p-1">
-                  <Card>
-                    <CardBody>
-                      <CardImg
-                        src={image.path}
-                        className={`${buildingStyles.imgCard}`}
-                      />
-                    </CardBody>
-                  </Card>
-                </CardDeck>
+      <section className="container py-2">
+        <Row className="row-cols-1 g-2">
+          <Col>
+            <CarouselProject
+              setAppliedFilters={setAppliedFilters}
+              setCurrentImageId={setCurrentImageId}
+              images={imagenes}
+            />
+          </Col>
+          <Col>
+            <Row className="row-cols-md-2 g-4">
+              <Col className="col-md-2 col-12">
+                <Card body variant="outline-secondary">
+                  <Card.Title tag="h5">
+                    {data.buildingWork.professional?.company.name}
+                  </Card.Title>
+                  <Card.Text>{data.buildingWork.professional?.province}</Card.Text>
+                  <Card.Text>{data.buildingWork.professional?.location}</Card.Text>
+                  <Button>Ver Perfil</Button>
+                </Card>
               </Col>
-            ))}
-          </Row>
-        </Col>
-      </Row>
+              <Col className="col-md-10 col-12">
+                <Card className="border-0">
+                  <Card.Title tag="h5">{data.buildingWork.name}</Card.Title>
+                  <Card.Text>{data.buildingWork.description}</Card.Text>
+                </Card>
+              </Col>
+            </Row>
+            <Row className="row-cols-md-3">
+              {filteredImages.map((image) => (
+                <Col key={image.id} className="col-4">
+                  <CardDeck className="p-1">
+                    <Card>
+                      <Card.Body>
+                        <Card.Img
+                          src={image.path}
+                          className={`${buildingStyles.imgCard}`}
+                        />
+                      </Card.Body>
+                    </Card>
+                  </CardDeck>
+                </Col>
+              ))}
+            </Row>
+          </Col>
+        </Row>
+      </section>
     </Layout>
   );
 };

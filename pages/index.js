@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
-import { Col, Row } from "reactstrap";
+import { Col, Row } from "react-bootstrap";
 
 // Components
 import FilterList from "../components/FilterList/FilterList";
 import FilteredImages from "../components/FilteredImages/FilteredImages";
 import Layout from "../components/Layout/Layout";
-import CarouselBanner from "../components/CustomCarousel/CarouselBanner";
+import CarouselHome from "../components/CarouselHome/CarouselHome";
 import SwipperEmpresas from "../components/SwipperEmpresas/SwipperEmpresas";
 import SliderProducts from "../components/SliderProducts/SliderProducts";
 import AboutHome from "../components/AboutHome";
@@ -69,59 +69,68 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
   };
 
   return (
-    <Layout
-      title={`${t("welcome-to")} ${process.env.NEXT_PUBLIC_PROJECT_NAME}`}
-    >
-      <Row className="row-cols-1 gap-2">
-        <Col>
-          <CarouselBanner images={imagesCarousel} />
-          <div className="my-4 d-flex">
-            <CarouselImageCreator onAddCarouselImages={onAddCarouselImages} />
-            <div className="mx-4">
-              <AdministratorCreator />
+    <Layout>
+      <CarouselHome images={imagesCarousel} />
+      <section className="container py-2">
+        <Row className="row-cols-1 gap-2">
+          <Col>
+            <div className="my-4 d-flex">
+              <CarouselImageCreator onAddCarouselImages={onAddCarouselImages} />
+              <div className="mx-4">
+                <AdministratorCreator />
+              </div>
             </div>
-          </div>
-        </Col>
-        <Col>
-          <Row>
-            <Col xs={12} md={3} xl={2}>
-              <aside>
-                <FilterList
-                  filters={filters}
-                  appliedFilters={appliedFilters}
-                  setAppliedFilters={setAppliedFilters}
-                />
-              </aside>
-            </Col>
-            <Col xs={12} md={9} xl={10}>
-              <FilteredImages isLoading={isLoading} images={filteredImages} />
-            </Col>
-          </Row>
-        </Col>
-        <AboutHome />
-        <Col>
-          <div className={styles.infoHead}>
-            <h2 className={styles.productsTitle}>
-              {t("products")}
-              <small className={styles.productsSmallTitle}>
-                {t("products-description")}
-              </small>
-            </h2>
-          </div>
-          <SliderProducts products={products} />
-        </Col>
-        <Col>
-          <div className={styles.infoHead}>
-            <h2 className={styles.itemsTitle}>
-              {t("professionals")}
-              <small className={styles.itemsSmallTitle}>
-                {t("new-design-and-construction-professionals")}
-              </small>
-            </h2>
-          </div>
-          <SwipperEmpresas items={companies} />
-        </Col>
-      </Row>
+          </Col>
+          <Col>
+            <Row>
+              <Col xs={12} md={3} xl={2}>
+                <aside>
+                  <FilterList
+                    filters={filters}
+                    appliedFilters={appliedFilters}
+                    setAppliedFilters={setAppliedFilters}
+                  />
+                </aside>
+              </Col>
+              <Col xs={12} md={9} xl={10}>
+
+                <div className={styles.infoHead}>
+                  <h2 className={styles.itemsTitle}>
+                    {t("buildings")}
+                    <small className={styles.itemsSmallTitle}>
+                      {t("design-objects-for-your-spaces")}
+                    </small>
+                  </h2>
+                </div>
+                <FilteredImages isLoading={isLoading} images={filteredImages} />
+              </Col>
+            </Row>
+          </Col>
+          <AboutHome />
+          <Col>
+            <div className={styles.infoHead}>
+              <h2 className={styles.productsTitle}>
+                {t("products")}
+                <small className={styles.productsSmallTitle}>
+                  {t("products-description")}
+                </small>
+              </h2>
+            </div>
+            <SliderProducts products={products} />
+          </Col>
+          <Col>
+            <div className={styles.infoHead}>
+              <h2 className={styles.itemsTitle}>
+                {t("professionals")}
+                <small className={styles.itemsSmallTitle}>
+                  {t("new-design-and-construction-professionals")}
+                </small>
+              </h2>
+            </div>
+            <SwipperEmpresas items={companies} />
+          </Col>
+        </Row>
+      </section>
     </Layout>
   );
 };

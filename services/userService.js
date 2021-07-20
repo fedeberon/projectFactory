@@ -29,6 +29,22 @@ export const login = async (username, password) => {
   return token;
 };
 
+export const getAmountTokens = async (token) => {
+  const actualTokens = localStorage.getItem("amountTokens");
+  if (actualTokens == null || actualTokens == -1) {
+    API.defaults.headers.common["Authorization"] = token;
+    const { tokens } = await API.get(`/users/tokens`);
+    localStorage.setItem("amountTokens",tokens);
+    return tokens;
+  } else {
+    return actualTokens;
+  }
+};
+
+export const clearData = () => {
+  localStorage.setItem("amountTokens", -1);
+};
+
 export const findAll = async (session) => {
   API.defaults.headers.common["Authorization"] = session.accessToken;
   return await API.get(`/users`);

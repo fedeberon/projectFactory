@@ -10,7 +10,7 @@ import {
   Input,
   Label,
   Row,
-} from "reactstrap";
+} from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import tagListStyles from "./TagList.module.css";
 

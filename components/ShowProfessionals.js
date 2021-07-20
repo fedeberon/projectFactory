@@ -12,23 +12,23 @@ const ShowProfessionals = ({ isLoading, professionals }) => {
             <Col key={index}>
               <CardDeck>
                 <Card>
-                  <CardImg
+                  <Card.Img
                     className="img-fluid"
                     top
                     src={professional.previewImage}
                     alt="Professional preview"
                   />
-                  <CardBody>
-                    <CardText>
+                  <Card.Body>
+                    <Card.Text>
                       {t("FirstName")}: {professional.firstName}
-                    </CardText>
-                    <CardText>
+                    </Card.Text>
+                    <Card.Text>
                       {t("LastName")}: {professional.lastName}
-                    </CardText>
-                    <CardText>
+                    </Card.Text>
+                    <Card.Text>
                       {t("Email")}: {professional.email}
-                    </CardText>
-                  </CardBody>
+                    </Card.Text>
+                  </Card.Body>
                 </Card>
               </CardDeck>
             </Col>

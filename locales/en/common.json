@@ -14,13 +14,18 @@
 
   "product": "Product",
   "professional": "Professional",
+  "professionals": "Professionals",
   "project": "Project",
+  "products": "Products",
+  "buildings": "Buildings",
+  "projects": "Projects",
   "magazine": "Magazine",
   "about-us": "About Us",
   "contact": "Contact",
   "administrator": "Administrator",
   "email": "Email",
   "company": "Company",
+  "companies": "Companies",
   "add-tags": "Add tags",
   "add-title": "Add title",
   "province": "Province",
@@ -222,9 +227,6 @@
     "select-profile-picture": "Select profile picture",
     "select-background-picture": "Select background picture"
   },
-  "photos": "Photos",
-  "search": "Search",
-  "filter-by-option": "Filter by option",
 
   "product-detail": "Product detail",
   "select-preview-image-for-the-product": "Select preview image for the product",
@@ -238,6 +240,11 @@
     "we-are-an-online-platform":"We are an online platform connecting thousands of homeowners with design professionals."
   },
 
-  "companies":"Companies"
 
+  "photos" : "Photos",
+  "search":"Search",
+  "filter-by-option": "Filter by option",
+  "edit" : "Edit",
+
+  "assign-tokens": "Assign tokens"
 }

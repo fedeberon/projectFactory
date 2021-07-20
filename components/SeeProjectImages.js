@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Card, CardBody, CardGroup } from "reactstrap";
+import { Card, CardGroup } from "react-bootstrap";
 
 const SeeProjectImages = ({ images }) => {
   useEffect(() => {}, [images]);
@@ -9,9 +9,9 @@ const SeeProjectImages = ({ images }) => {
       <CardGroup>
         {images?.map((image, index) => (
           <Card key={index}>
-            <CardBody>
+            <Card.Body>
               <img  width="100%" src={image.path}></img>
-            </CardBody>
+            </Card.Body>
           </Card>
         ))}
       </CardGroup>

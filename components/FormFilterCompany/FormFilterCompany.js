@@ -6,11 +6,8 @@ import {
   Col,
   Form,
   FormGroup,
-  FormText,
-  Input,
-  Label,
   Row,
-} from "reactstrap";
+} from "react-bootstrap";
 import Select from "react-select";
 
 const FormFilterCompany = (props) => {
@@ -55,8 +52,8 @@ const FormFilterCompany = (props) => {
       <Row style={{ height: 88 }}>
         <Col>
           <FormGroup>
-            <Label for="name">{t("name")}</Label>
-            <Input
+            <Form.Label htmlFor="name">{t("name")}</Form.Label>
+            <Form.Control
               type="text"
               id="name"
               placeholder={t("write-the-here-please", {
@@ -73,15 +70,15 @@ const FormFilterCompany = (props) => {
               className={"form-field" + (errors.name ? " has-error" : "")}
             />
             {errors.name && (
-              <FormText color="danger" className="invalid error-label">
+              <Form.Text variant="danger" className="invalid error-label">
                 {errors.name.message}
-              </FormText>
+              </Form.Text>
             )}
           </FormGroup>
         </Col>
         <Col>
           <FormGroup>
-            <Label for="optionsSelected">{t("filter-by-option")}</Label>
+            <Form.Label htmlFor="optionsSelected">{t("filter-by-option")}</Form.Label>
             <Controller
               name="optionsSelected"
               control={control}
@@ -108,14 +105,14 @@ const FormFilterCompany = (props) => {
               )}
             />
             {errors.optionsSelected && (
-              <FormText color="danger" className="error-label">
+              <Form.Text variant="danger" className="error-label">
                 {errors.optionsSelected.message}
-              </FormText>
+              </Form.Text>
             )}
           </FormGroup>
         </Col>
         <Col className="align-self-center">
-          <Button type="submit" color="primary">
+          <Button type="submit" variant="primary">
             {t("search")}
           </Button>
         </Col>

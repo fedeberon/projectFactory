@@ -7,7 +7,7 @@ import useTranslation from "next-translate/useTranslation";
 // Components
 import Tabs from "../Tabs/Tabs";
 import TableAdmin from "../TableAdmin/TableAdmin";
-import { Input } from "reactstrap";
+import { Form } from "react-bootstrap";
 
 const ListAdmin = ({
   notApproved,
@@ -250,7 +250,7 @@ const ListAdmin = ({
           <td>{professional.email}</td>
           <td>{professional.statusUpdate}</td>
           <td>
-            <Input
+            <Form.Control
               min="0"
               type="number"
               className="d-inline-block w-50 mr-2"

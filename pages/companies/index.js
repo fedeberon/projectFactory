@@ -4,10 +4,9 @@ import Layout from "../../components/Layout/Layout";
 import * as companyService from "../../services/companyService";
 import Company from "../../components/Company/Company";
 import CardList from "../../components/CardList";
-import { Col, Row } from "reactstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 
 import FormFilterCompany from "../../components/FormFilterCompany/FormFilterCompany";
-import { Spinner } from "reactstrap";
 
 const Companies = (props) => {
   const { data } = props;
@@ -34,38 +33,23 @@ const Companies = (props) => {
 
   return (
     <Layout title={t("companies")}>
-          <FormFilterCompany
-            onGetFilterCompanies={onGetFilterCompanies}
-            setCompanies={setCompanies}
-          />
-      <Row>
-        <Col>
-        </Col>
-        <Col className="col-10">
-          <CardList companies={companies} />
-        </Col>
-      </Row>
+      <section className="container py-2">
+        <FormFilterCompany
+          onGetFilterCompanies={onGetFilterCompanies}
+          setCompanies={setCompanies}
+        />
+        {isLoading ? (
+          <Spinner type="grow" color="primary" children={""} />
+        ) : (
+          <Row>
+            <Col className="col-10">
+              <CardList companies={companies} />
+            </Col>
+          </Row>
+        )}
+      </section>
     </Layout>
   );
-
-  {
-    /* return (
-    <Layout title={t("company")}>
-      <FormFilterCompany
-        onGetFilterCompanies={onGetFilterCompanies}
-        setCompanies={setCompanies}
-      />
-
-      {isLoading ? (
-        <Spinner type="grow" color="primary" children={""} />
-      ) : (
-        companies.map((company) => (
-          <Company key={company.id} company={company} />
-        ))
-      )}
-    </Layout>
-  ); */
-  }
 };
 
 export async function getServerSideProps({ params, req, res, locale }) {

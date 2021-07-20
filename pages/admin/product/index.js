@@ -1,7 +1,7 @@
 // Frameworks
 import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import { CheckCircle, XCircle } from "react-bootstrap-icons";
 import useTranslation from "next-translate/useTranslation";
 
@@ -9,7 +9,6 @@ import useTranslation from "next-translate/useTranslation";
 import Layout from "../../../components/Layout/Layout";
 import Tabs from "../../../components/Tabs/Tabs";
 import TableAdmin from "../../../components/TableAdmin/TableAdmin";
-import { Input } from "reactstrap";
 
 //Services
 import * as imageService from "../../../services/imageService";
@@ -249,7 +248,7 @@ const ProductAdmin = ({
           <td>{product.statusUpdate}</td>
           <td>{product.company.name}</td>
           <td>
-            <Input
+            <Form.Control
               min="0"
               type="number"
               className="d-inline-block w-50 mr-2"
@@ -362,36 +361,38 @@ const ProductAdmin = ({
 
   return (
     <Layout title={t("managing-products")}>
-      <Row>
-        <Col>
-          <Tabs titles={titles}>
-            <TableAdmin
-              listHead={getListHead}
-              listBody={productListNotAppoved}
-              title={titles[0]}
-              onSearch={(username) =>
-                findByContactAndStatus(username, "PENDING")
-              }
-            />
-            <TableAdmin
-              listHead={getListHead}
-              listBody={productsListAppoved}
-              title={titles[1]}
-              onSearch={(username) =>
-                findByContactAndStatus(username, "APPROVED")
-              }
-            />
-            <TableAdmin
-              listHead={getListHead}
-              listBody={productsListRejected}
-              title={titles[2]}
-              onSearch={(username) =>
-                findByContactAndStatus(username, "REJECTED")
-              }
-            />
-          </Tabs>
-        </Col>
-      </Row>
+      <section className="container py-2">
+        <Row>
+          <Col>
+            <Tabs titles={titles}>
+              <TableAdmin
+                listHead={getListHead}
+                listBody={productListNotAppoved}
+                title={titles[0]}
+                onSearch={(username) =>
+                  findByContactAndStatus(username, "PENDING")
+                }
+              />
+              <TableAdmin
+                listHead={getListHead}
+                listBody={productsListAppoved}
+                title={titles[1]}
+                onSearch={(username) =>
+                  findByContactAndStatus(username, "APPROVED")
+                }
+              />
+              <TableAdmin
+                listHead={getListHead}
+                listBody={productsListRejected}
+                title={titles[2]}
+                onSearch={(username) =>
+                  findByContactAndStatus(username, "REJECTED")
+                }
+              />
+            </Tabs>
+          </Col>
+        </Row>
+      </section>
     </Layout>
   );
 };

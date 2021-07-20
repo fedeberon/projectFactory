@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "reactstrap";
+import { Row, Col } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import PrimaryButton from "./Buttons/PrimaryButton/PrimaryButton";
 

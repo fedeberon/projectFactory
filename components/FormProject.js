@@ -7,11 +7,8 @@ import {
   Container,
   Form,
   FormGroup,
-  FormText,
-  Input,
-  Label,
   Row,
-} from "reactstrap";
+} from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import Select from "react-select";
 import Dropzone from "./Dropzone/Dropzone";
@@ -89,8 +86,8 @@ const FormProject = ({ onAddProject, toggle }) => {
         <Row className="row-cols-1 row-cols-md-2 g-3">
           <Col>
             <FormGroup>
-              <Label for="name">{t("name")}</Label>
-              <Input
+              <Form.Label htmlFor="name">{t("name")}</Form.Label>
+              <Form.Control
                 type="text"
                 id="name"
                 placeholder={t("write-the-here-please", {
@@ -114,14 +111,14 @@ const FormProject = ({ onAddProject, toggle }) => {
                 className={"form-field" + (errors.name ? " has-error" : "")}
               />
               {errors.name && (
-                <FormText color="danger" className="invalid error-label">
+                <Form.Text variant="danger" className="invalid error-label">
                   {errors.name.message}
-                </FormText>
+                </Form.Text>
               )}
             </FormGroup>
             <FormGroup>
-              <Label for="description">{t("description")}</Label>
-              <Input
+              <Form.Label htmlFor="description">{t("description")}</Form.Label>
+              <Form.Control
                 type="text"
                 id="description"
                 placeholder={t("write-the-here-please", {
@@ -147,15 +144,15 @@ const FormProject = ({ onAddProject, toggle }) => {
                 }
               />
               {errors.description && (
-                <FormText color="danger" className="error-label">
+                <Form.Text variant="danger" className="error-label">
                   {errors.description.message}
-                </FormText>
+                </Form.Text>
               )}
             </FormGroup>
 
             <FormGroup>
-              <Label for="email">{t("write-the-web-site")}</Label>
-              <Input
+              <Form.Label htmlFor="email">{t("write-the-web-site")}</Form.Label>
+              <Form.Control
                 type="email"
                 id="email"
                 placeholder={t("write-the-here-please", {
@@ -179,16 +176,16 @@ const FormProject = ({ onAddProject, toggle }) => {
                 className={"form-field" + (errors.website ? " has-error" : "")}
               />
               {errors.website && (
-                <FormText color="danger" className="error-label">
+                <Form.Text variant="danger" className="error-label">
                   {errors.website.message}
-                </FormText>
+                </Form.Text>
               )}
             </FormGroup>
             <Row>
               <Col xs={6}>
                 <FormGroup>
-                  <Label for="totalArea">{t("total-area")}</Label>
-                  <Input
+                  <Form.Label htmlFor="totalArea">{t("total-area")}</Form.Label>
+                  <Form.Control
                     type="number"
                     id="totalArea"
                     placeholder={t("write-the-here-please", {
@@ -214,16 +211,16 @@ const FormProject = ({ onAddProject, toggle }) => {
                     }
                   />
                   {errors.totalArea && (
-                    <FormText color="danger" className="error-label">
+                    <Form.Text variant="danger" className="error-label">
                       {errors.totalArea.message}
-                    </FormText>
+                    </Form.Text>
                   )}
                 </FormGroup>
               </Col>
               <Col xs={6}>
                 <FormGroup>
-                  <Label for="year">{t("year")}</Label>
-                  <Input
+                  <Form.Label htmlFor="year">{t("year")}</Form.Label>
+                  <Form.Control
                     type="number"
                     id="year"
                     placeholder={t("write-the-here-please", {
@@ -247,17 +244,17 @@ const FormProject = ({ onAddProject, toggle }) => {
                     className={"form-field" + (errors.year ? " has-error" : "")}
                   />
                   {errors.year && (
-                    <FormText color="danger" className="error-label">
+                    <Form.Text variant="danger" className="error-label">
                       {errors.year.message}
-                    </FormText>
+                    </Form.Text>
                   )}
                 </FormGroup>
               </Col>
             </Row>
 
             <FormGroup>
-              <Label for="videoPath">{t("video-path")}</Label>
-              <Input
+              <Form.Label htmlFor="videoPath">{t("video-path")}</Form.Label>
+              <Form.Control
                 type="text"
                 name="videoPath"
                 id="videoPath"
@@ -284,15 +281,15 @@ const FormProject = ({ onAddProject, toggle }) => {
                 }
               />
               {errors.videoPath && (
-                <FormText color="danger" className="error-label">
+                <Form.Text variant="danger" className="error-label">
                   {errors.videoPath.message}
-                </FormText>
+                </Form.Text>
               )}
             </FormGroup>
 
             <FormGroup>
-              <Label for="price">{t("price")}</Label>
-              <Input
+              <Form.Label htmlFor="price">{t("price")}</Form.Label>
+              <Form.Control
                 type="number"
                 name="price"
                 id="price"
@@ -312,17 +309,17 @@ const FormProject = ({ onAddProject, toggle }) => {
                 }
               />
               {errors.price && (
-                <FormText className="error-label">
+                <Form.Text className="error-label">
                   {errors.price.message}
-                </FormText>
+                </Form.Text>
               )}
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
-              <Label for="filePreview">
+              <Form.Label htmlFor="filePreview">
                 {t("select-preview-image-for-project")}
-              </Label>
+              </Form.Label>
               <Dropzone
                 newFiles={previewImage}
                 setFile={setPreviewImage}
@@ -334,7 +331,7 @@ const FormProject = ({ onAddProject, toggle }) => {
             </FormGroup>
             <Col>
               <FormGroup>
-                <Label>{t("upload-files")}</Label>
+                <Form.Label>{t("upload-files")}</Form.Label>
                 <br></br>
                 <Dropzone
                   newFiles={file}
@@ -350,7 +347,7 @@ const FormProject = ({ onAddProject, toggle }) => {
         </Row>
 
         <FormGroup>
-          <Label for="uploadFiles">{t("upload-images")}</Label>
+          <Form.Label htmlFor="uploadFiles">{t("upload-images")}</Form.Label>
           <InputImages
             images={images}
             accept={"image/*"}
@@ -361,7 +358,7 @@ const FormProject = ({ onAddProject, toggle }) => {
           />
         </FormGroup>
 
-        <Button type="submit" color="primary mt-1">
+        <Button type="submit" variant="primary mt-1">
           {t("send")}
         </Button>
       </Form>

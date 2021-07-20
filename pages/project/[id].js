@@ -46,7 +46,9 @@ const ProjectDetail = ({ data, idSplit, status }) => {
 
   return (
     <Layout title={`${t("project-detail")}`}>
-      <SeeProject project={project} status={status} onBuyProyect={onBuyProyect} onEditProject={editProject} id={idSplit}/>
+      <section className="container py-2">
+        <SeeProject project={project} status={status} onBuyProyect={onBuyProyect} onEditProject={editProject} id={idSplit}/>
+      </section>
     </Layout>
   );
 };

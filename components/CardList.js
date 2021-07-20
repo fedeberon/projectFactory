@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardBody, Row, Col, CardText } from "reactstrap";
+import { Card, Row, Col } from "react-bootstrap";
 import Company from "../components/Company/Company";
 
 const CardList = (props) => {
@@ -11,17 +11,17 @@ const CardList = (props) => {
           <Row>
             <Col className="col-12 col-md-10">
               <Card>
-                <CardBody>
+                <Card.Body>
                   <Company company={company} />
-                </CardBody>
+                </Card.Body>
               </Card>
             </Col>
             <Col className="col-12 col-md-2">
               <Card>
-                <CardBody>
-                  <CardText>{company.province}</CardText>
-                  <CardText>{company.location}</CardText>
-                </CardBody>
+                <Card.Body>
+                  <Card.Text>{company.province}</Card.Text>
+                  <Card.Text>{company.location}</Card.Text>
+                </Card.Body>
               </Card>
             </Col>
           </Row>

@@ -1,11 +1,16 @@
 // Frameworks
 import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
+import { Button, Col, Row } from "react-bootstrap";
+import { CheckCircle, XCircle } from "react-bootstrap-icons";
 import { Col, Row } from "reactstrap";
 import useTranslation from "next-translate/useTranslation";
 
 // Components
 import Layout from "../../components/Layout/Layout";
+import Tabs from "../../components/Tabs/Tabs";
+import TableAdmin from "../../components/TableAdmin/TableAdmin";
+import { Input } from "react-bootstrap";
 
 //Services
 import * as professionalService from "../../services/professionalService";
@@ -34,19 +39,21 @@ const Admin = ({
 
   return (
     <Layout title={t("common:administrator")}>
-      <Row>
-        <Col>
-          <ListAdmin
-            notApproved={professionalNotApproved}
-            approved={professionalApproved}
-            rejected={professionalRejected}
-            session={session}
-            service={professionalService}
-            imageService={imageService}
-            listHead={listHead}
-          />
-        </Col>
-      </Row>
+      <section className="container py-2">
+        <Row>
+          <Col>
+            <ListAdmin
+              notApproved={professionalNotApproved}
+              approved={professionalApproved}
+              rejected={professionalRejected}
+              session={session}
+              service={professionalService}
+              imageService={imageService}
+              listHead={listHead}
+            />
+          </Col>
+        </Row>
+      </section>
     </Layout>
   );
 };

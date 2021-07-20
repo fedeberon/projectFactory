@@ -5,7 +5,7 @@ import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
 import "swiper/swiper-bundle.css";
 import styles from "./SwipperEmpresas.module.css";
 import Link from "next/link";
-import { Col, Row } from "reactstrap";
+import { Col, Row } from "react-bootstrap";
 /**
  * Docs of swiperJS in
  * https://swiperjs.com/react

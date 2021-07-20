@@ -4,11 +4,7 @@ import {
   Row,
   Button,
   Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-} from "reactstrap";
+} from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
 import ModalForm from "../ModalForm";
@@ -126,8 +122,8 @@ const FormObra = ({
             </Row>
             <Row>
               <Col>
-                <FormGroup>
-                  <Label for="name">{t("name")}</Label>
+                <Form.Group>
+                  <Form.Label htmlFor="name">{t("name")}</Form.Label>
                   <Controller
                     name="name"
                     control={control}
@@ -148,7 +144,7 @@ const FormObra = ({
                     }}
                     defaultValue=""
                     render={({ field }) => (
-                      <Input
+                      <Form.Control
                         {...field}
                         type="text"
                         id="name"
@@ -162,16 +158,16 @@ const FormObra = ({
                     )}
                   />
                   {errors.name && (
-                    <FormText
-                      color="danger"
-                      className="invalid error-label text-danger"
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
                     >
                       {errors.name.message}
-                    </FormText>
+                    </Form.Text>
                   )}
-                </FormGroup>
-                <FormGroup>
-                  <Label for="description">{t("description")}</Label>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label htmlFor="description">{t("description")}</Form.Label>
                   <Controller
                     name="description"
                     control={control}
@@ -199,7 +195,7 @@ const FormObra = ({
                     }}
                     defaultValue=""
                     render={({ field }) => (
-                      <Input
+                      <Form.Control
                         {...field}
                         type="textarea"
                         id="description"
@@ -217,20 +213,20 @@ const FormObra = ({
                     )}
                   />
                   {errors.description && (
-                    <FormText
-                      color="danger"
-                      className="invalid error-label text-danger"
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
                     >
                       {errors.description.message}
-                    </FormText>
+                    </Form.Text>
                   )}
-                </FormGroup>
+                </Form.Group>
               </Col>
               <Col>
-                <FormGroup>
-                  <Label for="filePreview">
+                <Form.Group>
+                  <Form.Label htmlFor="filePreview">
                     {t("select-preview-image-for-building-work")}
-                  </Label>
+                  </Form.Label>
                   <Dropzone
                     newFiles={previewImage}
                     setFile={setPreviewImage}
@@ -239,13 +235,13 @@ const FormObra = ({
                     name={"previewImage"}
                     height={"237px"}
                   />
-                </FormGroup>
+                </Form.Group>
               </Col>
             </Row>
             <Row>
               <Col className="p-0">
-                <FormGroup className="text-center">
-                  <Label for="uploadFiles">{t("common:upload-images")}</Label>
+                <Form.Group className="text-center">
+                  <Form.Label htmlFor="uploadFiles">{t("common:upload-images")}</Form.Label>
                   <InputImages
                     images={images}
                     accept={"image/*"}
@@ -254,16 +250,16 @@ const FormObra = ({
                     withTags={true}
                     onAdd={showTagModal}
                   />
-                </FormGroup>
+                </Form.Group>
               </Col>
             </Row>
             {changeState.stateFormObra.post && (
-              <Button type="submit" color="primary mt-1">
+              <Button type="submit" variant="primary mt-1">
                 {t("common:send")}
               </Button>
             )}
             {changeState.stateFormObra.put && (
-              <Button type="submit" color="warning mt-1">
+              <Button type="submit" variant="warning mt-1">
                 {t("common:send")}
               </Button>
             )}

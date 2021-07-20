@@ -1,7 +1,7 @@
 // Frameworks
 import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { CheckCircle, XCircle } from "react-bootstrap-icons";
 import useTranslation from "next-translate/useTranslation";
 
@@ -9,11 +9,11 @@ import useTranslation from "next-translate/useTranslation";
 import Layout from "../../../components/Layout/Layout";
 import Tabs from "../../../components/Tabs/Tabs";
 import TableAdmin from "../../../components/TableAdmin/TableAdmin";
-import { Input } from "reactstrap";
 
 //Services
 import * as imageService from "../../../services/imageService";
 import * as buildingWorkService from "../../../services/buildingWorkService";
+import { Form } from "react-bootstrap";
 
 const BuildingAdmin = ({
   buildingWorksNotApproved,
@@ -25,7 +25,7 @@ const BuildingAdmin = ({
   const [buildingWorkListNotAppoved, setBuildingWorkListNotAppoved] = useState([]);
   const [buildingWorksListAppoved, setListAppoved] = useState([]);
   const [buildingWorksListRejected, setBuildingWorksListRejected] = useState([]);
-  
+
   const { t } = useTranslation("administrator");
 
   /**
@@ -247,7 +247,7 @@ const BuildingAdmin = ({
           <td>{buildingWork.statusUpdate}</td>
           <td>{buildingWork.professional.contact}</td>
           <td>
-            <Input
+            <Form.Control
               min="0"
               type="number"
               className="d-inline-block w-50 mr-2"
@@ -360,36 +360,38 @@ const BuildingAdmin = ({
 
   return (
     <Layout title={t("managing-buildingWorks")}>
-      <Row>
-        <Col>
-          <Tabs titles={titles}>
-            <TableAdmin
-              listHead={getListHead}
-              listBody={buildingWorkListNotAppoved}
-              title={titles[0]}
-              onSearch={(username) =>
-                findByContactAndStatus(username, "PENDING")
-              }
-            />
-            <TableAdmin
-              listHead={getListHead}
-              listBody={buildingWorksListAppoved}
-              title={titles[1]}
-              onSearch={(username) =>
-                findByContactAndStatus(username, "APPROVED")
-              }
-            />
-            <TableAdmin
-              listHead={getListHead}
-              listBody={buildingWorksListRejected}
-              title={titles[2]}
-              onSearch={(username) =>
-                findByContactAndStatus(username, "REJECTED")
-              }
-            />
-          </Tabs>
-        </Col>
-      </Row>
+      <section className="container py-2">
+        <Row>
+          <Col>
+            <Tabs titles={titles}>
+              <TableAdmin
+                listHead={getListHead}
+                listBody={buildingWorkListNotAppoved}
+                title={titles[0]}
+                onSearch={(username) =>
+                  findByContactAndStatus(username, "PENDING")
+                }
+              />
+              <TableAdmin
+                listHead={getListHead}
+                listBody={buildingWorksListAppoved}
+                title={titles[1]}
+                onSearch={(username) =>
+                  findByContactAndStatus(username, "APPROVED")
+                }
+              />
+              <TableAdmin
+                listHead={getListHead}
+                listBody={buildingWorksListRejected}
+                title={titles[2]}
+                onSearch={(username) =>
+                  findByContactAndStatus(username, "REJECTED")
+                }
+              />
+            </Tabs>
+          </Col>
+        </Row>
+      </section>
     </Layout>
   );
 };

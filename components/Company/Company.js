@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Company.module.css";
 import Link from "next/link";
-import { Col, Row } from "reactstrap";
+import { Col, Row } from "react-bootstrap";
 
 const Company = (props) => {
   const { company } = props;

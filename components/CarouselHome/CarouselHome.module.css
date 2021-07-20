@@ -1,0 +1,72 @@
+.slideCaptions {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    color: #FFF;
+    width: 50%;
+    height: 100%;
+    z-index: 999;
+    background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+}
+
+.swiper-slide-active .slideCaptions {
+    animation: fadeinup 1.5s;
+    opacity: 1;
+}
+
+.sig, .prev {
+    color: #fff !important;
+}
+
+.text {
+    padding-left: 70px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 450px;
+}
+
+.tit {
+    font-size: 27px;
+    line-height: 33px;
+    margin-bottom: 15px;
+}
+
+.mobile {
+    display: none;
+}
+
+.description {
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+.btnViewMore {
+    color: #fff;
+    border: 1px solid #fff;
+    font-weight: 500;
+    font-size: .8rem;
+    padding: .5rem 1.5rem;
+    line-height: 1.5;
+    border-radius: .3rem;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    text-decoration: none;
+}
+
+.btnViewMore:hover {
+    color: #212529;
+    text-decoration: none;
+}
+
+
+@media screen and (max-width: 767px) {
+    .display {
+        display: none;
+    }
+}

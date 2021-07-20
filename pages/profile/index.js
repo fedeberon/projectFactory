@@ -7,7 +7,7 @@ import Layout from "../../components/Layout/Layout";
 // Services
 import * as professionalService from "../../services/professionalService";
 import * as companyService from "../../services/companyService";
-import { getLikePhotos } from "../../services/imageService";
+import * as imageService from "../../services/imageService";
 
 // Components
 import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
@@ -120,16 +120,18 @@ const Profile = ({ data, imagesLiked, status }) => {
 
   return (
     <Layout title={`${t("header.profile")}`}>
-      <ProfileData
-        onBecomeProfessional={onBecomeProfessional}
-        error={error}
-        setError={setError}
-        data={data}
-        onBuyPlan={onBuyPlan}
-        linkToMercadopago={linkToMercadopago}
-        status={status}
-      />
-      <SeeImagesLiked imagesLiked={imagesLiked} />
+      <section className="container py-2">
+        <ProfileData
+          onBecomeProfessional={onBecomeProfessional}
+          error={error}
+          setError={setError}
+          data={data}
+          onBuyPlan={onBuyPlan}
+          linkToMercadopago={linkToMercadopago}
+          status={status}
+        />
+        <SeeImagesLiked imagesLiked={imagesLiked} />
+      </section>
     </Layout>
   );
 };
@@ -164,7 +166,7 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
   if (session) {
     token = session.accessToken;
     companies = await companyService.findAll("APPROVED", page, size, token);
-    imagesLiked = await getLikePhotos(page, size, token);
+    imagesLiked = await imageService.getLikePhotos(page, size, token);
   }
 
   return {

@@ -14,12 +14,17 @@
 
   "product": "Producto",
   "professional": "Profesional",
+  "professionals": "Profesionales",
   "project": "Proyecto",
+  "products": "Productos",
+  "buildings": "Obras",
+  "projects": "Proyectos",
   "magazine": "Magazine",
   "about-us": "Sobre Nosotros",
   "contact": "Contacto",
   "administrator": "Administrador",
   "company": "Empresa",
+  "companies": "Empresas",
   "email": "Correo",
   "add-tags": "Agregar Tags",
   "add-title": "Agregar titulo",
@@ -180,7 +185,7 @@
 
   "Authentication": "--------------------------------",
   "log-in": "Ingresar",
-  "sign-in": "Registrarse",
+  "sign-in": "Crear cuenta",
   "username-already-exists": "El nombre de usuario ya existe",
 
   "DE DONDE ES?": "--------------------------------",
@@ -223,6 +228,9 @@
     "select-background-picture": "Seleccione la imagen de fondo"
   },
 
+  "edit" : "Editar",
+
+  "assign-tokens": "Assign tokens",
   "photos": "Fotos",
   "search": "Buscar",
   "filter-by-option": "Filtrar por opcion",
@@ -237,7 +245,6 @@
   "about-home":{
     "a-factory-of-ideas":"Una fabrica de ideas",
     "we-are-an-online-platform":"Somos una plataforma online conecta a miles de propietarios de viviendas con los profesionales del diseño."
-  },
+  }
 
-  "companies":"Empresas"
 }

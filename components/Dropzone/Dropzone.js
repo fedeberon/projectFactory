@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { CloudArrowUp, X, FileEarmarkZipFill } from "react-bootstrap-icons";
-import { Container } from "reactstrap";
+import { Container } from "react-bootstrap";
 import dropzoneStyle from "./Dropzone.module.css";
-import { Card, Button, CardBody, Row, Col } from "reactstrap";
+import { Card, Button, Row, Col } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 
 const baseStyle = {
@@ -104,11 +104,11 @@ function Dropzone(props) {
     .filter((file) => !file.remove)
     .map((file, index) => (
       <Card key={index}>
-        <CardBody>
+        <Card.Body>
           <Row className="row-cols-1 text-end g-2">
             <Col className="text-align-end">
               <Button
-                color={"danger"}
+                variant={"danger"}
                 className="p-0"
                 onClick={(event) => {
                   event.preventDefault();
@@ -142,7 +142,7 @@ function Dropzone(props) {
               )}
             </Col>
           </Row>
-        </CardBody>
+        </Card.Body>
       </Card>
     ));
 

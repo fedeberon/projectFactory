@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import filterListStyles from "./FilterList.module.css";
 import useTranslation from "next-translate/useTranslation";
-import { ListGroup, ListGroupItem } from "reactstrap";
+import { ListGroup, ListGroupItem } from "react-bootstrap";
 import TagCreator from "../TagCreator";
 
 const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
