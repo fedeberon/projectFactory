@@ -203,6 +203,18 @@ const ProfessionalAdmin = ({
     }
   };
 
+  const getListHead = (
+    <>
+      <th>{t("common:image")}</th>
+      <th>{t("common:contact")}</th>
+      <th>{t("common:company")}</th>
+      <th>{t("common:email")}</th>
+      <th>{t("common:date")}</th>
+      <th>{t("common:table-admin.tokens")}</th>
+      <th>{t("common:table-admin.actions")}</th>
+    </>
+  );
+
   /**
    * Complete the body part of the table showing the result of the pending,
    * approved or rejected professional consultations.
@@ -228,6 +240,7 @@ const ProfessionalAdmin = ({
           <td>{professional.contact}</td>
           <td>{professional.company.name}</td>
           <td>{professional.email}</td>
+          <td>{professional.statusUpdate}</td>
           <td>
             <Input
               min="0"
@@ -347,21 +360,24 @@ const ProfessionalAdmin = ({
         <Col>
           <Tabs titles={titles}>
             <TableAdmin
-              professionalList={professionalListNotAppoved}
+              listHead={getListHead}
+              listBody={professionalListNotAppoved}
               title={titles[0]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "PENDING")
               }
             />
             <TableAdmin
-              professionalList={professionalListAppoved}
+              listHead={getListHead}
+              listBody={professionalListAppoved}
               title={titles[1]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "APPROVED")
               }
             />
             <TableAdmin
-              professionalList={professionalListRejected}
+              listHead={getListHead}
+              listBody={professionalListRejected}
               title={titles[2]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "REJECTED")

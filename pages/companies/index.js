@@ -7,13 +7,16 @@ import CardList from "../../components/CardList";
 import { Col, Row } from "reactstrap";
 
 import FormFilterCompany from "../../components/FormFilterCompany/FormFilterCompany";
+import { Spinner } from "reactstrap";
 
 const Companies = (props) => {
   const { data } = props;
   const { t } = useTranslation("common");
   const [companies, setCompanies] = useState(data);
+  const [isLoading, setLoading] = useState(false);
 
   const onGetFilterCompanies = async (data, status, page, size) => {
+    setLoading(true);
     try {
       const companies = await companyService.findAllByFieldAndStatus(
         data,
@@ -21,10 +24,11 @@ const Companies = (props) => {
         page,
         size
       );
-      console.log(companies);
+      setLoading(false);
       return companies;
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -52,9 +56,13 @@ const Companies = (props) => {
         setCompanies={setCompanies}
       />
 
-      {companies.map((company) => (
-        <Company key={company.id} company={company} />
-      ))}
+      {isLoading ? (
+        <Spinner type="grow" color="primary" children={""} />
+      ) : (
+        companies.map((company) => (
+          <Company key={company.id} company={company} />
+        ))
+      )}
     </Layout>
   ); */
   }

@@ -9,9 +9,10 @@
     "search-placeholder": "Buscar ideas/ profesionales",
     "search-by-ideas": "Buscar por ideas",
     "search-by-professionals": "Buscar por profesionales",
-    "my-products" : "Mis productos"
+    "my-products": "Mis productos"
   },
 
+  "product": "Producto",
   "professional": "Profesional",
   "project": "Proyecto",
   "magazine": "Magazine",
@@ -68,6 +69,10 @@
   "upload-images": "Subir imagenes",
   "send": "Enviar",
 
+  "pending": "Pendiente",
+  "approved": "Aprobado",
+  "rejected": "Rechazado",
+
   "administrator-creator": {
     "add-administrator": "Añadir administrador",
     "insert-username": "Ingrese el nombre de usuario",
@@ -111,7 +116,7 @@
 
   "table-admin": {
     "actions": "Acciones",
-    "there-are-not-more-professional": "No hay más profesionales",
+    "there-are-not-more": "No hay más",
     "find-by-contact": "Buscar por contacto",
     "tokens": "Fichas"
   },
@@ -218,12 +223,19 @@
     "select-background-picture": "Seleccione la imagen de fondo"
   },
 
-  "photos" : "Fotos",
-  "search":"Buscar",
+  "photos": "Fotos",
+  "search": "Buscar",
   "filter-by-option": "Filtrar por opcion",
+
+  "product-detail": "Detalle del producto",
+  "select-preview-image-for-the-product": "Seleccione la imagen de vista previa para el producto",
+  "product-form": "Formulario de producto",
+  "should-be-greater-than-0": "Debe ser superior a 0",
+  "date": "Fecha",
 
   "about-home":{
     "a-factory-of-ideas":"Una fabrica de ideas",
     "we-are-an-online-platform":"Somos una plataforma online conecta a miles de propietarios de viviendas con los profesionales del diseño."
   }
+
 }

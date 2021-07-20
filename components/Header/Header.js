@@ -30,6 +30,11 @@ export default function Header() {
         className={`w-100 justify-content-start  justify-content-md-center`}
         navbar
       >
+        <Link href="/product">
+          <NavLink className={`${HeaderStyle.pointer}`}>
+            {t("product")}
+          </NavLink>
+        </Link>
         <UncontrolledDropdown nav inNavbar>
           <DropdownToggle nav caret>
             {t("professional")}
@@ -105,6 +110,12 @@ export default function Header() {
               <DropdownItem>
                 <Link href="/admin/professional">
                   <NavLink>{t("professional")}</NavLink>
+                </Link>
+              </DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>
+                <Link href="/admin/product">
+                  <NavLink>{t("product")}</NavLink>
                 </Link>
               </DropdownItem>
             </DropdownMenu>

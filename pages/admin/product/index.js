@@ -12,35 +12,39 @@ import TableAdmin from "../../../components/TableAdmin/TableAdmin";
 import { Input } from "reactstrap";
 
 //Services
-import * as professionalService from "../../../services/professionalService";
 import * as imageService from "../../../services/imageService";
-import * as companyService from "../../../services/companyService";
+import * as productService from "../../../services/productService";
 
-const CompanyAdmin = ({
-  companiesNotApproved,
-  companiesApproved,
-  companiesRejected,
+const ProductAdmin = ({
+  productsNotApproved,
+  productsApproved,
+  productsRejected,
   session,
 }) => {
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
-  const [companyListNotAppoved, setCompanyListNotAppoved] = useState([]);
-  const [companiesListAppoved, setListAppoved] = useState([]);
-  const [companiesListRejected, setcompaniesListRejected] = useState([]);
+  const [productListNotAppoved, setProductListNotAppoved] = useState([]);
+  const [productsListAppoved, setListAppoved] = useState([]);
+  const [productsListRejected, setProductsListRejected] = useState([]);
+  const [productsListNotApprovedHead, setProductListNotAppovedHead] = useState(
+    []
+  );
+  const [productsListAppovedHead, setListAppovedHead] = useState([]);
+  const [productsListRejectedHead, setProductsListRejectedHead] = useState([]);
 
   const { t } = useTranslation("administrator");
 
   /**
    * Component button accept to add it to the table that requires it.
-   * @param {*} professionalId String necessary to identify the profesisonal
+   * @param {*} productlId String necessary to identify the products
    * in changeState
    * @returns A button armed with the functionality to change the state to Id
    */
-  const buttonAccept = (companylId) => {
+  const buttonAccept = (productlId) => {
     return (
       <Button
         outline
         color={"success"}
-        onClick={() => changeState(companylId, "APPROVED")}
+        onClick={() => changeState(productlId, "APPROVED")}
       >
         <CheckCircle size={25} /> {t("accept")}
       </Button>
@@ -49,16 +53,16 @@ const CompanyAdmin = ({
 
   /**
    * Component button reject to add it to the table that requires it.
-   * @param {*} companyId String necessary to identify the profesisonal
+   * @param {*} productId String necessary to identify the profesisonal
    * in changeState
    * @returns A button armed with the functionality to change the state to Id.
    */
-  const buttonReject = (companyId) => {
+  const buttonReject = (productId) => {
     return (
       <Button
         outline
         color={"danger"}
-        onClick={() => changeState(companyId, "REJECTED")}
+        onClick={() => changeState(productId, "REJECTED")}
       >
         <XCircle size={25} /> {t("reject")}
       </Button>
@@ -66,17 +70,17 @@ const CompanyAdmin = ({
   };
 
   /**
-   * Component button that accept all images of one professional.
-   * @param {*} professionalId String necessary to identify the profesisonal
+   * Component button that accept all images of one productId.
+   * @param {*} productId String necessary to identify the profesisonal
    * in acceptImages
    * @returns A button armed with the functionality to change the state to Id.
    */
-  const buttonAcceptImages = (professionalId) => {
+  const buttonAcceptImages = (productId) => {
     return (
       <Button
         outline
         color={"success"}
-        onClick={async () => changeStateImages(professionalId, true)}
+        onClick={async () => changeStateImages(productId, true)}
       >
         <CheckCircle size={25} /> {t("accept-images")}
       </Button>
@@ -84,7 +88,7 @@ const CompanyAdmin = ({
   };
 
   const changeStateImages = async (id, approved) => {
-    await imageService.changeStateImagesByProfessionalId(
+    await imageService.changeStateImagesByProductIdId(
       id,
       approved,
       session.accessToken
@@ -97,15 +101,15 @@ const CompanyAdmin = ({
 
   /**
    * Funtionality to buttonAcept and buttonReject components
-   * to change the status of a company in a tabs pending, approved and
+   * to change the status of a product in a tabs pending, approved and
    * disapproved.
-   * @param {*} id String necessary to identify of a company.
+   * @param {*} id String necessary to identify of a product.
    * @param {*} status String to show that you want it to see.
    * The states are : PENDING APPROVED REJECTED DELETED
    */
   const changeState = async (id, status) => {
-    const professionalChange = await saveChangeStatus(id, status);
-    if (professionalChange) {
+    const productChange = await saveChangeStatus(id, status);
+    if (productChange) {
       pendingTab();
       approvedTab();
       disapprovedTab();
@@ -113,15 +117,15 @@ const CompanyAdmin = ({
   };
 
   /**
-   * Request "fetch" to the DB that changes the status of a professional.
-   * @param {*} id String is necessary to identify a professional
+   * Request "fetch" to the DB that changes the status of a product.
+   * @param {*} id String is necessary to identify a product
    * @param {*} status String to show that you want it to see.
    * The states are : PENDING APPROVED REJECTED DELETED
    * @returns true or false to obtein if save change or not
    */
   const saveChangeStatus = async (id, status) => {
     try {
-      await companyService.setStatus(id, status, session?.accessToken);
+      await productService.setStatus(id, status, session?.accessToken);
       return true;
     } catch (error) {
       console.error(error);
@@ -130,82 +134,82 @@ const CompanyAdmin = ({
   };
 
   /**
-   * Funtionality to refresh the pending tab when a company is accepted.
+   * Funtionality to refresh the pending tab when a product is accepted.
    */
   const pendingTab = async () => {
-    const companies = await getAllCompanies("PENDING");
-    renderPending(companies);
+    const products = await getAllProducts("PENDING");
+    renderPending(products);
   };
 
-  const renderPending = (companies) => {
-    const companiesList = getList(companies, [
-      (companyId) => buttonAccept(companyId),
-      (companyId) => buttonReject(companyId),
+  const renderPending = (products) => {
+    const productsList = getList(products, [
+      (productId) => buttonAccept(productId),
+      (productId) => buttonReject(productId),
     ]);
-    setCompanyListNotAppoved(companiesList);
+    setProductListNotAppoved(productsList);
   };
 
   /**
-   * Funcionality to refresh the approved tab when a professional is rejected.
+   * Funcionality to refresh the approved tab when a product is rejected.
    */
   const approvedTab = async () => {
-    const companies = await getAllCompanies("APPROVED");
-    renderApproved(companies);
+    const products = await getAllProducts("APPROVED");
+    renderApproved(products);
   };
 
-  const renderApproved = (companies) => {
-    const companiesList = getList(companies, [
-      (companyId) => buttonReject(companyId),
+  const renderApproved = (products) => {
+    const productsList = getList(products, [
+      (productId) => buttonReject(productId),
     ]);
-    setListAppoved(companiesList);
+    setListAppoved(productsList);
   };
 
   /**
    * Funcionality to refresh the disapproved tab when you want to accept
-   * a professional again.
+   * a product again.
    */
   const disapprovedTab = async () => {
-    const companies = await getAllCompanies("REJECTED");
-    renderRejectedProfessionals(companies);
+    const products = await getAllProducts("REJECTED");
+    renderRejectedProductIds(products);
   };
 
-  const renderRejectedProfessionals = (professionals) => {
-    const professionalsList = getList(professionals, [
-      (professionalId) => buttonAccept(professionalId),
+  const renderRejectedProductIds = (products) => {
+    const productsList = getList(products, [
+      (productId) => buttonAccept(productId),
     ]);
-    setcompaniesListRejected(professionalsList);
+    setProductsListRejected(productsList);
   };
 
   /**
    * Request "fetch" to obtain approved, disapproved, rejected or deleted
-   * professionals, depends on the "status" parameter and with error control.
+   * products, depends on the "status" parameter and with error control.
    * @param {*} status String to show that you want it to see.
    * The states are: PENDING APPROVED REJECTED DELETED
-   * @returns arrangement of professionally limited for page.
+   * @returns arrangement of productly limited for page.
    */
-  const getAllCompanies = async (status) => {
+  const getAllProducts = async (status) => {
     try {
-      const companiesNotAppoved = await companyService.findAll(
+      const productsNotAppoved = await productService.findAll(
         status,
         pageSize.page,
         pageSize.size,
         session?.accessToken
       );
-      return companiesNotAppoved;
+      return productsNotAppoved;
     } catch (error) {
       console.error(error);
     }
   };
 
-  const getCompaniesForApproved = async (status) => {
+  const getProductsForApproved = async (status) => {
     try {
-      const companiesNotApproved = await companyService.findAll(
+      const productsNotApproved = await productService.findAll(
         status,
         pageSize.page,
         pageSize.size,
         session?.accessToken
       );
-      return companiesNotApproved;
+      return productsNotApproved;
     } catch (error) {
       console.error(error);
     }
@@ -214,10 +218,10 @@ const CompanyAdmin = ({
   const getListHead = (
     <>
       <th>{t("common:image")}</th>
-      <th>{t("common:contact")}</th>
-      <th>{t("common:company")}</th>
-      <th>{t("common:email")}</th>
+      <th>{t("common:name")}</th>
+      <th>{t("common:price")}</th>
       <th>{t("common:date")}</th>
+      <th>{t("common:company")}</th>
       <th>{t("common:table-admin.tokens")}</th>
       <th>{t("common:table-admin.actions")}</th>
     </>
@@ -225,14 +229,14 @@ const CompanyAdmin = ({
 
   /**
    * Complete the body part of the table showing the result of the pending,
-   * approved or rejected professional consultations.
-   * @param {*} professionals these are the professionals who arrive
+   * approved or rejected product consultations.
+   * @param {*} products these are the products who arrive
    * from a request "fetch" from the BD
    * @param {*} buttons is the buttons you want to display in the table as actions.
    * @returns the body of the table.
    */
-  const getList = (companies, buttons) => {
-    const companiesList = companies.map((company, index) => {
+  const getList = (products, buttons) => {
+    const productsList = products.map((product, index) => {
       return (
         <tr key={index} className="align-middle text-center">
           <td scope="row">{index + 1}</td>
@@ -240,27 +244,27 @@ const CompanyAdmin = ({
             <figure className="figure mx-auto">
               <img
                 className="img-fluid rounded"
-                src={company.previewImage}
+                src={product.previewImage}
                 alt=""
               />
             </figure>
           </td>
-          <td>{company.contact}</td>
-          <td>{company.name}</td>
-          <td>{company.email}</td>
-          <td>{company.statusUpdate}</td>
+          <td>{product.name}</td>
+          <td>{product.price}</td>
+          <td>{product.statusUpdate}</td>
+          <td>{product.company.name}</td>
           <td>
             <Input
               min="0"
               type="number"
               className="d-inline-block w-50 mr-2"
-              defaultValue={company.tokensAsigned}
+              defaultValue={product.tokensAsigned}
             />
             <Button
             // onClick={(e) =>
-            //   setNewTokensToProfessional(
+            //   setNewTokensToproduct(
             //     e.target.previousElementSibling.value,
-            //     company.id
+            //     product.id
             //   )
             // }
             >
@@ -269,63 +273,63 @@ const CompanyAdmin = ({
           </td>
           <td>
             {buttons.map((button, index) => {
-              return <div key={index}>{button(company.id)}</div>;
+              return <div key={index}>{button(product.id)}</div>;
             })}
           </td>
         </tr>
       );
     });
-    return companiesList;
+    return productsList;
   };
 
-  const setNewTokensToProfessional = async (tokens, professionalId) => {
-    await professionalService.setNewTokensToProfessional(
-      tokens,
-      professionalId,
-      session.accessToken
-    );
+  const setNewTokensToProduct = async (tokens, productId) => {
+    // await productService.setNewTokensToProductId(
+    //   tokens,
+    //   productId,
+    //   session.accessToken
+    // );
     alert(t("tokens-setted"));
   };
 
   /**
    * This is for when using the SSR and loading the tableAdmin component properly
-   * with the list of pending companies.
+   * with the list of pending products.
    */
   useEffect(async () => {
-    if (companiesNotApproved) {
-      const companiesList = getList(companiesNotApproved, [
-        (companyId) => buttonAccept(companyId),
-        (companyId) => buttonReject(companyId),
+    if (productsNotApproved) {
+      const productsList = getList(productsNotApproved, [
+        (productId) => buttonAccept(productId),
+        (productId) => buttonReject(productId),
       ]);
-      setCompanyListNotAppoved(companiesList);
+      setProductListNotAppoved(productsList);
     }
-  }, [companiesNotApproved]);
+  }, [productsNotApproved]);
 
   /**
    * This is for when using the SSR and loading the tableAdmin component properly
    * with the list of approved proffesional.
    */
   useEffect(async () => {
-    if (companiesApproved) {
-      const professionalList = getList(companiesApproved, [
-        (professionalId) => buttonReject(professionalId),
+    if (productsApproved) {
+      const productList = getList(productsApproved, [
+        (productId) => buttonReject(productId),
       ]);
-      setListAppoved(professionalList);
+      setListAppoved(productList);
     }
-  }, [companiesApproved]);
+  }, [productsApproved]);
 
   /**
    * This is for when using the SSR and loading the tableAdmin component properly
    * with the list of disapproved proffesional.
    */
   useEffect(async () => {
-    if (companiesRejected) {
-      const professionalList = getList(companiesRejected, [
-        (professionalId) => buttonAccept(professionalId),
+    if (productsRejected) {
+      const productList = getList(productsRejected, [
+        (productId) => buttonAccept(productId),
       ]);
-      setcompaniesListRejected(professionalList);
+      setProductsListRejected(productList);
     }
-  }, [companiesRejected]);
+  }, [productsRejected]);
 
   /**
    * These are the titles of the tabs needed to describe each other.
@@ -333,42 +337,42 @@ const CompanyAdmin = ({
   const titles = [t("pending"), t("approved"), t("disapproved")];
 
   /**
-   * Find all professionals by username and status, if username is empty, only find by status
-   * when get all professionals, the method will render them
+   * Find all products by username and status, if username is empty, only find by status
+   * when get all products, the method will render them
    */
   const findByContactAndStatus = async (username, status) => {
-    let newProfessionals;
+    let newProducts;
 
     if (username != "")
-      newProfessionals = await professionalService.findByContactAndStatus(
+      newProducts = await productService.findByContactAndStatus(
         username,
         status,
         pageSize.page,
         pageSize.size
       );
-    else newProfessionals = await getProfessional(status);
+    else newProducts = await getProduct(status);
 
     switch (status) {
       case "PENDING":
-        renderPending(newProfessionals);
+        renderPending(newProducts);
         break;
       case "APPROVED":
-        renderApproved(newProfessionals);
+        renderApproved(newProducts);
         break;
       case "REJECTED":
-        renderRejectedProfessionals(newProfessionals);
+        renderRejectedProducts(newProducts);
         break;
     }
   };
 
   return (
-    <Layout title={t("managing-companies")}>
+    <Layout title={t("managing-products")}>
       <Row>
         <Col>
           <Tabs titles={titles}>
             <TableAdmin
               listHead={getListHead}
-              listBody={companyListNotAppoved}
+              listBody={productListNotAppoved}
               title={titles[0]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "PENDING")
@@ -376,7 +380,7 @@ const CompanyAdmin = ({
             />
             <TableAdmin
               listHead={getListHead}
-              listBody={companiesListAppoved}
+              listBody={productsListAppoved}
               title={titles[1]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "APPROVED")
@@ -384,7 +388,7 @@ const CompanyAdmin = ({
             />
             <TableAdmin
               listHead={getListHead}
-              listBody={companiesListRejected}
+              listBody={productsListRejected}
               title={titles[2]}
               onSearch={(username) =>
                 findByContactAndStatus(username, "REJECTED")
@@ -415,9 +419,9 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   let token;
 
-  let companiesApproved = [];
-  let companiesRejected = [];
-  let companiesNotApproved = [];
+  let productsApproved = [];
+  let productsRejected = [];
+  let productsNotApproved = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -430,7 +434,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (session) {
     let status = "PENDING";
     token = session.accessToken;
-    companiesNotApproved = await companyService.findAll(
+    productsNotApproved = await productService.findAll(
       status,
       page,
       size,
@@ -438,18 +442,18 @@ export async function getServerSideProps({ params, req, res, locale }) {
     );
 
     status = "APPROVED";
-    companiesApproved = await companyService.findAll(status, page, size, token);
+    productsApproved = await productService.findAll(status, page, size, token);
     status = "REJECTED";
-    companiesRejected = await companyService.findAll(status, page, size, token);
+    productsRejected = await productService.findAll(status, page, size, token);
   }
 
   return {
     props: {
-      companiesNotApproved,
-      companiesApproved,
-      companiesRejected,
+      productsNotApproved,
+      productsApproved,
+      productsRejected,
       session,
     },
   };
 }
-export default CompanyAdmin;
+export default ProductAdmin;

@@ -71,7 +71,7 @@ export default function NavSearch() {
           return false;
         }
       };
-  
+
       if (isClickedOnNavSearch(e.target)) setSearchActive(true);
       else setSearchActive(false);
     };
@@ -133,8 +133,8 @@ export default function NavSearch() {
       <Container fluid="xl">
         <Navbar className="light navbar-expand-lg px-2" light>
           <Link href="/" passHref>
-            <NavLink className={`${NavSearchStyles.pointer} flex-lg-grow-0`}>
-              {t("header.home")}
+            <NavLink className={`${NavSearchStyles.pointer} flex-lg-grow-0 p-0`}>
+              <Image width={220} height={92} alt="" src={"/logo.svg"}/>
             </NavLink>
           </Link>
           <Row

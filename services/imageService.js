@@ -67,7 +67,12 @@ export const getProfessionalImagesByTags = async (tags, page, size, token) => {
   return images;
 };
 
-export const getProfessionalImagesByTagsLessFuntions = async (tags, page, size, token) => {
+export const getProfessionalImagesByTagsLessFuntions = async (
+  tags,
+  page,
+  size,
+  token
+) => {
   API.defaults.headers.common["Authorization"] = token;
   let concatenatedTags = "";
   tags.forEach((tag) => {
@@ -90,7 +95,9 @@ export const getImagesByBuildingWorksId = async (id, page, size, token) => {
 };
 
 export const getImagesByProductId = async (id, page, size, token) => {
-  API.defaults.headers.common["Authorization"] = token;
+  if (token) {
+    API.defaults.headers.common["Authorization"] = token;
+  }
   const images = await API.get(
     `/images/products/${id}?page=${page}&size=${size}`
   );
@@ -135,6 +142,15 @@ export const changeStateImagesByProfessionalId = async (
   await API.put(`/images/professionals/${professionalId}/approved/${approved}`);
 };
 
+export const changeStateImagesByProductIdId = async (
+  professionalId,
+  approved,
+  token
+) => {
+  API.defaults.headers.common["Authorization"] = token;
+  await API.put(`/images/products/${professionalId}/approved/${approved}`);
+};
+
 export const setLikePhoto = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
   await API.put(`/images/${image.id}/like/${image.liked}`);
@@ -155,11 +171,15 @@ export const addPreviewImageToBuildingWork = async (data, token) => {
 
 export const getPreviewImageToBuildingWork = async (id) => {
   return await API.get(`/images/building-works/${id}/preview`);
-}
+};
 
 export const addImagesToBuildingWork = async (data, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  return await addImagesRecursive(data.id, Array.from(data.images), addToBuildingWork);
+  return await addImagesRecursive(
+    data.id,
+    Array.from(data.images),
+    addToBuildingWork
+  );
 };
 
 const addToBuildingWork = async (id, image) => {
@@ -192,11 +212,10 @@ const addToProduct = async (id, image) => {
 
 const addImagesRecursive = async (id, images, callback) => {
   const image = images.shift();
-  const response = await callback(id, image);
-  if (response && images.length > 0) {
-    return await addImagesRecursive(id, images);
+  await callback(id, image);
+  if (images.length > 0) {
+    return await addImagesRecursive(id, images, callback);
   }
-  return response;
 };
 
 export const uploadPreviewImageToProduct = async (id, previewImage, token) => {
@@ -208,5 +227,5 @@ export const uploadPreviewImageToProduct = async (id, previewImage, token) => {
 
 export const uploadImagesToProduct = async (productId, images, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  return await addImagesRecursive(productId, Array.from(images), addToProduct);
+  return await addImagesRecursive(productId, images, addToProduct);
 };
