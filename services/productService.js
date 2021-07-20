@@ -43,4 +43,21 @@ export const setStatus = async (id, status, token) => {
 
 export const findByContactAndStatus = async (contact, status, page, size) => {
   return await API.get(`/products/contact/${contact}/status/${status}?page=${page}&size=${size}`);
+    API.defaults.headers.common["Authorization"] = token;
+    const images = Array.from(product.images);
+    const previewImage = product.previewImage;
+    delete product.images;
+    delete product.previewImage;
+    
+    const response = await API.post(`/products`, product);
+    
+    if (previewImage != undefined || previewImage != null)
+        imageService.uploadPreviewImageToProduct(response.id, previewImage, token);
+    
+    if (images.length > 0)
+        imageService.uploadImagesToProduct(response.id, images, token);
+};
+
+export const findAllByStatus = async (page, size, status) => {
+    return await API.get(`/products/status/${status}?page=${page}&size=${size}`);
 };
