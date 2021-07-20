@@ -132,7 +132,7 @@ const ProfessionalAdmin = ({
    */
   const saveChangeProfessional = async (id, status) => {
     try {
-      await setEnebleProfessional(id, status, session?.accessToken);
+      await professionalService.setEnebleProfessional(id, status, session?.accessToken);
       return true;
     } catch (error) {
       console.error(error);

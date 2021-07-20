@@ -9,17 +9,20 @@ import FilterList from "../components/FilterList/FilterList";
 import FilteredImages from "../components/FilteredImages/FilteredImages";
 import Layout from "../components/Layout/Layout";
 import CarouselBanner from "../components/CustomCarousel/CarouselBanner";
+import SwipperEmpresas from "../components/SwipperEmpresas/SwipperEmpresas";
 
 // Services
 import * as tagService from "../services/tagService";
 import * as imageService from "../services/imageService";
+import * as productService from "../services/productService";
+import * as companyService from "../services/companyService";
 
 // Styles
 import styles from "../styles/Home.module.css";
 import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
 
-const Home = ({ filters, carouselImages, session }) => {
+const Home = ({ filters, carouselImages, session, companies }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -67,25 +70,42 @@ const Home = ({ filters, carouselImages, session }) => {
     <Layout
       title={`${t("welcome-to")} ${process.env.NEXT_PUBLIC_PROJECT_NAME}`}
     >
-      <CarouselBanner images={imagesCarousel} />
-      <div className="my-4 d-flex">
-        <CarouselImageCreator onAddCarouselImages={onAddCarouselImages} />
-        <div className="mx-4">
-          <AdministratorCreator />
-        </div>
-      </div>
-      <Row>
-        <Col xs={12} md={3} xl={2}>
-          <aside>
-            <FilterList
-              filters={filters}
-              appliedFilters={appliedFilters}
-              setAppliedFilters={setAppliedFilters}
-            />
-          </aside>
+      <Row className="row-cols-1 gap-2">
+        <Col>
+          <CarouselBanner images={imagesCarousel} />
+          <div className="my-4 d-flex">
+            <CarouselImageCreator onAddCarouselImages={onAddCarouselImages} />
+            <div className="mx-4">
+              <AdministratorCreator />
+            </div>
+          </div>
         </Col>
-        <Col xs={12} md={9} xl={10}>
-          <FilteredImages isLoading={isLoading} images={filteredImages} />
+        <Col>
+          <Row>
+            <Col xs={12} md={3} xl={2}>
+              <aside>
+                <FilterList
+                  filters={filters}
+                  appliedFilters={appliedFilters}
+                  setAppliedFilters={setAppliedFilters}
+                />
+              </aside>
+            </Col>
+            <Col xs={12} md={9} xl={10}>
+              <FilteredImages isLoading={isLoading} images={filteredImages} />
+            </Col>
+          </Row>
+        </Col>
+        <Col>
+          <div className={styles.infoHead}>
+            <h2 className={styles.itemsTitle}>
+              {t("professionals")}
+              <small className={styles.itemsSmallTitle}>
+                {t("new-design-and-construction-professionals")}
+              </small>
+            </h2>
+          </div>
+          <SwipperEmpresas items={companies} />
         </Col>
       </Row>
     </Layout>
@@ -107,11 +127,14 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
+  const companies = await companyService.findAll("APPROVED", page, size);
+
   return {
     props: {
       filters: filters,
       carouselImages,
       session,
+      companies,
     },
   };
 }
