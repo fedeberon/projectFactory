@@ -9,8 +9,8 @@ import FilterList from "../components/FilterList/FilterList";
 import FilteredImages from "../components/FilteredImages/FilteredImages";
 import Layout from "../components/Layout/Layout";
 import CarouselHome from "../components/CarouselHome/CarouselHome";
-import SwipperEmpresas from "../components/SwipperEmpresas/SwipperEmpresas";
-import SliderProducts from "../components/SliderProducts/SliderProducts";
+import SwiperEmpresas from "../components/Swiper/SwiperEmpresas/SwiperEmpresas";
+import SwiperProducts from "../components/Swiper/SwiperProducts/SwiperProducts";
 import AboutHome from "../components/AboutHome";
 
 // Services
@@ -25,16 +25,13 @@ import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
 import OffCanvasFilter from "../components/OffCanvas/OffCanvasFilter.js/OffCanvasFilter";
 
-// Custom Hooks
-import useSize from "../hooks/window/useSize";
-
 const Home = ({ filters, carouselImages, session, products, companies }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const [imagesCarousel, setImagesCarousel] = useState([]);
-  const { width } = useSize();
+
   let { t } = useTranslation("home");
 
   useEffect(async () => {
@@ -119,11 +116,12 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
                 </small>
               </h2>
             </div>
-            {width < 768 ? (
-              <SliderProducts products={products} slidesPerView={1} />
-            ) : (
-              <SliderProducts products={products} slidesPerView={4} />
-            )}
+            <SwiperProducts
+              products={products}
+              slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
+              slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
+              slidesPerViewDesktop={{ dimensionLimit: 992, slides: 4 }}
+            />
           </Col>
           <Col>
             <div className={styles.infoHead}>
@@ -134,7 +132,12 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
                 </small>
               </h2>
             </div>
-            <SwipperEmpresas items={companies} />
+            <SwiperEmpresas
+              items={companies}
+              slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
+              slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
+              slidesPerViewDesktop={{ dimensionLimit: 992, slides: 3 }}
+            />
           </Col>
         </Row>
       </section>

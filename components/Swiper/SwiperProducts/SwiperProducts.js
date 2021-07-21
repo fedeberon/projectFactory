@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useTranslation from "next-translate/useTranslation";
 import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
-import styles from "./SliderProducts.module.css";
+import styles from "./SwiperProducts.module.css";
+
+// Custom Hooks
+import useSize from "../../../hooks/window/useSize";
 /**
  * Docs of swiperJS in
  * https://swiperjs.com/react
@@ -10,8 +13,28 @@ import styles from "./SliderProducts.module.css";
 
 SwiperCore.use([Autoplay, Pagination, Navigation]);
 
-const SlederProducts = (props) => {
-  const { products, slidesPerView } = props;
+const SwiperProducts = (props) => {
+  const {
+    products,
+    slidesPerViewMobile,
+    slidesPerViewDesktop,
+    slidesPerViewTablet,
+  } = props;
+  const { width } = useSize();
+  const [slidesPerViewLocal, setSlidesPerViewLocal] = useState(0);
+
+  useEffect(() => {
+    if (slidesPerViewMobile.dimensionLimit < width) {
+      setSlidesPerViewLocal(slidesPerViewMobile.slides);
+    }
+    if (slidesPerViewTablet.dimensionLimit < width) {
+      setSlidesPerViewLocal(slidesPerViewTablet.slides);
+    }
+    if (slidesPerViewDesktop.dimensionLimit < width) {
+      setSlidesPerViewLocal(slidesPerViewDesktop.slides);
+    }
+  }, [width]);
+
   const { t } = useTranslation("common");
 
   return (
@@ -19,7 +42,7 @@ const SlederProducts = (props) => {
       <div className="container">
         <Swiper
           spaceBetween={30}
-          slidesPerView={slidesPerView}
+          slidesPerView={slidesPerViewLocal}
           loop={true}
           autoplay={{ delay: 3000 }}
           navigation={{
@@ -73,4 +96,4 @@ const SlederProducts = (props) => {
   );
 };
 
-export default SlederProducts;
+export default SwiperProducts;
