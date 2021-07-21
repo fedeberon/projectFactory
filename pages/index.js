@@ -11,7 +11,7 @@ import Layout from "../components/Layout/Layout";
 import CarouselHome from "../components/CarouselHome/CarouselHome";
 import SwipperEmpresas from "../components/SwipperEmpresas/SwipperEmpresas";
 import SliderProducts from "../components/SliderProducts/SliderProducts";
-import AboutHome from "../components/AboutHome";
+import AboutHome from "../components/AboutHome/AboutHome";
 
 // Services
 import * as tagService from "../services/tagService";
@@ -106,7 +106,10 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
               </Col>
             </Row>
           </Col>
-          <AboutHome />
+          </Row>
+          </section>
+          <AboutHome/>
+          <section className="container py-2">
           <Col>
             <div className={styles.infoHead}>
               <h2 className={styles.productsTitle}>
@@ -118,6 +121,9 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
             </div>
             <SliderProducts products={products} />
           </Col>
+          </section>
+          <div className={styles.backgroundGray}>
+          <section className="container py-2">
           <Col>
             <div className={styles.infoHead}>
               <h2 className={styles.itemsTitle}>
@@ -129,8 +135,8 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
             </div>
             <SwipperEmpresas items={companies} />
           </Col>
-        </Row>
       </section>
+      </div>
     </Layout>
   );
 };
