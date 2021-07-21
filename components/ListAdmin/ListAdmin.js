@@ -1,13 +1,12 @@
 // Frameworks
 import React, { useEffect, useState } from "react";
-import { Button } from "reactstrap";
 import { CheckCircle, XCircle } from "react-bootstrap-icons";
 import useTranslation from "next-translate/useTranslation";
 
 // Components
 import Tabs from "../Tabs/Tabs";
 import TableAdmin from "../TableAdmin/TableAdmin";
-import { Form } from "react-bootstrap";
+import { Button,Form } from "react-bootstrap";
 
 const ListAdmin = ({
   notApproved,
@@ -35,7 +34,7 @@ const ListAdmin = ({
     return (
       <Button
         outline
-        color={"success"}
+        variant={"success"}
         onClick={() => changeStateProfessional(professionalId, "APPROVED")}
       >
         <CheckCircle size={25} /> {t("accept")}
@@ -53,7 +52,7 @@ const ListAdmin = ({
     return (
       <Button
         outline
-        color={"danger"}
+        variant={"danger"}
         onClick={() => changeStateProfessional(professionalId, "REJECTED")}
       >
         <XCircle size={25} /> {t("reject")}
@@ -105,7 +104,7 @@ const ListAdmin = ({
     return (
       <Button
         outline
-        color={"success"}
+        variant={"success"}
         onClick={async () => changeStateImages(professionalId, true)}
       >
         <CheckCircle size={25} /> {t("accept-images")}

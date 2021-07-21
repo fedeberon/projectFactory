@@ -23,6 +23,10 @@ import * as companyService from "../services/companyService";
 import styles from "../styles/Home.module.css";
 import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
+import OffCanvasFilter from "../components/OffCanvas/OffCanvasFilter.js/OffCanvasFilter";
+
+// Custom Hooks
+import useSize from "../hooks/window/useSize";
 
 const Home = ({ filters, carouselImages, session, products, companies }) => {
   const [filteredImages, setFilteredImages] = useState([]);
@@ -30,7 +34,7 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
   const [isLoading, setLoading] = useState(false);
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const [imagesCarousel, setImagesCarousel] = useState([]);
-
+  const { width } = useSize();
   let { t } = useTranslation("home");
 
   useEffect(async () => {
@@ -83,17 +87,16 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
           </Col>
           <Col>
             <Row>
-              <Col xs={12} md={3} xl={2}>
-                <aside>
-                  <FilterList
-                    filters={filters}
-                    appliedFilters={appliedFilters}
-                    setAppliedFilters={setAppliedFilters}
-                  />
-                </aside>
+              <Col>
+                <OffCanvasFilter
+                  filters={filters}
+                  appliedFilters={appliedFilters}
+                  setAppliedFilters={setAppliedFilters}
+                />
               </Col>
+            </Row>
+            <Row>
               <Col xs={12} md={9} xl={10}>
-
                 <div className={styles.infoHead}>
                   <h2 className={styles.itemsTitle}>
                     {t("buildings")}
@@ -116,7 +119,11 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
                 </small>
               </h2>
             </div>
-            <SliderProducts products={products} />
+            {width < 768 ? (
+              <SliderProducts products={products} slidesPerView={1} />
+            ) : (
+              <SliderProducts products={products} slidesPerView={4} />
+            )}
           </Col>
           <Col>
             <div className={styles.infoHead}>

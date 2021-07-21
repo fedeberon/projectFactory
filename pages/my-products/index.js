@@ -34,8 +34,8 @@ const CustomButtonTogle = ({ id, editProduct }) => {
       variant="start"
       drop="left"
       align="end"
-      title={<ThreeDotsVertical color={"dark"} size={25} />
-      }>
+      title={<ThreeDotsVertical color={"dark"} size={25} />}
+    >
       <Dropdown.Menu>
         <Dropdown.Item
           onClick={() => {
@@ -184,7 +184,7 @@ const MyProducts = (props) => {
     }
   };
 
-  const onSetProduct = (data) => { };
+  const onSetProduct = (data) => {};
 
   const isState = (product) => {
     let statusColor;
@@ -222,17 +222,20 @@ const MyProducts = (props) => {
               <Card.Body className="p-0">
                 <Link
                   href={`/product/[id]`}
-                  as={`/product/${product.name.replace(/\s+/g, "-")}-${product.id
-                    }`}
+                  as={`/product/${product.name.replace(/\s+/g, "-")}-${
+                    product.id
+                  }`}
                 >
                   <img
-                    className={`${filteredImagesStyles.cardImage} ${indexStyles.cursorPointer
-                      } ${product.status === "PENDING"
+                    className={`${filteredImagesStyles.cardImage} ${
+                      indexStyles.cursorPointer
+                    } ${
+                      product.status === "PENDING"
                         ? `${indexStyles.imgGray}`
                         : product.status === "REJECTED"
-                          ? `${indexStyles.imgRejected}`
-                          : ``
-                      }`}
+                        ? `${indexStyles.imgRejected}`
+                        : ``
+                    }`}
                     src={product.previewImage}
                     alt="preview"
                   />
@@ -277,7 +280,7 @@ const MyProducts = (props) => {
       <section className="container py-2">
         <Row className="row-cols-2 g-2">
           <Col className="col-auto">
-            <Button outline color="primary" onClick={openModalProduct}>
+            <Button variant="outline-primary" onClick={openModalProduct}>
               <PlusSquareDotted size={100} />
             </Button>
           </Col>
@@ -299,7 +302,10 @@ const MyProducts = (props) => {
                 setPreviewImage={setPreviewImage}
                 images={images}
                 setImages={setImages}
-                changeState={{ stateFormProduct, function: setStateFormProduct }}
+                changeState={{
+                  stateFormProduct,
+                  function: setStateFormProduct,
+                }}
                 productId={productId}
               />
             </>

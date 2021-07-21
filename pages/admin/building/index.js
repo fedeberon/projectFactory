@@ -22,9 +22,13 @@ const BuildingAdmin = ({
   session,
 }) => {
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
-  const [buildingWorkListNotAppoved, setBuildingWorkListNotAppoved] = useState([]);
+  const [buildingWorkListNotAppoved, setBuildingWorkListNotAppoved] = useState(
+    []
+  );
   const [buildingWorksListAppoved, setListAppoved] = useState([]);
-  const [buildingWorksListRejected, setBuildingWorksListRejected] = useState([]);
+  const [buildingWorksListRejected, setBuildingWorksListRejected] = useState(
+    []
+  );
 
   const { t } = useTranslation("administrator");
 
@@ -38,7 +42,7 @@ const BuildingAdmin = ({
     return (
       <Button
         outline
-        color={"success"}
+        variant={"success"}
         onClick={() => changeState(buildingWorklId, "APPROVED")}
       >
         <CheckCircle size={25} /> {t("accept")}
@@ -56,7 +60,7 @@ const BuildingAdmin = ({
     return (
       <Button
         outline
-        color={"danger"}
+        variant={"danger"}
         onClick={() => changeState(buildingWorkId, "REJECTED")}
       >
         <XCircle size={25} /> {t("reject")}
@@ -73,8 +77,7 @@ const BuildingAdmin = ({
   const buttonAcceptImages = (buildingWorkId) => {
     return (
       <Button
-        outline
-        color={"success"}
+        variant={"outline-success"}
         onClick={async () => changeStateImages(buildingWorkId, true)}
       >
         <CheckCircle size={25} /> {t("accept-images")}
@@ -437,9 +440,19 @@ export async function getServerSideProps({ params, req, res, locale }) {
     );
 
     status = "APPROVED";
-    buildingWorksApproved = await buildingWorkService.findAll(status, page, size, token);
+    buildingWorksApproved = await buildingWorkService.findAll(
+      status,
+      page,
+      size,
+      token
+    );
     status = "REJECTED";
-    buildingWorksRejected = await buildingWorkService.findAll(status, page, size, token);
+    buildingWorksRejected = await buildingWorkService.findAll(
+      status,
+      page,
+      size,
+      token
+    );
   }
 
   return {
