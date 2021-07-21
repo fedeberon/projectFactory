@@ -57,7 +57,7 @@ const FilteredImages = ({ isLoading, images }) => {
                     as={`/building/${image.buildingWork?.name?.replace(
                       /\s+/g,
                       "-"
-                    )}-${image.buildingWork.id}`}
+                    )}-${image.buildingWork.id}-${image.id}`}
                     passHref
                   >
                     <img
