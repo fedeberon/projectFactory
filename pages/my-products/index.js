@@ -277,7 +277,7 @@ const MyProducts = (props) => {
       <section className="container py-2">
         <Row className="row-cols-2 g-2">
           <Col className="col-auto">
-            <Button outline color="primary" onClick={openModalProduct}>
+            <Button variant="primary" onClick={openModalProduct}>
               <PlusSquareDotted size={100} />
             </Button>
           </Col>
