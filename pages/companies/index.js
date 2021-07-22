@@ -4,9 +4,10 @@ import Layout from "../../components/Layout/Layout";
 import * as companyService from "../../services/companyService";
 import Company from "../../components/Company/Company";
 import CardList from "../../components/CardList";
-import { Col, Row, Spinner } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 
 import FormFilterCompany from "../../components/FormFilterCompany/FormFilterCompany";
+import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
 const Companies = (props) => {
   const { data } = props;
@@ -34,19 +35,23 @@ const Companies = (props) => {
   return (
     <Layout title={t("companies")}>
       <section className="container py-2">
-        <FormFilterCompany
-          onGetFilterCompanies={onGetFilterCompanies}
-          setCompanies={setCompanies}
-        />
-        {isLoading ? (
-          <Spinner type="grow" color="primary" children={""} />
-        ) : (
-          <Row>
-            <Col className="col-10">
-              <CardList companies={companies} />
-            </Col>
-          </Row>
-        )}
+        <Row className="row-cols-1 gap-2">
+          <Col>
+            <FormFilterCompany
+              onGetFilterCompanies={onGetFilterCompanies}
+              setCompanies={setCompanies}
+            />
+          </Col>
+          <Col>
+            {isLoading ? (
+              <SpinnerCustom />
+            ) : (
+              <Col className="col-10">
+                <CardList companies={companies} />
+              </Col>
+            )}
+          </Col>
+        </Row>
       </section>
     </Layout>
   );

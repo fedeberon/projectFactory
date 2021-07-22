@@ -228,7 +228,7 @@
     "select-background-picture": "Seleccione la imagen de fondo"
   },
 
-  "edit" : "Editar",
+  "edit": "Editar",
 
   "assign-tokens": "Assign tokens",
   "photos": "Fotos",
@@ -242,9 +242,10 @@
   "date": "Fecha",
   "building-work": "Obra",
 
-  "about-home":{
-    "a-factory-of-ideas":"Una fabrica de ideas",
-    "we-are-an-online-platform":"Somos una plataforma online conecta a miles de propietarios de viviendas con los profesionales del diseño."
-  }
+  "about-home": {
+    "a-factory-of-ideas": "Una fabrica de ideas",
+    "we-are-an-online-platform": "Somos una plataforma online conecta a miles de propietarios de viviendas con los profesionales del diseño."
+  },
 
+  "filter": "Filtar"
 }

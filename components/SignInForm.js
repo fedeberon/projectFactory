@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  Button,
-  Form,
-  FormGroup,
-  Card,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Button, Form, FormGroup, Card, Row, Col } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import { signIn } from "next-auth/client";
 import { Google, Facebook, Instagram } from "react-bootstrap-icons";
@@ -66,7 +59,10 @@ const SignInForm = (props) => {
                   className={"form-field" + (errors.email ? " has-error" : "")}
                 />
                 {errors.email && (
-                  <Form.Text variant="danger" className="error-label">
+                  <Form.Text
+                    variant="danger"
+                    className="invalid error-Form.Label text-danger"
+                  >
                     {errors.email.message}
                   </Form.Text>
                 )}
@@ -98,7 +94,10 @@ const SignInForm = (props) => {
                   className={"form-field" + (errors.name ? " has-error" : "")}
                 />
                 {errors.name && (
-                  <Form.Text variant="danger" className="error-label">
+                  <Form.Text
+                    variant="danger"
+                    className="invalid error-Form.Label text-danger"
+                  >
                     {errors.name.message}
                   </Form.Text>
                 )}
@@ -132,7 +131,10 @@ const SignInForm = (props) => {
                   }
                 />
                 {errors.password && (
-                  <Form.Text variant="danger" className="error-label">
+                  <Form.Text
+                    variant="danger"
+                    className="invalid error-Form.Label text-danger"
+                  >
                     {errors.password.message}
                   </Form.Text>
                 )}

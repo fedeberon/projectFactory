@@ -1,0 +1,29 @@
+.flag {
+  height: 36px;
+}
+
+.flag:hover {
+  transform: scale(0.7);
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.band2 {
+  background-color: #fff;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.nav {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.navLink {
+  color: #161814;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}

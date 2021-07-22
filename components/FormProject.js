@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
 import { useForm, Controller } from "react-hook-form";
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  FormGroup,
-  Row,
-} from "react-bootstrap";
+import { Button, Col, Container, Form, FormGroup, Row } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import Select from "react-select";
 import Dropzone from "./Dropzone/Dropzone";
@@ -44,15 +37,7 @@ const FormProject = ({ onAddProject, toggle }) => {
   };
 
   const onSubmit = async (
-    {
-      name,
-      description,
-      totalArea,
-      website,
-      year,
-      videoPath,
-      price,
-    },
+    { name, description, totalArea, website, year, videoPath, price },
     event
   ) => {
     if (youtubeService.isValidVideo(videoPath)) {
@@ -111,7 +96,10 @@ const FormProject = ({ onAddProject, toggle }) => {
                 className={"form-field" + (errors.name ? " has-error" : "")}
               />
               {errors.name && (
-                <Form.Text variant="danger" className="invalid error-label">
+                <Form.Text
+                  variant="danger"
+                  className="invalid error-Form.Label text-danger"
+                >
                   {errors.name.message}
                 </Form.Text>
               )}
@@ -144,7 +132,10 @@ const FormProject = ({ onAddProject, toggle }) => {
                 }
               />
               {errors.description && (
-                <Form.Text variant="danger" className="error-label">
+                <Form.Text
+                  variant="danger"
+                  className="invalid error-Form.Label text-danger"
+                >
                   {errors.description.message}
                 </Form.Text>
               )}
@@ -176,7 +167,10 @@ const FormProject = ({ onAddProject, toggle }) => {
                 className={"form-field" + (errors.website ? " has-error" : "")}
               />
               {errors.website && (
-                <Form.Text variant="danger" className="error-label">
+                <Form.Text
+                  variant="danger"
+                  className="invalid error-Form.Label text-danger"
+                >
                   {errors.website.message}
                 </Form.Text>
               )}
@@ -211,7 +205,10 @@ const FormProject = ({ onAddProject, toggle }) => {
                     }
                   />
                   {errors.totalArea && (
-                    <Form.Text variant="danger" className="error-label">
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
+                    >
                       {errors.totalArea.message}
                     </Form.Text>
                   )}
@@ -244,7 +241,10 @@ const FormProject = ({ onAddProject, toggle }) => {
                     className={"form-field" + (errors.year ? " has-error" : "")}
                   />
                   {errors.year && (
-                    <Form.Text variant="danger" className="error-label">
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
+                    >
                       {errors.year.message}
                     </Form.Text>
                   )}
@@ -281,7 +281,10 @@ const FormProject = ({ onAddProject, toggle }) => {
                 }
               />
               {errors.videoPath && (
-                <Form.Text variant="danger" className="error-label">
+                <Form.Text
+                  variant="danger"
+                  className="invalid error-Form.Label text-danger"
+                >
                   {errors.videoPath.message}
                 </Form.Text>
               )}
@@ -294,22 +297,27 @@ const FormProject = ({ onAddProject, toggle }) => {
                 name="price"
                 id="price"
                 placeholder={t("write-the-here-please", {
-                  namePlaceholder: t("price").toLowerCase()
+                  namePlaceholder: t("price").toLowerCase(),
                 })}
                 {...register("price", {
                   required: {
                     value: true,
                     message: `${t("is-required", {
-                      nameRequired: t("price")
+                      nameRequired: t("price"),
                     })}`,
                   },
+                  validate: {
+                    positive: (v) =>
+                      parseInt(v) > 0 || t("should-be-greater-than-0"),
+                  },
                 })}
-                className={
-                  "form-field" + (errors.price ? " has-error" : "")
-                }
+                className={"form-field" + (errors.price ? " has-error" : "")}
               />
               {errors.price && (
-                <Form.Text className="error-label">
+                <Form.Text
+                  variant="danger"
+                  className="invalid error-Form.Label text-danger"
+                >
                   {errors.price.message}
                 </Form.Text>
               )}

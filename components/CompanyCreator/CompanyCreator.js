@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { useSession } from "next-auth/client";
-import {
-  Button,
-  Row,
-  Col,
-  Form,
-} from "react-bootstrap";
+import { Button, Row, Col, Form } from "react-bootstrap";
 import ModalForm from "../ModalForm";
 import useTranslation from "next-translate/useTranslation";
 import * as companyService from "../../services/companyService";
@@ -91,15 +86,7 @@ const CompanyCreator = () => {
   } = useForm();
 
   const onSubmit = async (
-    {
-      name,
-      email,
-      contact,
-      contactLoad,
-      website,
-      province,
-      location,
-    },
+    { name, email, contact, contactLoad, website, province, location },
     event
   ) => {
     name = name.toLowerCase().trim();
@@ -249,7 +236,10 @@ const CompanyCreator = () => {
                       }
                     />
                     {errors.website && (
-                      <Form.Text variant="danger" className="error-Form.Label">
+                      <Form.Text
+                        variant="danger"
+                        className="invalid error-Form.Label text-danger"
+                      >
                         {errors.website.message}
                       </Form.Text>
                     )}
@@ -328,7 +318,10 @@ const CompanyCreator = () => {
                       }
                     />
                     {errors.contactLoad && (
-                      <Form.Text variant="danger" className="invalid error-Form.Label">
+                      <Form.Text
+                        variant="danger"
+                        className="invalid error-Form.Label text-danger"
+                      >
                         {errors.contactLoad.message}
                       </Form.Text>
                     )}
@@ -368,7 +361,10 @@ const CompanyCreator = () => {
                       }
                     />
                     {errors.email && (
-                      <Form.Text variant="danger" className="error-Form.Label">
+                      <Form.Text
+                        variant="danger"
+                        className="invalid error-Form.Label text-danger"
+                      >
                         {errors.email.message}
                       </Form.Text>
                     )}
@@ -405,7 +401,6 @@ const CompanyCreator = () => {
                     />
                   </Form.Group>
                 </Col>
-                
 
                 <Col className="col-auto">
                   <Form.Group>
@@ -437,7 +432,9 @@ const CompanyCreator = () => {
               <Row className="row-cols-1 row-cols-md-2 g-3">
                 <Col>
                   <Form.Group>
-                    <Form.Label htmlFor="province">{t("common:province")}</Form.Label>
+                    <Form.Label htmlFor="province">
+                      {t("common:province")}
+                    </Form.Label>
                     <Form.Control
                       type="text"
                       name="province"
@@ -467,7 +464,10 @@ const CompanyCreator = () => {
                       }
                     />
                     {errors.province && (
-                      <Form.Text variant="danger" className="error-Form.Label">
+                      <Form.Text
+                        variant="danger"
+                        className="invalid error-Form.Label text-danger"
+                      >
                         {errors.province.message}
                       </Form.Text>
                     )}
@@ -475,7 +475,9 @@ const CompanyCreator = () => {
                 </Col>
                 <Col>
                   <Form.Group>
-                    <Form.Label htmlFor="location">{t("common:location")}</Form.Label>
+                    <Form.Label htmlFor="location">
+                      {t("common:location")}
+                    </Form.Label>
                     <Form.Control
                       type="text"
                       name="location"
@@ -505,7 +507,10 @@ const CompanyCreator = () => {
                       }
                     />
                     {errors.location && (
-                      <Form.Text variant="danger" className="invalid error-Form.Label">
+                      <Form.Text
+                        variant="danger"
+                        className="invalid error-Form.Label text-danger"
+                      >
                         {errors.location.message}
                       </Form.Text>
                     )}

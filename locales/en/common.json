@@ -228,6 +228,13 @@
     "select-background-picture": "Select background picture"
   },
 
+  "edit": "Edit",
+
+  "assign-tokens": "Assign tokens",
+  "photos": "Photos",
+  "search": "Search",
+  "filter-by-option": "Filter by option",
+
   "product-detail": "Product detail",
   "select-preview-image-for-the-product": "Select preview image for the product",
   "product-form": "Product form",
@@ -235,16 +242,10 @@
   "date": "Date",
   "building-work": "Building work",
 
-  "about-home":{
-    "a-factory-of-ideas":"A factory of ideas",
-    "we-are-an-online-platform":"We are an online platform connecting thousands of homeowners with design professionals."
+  "about-home": {
+    "a-factory-of-ideas": "A factory of ideas",
+    "we-are-an-online-platform": "We are an online platform connecting thousands of homeowners with design professionals."
   },
 
-
-  "photos" : "Photos",
-  "search":"Search",
-  "filter-by-option": "Filter by option",
-  "edit" : "Edit",
-
-  "assign-tokens": "Assign tokens"
+  "filter": "Filter"
 }

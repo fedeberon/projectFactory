@@ -7,13 +7,7 @@ import { getSession } from "next-auth/client";
 import * as imageService from "../../services/imageService";
 import * as buildingWorkService from "../../services/buildingWorkService";
 import Link from "next/link";
-import {
-  Row,
-  Col,
-  Button,
-  Card,
-  CardDeck,
-} from "react-bootstrap";
+import { Row, Col, Button, Card } from "react-bootstrap";
 import buildingStyles from "./building.module.css";
 
 const BuildingDetail = ({ data, session, imageClicked }) => {
@@ -33,7 +27,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   // Order the images putting on first place the image clicked by the user in home
   const orderImagesByImageClicked = (images) => {
     const [first] = images.filter(img => img.id == imageClicked);
-    return images.sort((x,y) => { return x == first ? -1 : y == first ? 1 : 0; });
+    return images.sort((x, y) => { return x == first ? -1 : y == first ? 1 : 0; });
   };
 
   const getProfessionalsByTags = async () => {
@@ -106,8 +100,12 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
                   <Card.Title tag="h5">
                     {data.buildingWork.professional?.company.name}
                   </Card.Title>
-                  <Card.Text>{data.buildingWork.professional?.province}</Card.Text>
-                  <Card.Text>{data.buildingWork.professional?.location}</Card.Text>
+                  <Card.Text>
+                    {data.buildingWork.professional?.province}
+                  </Card.Text>
+                  <Card.Text>
+                    {data.buildingWork.professional?.location}
+                  </Card.Text>
                   <Button>Ver Perfil</Button>
                 </Card>
               </Col>
@@ -121,25 +119,23 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
             <Row className="row-cols-md-3">
               {filteredImages.map((image) => (
                 <Col key={image.id} className="col-4">
-                  <CardDeck className="p-1">
-                    <Card>
-                      <Card.Body>
-                        <Link
-                          href={`/building/[id]`}
-                          as={`/building/${image.buildingWork?.name?.replace(
-                            /\s+/g,
-                            "-"
-                          )}-${image.buildingWork.id}-${image.id}`}
-                          passHref
-                        >
-                          <Card.Img
-                            src={image.path}
-                            className={`${buildingStyles.imgCard}`}
-                          />
-                        </Link>
-                      </Card.Body>
-                    </Card>
-                  </CardDeck>
+                  <Card>
+                    <Card.Body>
+                      <Link
+                        href={`/building/[id]`}
+                        as={`/building/${image.buildingWork?.name?.replace(
+                          /\s+/g,
+                          "-"
+                        )}-${image.buildingWork.id}-${image.id}`}
+                        passHref
+                      >
+                        <Card.Img
+                          src={image.path}
+                          className={`${buildingStyles.imgCard}`}
+                        />
+                      </Link>
+                    </Card.Body>
+                  </Card>
                 </Col>
               ))}
             </Row>
