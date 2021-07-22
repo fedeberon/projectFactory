@@ -75,7 +75,7 @@ const CarouselProject = (props) => {
         show={modalImage}
         selectImage={selectImage}
         onHide={() => showModalImage(false)}
-        className={"modal-fullscreen-xxl-down" + " bg-transparent"}
+        className={`${CarouselProjectStyle.img}`}
       />
 
     <Swiper

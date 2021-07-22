@@ -18,6 +18,7 @@ const ModalImage = (props) => {
         show={show}
         onHide={onHide}
         className={ModalImageStyle.modalSize}
+        dialogClassName="mw-100 m-0"
       >
         <Modal.Body className={ModalImageStyle.bodyModal}>
           <Row className="text-end">
