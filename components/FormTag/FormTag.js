@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useSession } from "next-auth/client";
-import {
-  Button,
-  Container,
-  Form,
-} from "react-bootstrap";
+import { Button, Container, Form } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import TagList from "../TagList/TagList";
 import Autosuggest from "react-autosuggest";
@@ -123,7 +119,12 @@ const FormTag = ({ toggle, image }) => {
           />
 
           {errors.tag && (
-            <Form.Text variant="danger" className="error-Form.Label">{errors.tag.message}</Form.Text>
+            <Form.Text
+              variant="danger"
+              className="invalid error-Form.Label text-danger"
+            >
+              {errors.tag.message}
+            </Form.Text>
           )}
         </Form.Group>
 
@@ -131,7 +132,11 @@ const FormTag = ({ toggle, image }) => {
           <TagList tags={tags} onDeleteTag={removeTag} />
         </div>
 
-        <Button type="submit" disabled={tags.length == 0} variant="primary mt-1">
+        <Button
+          type="submit"
+          disabled={tags.length == 0}
+          variant="primary mt-1"
+        >
           {t("add-tags")}
         </Button>
       </Form>

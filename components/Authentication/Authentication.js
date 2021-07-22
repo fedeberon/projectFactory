@@ -24,7 +24,7 @@ const Authentication = (props) => {
           <Col>
             <Link href="/logIn">
               <Button
-                className={`d-flex ${AuthenticationStyle.pLine} ${AuthenticationStyle.btnLogin} ${AuthenticationStyle.btn}`}
+                className={`d-flex w-100 justify-content-center ${AuthenticationStyle.pLine} ${AuthenticationStyle.btnLogin} ${AuthenticationStyle.btn}`}
               >
                 <img src="./svg/icon-user.svg"/>
                 <span className={AuthenticationStyle.center}>{t("log-in")}</span>
@@ -33,7 +33,7 @@ const Authentication = (props) => {
           </Col>
           <Col>
             <Link href="/signIn">
-              <Button className={`d-flex ${AuthenticationStyle.pLine} ${AuthenticationStyle.signInBtn} ${AuthenticationStyle.btn} mx-1`}>
+              <Button className={`d-flex w-100 justify-content-center ${AuthenticationStyle.pLine} ${AuthenticationStyle.signInBtn} ${AuthenticationStyle.btn} mx-1`}>
                 {t("common:sign-in")}
               </Button>
             </Link>

@@ -2,12 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
 import { useForm, Controller } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
-import {
-  Button,
-  Form,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Button, Form, Row, Col } from "react-bootstrap";
 import Dropzone from "../Dropzone/Dropzone";
 import ModalForm from "../ModalForm";
 import FormTag from "../FormTag/FormTag";
@@ -119,7 +114,9 @@ const FormProfessional = ({
             <Row className="row-cols-1 row-cols-md-2 row-cols-xl-4 g-3">
               <Col>
                 <Form.Group>
-                  <Form.Label htmlFor="company">{t("common:formulary.company")}</Form.Label>
+                  <Form.Label htmlFor="company">
+                    {t("common:formulary.company")}
+                  </Form.Label>
                   <Controller
                     name="company"
                     control={control}
@@ -148,13 +145,18 @@ const FormProfessional = ({
                     )}
                   />
                   {errors.company && optionSelect && (
-                    <Form.Text variant="danger" className="error-label">
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
+                    >
                       {errors.company.message}
                     </Form.Text>
                   )}
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label htmlFor="contact">{t("common:formulary.contact")}</Form.Label>
+                  <Form.Label htmlFor="contact">
+                    {t("common:formulary.contact")}
+                  </Form.Label>
                   <Controller
                     type="text"
                     name="contact"
@@ -213,7 +215,7 @@ const FormProfessional = ({
                         value: true,
                         message: `${t("common:is-required", {
                           nameRequired: t("common:formulary.the-contact-email"),
-                        })}`
+                        })}`,
                       },
                       minLength: {
                         value: 3,
@@ -241,7 +243,10 @@ const FormProfessional = ({
                     )}
                   />
                   {errors.email && (
-                    <Form.Text variant="danger" className="error-label">
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
+                    >
                       {errors.email.message}
                     </Form.Text>
                   )}
@@ -279,7 +284,10 @@ const FormProfessional = ({
                     }
                   />
                   {errors.telephone && (
-                    <Form.Text variant="danger" className="error-label">
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
+                    >
                       {errors.telephone.message}
                     </Form.Text>
                   )}
@@ -324,7 +332,10 @@ const FormProfessional = ({
                     )}
                   />
                   {errors.companyCategory && (
-                    <Form.Text variant="danger" className="error-label">
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
+                    >
                       {errors.companyCategory.message}
                     </Form.Text>
                   )}
@@ -364,13 +375,18 @@ const FormProfessional = ({
                     }
                   />
                   {errors.contactLoad && (
-                    <Form.Text variant="danger" className="invalid error-label">
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
+                    >
                       {errors.contactLoad.message}
                     </Form.Text>
                   )}
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label htmlFor="website">{t("common:formulary.web-page")}</Form.Label>
+                  <Form.Label htmlFor="website">
+                    {t("common:formulary.web-page")}
+                  </Form.Label>
                   <Form.Control
                     type="website"
                     name="website"
@@ -400,7 +416,10 @@ const FormProfessional = ({
                     }
                   />
                   {errors.website && (
-                    <Form.Text variant="danger" className="error-label">
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
+                    >
                       {errors.website.message}
                     </Form.Text>
                   )}

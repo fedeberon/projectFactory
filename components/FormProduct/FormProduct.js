@@ -196,7 +196,7 @@ const FormProduct = ({
                                             minLength: {
                                                 value: 3,
                                                 message: `${t("cannot-be-less-than-character", {
-                                                    nameInput: t("name").toLowerCase(),
+                                                    nameInput: t("the-name"),
                                                     numberCharacters: 3,
                                                 })}`,
                                             },
@@ -240,7 +240,7 @@ const FormProduct = ({
                                             minLength: {
                                                 value: 3,
                                                 message: `${t("cannot-be-less-than-character", {
-                                                    nameInput: t("description").toLowerCase(),
+                                                    nameInput: t("the-description"),
                                                     numberCharacters: 3,
                                                 })}`,
                                             },
@@ -390,13 +390,6 @@ const FormProduct = ({
                     </Col>
                 </Row>
             </Form>
-            {error && (
-                <Row className="mt-2">
-                    <Col>
-                        <Error error={error} />
-                    </Col>
-                </Row>
-            )}
             {error && (
                 <Row className="mt-2">
                     <Col>

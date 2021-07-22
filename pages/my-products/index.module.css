@@ -47,3 +47,7 @@
   -o-filter: grayscale(100%);
   filter: grayscale(100%);
 }
+
+.afterLess::after {
+  display: none;
+}

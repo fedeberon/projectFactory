@@ -82,9 +82,8 @@ const ProfessionalAdmin = ({
       // </Button>
       <Link href={"/admin/building"}>
         <Button
-          outline
-          color={"success"}
-        // onClick={async () => changeStateImages(professionalId, true)}
+          variant={"outline-success"}
+          // onClick={async () => changeStateImages(professionalId, true)}
         >
           <CheckCircle size={25} /> {t("managing-images")}
         </Button>
@@ -130,7 +129,11 @@ const ProfessionalAdmin = ({
    */
   const saveChangeProfessional = async (id, status) => {
     try {
-      await professionalService.setEnebleProfessional(id, status, session?.accessToken);
+      await professionalService.setEnebleProfessional(
+        id,
+        status,
+        session?.accessToken
+      );
       return true;
     } catch (error) {
       console.error(error);

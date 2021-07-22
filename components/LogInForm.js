@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  Button,
-  Form,
-  Card,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Button, Form, Card, Row, Col } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import { signIn } from "next-auth/client";
 import { Google, Facebook, Instagram } from "react-bootstrap-icons";
@@ -68,7 +62,10 @@ const LogInForm = (props) => {
                   }
                 />
                 {errors.username && (
-                  <Form.Text variant="danger" className="error-label">
+                  <Form.Text
+                    variant="danger"
+                    className="invalid error-Form.Label text-danger"
+                  >
                     {errors.username.message}
                   </Form.Text>
                 )}
@@ -102,7 +99,10 @@ const LogInForm = (props) => {
                   }
                 />
                 {errors.password && (
-                  <Form.Text variant="danger" className="error-label">
+                  <Form.Text
+                    variant="danger"
+                    className="invalid error-Form.Label text-danger"
+                  >
                     {errors.password.message}
                   </Form.Text>
                 )}
