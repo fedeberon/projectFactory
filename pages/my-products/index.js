@@ -17,6 +17,7 @@ import FormProduct from "../../components/FormProduct/FormProduct";
 import ModalForm from "../../components/ModalForm";
 import filteredImagesStyles from "../../components/FilteredImages/FilteredImages.module.css";
 import Layout from "../../components/Layout/Layout";
+import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
 // Services
 import * as imageService from "../../services/imageService";
@@ -213,7 +214,7 @@ const MyProducts = (props) => {
   const imagesCard = (
     <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
       {isLoading ? (
-        <h1>{t("loading")}...</h1>
+        <SpinnerCustom />
       ) : (
         localProducts.map((product) => (
           <Col key={product.id}>

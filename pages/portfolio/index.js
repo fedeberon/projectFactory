@@ -21,6 +21,7 @@ import {
 import ModalForm from "../../components/ModalForm";
 import FormObra from "../../components/FormObra/FormObra";
 import Layout from "../../components/Layout/Layout";
+import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
 // Services
 import * as professionalService from "../../services/professionalService";
@@ -336,7 +337,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
   const imagesCard = (
     <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
       {isLoading ? (
-        <h1>{t("loading")}...</h1>
+        <SpinnerCustom />
       ) : (
         localBuildingWorks.map((buildingWork, index) => (
           <Col key={index}>

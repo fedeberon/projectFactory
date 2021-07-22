@@ -4,9 +4,10 @@ import Layout from "../../components/Layout/Layout";
 import * as companyService from "../../services/companyService";
 import Company from "../../components/Company/Company";
 import CardList from "../../components/CardList";
-import { Col, Row, Spinner } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 
 import FormFilterCompany from "../../components/FormFilterCompany/FormFilterCompany";
+import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
 const Companies = (props) => {
   const { data } = props;
@@ -38,15 +39,15 @@ const Companies = (props) => {
           onGetFilterCompanies={onGetFilterCompanies}
           setCompanies={setCompanies}
         />
-        {isLoading ? (
-          <Spinner type="grow" color="primary" children={""} />
-        ) : (
-          <Row>
+        <Row>
+          {isLoading ? (
+            <SpinnerCustom />
+          ) : (
             <Col className="col-10">
               <CardList companies={companies} />
             </Col>
-          </Row>
-        )}
+          )}
+        </Row>
       </section>
     </Layout>
   );

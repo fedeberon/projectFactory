@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
+import SpinnerCustom from "../SpinnerCustom/SpinnerCustom";
 import Product from "./Product";
 
 const ProductList = (props) => {

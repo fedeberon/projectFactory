@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { useForm, Controller } from "react-hook-form";
-import {
-  Button,
-  Col,
-  Form,
-  FormGroup,
-  Row,
-} from "react-bootstrap";
+import { Button, Col, Form, FormGroup, Row } from "react-bootstrap";
 import Select from "react-select";
 
 const FormFilterCompany = (props) => {
@@ -49,7 +43,7 @@ const FormFilterCompany = (props) => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <Row style={{ height: 88 }}>
+      <Row style={{ height: 100 }}>
         <Col>
           <FormGroup>
             <Form.Label htmlFor="name">{t("name")}</Form.Label>
@@ -70,7 +64,10 @@ const FormFilterCompany = (props) => {
               className={"form-field" + (errors.name ? " has-error" : "")}
             />
             {errors.name && (
-              <Form.Text variant="danger" className="invalid error-label">
+              <Form.Text
+                variant="danger"
+                className="invalid error-Form.Label text-danger"
+              >
                 {errors.name.message}
               </Form.Text>
             )}
@@ -78,7 +75,9 @@ const FormFilterCompany = (props) => {
         </Col>
         <Col>
           <FormGroup>
-            <Form.Label htmlFor="optionsSelected">{t("filter-by-option")}</Form.Label>
+            <Form.Label htmlFor="optionsSelected">
+              {t("filter-by-option")}
+            </Form.Label>
             <Controller
               name="optionsSelected"
               control={control}
@@ -105,7 +104,10 @@ const FormFilterCompany = (props) => {
               )}
             />
             {errors.optionsSelected && (
-              <Form.Text variant="danger" className="error-label">
+              <Form.Text
+                variant="danger"
+                className="invalid error-Form.Label text-danger"
+              >
                 {errors.optionsSelected.message}
               </Form.Text>
             )}

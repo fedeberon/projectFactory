@@ -57,15 +57,19 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
   }, [carouselImages]);
 
   const getProfessionalsByTags = async () => {
+    setLoading(true);
     try {
-      return await imageService.getProfessionalImagesByTags(
+      const images = await imageService.getProfessionalImagesByTags(
         appliedFilters,
         pageSize.page,
         pageSize.size,
         session?.accessToken
       );
+      setLoading(false);
+      return images;
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 

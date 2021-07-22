@@ -13,7 +13,6 @@ const Product = (props) => {
     <Card>
       <Card.Img
         className="img-fluid"
-        top
         src={product.previewImage}
         alt={product.name}
       />
