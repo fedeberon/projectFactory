@@ -2,15 +2,7 @@ import React from "react";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import Layout from "../../components/Layout/Layout";
-import {
-  Card,
-  CardBody,
-  CardImg,
-  CardText,
-  CardTitle,
-  Col,
-  Row,
-} from "reactstrap";
+import { Card, CardImg, Col, Row } from "react-bootstrap";
 import { getSession } from "next-auth/client";
 import * as imageService from "../../services/imageService";
 import * as productService from "../../services/productService";
@@ -31,17 +23,17 @@ const ProductDetail = (props) => {
         </Col>
         <Col className="col-12 col-md-10">
           <Card>
-            <CardBody>
-              <CardTitle tag="h5">{data.product.name}</CardTitle>
+            <Card.Body>
+              <Card.Title tag="h5">{data.product.name}</Card.Title>
               <img
                 className={productStyle.img}
                 src={data.product.previewImage}
                 alt=""
               />
-              <CardText>Informacion del producto</CardText>
-              <CardText>{data.product.description}</CardText>
-              <CardText>{data.product.price}</CardText>
-            </CardBody>
+              <Card.Text>Informacion del producto</Card.Text>
+              <Card.Text>{data.product.description}</Card.Text>
+              <Card.Text>{data.product.price}</Card.Text>
+            </Card.Body>
           </Card>
         </Col>
       </Row>
@@ -50,13 +42,13 @@ const ProductDetail = (props) => {
           return (
             <Col key={index}>
               <Card>
-                <CardBody>
+                <Card.Body>
                   <img
                     className={productStyle.img}
                     src={image.path}
                     alt={image.typeImage}
                   />
-                </CardBody>
+                </Card.Body>
               </Card>
             </Col>
           );

@@ -117,7 +117,7 @@ const AdministratorCreator = () => {
         formBody={
           <>
             <h6>{t("administrator-creator.please-select-administrator")}</h6>
-            <Form.Label htmlfor="administrator">
+            <Form.Label htmlFor="administrator">
               {t("administrator-creator.username")}
             </Form.Label>
 

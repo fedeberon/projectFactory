@@ -69,7 +69,7 @@ const About = () => {
         <Col className="p-3 d-flex justify-content-center">
           <Button
             variant="warning"
-            href="/SignIn"
+            href="/signIn"
           >
             {t("common:sign-in")}
           </Button>

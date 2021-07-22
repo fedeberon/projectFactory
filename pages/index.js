@@ -9,9 +9,10 @@ import FilterList from "../components/FilterList/FilterList";
 import FilteredImages from "../components/FilteredImages/FilteredImages";
 import Layout from "../components/Layout/Layout";
 import CarouselHome from "../components/CarouselHome/CarouselHome";
-import SwipperEmpresas from "../components/SwipperEmpresas/SwipperEmpresas";
-import SliderProducts from "../components/SliderProducts/SliderProducts";
 import AboutHome from "../components/AboutHome/AboutHome";
+import SwiperEmpresas from "../components/Swiper/SwiperEmpresas/SwiperEmpresas";
+import SwiperProducts from "../components/Swiper/SwiperProducts/SwiperProducts";
+
 
 // Services
 import * as tagService from "../services/tagService";
@@ -23,6 +24,7 @@ import * as companyService from "../services/companyService";
 import styles from "../styles/Home.module.css";
 import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
+import OffCanvasFilter from "../components/OffCanvas/OffCanvasFilter.js/OffCanvasFilter";
 
 const Home = ({ filters, carouselImages, session, products, companies }) => {
   const [filteredImages, setFilteredImages] = useState([]);
@@ -56,15 +58,19 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
   }, [carouselImages]);
 
   const getProfessionalsByTags = async () => {
+    setLoading(true);
     try {
-      return await imageService.getProfessionalImagesByTags(
+      const images = await imageService.getProfessionalImagesByTags(
         appliedFilters,
         pageSize.page,
         pageSize.size,
         session?.accessToken
       );
+      setLoading(false);
+      return images;
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -83,17 +89,16 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
           </Col>
           <Col>
             <Row>
-              <Col xs={12} md={3} xl={2}>
-                <aside>
-                  <FilterList
-                    filters={filters}
-                    appliedFilters={appliedFilters}
-                    setAppliedFilters={setAppliedFilters}
-                  />
-                </aside>
+              <Col>
+                <OffCanvasFilter
+                  filters={filters}
+                  appliedFilters={appliedFilters}
+                  setAppliedFilters={setAppliedFilters}
+                />
               </Col>
+            </Row>
+            <Row>
               <Col xs={12} md={9} xl={10}>
-
                 <div className={styles.infoHead}>
                   <h2 className={styles.itemsTitle}>
                     {t("buildings")}
@@ -119,7 +124,12 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
                 </small>
               </h2>
             </div>
-            <SliderProducts products={products} />
+            <SwiperProducts
+              products={products}
+              slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
+              slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
+              slidesPerViewDesktop={{ dimensionLimit: 992, slides: 4 }}
+            />
           </Col>
           </section>
           <div className={styles.backgroundGray}>
@@ -133,7 +143,12 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
                 </small>
               </h2>
             </div>
-            <SwipperEmpresas items={companies} />
+            <SwiperEmpresas
+              items={companies}
+              slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
+              slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
+              slidesPerViewDesktop={{ dimensionLimit: 992, slides: 3 }}
+            />
           </Col>
       </section>
       </div>

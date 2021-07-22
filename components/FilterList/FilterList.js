@@ -36,9 +36,6 @@ const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
 
   return (
     <ListGroup>
-      <ListGroupItem disabled className="bg-warning">
-        <h5 className="m-0">{t("filter-list.filters")}</h5>
-      </ListGroupItem>
       {tags.map((filter) => (
         <ListGroupItem
           tag="button"

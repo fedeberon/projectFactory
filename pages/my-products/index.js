@@ -1,21 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getSession, useSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
-import Layout from "../../components/Layout/Layout";
-import * as productService from "../../services/productService";
-import ModalForm from "../../components/ModalForm";
 import Link from "next/link";
-import {
-  Card,
-  Col,
-  Row,
-  Button,
-  DropdownButton,
-  Dropdown,
-} from "react-bootstrap";
-
-import FormProduct from "../../components/FormProduct/FormProduct";
-
+import { Card, Col, Row, Button, Dropdown } from "react-bootstrap";
 import {
   PlusSquareDotted,
   ThreeDotsVertical,
@@ -24,18 +11,31 @@ import {
   ExclamationCircle,
   Check2Circle,
 } from "react-bootstrap-icons";
-import indexStyles from "./index.module.css";
+import FormProduct from "../../components/FormProduct/FormProduct";
+
+//Components
+import ModalForm from "../../components/ModalForm";
 import filteredImagesStyles from "../../components/FilteredImages/FilteredImages.module.css";
+import Layout from "../../components/Layout/Layout";
+import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
+
+// Services
 import * as imageService from "../../services/imageService";
+import * as productService from "../../services/productService";
+
+// Styles
+import indexStyles from "./index.module.css";
 
 const CustomButtonTogle = ({ id, editProduct }) => {
   return (
-    <DropdownButton
-      variant="start"
-      drop="left"
-      align="end"
-      title={<ThreeDotsVertical color={"dark"} size={25} />
-      }>
+    <Dropdown drop="left" align="end">
+      <Dropdown.Toggle
+        variant="light"
+        id="dropdown-autoclose-true"
+        className={indexStyles.afterLess}
+      >
+        <ThreeDotsVertical color={"dark"} size={25} />
+      </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item
           onClick={() => {
@@ -46,7 +46,7 @@ const CustomButtonTogle = ({ id, editProduct }) => {
           {` Edit`}
         </Dropdown.Item>
       </Dropdown.Menu>
-    </DropdownButton>
+    </Dropdown>
   );
 };
 
@@ -184,7 +184,7 @@ const MyProducts = (props) => {
     }
   };
 
-  const onSetProduct = (data) => { };
+  const onSetProduct = (data) => {};
 
   const isState = (product) => {
     let statusColor;
@@ -214,7 +214,7 @@ const MyProducts = (props) => {
   const imagesCard = (
     <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
       {isLoading ? (
-        <h1>{t("loading")}...</h1>
+        <SpinnerCustom />
       ) : (
         localProducts.map((product) => (
           <Col key={product.id}>
@@ -222,17 +222,20 @@ const MyProducts = (props) => {
               <Card.Body className="p-0">
                 <Link
                   href={`/product/[id]`}
-                  as={`/product/${product.name.replace(/\s+/g, "-")}-${product.id
-                    }`}
+                  as={`/product/${product.name.replace(/\s+/g, "-")}-${
+                    product.id
+                  }`}
                 >
                   <img
-                    className={`${filteredImagesStyles.cardImage} ${indexStyles.cursorPointer
-                      } ${product.status === "PENDING"
+                    className={`${filteredImagesStyles.cardImage} ${
+                      indexStyles.cursorPointer
+                    } ${
+                      product.status === "PENDING"
                         ? `${indexStyles.imgGray}`
                         : product.status === "REJECTED"
-                          ? `${indexStyles.imgRejected}`
-                          : ``
-                      }`}
+                        ? `${indexStyles.imgRejected}`
+                        : ``
+                    }`}
                     src={product.previewImage}
                     alt="preview"
                   />
@@ -277,7 +280,7 @@ const MyProducts = (props) => {
       <section className="container py-2">
         <Row className="row-cols-2 g-2">
           <Col className="col-auto">
-            <Button outline color="primary" onClick={openModalProduct}>
+            <Button variant="outline-primary" onClick={openModalProduct}>
               <PlusSquareDotted size={100} />
             </Button>
           </Col>
@@ -299,7 +302,10 @@ const MyProducts = (props) => {
                 setPreviewImage={setPreviewImage}
                 images={images}
                 setImages={setImages}
-                changeState={{ stateFormProduct, function: setStateFormProduct }}
+                changeState={{
+                  stateFormProduct,
+                  function: setStateFormProduct,
+                }}
                 productId={productId}
               />
             </>

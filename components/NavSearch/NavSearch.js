@@ -1,18 +1,10 @@
 import React, { useState } from "react";
-import {
-  Nav,
-  Navbar,
-  Container,
-  NavDropdown,
-} from "react-bootstrap";
+import { Nav, Navbar, Container, NavDropdown } from "react-bootstrap";
 
 import useTranslation from "next-translate/useTranslation";
 import { useSession } from "next-auth/client";
 import Link from "next/link";
 import styles from "./NavSearch.module.css";
-
-
-
 
 export default function NavSearch() {
   const [session, loading] = useSession();
@@ -26,17 +18,17 @@ export default function NavSearch() {
 
   return (
     <>
-
       <div className={styles.band2}>
         <Navbar expand="lg">
-          <Navbar.Toggle aria-controls="navbar-light-example" />
+          {/* <Navbar.Toggle aria-controls="navbar-light-example" /> */}
           <Navbar.Collapse id="navbar-light-example">
             <Nav className={styles.nav}>
-
               {/* Professionals */}
               <NavDropdown
                 className="navLink"
-                title={<span className={styles.navLink}>{t("professionals")}</span>}
+                title={
+                  <span className={styles.navLink}>{t("professionals")}</span>
+                }
               >
                 <Link href="/professional" passHref>
                   <NavDropdown.Item>{t("professionals")}</NavDropdown.Item>
@@ -45,7 +37,6 @@ export default function NavSearch() {
                 <Link href="/companies" passHref>
                   <NavDropdown.Item>{t("companies")}</NavDropdown.Item>
                 </Link>
-
               </NavDropdown>
 
               {/* Products */}
@@ -83,9 +74,11 @@ export default function NavSearch() {
                 </Nav.Link>
               </Link>
 
-              {isRole("ROLE_ADMINISTRATOR") &&
+              {isRole("ROLE_ADMINISTRATOR") && (
                 <NavDropdown
-                  title={<span className={styles.navLink}>{t("administrator")}</span>}
+                  title={
+                    <span className={styles.navLink}>{t("administrator")}</span>
+                  }
                 >
                   <Link href="/admin/company" passHref>
                     <NavDropdown.Item>{t("company")}</NavDropdown.Item>
@@ -102,9 +95,8 @@ export default function NavSearch() {
                   <Link href="/admin/building" passHref>
                     <NavDropdown.Item>{t("buildings")}</NavDropdown.Item>
                   </Link>
-
                 </NavDropdown>
-              }
+              )}
             </Nav>
           </Navbar.Collapse>
         </Navbar>
