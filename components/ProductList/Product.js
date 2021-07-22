@@ -7,6 +7,7 @@ import {
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 import myProductsStyles from "../../pages/my-products/index.module.css";
+import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
 const Product = (props) => {
   const { product } = props;
@@ -40,14 +41,8 @@ const Product = (props) => {
         <Card.Text>{product.name}</Card.Text>
         <Card.Text>{product.company.contact}</Card.Text>
       </Card.Body>
-      <Card.Footer className="d-flex justify-content-end">
-        <Link
-          href={`/product/[id]`}
-          as={`/product/${product.name.replace(/\s+/g, "-")}-${product.id}`}
-          passHref
-        >
-          <Button color={"primary"}>{t("common:view-more")}</Button>
-        </Link>
+      <Card.Footer className="d-flex justify-content-start bg-white">
+        <PrimaryButton href={`/product/${product.name.replace(/\s+/g, "-")}-${product.id}`} name={t("common:view-more")} />
       </Card.Footer>
     </Card>
   );

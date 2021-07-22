@@ -2,11 +2,12 @@ import React from "react";
 import Link from "next/link";
 import PrimaryButtonStyles from "./PrimaryButton.module.css";
 
-const PrimaryButton = ({ href, name }) => {
+const PrimaryButton = (props) => {
+  const { href, name, className } = props;
   return (
     <Link href={href}>
       <a
-        className={`${PrimaryButtonStyles.btnLight} ${PrimaryButtonStyles.btnLg}`}
+        className={`${PrimaryButtonStyles.btnLight} ${PrimaryButtonStyles.btnLg} ${className ? className : ""}`}
       >
         {name}
       </a>

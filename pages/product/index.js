@@ -35,7 +35,7 @@ const Product = (props) => {
           </ul>
         </Sidebar>
 
-        <ContentHeader title={t("products")} />
+        <ContentHeader title={category != "" ? category : t("products")} />
 
         <ProductList products={data} />
       </section>
