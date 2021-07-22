@@ -19,3 +19,6 @@
   top: -150px;
   z-index: 100;
 }
+.afterLess::after {
+  display: none;
+}

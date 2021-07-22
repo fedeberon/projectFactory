@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getSession, useSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
-import Layout from "../../components/Layout/Layout";
+import Link from "next/link";
 import {
   Card,
   Dropdown,
@@ -10,8 +10,6 @@ import {
   Row,
   Button,
 } from "react-bootstrap";
-import Link from "next/link";
-
 import {
   PlusSquareDotted,
   Images,
@@ -22,6 +20,7 @@ import {
 //Components
 import ModalForm from "../../components/ModalForm";
 import FormObra from "../../components/FormObra/FormObra";
+import Layout from "../../components/Layout/Layout";
 
 // Services
 import * as professionalService from "../../services/professionalService";
@@ -37,33 +36,37 @@ const CustomButtonTogle = ({ id, editBuildingWork, imageSize }) => {
   const [dropdownOpen, setOpen] = useState(false);
   const toggle = () => setOpen((dropdownOpen) => !dropdownOpen);
 
-  return (<>
-    <DropdownButton
-      variant="start"
-      drop="left"
-      align="end"
-      title={<ThreeDotsVertical color={"dark"} size={25} />
-      }>
-
-      <Dropdown.Header>
-        <Images
-          className={`${filteredImagesStyles.heart}`}
-          color={"white"}
-          size={25}
-        />
-        {` ${imageSize} Photos`}
-      </Dropdown.Header>
-      <Dropdown.Divider />
-      <Dropdown.Item
-        onClick={() => {
-          editBuildingWork(id);
-        }}
-      >
-        <PencilSquare color={"red"} size={25} />
-        {` Edit`}
-      </Dropdown.Item>
-    </DropdownButton>
-  </>
+  return (
+    <>
+      <Dropdown drop="left" align="end">
+        <Dropdown.Toggle
+          variant="light"
+          id="dropdown-autoclose-true"
+          className={indexStyles.afterLess}
+        >
+          <ThreeDotsVertical color={"dark"} size={25} />
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          <Dropdown.Header>
+            <Images
+              className={`${filteredImagesStyles.heart}`}
+              color={"white"}
+              size={25}
+            />
+            {` ${imageSize} Photos`}
+          </Dropdown.Header>
+          <Dropdown.Divider />
+          <Dropdown.Item
+            onClick={() => {
+              editBuildingWork(id);
+            }}
+          >
+            <PencilSquare color={"red"} size={25} />
+            {` Edit`}
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    </>
   );
 };
 
@@ -341,8 +344,9 @@ const Portfolio = ({ professional, buildingWorks }) => {
               <Card.Body className="p-0">
                 <Link
                   href={`/building/[id]`}
-                  as={`/building/${buildingWork.name.replace(/\s+/g, "-")}-${buildingWork.id
-                    }`}
+                  as={`/building/${buildingWork.name.replace(/\s+/g, "-")}-${
+                    buildingWork.id
+                  }`}
                 >
                   <img
                     className={`${filteredImagesStyles.cardImage}`}
@@ -355,7 +359,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
                   <Col className="col-auto">
                     <img
                       className={`${filteredImagesStyles.imgProfile} rounded-circle`}
-                    // src={buildingWork.entity.previewImage}
+                      // src={buildingWork.entity.previewImage}
                     />
                   </Col>
                   <Col className={`col-auto`}>

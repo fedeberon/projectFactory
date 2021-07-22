@@ -6,7 +6,7 @@ import useTranslation from "next-translate/useTranslation";
 // Components
 import Tabs from "../Tabs/Tabs";
 import TableAdmin from "../TableAdmin/TableAdmin";
-import { Button,Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
 const ListAdmin = ({
   notApproved,
@@ -21,7 +21,7 @@ const ListAdmin = ({
   const [listNotAppoved, setListNotAppoved] = useState([]);
   const [listAppoved, setListAppoved] = useState([]);
   const [listRejected, setListRejected] = useState([]);
-  
+
   const { t } = useTranslation("administrator");
 
   /**
@@ -33,8 +33,7 @@ const ListAdmin = ({
   const buttonAccept = (professionalId) => {
     return (
       <Button
-        outline
-        variant={"success"}
+        variant={"outline-success"}
         onClick={() => changeStateProfessional(professionalId, "APPROVED")}
       >
         <CheckCircle size={25} /> {t("accept")}
@@ -51,8 +50,7 @@ const ListAdmin = ({
   const buttonReject = (professionalId) => {
     return (
       <Button
-        outline
-        variant={"danger"}
+        variant={"outline-danger"}
         onClick={() => changeStateProfessional(professionalId, "REJECTED")}
       >
         <XCircle size={25} /> {t("reject")}
@@ -103,8 +101,7 @@ const ListAdmin = ({
   const buttonAcceptImages = (professionalId) => {
     return (
       <Button
-        outline
-        variant={"success"}
+        variant={"outline-success"}
         onClick={async () => changeStateImages(professionalId, true)}
       >
         <CheckCircle size={25} /> {t("accept-images")}

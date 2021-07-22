@@ -41,8 +41,7 @@ const BuildingAdmin = ({
   const buttonAccept = (buildingWorklId) => {
     return (
       <Button
-        outline
-        variant={"success"}
+        variant={"outline-success"}
         onClick={() => changeState(buildingWorklId, "APPROVED")}
       >
         <CheckCircle size={25} /> {t("accept")}
@@ -59,8 +58,7 @@ const BuildingAdmin = ({
   const buttonReject = (buildingWorkId) => {
     return (
       <Button
-        outline
-        variant={"danger"}
+        variant={"outline-danger"}
         onClick={() => changeState(buildingWorkId, "REJECTED")}
       >
         <XCircle size={25} /> {t("reject")}
