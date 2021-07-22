@@ -91,7 +91,7 @@ const ProfileData = (props) => {
               </Row>
             </Row>
             <Col>
-              <img src={session.user.image}></img>
+              <img className={`${ProfileDataStyles.imgProfile}`} src={session.user.image}></img>
             </Col>
             <Col>
               <ListGroup>
