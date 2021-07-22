@@ -6,10 +6,11 @@ import CarouselProject from "../../components/CarouselProject/CarouselProject";
 import { getSession } from "next-auth/client";
 import * as imageService from "../../services/imageService";
 import * as buildingWorkService from "../../services/buildingWorkService";
-import { Row, Col, Button, Card, CardDeck } from "react-bootstrap";
+import Link from "next/link";
+import { Row, Col, Button, Card } from "react-bootstrap";
 import buildingStyles from "./building.module.css";
 
-const BuildingDetail = ({ data, session }) => {
+const BuildingDetail = ({ data, session, imageClicked }) => {
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
@@ -22,6 +23,12 @@ const BuildingDetail = ({ data, session }) => {
 
   const router = useRouter();
   const { id } = router.query;
+
+  // Order the images putting on first place the image clicked by the user in home
+  const orderImagesByImageClicked = (images) => {
+    const [first] = images.filter(img => img.id == imageClicked);
+    return images.sort((x, y) => { return x == first ? -1 : y == first ? 1 : 0; });
+  };
 
   const getProfessionalsByTags = async () => {
     try {
@@ -56,12 +63,12 @@ const BuildingDetail = ({ data, session }) => {
   useEffect(async () => {
     if (data.images && session) {
       let newArray = await onLoadImage();
+      newArray = orderImagesByImageClicked(newArray);
+      const firstImage = newArray[0];
+      setCurrentImageId(firstImage.id);
+      imageService.increaseVisit(firstImage);
       setImagenes(newArray);
-      let copy = [];
-      data.images.forEach((images) => {
-        copy.push(Array.from(images.tags)[0]);
-      });
-      setAppliedFilters(copy);
+      setAppliedFilters(firstImage.tags);
     }
   }, [data.images]);
 
@@ -74,16 +81,18 @@ const BuildingDetail = ({ data, session }) => {
   }, [appliedFilters]);
 
   return (
-    <Layout title={`${t("building-work-detail")}`}>
+    <Layout>
+      <Row className="row-cols-1 g-2">
+        <Col>
+          <CarouselProject
+            setAppliedFilters={setAppliedFilters}
+            setCurrentImageId={setCurrentImageId}
+            images={imagenes}
+          />
+        </Col>
+      </Row>
       <section className="container py-2">
-        <Row className="row-cols-1 g-2">
-          <Col>
-            <CarouselProject
-              setAppliedFilters={setAppliedFilters}
-              setCurrentImageId={setCurrentImageId}
-              images={imagenes}
-            />
-          </Col>
+        <Row>
           <Col>
             <Row className="row-cols-md-2 g-4">
               <Col className="col-md-2 col-12">
@@ -112,10 +121,19 @@ const BuildingDetail = ({ data, session }) => {
                 <Col key={image.id} className="col-4">
                   <Card>
                     <Card.Body>
-                      <Card.Img
-                        src={image.path}
-                        className={`${buildingStyles.imgCard}`}
-                      />
+                      <Link
+                        href={`/building/[id]`}
+                        as={`/building/${image.buildingWork?.name?.replace(
+                          /\s+/g,
+                          "-"
+                        )}-${image.buildingWork.id}-${image.id}`}
+                        passHref
+                      >
+                        <Card.Img
+                          src={image.path}
+                          className={`${buildingStyles.imgCard}`}
+                        />
+                      </Link>
                     </Card.Body>
                   </Card>
                 </Col>
@@ -137,7 +155,8 @@ export async function getServerSideProps({ params, req, res, locale }) {
   let { page, size } = req.__NEXT_INIT_QUERY;
   let { id } = params; // params is necessary in case you reload the page from the url
   const split = id.split("-");
-  let idSplit = split[split.length - 1];
+  const imageClicked = split[split.length - 1]; // The image that the user do click in home
+  const buildingWorkId = split[split.length - 2];
   if (!page || page <= 0) {
     page = 0;
   }
@@ -148,18 +167,19 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (session) {
     token = session.accessToken;
     images = await imageService.getImagesByBuildingWorksId(
-      idSplit,
+      buildingWorkId,
       page,
       size,
       token
     );
-    buildingWork = await buildingWorkService.getById(idSplit, token);
+    buildingWork = await buildingWorkService.getById(buildingWorkId, token);
   }
 
   return {
     props: {
       data: { images, buildingWork },
       session,
+      imageClicked
     },
   };
 }

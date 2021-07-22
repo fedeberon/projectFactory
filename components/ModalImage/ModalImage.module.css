@@ -1,23 +1,20 @@
-.modalSize{
-    width:100vw;
-    height: 100%;
-    max-width: none;
-    margin: 0;
+.modalSize {
+  width: 100vw;
+  height: 100%;
+  max-width: none;
+  margin: 0;
 }
-.modal-dialog{
-    max-width: none;
-    margin: 0;
+.modalSize div {
+  background: transparent !important;
 }
-.modalSize div{
-    background:transparent !important;
-}
-.imgTamaño{
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+.imgTamaño {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.bodyModal{
-    height: 89vh;
-    padding: 0 10px 0 10px;
+.bodyModal {
+  height: 89vh;
+  padding: 0 10px 0 10px;
+  max-width: 100%;
 }

@@ -5,8 +5,12 @@ import {
   Modal,
 } from "react-bootstrap";
 import ModalImage from "../ModalImage/ModalImage";
+import { Swiper, SwiperSlide } from 'swiper/react';
 import CarouselProjectStyle from "./CarouselProject.module.css";
+import SwiperCore, { Autoplay, Pagination, Navigation } from 'swiper';
 import * as imageService from "../../services/imageService";
+import "swiper/swiper-bundle.css";
+SwiperCore.use([Autoplay, Pagination, Navigation])
 
 const CarouselProject = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -21,8 +25,8 @@ const CarouselProject = (props) => {
     showModalImage(!modalImage);
   };
 
-  const verImagen = (event) => {
-    setSelectImage(event.target.src);
+  const verImagen = (imagen) => {
+    setSelectImage(imagen.src);
     toggle();
   };
 
@@ -32,8 +36,6 @@ const CarouselProject = (props) => {
         return (
           <Carousel.Item
             className={`${CarouselProjectStyle.height}`}
-            onExiting={() => setAnimating(true)}
-            onExited={() => setAnimating(false)}
             key={index}
           >
             <img
@@ -44,7 +46,6 @@ const CarouselProject = (props) => {
                 verImagen(event);
               }}
             />
-            <Carousel.Caption captionText={""} captionHeader={""} />
           </Carousel.Item>
         );
       });
@@ -53,25 +54,11 @@ const CarouselProject = (props) => {
     }
   }, [images]);
 
-  const next = () => {
-    if (animating) return;
-    
-    const nextIndex = activeIndex === images.length - 1 ? 0 : activeIndex + 1;
-    const currentImage = images[nextIndex];
-    
-    setActiveIndex(nextIndex);
-    if (images.length > 0) {
-      setCurrentImage(currentImage);
+  const handleSlideChange = (slide) => {
+    const image = images[slide.activeIndex];
+    if (image != undefined) {
+      setCurrentImage(image);
     }
-  };
-
-  const previous = () => {
-    if (animating) return;
-    
-    const nextIndex = activeIndex === 0 ? images.length - 1 : activeIndex - 1;
-    const currentImage = images[nextIndex];
-    setActiveIndex(nextIndex);
-    setCurrentImage(currentImage);
   };
 
   const setCurrentImage = (image) => {
@@ -81,37 +68,43 @@ const CarouselProject = (props) => {
       imageService.increaseVisit(image);
   };
 
-  const goToIndex = (newIndex) => {
-    if (animating) return;
-    setActiveIndex(newIndex);
-  };
-
   return (
     <>
-      {/* <Modal.Image
+      <ModalImage
         toggle={toggle}
-        isOpen={modalImage}
+        show={modalImage}
         selectImage={selectImage}
-        className={"modal-fullscreen-xxl-down" + " bg-transparent"}
-      /> */}
-      {/* <Carousel activeIndex={activeIndex} next={next} previous={previous}>
-        <Carousel.Indicators
-          items={slides}
-          activeIndex={activeIndex}
-          onClickHandler={goToIndex}
-        />
-        {slides}
-        <Carousel.Control
-          direction="prev"
-          directionText="Previous"
-          onClickHandler={previous}
-        />
-        <Carousel.Control
-          direction="next"
-          directionText="Next"
-          onClickHandler={next}
-        />
-      </Carousel> */}
+        onHide={() => showModalImage(false)}
+        className={`${CarouselProjectStyle.img}`}
+      />
+
+    <Swiper
+      spaceBetween={0}
+      slidesPerView={1}
+      loop={false}
+      onSlideChange={(slide) => handleSlideChange(slide)}
+      onSwiper={(slide) => handleSlideChange(slide)}
+      navigation={{
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      }}>
+        {images.map(image => 
+        <SwiperSlide
+          className={`${CarouselProjectStyle.height}`}
+          onClick={(event) => verImagen(event.target)}
+          key={image.id}
+        >
+          <img
+            className={`${CarouselProjectStyle.img}`}
+            name={image.id}
+            src={image.path}
+            alt={image.name}
+          />
+        </SwiperSlide>
+        )}
+        <div className={`swiper-button-next`}></div>
+        <div className={`swiper-button-prev`}></div>
+    </Swiper>
     </>
   );
 };
