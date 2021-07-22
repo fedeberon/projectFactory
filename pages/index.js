@@ -9,9 +9,10 @@ import FilterList from "../components/FilterList/FilterList";
 import FilteredImages from "../components/FilteredImages/FilteredImages";
 import Layout from "../components/Layout/Layout";
 import CarouselHome from "../components/CarouselHome/CarouselHome";
+import AboutHome from "../components/AboutHome/AboutHome";
 import SwiperEmpresas from "../components/Swiper/SwiperEmpresas/SwiperEmpresas";
 import SwiperProducts from "../components/Swiper/SwiperProducts/SwiperProducts";
-import AboutHome from "../components/AboutHome";
+
 
 // Services
 import * as tagService from "../services/tagService";
@@ -110,7 +111,10 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
               </Col>
             </Row>
           </Col>
-          <AboutHome />
+          </Row>
+          </section>
+          <AboutHome/>
+          <section className="container py-2">
           <Col>
             <div className={styles.infoHead}>
               <h2 className={styles.productsTitle}>
@@ -127,6 +131,9 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
               slidesPerViewDesktop={{ dimensionLimit: 992, slides: 4 }}
             />
           </Col>
+          </section>
+          <div className={styles.backgroundGray}>
+          <section className="container py-2">
           <Col>
             <div className={styles.infoHead}>
               <h2 className={styles.itemsTitle}>
@@ -143,8 +150,8 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
               slidesPerViewDesktop={{ dimensionLimit: 992, slides: 3 }}
             />
           </Col>
-        </Row>
       </section>
+      </div>
     </Layout>
   );
 };
