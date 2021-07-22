@@ -2,29 +2,51 @@
 import React from "react";
 import { getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
 
 //Components
 import Layout from "../../components/Layout/Layout";
 import ProductList from "../../components/ProductList/ProductList";
+import Sidebar from "../../components/Sidebar/Sidebar";
 
 //Services
 import * as productService from "../../services/productService";
+import ContentHeader from "../../components/ContentHeader/ContentHeader";
+
 
 const Product = (props) => {
-  const { data } = props;
+  const { data, categories, category } = props;
   const { t } = useTranslation("common");
 
   return (
-    <Layout title={t("product")}>
-      <ProductList products={data} />
+    <Layout>
+      <section className="container py-2">
+        {/* sidebar */}
+        <Sidebar>
+          <h3>{t("products")}</h3>
+          <ul>
+            {categories.map((category, index) =>
+              <li key={index}>
+                <Link href={`/product?category=${category.name.replace(/\s+/g, "-")}`}>
+                  <a>{category.name}</a>
+                </Link>
+              </li>
+            )}
+          </ul>
+        </Sidebar>
+
+        <ContentHeader title={t("products")} />
+
+        <ProductList products={data} />
+      </section>
     </Layout>
   );
 };
 
-export async function getServerSideProps({ params, req, res, locale }) {
+export async function getServerSideProps({ params, req, res, locale, query }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
-
+  
   let products = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
   let status = "APPROVED";
@@ -34,12 +56,20 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (!size || size <= 0) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
-
-  products = await productService.findAll(status, page, size);
+  let category;
+  if (query.category) {
+    category = query.category.replace("-", " ");
+    products = await productService.findAllByCategory(status, category, page, size)
+  } else {
+    products = await productService.findAll(status, page, size);
+  }
+  const categories = await productService.findAllCategories(page, size);
 
   return {
     props: {
       data: products,
+      categories,
+      category : category ? category : "",
     },
   };
 }
