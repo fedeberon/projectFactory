@@ -35,18 +35,22 @@ const Companies = (props) => {
   return (
     <Layout title={t("companies")}>
       <section className="container py-2">
-        <FormFilterCompany
-          onGetFilterCompanies={onGetFilterCompanies}
-          setCompanies={setCompanies}
-        />
-        <Row>
-          {isLoading ? (
-            <SpinnerCustom />
-          ) : (
-            <Col className="col-10">
-              <CardList companies={companies} />
-            </Col>
-          )}
+        <Row className="row-cols-1 gap-2">
+          <Col>
+            <FormFilterCompany
+              onGetFilterCompanies={onGetFilterCompanies}
+              setCompanies={setCompanies}
+            />
+          </Col>
+          <Col>
+            {isLoading ? (
+              <SpinnerCustom />
+            ) : (
+              <Col className="col-10">
+                <CardList companies={companies} />
+              </Col>
+            )}
+          </Col>
         </Row>
       </section>
     </Layout>
