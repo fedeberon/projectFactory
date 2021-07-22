@@ -207,8 +207,10 @@ const addToBuildingWork = async (id, image) => {
 };
 
 const addToProduct = async (id, image) => {
+  const tags = tagService.getTags(image.tags);
   const imageData = new FormData();
   imageData.append("image", image);
+  imageData.append("tags", tags);
   return await API.post(`/images/products/${id}`, imageData, {
     onUploadProgress: (progressEvent) => {
       const progress = Math.round(

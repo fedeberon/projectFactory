@@ -4,6 +4,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useForm, Controller } from "react-hook-form";
 import ModalForm from "../ModalForm";
 import InputImages from "../InputImages/InputImages";
+import FormTag from "../FormTag/FormTag";
 import Error from "../Error";
 import Dropzone from "../Dropzone/Dropzone";
 import {
@@ -13,6 +14,7 @@ import {
     Form,
     FormGroup,
 } from "react-bootstrap";
+import TagList from "../TagList/TagList";
 
 const FormProduct = ({
     toggle,
@@ -29,6 +31,11 @@ const FormProduct = ({
     const { t } = useTranslation("common");
     const [error, setError] = useState("");
     const [timeErrorLive, setTimeErrorLive] = useState(0);
+    const [tagsCategories, setTagsCategories] = useState([]);
+    const [modalTagOpen, setModalTagOpen] = useState(false);
+    const [currentImageTag, setCurrentImageTag] = useState({});
+
+    const handleToggleTagModal = () => setModalTagOpen((modalTagOpen) => !modalTagOpen);
 
     const showErrorToLimitTime = (error) => {
         setError(error);
@@ -55,32 +62,112 @@ const FormProduct = ({
             description,
             price,
         };
-        if (previewImage.length > 0) {
-            if (changeState.stateFormProduct.post) {
-                const product = await onAddProduct(data);
-                if (product) {
-                    setPreviewImage([]);
-                    event.target.reset();
-                    setError("");
-                    toggle();
-                }
-            }
-            if (changeState.stateFormProduct.put) {
-                const productModify = await onSetProduct(data, productId);
-                if (productModify) {
-                    setPreviewImage([]);
-                    event.target.reset();
-                    setError("");
-                    toggle();
-                }
-            }
-        } else {
+        if (!imagesHasTags()) {
+            showErrorToLimitTime(
+                t("is-required", {
+                    nameRequired: t("form-tag.tag"),
+                })
+            );
+            return;
+        }
+            
+        if (!(previewImage.length > 0)) {
             showErrorToLimitTime(
                 t("is-required", {
                     nameRequired: t("preview-image"),
                 })
             );
+            return;
         }
+        
+        if (!(tagsCategories.length > 0)) {
+            showErrorToLimitTime(
+                t("company-creator.cannot-be-empty", {
+                    fieldName: t("company-creator.the-categories"),
+                })
+            );
+            return;
+        }
+        data.categories = tagsCategories.map(tag => {
+            return { "name": tag.tag };
+        });
+        if (changeState.stateFormProduct.post) {
+            const product = await onAddProduct(data);
+            if (product) {
+                setPreviewImage([]);
+                event.target.reset();
+                setError("");
+                toggle();
+            }
+        }
+        if (changeState.stateFormProduct.put) {
+            const productModify = await onSetProduct(data, productId);
+            if (productModify) {
+                setPreviewImage([]);
+                event.target.reset();
+                setError("");
+                toggle();
+            }
+        }
+    };
+
+    const imagesHasTags = () => {
+        if (images.length > 0) {
+          const imagesWithoutTags = images.filter((img) => img.tags.length == 0);
+          return imagesWithoutTags.length == 0;
+        } else {
+          return true;
+        }
+    };
+
+    const isEqual = (tag) => {
+        for (const elem of tagsCategories) {
+          if (elem.tag === tag.tag.toLowerCase()) {
+            return true;
+          }
+        }
+        return false;
+    };
+
+    const AddCategory = () => {
+        const category = document
+          .querySelector("#category")
+          .value.toLowerCase()
+          .trim();
+        const parse = { tag: category };
+        if (category !== "") {
+          if (!isEqual(parse)) {
+            const newTagsCategories = Array.from(tagsCategories);
+            newTagsCategories.push(parse);
+            setTagsCategories(newTagsCategories);
+          } else {
+            showErrorToLimitTime(
+              t("company-creator.already-exists", {
+                fieldName: t("company-creator.the-category"),
+              })
+            );
+          }
+        } else {
+          showErrorToLimitTime(
+            t("company-creator.cannot-be-empty", {
+              fieldName: t("company-creator.the-category"),
+            })
+          );
+        }
+    };
+
+    const removeTagCategory = (tagCategory) => {
+        const newTagsCategories = Array.from(tagsCategories);
+        const index = newTagsCategories.indexOf(tagCategory);
+        if (index > -1) {
+          newTagsCategories.splice(index, 1);
+          setTagsCategories(newTagsCategories);
+        }
+    };
+
+    const showTagModal = (img) => {
+        setModalTagOpen(true);
+        setCurrentImageTag(img);
     };
 
     return (
@@ -238,6 +325,26 @@ const FormProduct = ({
                                         </Form.Text>
                                     )}
                                 </FormGroup>
+
+                                <Form.Group>
+                                    <Form.Label>
+                                    {t("company-creator.select-categories-please")}
+                                    </Form.Label>
+                                    <Col className="col-12 d-flex">
+                                    <Form.Control type="text" id="category" />
+                                    <Button className="mx-4" onClick={AddCategory}>
+                                        {t("company-creator.add-category")}
+                                    </Button>
+                                    </Col>
+                                    <Col className="col-auto">
+                                    <div className="my-3">
+                                        <TagList
+                                        tags={tagsCategories}
+                                        onDeleteTag={removeTagCategory}
+                                        />
+                                    </div>
+                                    </Col>
+                                </Form.Group>
                             </Col>
                             <Col>
                                 <FormGroup>
@@ -265,7 +372,7 @@ const FormProduct = ({
                                         multiple={true}
                                         imagesEdited={setImages}
                                         withTags={true}
-                                        onAdd={() => { }}
+                                        onAdd={showTagModal}
                                     />
                                 </FormGroup>
                             </Col>
@@ -290,6 +397,14 @@ const FormProduct = ({
                     </Col>
                 </Row>
             )}
+
+            <ModalForm
+                size={"md"}
+                className={"Button"}
+                modalTitle={t("add-tags")}
+                formBody={<FormTag image={currentImageTag} toggle={handleToggleTagModal} />}
+                modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
+            />
         </div>
     );
 };

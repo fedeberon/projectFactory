@@ -6,7 +6,7 @@ import Product from "./Product";
 const ProductList = (props) => {
   const { products } = props;
   const [productsLocal, setProductsLocal] = useState([]);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     if (products) {
@@ -14,19 +14,18 @@ const ProductList = (props) => {
     }
   }, [products]);
 
+  useEffect(() => {
+    setLoading(false);
+  }, [productsLocal])
+
   return (
     <Row className="row-cols-3 g-2">
-      {isLoading ? (
-        <h1>{t("loading")}...</h1>
-      ) : (
-        productsLocal.map((product) => {
-          return (
-            <Col key={product.id}>
-              <Product product={product} />
-            </Col>
-          );
-        })
-      )}
+    
+        {productsLocal.map((product) => 
+        <Col key={product.id}>
+          <Product product={product} />
+        </Col>
+        )}
     </Row>
   );
 };

@@ -5,9 +5,17 @@ export const findAll = async (status, page, size) => {
   return await API.get(`/products/status/${status}?page=${page}&size=${size}`);
 };
 
+export const findAllByCategory = async (status, category, page, size) => {
+  return await API.get(`/products/category/${category}/status/${status}?page=${page}&size=${size}`);
+};
+
 export const findMyProducts = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.get(`/products/my-products?page=${page}&size=${size}`);
+};
+
+export const findAllCategories = async (page, size) => {
+  return await API.get(`/products/categories?page=${page}&size=${size}`);
 };
 
 export const addProduct = async (product, token) => {
