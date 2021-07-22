@@ -13,7 +13,6 @@ class MyDocument extends Document {
           <meta name="description" content="La Fabrica de Proyectos donde encontras lo que buscas" />
           <script src="https://sdk.mercadopago.com/js/v2"></script>
           <script src="https://www.mercadopago.com/v2/security.js" view="item"></script>
-          <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
           {/* Nprogress css */}
           <link
             rel="stylesheet"

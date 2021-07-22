@@ -36,8 +36,7 @@ const ProductAdmin = ({
   const buttonAccept = (productlId) => {
     return (
       <Button
-        outline
-        color={"success"}
+        variant={"outline-success"}
         onClick={() => changeState(productlId, "APPROVED")}
       >
         <CheckCircle size={25} /> {t("accept")}
@@ -54,8 +53,7 @@ const ProductAdmin = ({
   const buttonReject = (productId) => {
     return (
       <Button
-        outline
-        color={"danger"}
+        variant={"outline-danger"}
         onClick={() => changeState(productId, "REJECTED")}
       >
         <XCircle size={25} /> {t("reject")}
@@ -72,8 +70,7 @@ const ProductAdmin = ({
   const buttonAcceptImages = (productId) => {
     return (
       <Button
-        outline
-        color={"success"}
+        variant={"outline-success"}
         onClick={async () => changeStateImages(productId, true)}
       >
         <CheckCircle size={25} /> {t("accept-images")}

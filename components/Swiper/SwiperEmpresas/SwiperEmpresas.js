@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
 import "swiper/swiper-bundle.css";
-import styles from "./SwipperEmpresas.module.css";
+import styles from "./SwiperEmpresas.module.css";
 import Link from "next/link";
 import { Col, Row } from "react-bootstrap";
+
+// Custom Hooks
+import useSize from "../../../hooks/window/useSize";
 /**
  * Docs of swiperJS in
  * https://swiperjs.com/react
@@ -13,15 +16,35 @@ import { Col, Row } from "react-bootstrap";
 
 SwiperCore.use([Autoplay, Pagination, Navigation]);
 
-const SwipperEmpresas = (props) => {
-  const { items } = props;
+const SwiperEmpresas = (props) => {
   const { t } = useTranslation("common");
+
+  const {
+    items,
+    slidesPerViewMobile,
+    slidesPerViewDesktop,
+    slidesPerViewTablet,
+  } = props;
+  const { width } = useSize();
+  const [slidesPerViewLocal, setSlidesPerViewLocal] = useState(0);
+
+  useEffect(() => {
+    if (slidesPerViewMobile.dimensionLimit < width) {
+      setSlidesPerViewLocal(slidesPerViewMobile.slides);
+    }
+    if (slidesPerViewTablet.dimensionLimit < width) {
+      setSlidesPerViewLocal(slidesPerViewTablet.slides);
+    }
+    if (slidesPerViewDesktop.dimensionLimit < width) {
+      setSlidesPerViewLocal(slidesPerViewDesktop.slides);
+    }
+  }, [width]);
 
   return (
     <div className="container">
       <Swiper
         spaceBetween={30}
-        slidesPerView={4}
+        slidesPerView={slidesPerViewLocal}
         loop={true}
         autoplay={{ delay: 3000 }}
         navigation={{
@@ -55,17 +78,13 @@ const SwipperEmpresas = (props) => {
                     <Col className={"col-12"}>
                       <Row>
                         <Col className={"col-6"}>
-                          <div
-                            className={`${styles.blockAndWeight} fw-bold`}
-                          >
+                          <div className={`${styles.blockAndWeight} fw-bold`}>
                             {company.contact}
                           </div>
                           {company.categories[0].name}
                         </Col>
                         <Col className={"col-6 d-flex justify-content-end"}>
-                          <div
-                            className={`btn btn-lg btn-light ${styles.btn}`}
-                          >
+                          <div className={`btn btn-lg btn-light ${styles.btn}`}>
                             {t("common:view-more")}
                           </div>
                         </Col>
@@ -83,4 +102,4 @@ const SwipperEmpresas = (props) => {
     </div>
   );
 };
-export default SwipperEmpresas;
+export default SwiperEmpresas;

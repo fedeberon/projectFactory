@@ -2,12 +2,7 @@
 import React, { useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { getSession, useSession } from "next-auth/client";
-import {
-  Button,
-  Col,
-  Row,
-  Card,
-} from "react-bootstrap";
+import { Button, Col, Row, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -18,6 +13,7 @@ import indexStyles from "./index.module.css";
 import ModalForm from "../../components/ModalForm";
 import FormProject from "../../components/FormProject";
 import Layout from "../../components/Layout/Layout";
+import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
 // services
 import * as professionalService from "../../services/professionalService";
@@ -42,12 +38,18 @@ const Project = ({ data, professionals, filters }) => {
 
   const onAddProject = async (data) => {
     setLoading(true);
-    const project = await projectService.addProject(
-      data,
-      session.accessToken
-    );
-    dispatch(projectActions.addItem(project));
-    setLoading(false);
+    try {
+      const project = await projectService.addProject(
+        data,
+        session.accessToken
+      );
+      dispatch(projectActions.addItem(project));
+
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   };
 
   const toggleModal = () => setModalOpen(!modalOpen);
@@ -95,10 +97,16 @@ const Project = ({ data, professionals, filters }) => {
     return <div>Loading...</div>;
   }
 
+  const isRole = (role) => {
+    if (session) {
+      return session.authorities.includes(role);
+    }
+  };
+
   return (
     <Layout title={t("project")}>
       <section className="container py-2">
-        {session && (
+        {isRole("ROLE_PROFESSIONAL") && (
           <Button
             className="position-fixed bottom-0 end-0 me-3 mb-3 rounded-circle zIndex"
             variant="danger"
@@ -112,23 +120,19 @@ const Project = ({ data, professionals, filters }) => {
           className={"Button"}
           modalTitle={t("form-project")}
           formBody={
-            <FormProject
-              onAddProject={onAddProject}
-              toggle={toggleModal}
-            />
+            <FormProject onAddProject={onAddProject} toggle={toggleModal} />
           }
           modalOpen={{ open: modalOpen, function: setModalOpen }}
         />
 
         <Row className="row-cols-md-3 g-4">
           {isLoading ? (
-            <h1>{t("loading")}...</h1>
+            <SpinnerCustom />
           ) : (
             projects.map((project) => (
               <Col key={project.id}>
                 <Card>
                   <Card.Img
-                    top
                     className="img-fluid"
                     src={project.previewImage}
                     alt="Card image cap"
@@ -153,8 +157,9 @@ const Project = ({ data, professionals, filters }) => {
                   <Card.Footer className="d-flex justify-content-end">
                     <Link
                       href={`/project/[id]`}
-                      as={`/project/${project.name.replace(/\s+/g, "-")}-${project.id
-                        }`}
+                      as={`/project/${project.name.replace(/\s+/g, "-")}-${
+                        project.id
+                      }`}
                       passHref
                     >
                       <Button variant={"primary"}>{t("view-more")}</Button>

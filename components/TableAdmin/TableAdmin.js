@@ -31,7 +31,7 @@ const TableAdmin = ({ listHead, listBody, title, onSearch }) => {
         ) : (
           <tr>
             <td colSpan="8" className="p-0">
-              <Alert color="primary" className="d-flex justify-content-center gap-2 ">
+              <Alert variant="primary" className="d-flex justify-content-center gap-2 ">
                 <InfoCircleFill size={25} />
                 {`${t(
                   "table-admin.there-are-not-more"
