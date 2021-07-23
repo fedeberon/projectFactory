@@ -5,7 +5,9 @@ import * as companyService from "../../services/companyService";
 import Company from "../../components/Company/Company";
 import CardList from "../../components/CardList";
 import { Col, Row } from "react-bootstrap";
-
+import ContentHeader from "../../components/ContentHeader/ContentHeader";
+import Link from "next/link";
+import Sidebar from "../../components/Sidebar/Sidebar";
 import FormFilterCompany from "../../components/FormFilterCompany/FormFilterCompany";
 import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
@@ -33,23 +35,45 @@ const Companies = (props) => {
   };
 
   return (
-    <Layout title={t("companies")}>
+    <Layout>
       <section className="container py-2">
-        <Row className="row-cols-1 gap-2">
-          <Col>
-            <FormFilterCompany
-              onGetFilterCompanies={onGetFilterCompanies}
-              setCompanies={setCompanies}
-            />
-          </Col>
-          <Col>
-            {isLoading ? (
-              <SpinnerCustom />
-            ) : (
-              <Col className="col-10">
-                <CardList companies={companies} />
+        <Row>
+          <Sidebar>
+            <h3>{t("professionals")}</h3>
+            <ul>
+              <li>
+                <Link href={`/professional`}>
+                    <a>{t("professionals")}</a>
+                </Link>
+              </li>
+              <li>
+                <Link href={`/companies`}>
+                    <a>{t("companies")}</a>
+                </Link>
+              </li>
+            </ul>
+          </Sidebar>        
+          
+          <Col sm={12} md={8} lg={9}>
+            <ContentHeader title={t("companies")} />
+
+            <Row className="row-cols-1 gap-2">
+              <Col>
+                <FormFilterCompany
+                  onGetFilterCompanies={onGetFilterCompanies}
+                  setCompanies={setCompanies}
+                />
               </Col>
-            )}
+              <Col>
+                {isLoading ? (
+                  <SpinnerCustom />
+                ) : (
+                  <Col className="col-12">
+                    <CardList companies={companies} />
+                  </Col>
+                )}
+              </Col>
+            </Row>
           </Col>
         </Row>
       </section>
