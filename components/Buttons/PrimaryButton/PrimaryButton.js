@@ -1,17 +1,16 @@
 import React from "react";
-import Link from "next/link";
 import PrimaryButtonStyles from "./PrimaryButton.module.css";
+import { Button } from "react-bootstrap";
 
 const PrimaryButton = (props) => {
-  const { href, name, className } = props;
+  const { className, children, onClick } = props;
   return (
-    <Link href={href}>
-      <a
-        className={`${PrimaryButtonStyles.btnLight} ${PrimaryButtonStyles.btnLg} ${className ? className : ""}`}
-      >
-        {name}
-      </a>
-    </Link>
+    <Button
+      onClick={onClick}
+      className={`${PrimaryButtonStyles.btnLight} ${className ? className : ""}`}
+    >
+      {children}
+    </Button>
   );
 };
 
