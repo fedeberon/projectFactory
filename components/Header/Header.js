@@ -123,7 +123,7 @@ export default function Header() {
   return (
     <>
       <Navbar collapseOnSelect expand="lg" className={`${styles.navbar}`}>
-        <Row className="row-cols-3 justify-content-between align-items-center w-100 m-0">
+        <Row className="row-cols-3 justify-content-between align-items-center w-100 m-0 pe-3">
           <Col className="col-auto col-sm-auto p-0">
             <Link href="/" passHref>
               <Navbar.Brand className="p-0 m-0">

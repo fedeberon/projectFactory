@@ -12,6 +12,7 @@ import useTranslation from "next-translate/useTranslation";
 import * as userService from "../services/userService";
 import autosuggestStyles from "./FormTag/Autosuggest.module.css";
 import Error from "../components/Error";
+import PrimaryButton from "./Buttons/PrimaryButton/PrimaryButton";
 
 const page = 0;
 const size = 5;
@@ -106,9 +107,9 @@ const AdministratorCreator = () => {
   return (
     <>
       {session?.authorities?.includes("ROLE_ADMINISTRATOR") && (
-        <Button onClick={toggle}>
+        <PrimaryButton onClick={toggle}>
           {t("administrator-creator.add-administrator")}
-        </Button>
+        </PrimaryButton>
       )}
 
       <ModalForm
@@ -132,9 +133,9 @@ const AdministratorCreator = () => {
               theme={autosuggestStyles}
             />
 
-            <Button className="my-4" onClick={onAddAdministrator}>
+            <PrimaryButton className="my-4" onClick={onAddAdministrator}>
               {t("administrator-creator.add-administrator")}
-            </Button>
+            </PrimaryButton>
             {error && (
               <Row className="mt-2">
                 <Col>

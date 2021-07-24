@@ -6,6 +6,9 @@ import styles from "./SwiperProducts.module.css";
 
 // Custom Hooks
 import useSize from "../../../hooks/window/useSize";
+import PrimaryButton from "../../Buttons/PrimaryButton/PrimaryButton";
+import Link from "next/link";
+import { Col, Row } from "react-bootstrap";
 /**
  * Docs of swiperJS in
  * https://swiperjs.com/react
@@ -66,7 +69,9 @@ const SwiperProducts = (props) => {
                         className={styles.photo}
                       />
                     </figure>
-                    <div className={`${styles.info} ${styles.blockAndWeight}`}>
+                  </a>
+                  <Row className="row-cols-1">
+                    <Col>
                       <div
                         className={`${styles.name} ${styles.blockAndWeight}`}
                       >
@@ -75,11 +80,18 @@ const SwiperProducts = (props) => {
                         </strong>
                         {product.company.name}
                       </div>
-                      <div className={`btn btn-lg btn-light ${styles.btn}`}>
-                        {t("view-more")}
-                      </div>
-                    </div>
-                  </a>
+                    </Col>
+                    <Col className="col-auto">
+                      <Link
+                        href={`/product/${product.name.replace(/\s+/g, "-")}-${
+                          product.id
+                        }`}
+                        passHref
+                      >
+                        <PrimaryButton href>{t("view-more")}</PrimaryButton>
+                      </Link>
+                    </Col>
+                  </Row>
                 </div>
               </div>
             </SwiperSlide>

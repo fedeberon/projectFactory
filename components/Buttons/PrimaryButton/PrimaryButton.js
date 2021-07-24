@@ -1,18 +1,27 @@
-import React from "react";
-import Link from "next/link";
-import PrimaryButtonStyles from "./PrimaryButton.module.css";
+import React, { forwardRef } from "react";
+import { Button } from "react-bootstrap";
+import styles from "./PrimaryButton.module.css";
 
-const PrimaryButton = (props) => {
-  const { href, name, className } = props;
+const PrimaryButton = forwardRef((props, ref) => {
+  const { className, children, onClick, href, outline } = props;
+
   return (
-    <Link href={href}>
-      <a
-        className={`${PrimaryButtonStyles.btnLight} ${PrimaryButtonStyles.btnLg} ${className ? className : ""}`}
-      >
-        {name}
-      </a>
-    </Link>
+    <Button
+      href={href}
+      onClick={onClick}
+      ref={ref}
+      className={`${
+        outline
+          ? `${styles.btnLightOutline} ${styles.btnLight}`
+          : styles.btnLight
+      } 
+      d-flex align-items-center gap-1
+      ${className ? className : ""}
+      `}
+    >
+      {children}
+    </Button>
   );
-};
+});
 
 export default PrimaryButton;
