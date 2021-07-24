@@ -86,7 +86,7 @@ const CompanyCreator = () => {
   } = useForm();
 
   const onSubmit = async (
-    { name, email, contact, contactLoad, website, province, location },
+    { name, email, contact, contactLoad, website, province, location, description },
     event
   ) => {
     name = name.toLowerCase().trim();
@@ -95,6 +95,7 @@ const CompanyCreator = () => {
       name,
       email,
       contact,
+      description,
       contactLoad,
       website,
       province,
@@ -203,6 +204,58 @@ const CompanyCreator = () => {
                       </Form.Text>
                     )}
                   </Form.Group>
+
+                  <Form.Group>
+                    <Form.Label htmlFor="description">{t("description")}</Form.Label>
+                        <Form.Control
+                          type="textarea"
+                          id="description"
+                          rows="10"
+                          cols="50"
+                          placeholder={`${t("write-the-here-please", {
+                            namePlaceholder: t("the-description").toLowerCase(),
+                          })}`}
+                          className={
+                            "form-field" +
+                            (errors.description ? " has-error" : "")
+                          }
+                          style={{ resize: "none" }}
+                          {...register("description", {
+                            required: {
+                              value: true,
+                              message: `${t("is-required", {
+                                nameRequired: t("the-description"),
+                              })}`,
+                            },
+                            minLength: {
+                              value: 3,
+                              message: `${t("cannot-be-less-than-character", {
+                                nameInput: t("the-description"),
+                                numberCharacters: 3,
+                              })}`,
+                            },
+                            maxLength: {
+                              value: 255,
+                              message: `${t("cannot-be-more-than-character", {
+                                nameInput: t("description").toLowerCase(),
+                                numberCharacters: 255,
+                              })}`,
+                            }
+                          })}
+                          className={
+                            "form-field" + (errors.name ? " has-error" : "")
+                          }
+                        />
+                    {errors.description && (
+                      <Form.Text
+                        variant="danger"
+                        className="invalid error-label text-danger"
+                      >
+                        {errors.description.message}
+                      </Form.Text>
+                    )}
+                  </Form.Group>
+
                   <Form.Group>
                     <Form.Label htmlFor="website">
                       {t("common:formulary.web-page")}
