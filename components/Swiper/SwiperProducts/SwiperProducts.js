@@ -27,13 +27,13 @@ const SwiperProducts = (props) => {
   const [slidesPerViewLocal, setSlidesPerViewLocal] = useState(0);
 
   useEffect(() => {
-    if (slidesPerViewMobile.dimensionLimit < width) {
+    if (slidesPerViewMobile.dimensionLimit <= width) {
       setSlidesPerViewLocal(slidesPerViewMobile.slides);
     }
-    if (slidesPerViewTablet.dimensionLimit < width) {
+    if (slidesPerViewTablet.dimensionLimit <= width) {
       setSlidesPerViewLocal(slidesPerViewTablet.slides);
     }
-    if (slidesPerViewDesktop.dimensionLimit < width) {
+    if (slidesPerViewDesktop.dimensionLimit <= width) {
       setSlidesPerViewLocal(slidesPerViewDesktop.slides);
     }
   }, [width]);
