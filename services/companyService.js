@@ -12,6 +12,7 @@ export const create = async (data, logo, backgroundImage, categories, token, use
     categories: newCategories,
     email: data.email,
     contact: data.contact,
+    description: data.description,
     contactLoad: data.contactLoad,
     website: data.website,
     province: data.province,

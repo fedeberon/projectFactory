@@ -3,6 +3,7 @@ import React from "react";
 import { getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
+import { Row, Col } from "react-bootstrap";
 
 //Components
 import Layout from "../../components/Layout/Layout";
@@ -20,24 +21,27 @@ const Product = (props) => {
 
   return (
     <Layout>
-      <section className="container py-2">
-        {/* sidebar */}
-        <Sidebar>
-          <h3>{t("products")}</h3>
-          <ul>
-            {categories.map((category, index) =>
-              <li key={index}>
-                <Link href={`/product?category=${category.name.replace(/\s+/g, "-")}`}>
-                  <a>{category.name}</a>
-                </Link>
-              </li>
-            )}
-          </ul>
-        </Sidebar>
+      <section className="container">
+        <Row>
+          <Sidebar>
+            <h3>{t("products")}</h3>
+            <ul>
+              {categories.map((category, index) =>
+                <li key={index}>
+                  <Link href={`/product?category=${category.name.replace(/\s+/g, "-")}`}>
+                    <a>{category.name}</a>
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </Sidebar>
+          
+          <Col sm={12} md={8} lg={9}>
+            <ContentHeader title={category != "" ? category : t("products")} />
 
-        <ContentHeader title={category != "" ? category : t("products")} />
-
-        <ProductList products={data} />
+            <ProductList products={data} />
+          </Col>
+        </Row>
       </section>
     </Layout>
   );

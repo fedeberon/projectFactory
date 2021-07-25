@@ -49,7 +49,9 @@ const Layout = ({ children, title, footer = true, header = true }) => {
         {title && <h1 className="text-center">{title}</h1>}
 
         {/* Content */}
-        {children}
+        <section className="content">
+          {children}
+        </section>
       </main>
 
       {footer && (

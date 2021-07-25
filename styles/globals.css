@@ -49,3 +49,24 @@ body {
   color: #000;
   font-size: 13px;
 }
+
+.badge {
+  background-color: #ffca05;
+}
+
+.boxdeg {
+  padding: 20px 15px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  background: rgb(247, 247, 247);
+  background: linear-gradient(
+    0deg,
+    rgba(247, 247, 247, 0) 0%,
+    rgba(247, 247, 247, 1) 100%
+  );
+}
+
+.content {
+  padding-top: 55px;
+  padding-bottom: 55px;
+}
