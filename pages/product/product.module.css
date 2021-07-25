@@ -1,14 +1,73 @@
 .img {
-    object-fit: contain;
-    width: 100%;
-    height: 350px;
+  object-fit: contain;
+  width: 100%;
+  height: 350px;
 }
 
 .aside {
-    float: left;
-    width: 300px;
+  float: left;
+  width: 300px;
 }
 
 .aside .ul {
-    list-style-type: none;
+  list-style-type: none;
+}
+
+.borderTop {
+  border-top: 2px solid #000;
+}
+
+.titObraDetail {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.boxDeg {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  background: linear-gradient(
+    0deg,
+    rgba(247, 247, 247, 0) 0%,
+    rgba(247, 247, 247, 1) 100%
+  );
+}
+
+.titName {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.titProjects {
+  font-size: 14px;
+  font-weight: 500;
+
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-top: 1px solid #e2e2e2;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.badge {
+  background-color: #ffca05;
+}
+
+.location {
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 5px;
+  font-size: 12px;
+  font-weight: 300;
+  margin-top: 10px;
+  padding-left: 20px;
+  min-height: 18px;
+  /* background-image: url(../img/map-maker.svg); */
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+}
+
+.tit {
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }

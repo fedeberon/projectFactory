@@ -58,7 +58,7 @@ const SwiperProducts = (props) => {
               <div className="swiper-slide">
                 <div className={styles.productList}>
                   <a
-                    href={`/product/${product.name.replace(/\s+/g, "-")}-${
+                    href={`/product/${product?.name?.replace(/\s+/g, "-")}-${
                       product.id
                     }`}
                     className={styles.ancor}
@@ -76,14 +76,14 @@ const SwiperProducts = (props) => {
                         className={`${styles.name} ${styles.blockAndWeight}`}
                       >
                         <strong className={styles.blockAndWeight}>
-                          {product.name}
+                          {product?.name}
                         </strong>
-                        {product.company.name}
+                        {product?.company?.name}
                       </div>
                     </Col>
                     <Col className="col-auto">
                       <Link
-                        href={`/product/${product.name.replace(/\s+/g, "-")}-${
+                        href={`/product/${product?.name?.replace(/\s+/g, "-")}-${
                           product.id
                         }`}
                         passHref
