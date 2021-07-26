@@ -31,6 +31,11 @@ export const create = async (data, logo, backgroundImage, categories, token, use
   });
 };
 
+/**
+ * @todo Implement this function.
+ */
+export const generatePreferenceForToken = async (plan, token) => {};
+
 export const getStartsWith = async (value, page, size) => {
   return await API.get(`/companies/name/${value}?page=${page}&size=${size}`);
 };

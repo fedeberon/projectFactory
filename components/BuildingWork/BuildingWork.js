@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import useTranslation from "next-translate/useTranslation";
-import styles from "./BuildingWork.module.css";
 import { Camera } from "react-bootstrap-icons";
 
 const BuildingWork = (props) => {
@@ -8,7 +7,7 @@ const BuildingWork = (props) => {
     const { t } = useTranslation("common");
 
     return (
-    <div className={`${styles.divCard} card`}>
+    <div className={`card`}>
         <img
         className="card-img-top"
         src={buildingWork.previewImage}
