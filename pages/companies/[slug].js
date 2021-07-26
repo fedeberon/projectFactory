@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { Col, Row, Tabs, Tab } from "react-bootstrap";
 import { GeoAlt } from "react-bootstrap-icons";
-import { useSession } from "next-auth/client";
+import { useSession, getSession } from "next-auth/client";
 
 //Styles
 import styles from "./slug.module.css";
@@ -24,23 +24,45 @@ import * as buildingWorkService from "../../services/buildingWorkService";
 import * as imageService from "../../services/imageService";
 import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
 
-const CompanyDetails = ({ company, initalBuildingWorks, status }) => {
+const CompanyDetails = ({ company, initalBuildingWorks, status, session }) => {
   const { t } = useTranslation("common");
   const [buildingWorks, setBuildingWorks] = useState(initalBuildingWorks);
-  const [session] = useSession();
   const [amountTokens, setAmountTokens] = useState(-1);
   const [imagesLiked, setImagesLiked] = useState([]);
+  const [tabProfile, setTabProfile] = useState(<></>);
   const [statusPurchased, setStatusPurchased] = useState(status);
   const [showModalPlan, setShowModalPlan] = useState(status == "approved");
 
-  useEffect( async() => {
+  useEffect( async () => {
     if (isOwner()) {
       const tokens = await userService.getAmountTokens(session.accessToken);
       setAmountTokens(tokens);
       const liked = await imageService.getLikePhotos(0, 99, session.accessToken);
       setImagesLiked(liked);
+      
+      const profileInfo = (
+        <>
+        <span>{company.description}</span>
+        {isOwner() && (
+          <div className="mt-4">
+            <MercadopagoButton />
+            <span className="d-block mt-4">{`${t(
+              "profile:your-tokens"
+              )}: ${tokens}`}</span>
+            <PrimaryButton onClick={toggleModalPlan}>{t("profile:buy-more-tokens")}</PrimaryButton>
+            <div className="mt-4">
+              <SeeImagesLiked imagesLiked={liked} />
+            </div>
+          </div>
+        )}
+      </>
+      );
+    
+      setTabProfile(profileInfo);
+    } else {
+      setTabProfile(<span>{company.description}</span>);
     }
-  }, [session]);
+  }, [company])
 
   const buildingWorksList = (
     <Row>
@@ -83,24 +105,6 @@ const CompanyDetails = ({ company, initalBuildingWorks, status }) => {
     link.setAttribute("type", "hidden");
     link.click();
   };
-
-  const profileInfo = (
-    <>
-      <span>{company.description}</span>
-      {isOwner() && (
-        <div className="mt-4">
-          <MercadopagoButton />
-          <span className="d-block mt-4">{`${t(
-            "profile:your-tokens"
-          )}: ${amountTokens}`}</span>
-          <PrimaryButton onClick={toggleModalPlan}>{t("profile:buy-more-tokens")}</PrimaryButton>
-          <div className="mt-4">
-            <SeeImagesLiked imagesLiked={imagesLiked} />
-          </div>
-        </div>
-      )}
-    </>
-  );
 
   return (
     <Layout>
@@ -173,7 +177,7 @@ const CompanyDetails = ({ company, initalBuildingWorks, status }) => {
                 </Tab>
 
                 <Tab eventKey="profile" title={<h5>{t("header.profile")}</h5>}>
-                  <div className={styles.tabContent}>{profileInfo}</div>
+                  <div className={styles.tabContent}>{tabProfile}</div>
                 </Tab>
               </Tabs>
             </Col>
@@ -202,11 +206,14 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
     0,
     10
   );
+
+  const session = await getSession({ req });
   return {
     props: {
       company,
       initalBuildingWorks,
-      status : query.status ? query.status : ""
+      status : query.status ? query.status : "",
+      session,
     },
   };
 }
