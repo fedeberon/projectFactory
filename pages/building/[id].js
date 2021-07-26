@@ -26,8 +26,10 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
 
   // Order the images putting on first place the image clicked by the user in home
   const orderImagesByImageClicked = (images) => {
-    const [first] = images.filter(img => img.id == imageClicked);
-    return images.sort((x, y) => { return x == first ? -1 : y == first ? 1 : 0; });
+    const [first] = images.filter((img) => img.id == imageClicked);
+    return images.sort((x, y) => {
+      return x == first ? -1 : y == first ? 1 : 0;
+    });
   };
 
   const getProfessionalsByTags = async () => {
@@ -146,17 +148,19 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   );
 };
 
-export async function getServerSideProps({ params, req, res, locale }) {
+export async function getServerSideProps({ params, req, res, locale, query }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
   let token;
   let images = [];
   let buildingWork = {};
-  let { page, size } = req.__NEXT_INIT_QUERY;
+  let { page, size, img } = req.__NEXT_INIT_QUERY;
   let { id } = params; // params is necessary in case you reload the page from the url
   const split = id.split("-");
-  const imageClicked = split[split.length - 1]; // The image that the user do click in home
-  const buildingWorkId = split[split.length - 2];
+  // const imageClicked = split[split.length - 1]; // The image that the user do click in home
+  const buildingWorkId = split[split.length - 1];
+  let imageClicked = img;
+
   if (!page || page <= 0) {
     page = 0;
   }
@@ -172,6 +176,9 @@ export async function getServerSideProps({ params, req, res, locale }) {
       size,
       token
     );
+    if (!imageClicked) {
+      imageClicked = images[0].id;
+    }
     buildingWork = await buildingWorkService.getById(buildingWorkId, token);
   }
 
@@ -179,7 +186,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
     props: {
       data: { images, buildingWork },
       session,
-      imageClicked
+      imageClicked,
     },
   };
 }

@@ -7,8 +7,15 @@ import TagCreator from "../TagCreator";
 const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
   const { t } = useTranslation("common");
   const [tags, setTags] = useState([]);
+  const [activeState, setActiveState] = useState("");
 
-  useEffect(() => setTags(filters), [filters]);
+  useEffect(() => {
+    setTags(filters);
+  }, [filters]);
+
+  const isActive = (filterBtn) => {
+    return appliedFilters.some((filter) => filter.tag === filterBtn.tag);
+  };
 
   const onClickFilter = (filter, event) => {
     event.target.classList.toggle("active");
@@ -41,6 +48,7 @@ const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
           tag="button"
           action
           key={filter.tag}
+          className={isActive(filter) ? "active" : ""}
           onClick={(event) => onClickFilter(filter, event)}
         >
           {filter.tag}

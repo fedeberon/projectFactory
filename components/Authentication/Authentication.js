@@ -24,9 +24,9 @@ const Authentication = (props) => {
           <Col>
             <Link href="/logIn">
               <Button
-                className={`d-flex w-100 justify-content-center ${AuthenticationStyle.pLine} ${AuthenticationStyle.btnLogin} ${AuthenticationStyle.btn}`}
+                className={`d-flex w-100 gap-2 justify-content-center ${AuthenticationStyle.pLine} ${AuthenticationStyle.btnLogin} ${AuthenticationStyle.btn}`}
               >
-                <img src="./svg/icon-user.svg"/>
+                <img src="/svg/icon-user.svg"/>
                 <span className={AuthenticationStyle.center}>{t("log-in")}</span>
               </Button>
             </Link>

@@ -123,15 +123,21 @@ export default function Header() {
   return (
     <>
       <Navbar collapseOnSelect expand="lg" className={`${styles.navbar}`}>
-        <Row className="row-cols-3 justify-content-between align-items-center w-100 m-0">
-          <Col className="col-auto col-sm-auto p-0">
+        <Row className="row-cols-3 justify-content-between align-items-center w-100 gap-2 gap-md-0 m-0 mb-2 mb-sm-0">
+          <Col className="col-auto col-sm-auto col-lg-4 p-0">
             <Link href="/" passHref>
               <Navbar.Brand className="p-0 m-0">
-                <img width={"100%"} height={"auto"} alt="" src={"/logo.svg"} />
+                <img
+                  className={`${styles.imgLogo}`}
+                  width={"100%"}
+                  height={"auto"}
+                  alt=""
+                  src={"/logo.svg"}
+                />
               </Navbar.Brand>
             </Link>
           </Col>
-          <Col className="col-3 col-sm-auto">
+          <Col className="col-12 col-sm-auto col-md-5 col-lg-4 order-3 order-sm-2">
             <InputGroup className="d-flex">
               <Form.Label htmlFor="Search"></Form.Label>
               <SuggestionsSearch
@@ -160,7 +166,7 @@ export default function Header() {
               </InputGroup>
             </InputGroup>
           </Col>
-          <Col className="col-auto col-sm-auto p-0">
+          <Col className="col-auto col-sm-auto col-lg-4 order-2">
             <Navbar.Collapse className="justify-content-end gap-2">
               <Row
                 className={`justify-content-md-center justify-content-start`}
@@ -169,8 +175,13 @@ export default function Header() {
                   <Dropdown>
                     {session && (
                       <>
-                        <Dropdown.Toggle variant="transparent">
-                          {session?.user?.name}
+                        <Dropdown.Toggle
+                          variant="transparent"
+                          className="d-flex align-items-center"
+                        >
+                          <p className={`text-break text-wrap m-0`}>
+                            {session?.user?.name}
+                          </p>
                           {!session.user.image ? (
                             <>
                               <PersonCircle className="ms-1" size={25} />

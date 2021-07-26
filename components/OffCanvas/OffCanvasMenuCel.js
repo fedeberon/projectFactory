@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Offcanvas, Button, Navbar } from "react-bootstrap";
 import { List } from "react-bootstrap-icons";
 import NavSearchCel from "../NavSearchCel/NavSearchCel";
+import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
 const OffCanvasMenuCel = () => {
   const [show, setShow] = useState(false);
@@ -11,9 +12,9 @@ const OffCanvasMenuCel = () => {
 
   return (
     <>
-      <Button variant="transparent" onClick={handleToggle}>
+      <PrimaryButton onClick={handleToggle}>
         <List size={25} />
-      </Button>
+      </PrimaryButton>
 
       <Offcanvas show={show} onHide={handleToggle}>
         <Offcanvas.Header className="p-0 pe-3" closeButton>

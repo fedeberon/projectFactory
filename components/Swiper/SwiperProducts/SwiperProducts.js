@@ -6,6 +6,9 @@ import styles from "./SwiperProducts.module.css";
 
 // Custom Hooks
 import useSize from "../../../hooks/window/useSize";
+import PrimaryButton from "../../Buttons/PrimaryButton/PrimaryButton";
+import Link from "next/link";
+import { Col, Row } from "react-bootstrap";
 /**
  * Docs of swiperJS in
  * https://swiperjs.com/react
@@ -24,13 +27,13 @@ const SwiperProducts = (props) => {
   const [slidesPerViewLocal, setSlidesPerViewLocal] = useState(0);
 
   useEffect(() => {
-    if (slidesPerViewMobile.dimensionLimit < width) {
+    if (slidesPerViewMobile.dimensionLimit <= width) {
       setSlidesPerViewLocal(slidesPerViewMobile.slides);
     }
-    if (slidesPerViewTablet.dimensionLimit < width) {
+    if (slidesPerViewTablet.dimensionLimit <= width) {
       setSlidesPerViewLocal(slidesPerViewTablet.slides);
     }
-    if (slidesPerViewDesktop.dimensionLimit < width) {
+    if (slidesPerViewDesktop.dimensionLimit <= width) {
       setSlidesPerViewLocal(slidesPerViewDesktop.slides);
     }
   }, [width]);
@@ -55,7 +58,7 @@ const SwiperProducts = (props) => {
               <div className="swiper-slide">
                 <div className={styles.productList}>
                   <a
-                    href={`/product/${product.name.replace(/\s+/g, "-")}-${
+                    href={`/product/${product?.name?.replace(/\s+/g, "-")}-${
                       product.id
                     }`}
                     className={styles.ancor}
@@ -66,20 +69,29 @@ const SwiperProducts = (props) => {
                         className={styles.photo}
                       />
                     </figure>
-                    <div className={`${styles.info} ${styles.blockAndWeight}`}>
+                  </a>
+                  <Row className="row-cols-1">
+                    <Col>
                       <div
                         className={`${styles.name} ${styles.blockAndWeight}`}
                       >
                         <strong className={styles.blockAndWeight}>
-                          {product.name}
+                          {product?.name}
                         </strong>
-                        {product.company.name}
+                        {product?.company?.name}
                       </div>
-                      <div className={`btn btn-lg btn-light ${styles.btn}`}>
-                        {t("view-more")}
-                      </div>
-                    </div>
-                  </a>
+                    </Col>
+                    <Col className="col-auto">
+                      <Link
+                        href={`/product/${product?.name?.replace(/\s+/g, "-")}-${
+                          product.id
+                        }`}
+                        passHref
+                      >
+                        <PrimaryButton href>{t("view-more")}</PrimaryButton>
+                      </Link>
+                    </Col>
+                  </Row>
                 </div>
               </div>
             </SwiperSlide>

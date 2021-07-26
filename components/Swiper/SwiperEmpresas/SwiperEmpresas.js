@@ -9,6 +9,7 @@ import { Col, Row } from "react-bootstrap";
 
 // Custom Hooks
 import useSize from "../../../hooks/window/useSize";
+import PrimaryButton from "../../Buttons/PrimaryButton/PrimaryButton";
 /**
  * Docs of swiperJS in
  * https://swiperjs.com/react
@@ -29,13 +30,13 @@ const SwiperEmpresas = (props) => {
   const [slidesPerViewLocal, setSlidesPerViewLocal] = useState(0);
 
   useEffect(() => {
-    if (slidesPerViewMobile.dimensionLimit < width) {
+    if (slidesPerViewMobile.dimensionLimit <= width) {
       setSlidesPerViewLocal(slidesPerViewMobile.slides);
     }
-    if (slidesPerViewTablet.dimensionLimit < width) {
+    if (slidesPerViewTablet.dimensionLimit <= width) {
       setSlidesPerViewLocal(slidesPerViewTablet.slides);
     }
-    if (slidesPerViewDesktop.dimensionLimit < width) {
+    if (slidesPerViewDesktop.dimensionLimit <= width) {
       setSlidesPerViewLocal(slidesPerViewDesktop.slides);
     }
   }, [width]);
@@ -56,42 +57,54 @@ const SwiperEmpresas = (props) => {
           <SwiperSlide key={index}>
             <div className="swiper-slide">
               <div className={styles.itemList}>
-                <Link
-                  // href={`/professional/${professional.name.replace(/\s+/g, "-")}-${professional.id}`}
-                  href={"/"}
-                >
-                  <a className={styles.ancor}>
-                    <Col>
-                      <figure className={styles.figure}>
-                        <img
-                          width={350}
-                          height={160}
-                          src={company.backgroundImage}
-                          className={styles.photo}
-                        />
-                      </figure>
-                      <img
-                        src={company.previewImage}
-                        className={styles.photoPreview}
-                      />
-                    </Col>
-                    <Col className={"col-12"}>
-                      <Row>
-                        <Col className={"col-6"}>
-                          <div className={`${styles.blockAndWeight} fw-bold`}>
-                            {company.contact}
-                          </div>
-                          {company.categories[0].name}
-                        </Col>
-                        <Col className={"col-6 d-flex justify-content-end"}>
-                          <div className={`btn btn-lg btn-light ${styles.btn}`}>
-                            {t("common:view-more")}
+                <Row className="row-cols-1">
+                  <Col>
+                    <Link
+                      href={`/companies/${company.name.replace(/\s+/g, "-")}-${
+                        company.id
+                      }`}
+                      passHref
+                    >
+                      <a className={styles.ancor}>
+                        <Col>
+                          <figure className={styles.figure}>
+                            <img
+                              width={350}
+                              height={160}
+                              src={company.backgroundImage}
+                              className={styles.photo}
+                            />
+                          </figure>
+                          <div className={styles.logo}>
+                            <img
+                              src={company.previewImage}
+                              className={styles.photoPreview}
+                            />
                           </div>
                         </Col>
-                      </Row>
+                      </a>
+                    </Link>
+                  </Col>
+                  <Col className={"d-flex justify-content-between"}>
+                    <Col className={"col-auto m-2"}>
+                      <div className={`${styles.blockAndWeight} fw-bold`}>
+                        {company.contact}
+                      </div>
+                      {company.categories[0].name}
                     </Col>
-                  </a>
-                </Link>
+                    <Col className={"col-auto m-2"}>
+                      <Link
+                        href={`/companies/${company.name.replace(
+                          /\s+/g,
+                          "-"
+                        )}-${company.id}`}
+                        passHref
+                      >
+                        <PrimaryButton>{t("common:view-more")}</PrimaryButton>
+                      </Link>
+                    </Col>
+                  </Col>
+                </Row>
               </div>
             </div>
           </SwiperSlide>

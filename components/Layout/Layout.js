@@ -55,10 +55,10 @@ const Layout = ({ children, title, footer = true, header = true }) => {
       </main>
 
       {footer && (
-        <footer className="bg-light text-dark">
+        <footer className={`text-dark ${LayoutStyles.backgroundGray}`}>
           <Container>
-            <Row className="row-cols-4 justify-content-center align-items-center w-100">
-              <Col className="p-2 col-12 col-md-3">
+            <Row className="row-cols-1 row-cols-md-4 justify-content-between align-items-start w-100 gap-4 m-0 py-4">
+              <Col className="col-12 col-md-3">
                 <Image
                   src={`/logo-02.svg`}
                   width={145.295}
@@ -67,35 +67,43 @@ const Layout = ({ children, title, footer = true, header = true }) => {
                   className={`text-muted`}
                 />
               </Col>
-              <Col className="col-12 col-md-3 my-2 my-md-0">
+              <Col className="col-12 col-md-3 d-flex flex-column gap-2">
                 <Link href="/about">
-                  <a className="m-0 text-muted text-decoration-none list-group-item border-0 p-0 bg-transparent">
+                  <a
+                    className={`${LayoutStyles.ancor} m-0 text-muted list-group-item border-0 p-0 bg-transparent`}
+                  >
                     {t("who-we-are")}
                   </a>
                 </Link>
                 <Link href="/">
-                  <a className="m-0 text-muted text-decoration-none list-group-item border-0 p-0 bg-transparent">
+                  <a
+                    className={`${LayoutStyles.ancor} m-0 text-muted list-group-item border-0 p-0 bg-transparent`}
+                  >
                     {t("frequently-asked-questions")}
                   </a>
                 </Link>
                 <Link href="/policies">
-                  <a className="m-0 text-muted text-decoration-none list-group-item border-0 p-0 bg-transparent">
+                  <a
+                    className={`${LayoutStyles.ancor} m-0 text-muted list-group-item border-0 p-0 bg-transparent`}
+                  >
                     {t("site-policies")}
                   </a>
                 </Link>
                 <Link href="/contact">
-                  <a className="m-0 text-muted text-decoration-none list-group-item border-0 p-0 bg-transparent">
+                  <a
+                    className={`${LayoutStyles.ancor} m-0 text-muted list-group-item border-0 p-0 bg-transparent`}
+                  >
                     {t("contact")}
                   </a>
                 </Link>
               </Col>
-              <Col className="col-6 col-md-3">
-                <p className="m-0 text-muted">
+              <Col className="col-12 col-md-3">
+                <p className="m-0 text-muted text-break">
                   LaFabricaDeProyectosBolivar@gmail.com
                 </p>
                 <p className="m-0 text-muted">+54 9 11 4545 4545</p>
               </Col>
-              <Col className="col-6 col-md-3">
+              <Col className="col-auto">
                 <Row className="justify-content-center">
                   <Col className="col-auto">
                     <Instagram size={25} className="text-muted" />

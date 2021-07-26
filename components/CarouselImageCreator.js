@@ -5,6 +5,7 @@ import ModalForm from "./ModalForm";
 import useTranslation from "next-translate/useTranslation";
 import InputImages from "./InputImages/InputImages";
 import * as imageService from "../services/imageService";
+import PrimaryButton from "./Buttons/PrimaryButton/PrimaryButton";
 
 const CarouselImageCreator = ({ onAddCarouselImages }) => {
   const [modalAddImages, setModalAddImages] = useState(false);
@@ -43,9 +44,9 @@ const CarouselImageCreator = ({ onAddCarouselImages }) => {
   return (
     <>
       {session?.authorities?.includes("ROLE_ADMINISTRATOR") && (
-        <Button onClick={toggle}>
+        <PrimaryButton onClick={toggle}>
           {t("carousel-image-creator.add-carousel-image")}
-        </Button>
+        </PrimaryButton>
       )}
 
       <ModalForm
@@ -64,9 +65,9 @@ const CarouselImageCreator = ({ onAddCarouselImages }) => {
               withTags={false}
               onAdd={showModalTitle}
             />
-            <Button onClick={onAddImages}>
+            <PrimaryButton onClick={onAddImages}>
               {t("carousel-image-creator.add-images")}
-            </Button>
+            </PrimaryButton>
           </>
         }
         modalOpen={{ open: modalAddImages, function: setModalAddImages }}

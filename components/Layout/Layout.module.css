@@ -6,3 +6,11 @@
   -o-filter: grayscale(100%);
   filter: gray;
 }
+
+.backgroundGray {
+  background-color: #f7f7f7;
+}
+
+.ancor:hover {
+  text-decoration: underline;
+}

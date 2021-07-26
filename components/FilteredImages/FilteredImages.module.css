@@ -1,5 +1,5 @@
 .cardImage {
-  height: 500px;
+  height: 350px;
   object-fit: cover;
   width: 100%;
 }
@@ -18,19 +18,16 @@
   display: flex;
   position: absolute;
   width: 100%;
-  height: auto;
+  height: 135px;
   z-index: 2;
-  /* backdrop-filter: blur(2px); */
   background: linear-gradient(
-    0deg,
-    rgba(175, 175, 175, 0.8) 0%,
-    rgba(9, 9, 121, 0) 100%
-  );
+    0deg
+    , rgba(0,0,0,0.9009978991596639) 0%, rgba(0,0,0,0) 100%);
   justify-content: space-between;
   align-items: center;
   opacity: 0;
   color: white;
-  padding: 10px;
+  padding: 70px 20px 20px 20px;
 }
 
 .colCard:hover .cardText {
