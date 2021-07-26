@@ -7,10 +7,10 @@ import {
 import ModalImage from "../ModalImage/ModalImage";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import CarouselProjectStyle from "./CarouselProject.module.css";
-import SwiperCore, { Autoplay, Pagination, Navigation } from 'swiper';
+import SwiperCore, { Autoplay, Pagination, Navigation, Controller } from 'swiper';
 import * as imageService from "../../services/imageService";
 import "swiper/swiper-bundle.css";
-SwiperCore.use([Autoplay, Pagination, Navigation])
+SwiperCore.use([Autoplay, Pagination, Navigation, Controller])
 
 const CarouselProject = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -18,8 +18,9 @@ const CarouselProject = (props) => {
   const [slides, setSlides] = useState([]);
   const [modalImage, showModalImage] = useState(false);
   const [selectImage, setSelectImage] = useState("");
+  const [swiper, setSwiper] = useState(null);
 
-  const { images, imageOpen, setAppliedFilters, setCurrentImageId } = props;
+  const { images, imageOpen, setAppliedFilters, setCurrentImageId, reset } = props;
 
   const toggle = () => {
     showModalImage(!modalImage);
@@ -61,6 +62,21 @@ const CarouselProject = (props) => {
     }
   };
 
+  const onSwiper = (slide) => {
+    setSwiper(slide);
+    handleSlideChange(slide);
+  };
+
+  useEffect(() => {
+    resetSwiper();
+  }, [reset]);
+
+  const resetSwiper = () => {
+    if (swiper) {
+      swiper.controller.control.setTranslate(0)
+    }
+  };
+
   const setCurrentImage = (image) => {
     setCurrentImageId(image.id);
     setAppliedFilters(image.tags);
@@ -83,7 +99,8 @@ const CarouselProject = (props) => {
       slidesPerView={1}
       loop={false}
       onSlideChange={(slide) => handleSlideChange(slide)}
-      onSwiper={(slide) => handleSlideChange(slide)}
+      onSwiper={(slide) => onSwiper(slide)}
+      controller={{control : swiper}}
       navigation={{
         nextEl: ".swiper-button-next",
         prevEl: ".swiper-button-prev",

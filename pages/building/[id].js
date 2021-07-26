@@ -15,11 +15,14 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [currentImageId, setCurrentImageId] = useState(null);
+  const [reset, setReset] = useState(false);
 
   const [tagsAuxiliar, setTagsAuxiliar] = useState([]);
   const { t } = useTranslation("common");
 
   const [imagenes, setImagenes] = useState([]);
+
+  const resetCarousel = () => setReset(!reset);
 
   const router = useRouter();
   const { id } = router.query;
@@ -49,9 +52,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
     const newArray = [];
     await Promise.all(
       data.images.map(async (image) => {
-        const imageInBytes = await fetch(image.path, {
-          headers: { Authorization: session.accessToken },
-        });
+        const imageInBytes = await fetch(image.path);
         const imageInBlob = await imageInBytes.blob();
         const imageSrc = URL.createObjectURL(imageInBlob);
         image.path = imageSrc;
@@ -63,7 +64,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   };
 
   useEffect(async () => {
-    if (data.images && session) {
+    if (data.images) {
       let newArray = await onLoadImage();
       newArray = orderImagesByImageClicked(newArray);
       const firstImage = newArray[0];
@@ -90,6 +91,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
             setAppliedFilters={setAppliedFilters}
             setCurrentImageId={setCurrentImageId}
             images={imagenes}
+            reset={reset}
           />
         </Col>
       </Row>
@@ -124,16 +126,20 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
                   <Card>
                     <Card.Body>
                       <Link
-                        href={`/building/[id]`}
+                        href={{
+                          pathname: "/building/[id]",
+                          query: {img : image.id}
+                        }}
                         as={`/building/${image.buildingWork?.name?.replace(
                           /\s+/g,
                           "-"
-                        )}-${image.buildingWork.id}-${image.id}`}
+                        ).toLowerCase()}-${image.buildingWork.id}?img=${image.id}`}
                         passHref
                       >
                         <Card.Img
                           src={image.path}
-                          className={`${buildingStyles.imgCard}`}
+                          className={`${buildingStyles.imgCard} cursor-pointer`}
+                          onClick={resetCarousel}
                         />
                       </Link>
                     </Card.Body>
@@ -159,7 +165,7 @@ export async function getServerSideProps({ params, req, res, locale, query }) {
   const split = id.split("-");
   // const imageClicked = split[split.length - 1]; // The image that the user do click in home
   const buildingWorkId = split[split.length - 1];
-  let imageClicked = img;
+  let imageClicked = query.img;
 
   if (!page || page <= 0) {
     page = 0;
@@ -168,19 +174,15 @@ export async function getServerSideProps({ params, req, res, locale, query }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  if (session) {
-    token = session.accessToken;
-    images = await imageService.getImagesByBuildingWorksId(
-      buildingWorkId,
-      page,
-      size,
-      token
-    );
-    if (!imageClicked) {
-      imageClicked = images[0].id;
-    }
-    buildingWork = await buildingWorkService.getById(buildingWorkId, token);
+  images = await imageService.getImagesByBuildingWorksId(
+    buildingWorkId,
+    page,
+    99
+  );
+  if (imageClicked === undefined) {
+    imageClicked = images[0].id;
   }
+  buildingWork = await buildingWorkService.getById(buildingWorkId);
 
   return {
     props: {

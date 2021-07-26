@@ -253,12 +253,12 @@ const CompanyAdmin = ({
               defaultValue={company.tokensAsigned}
             />
             <Button
-            // onClick={(e) =>
-            //   setNewTokensToProfessional(
-            //     e.target.previousElementSibling.value,
-            //     company.id
-            //   )
-            // }
+            onClick={(e) =>
+              setNewTokensToCompany(
+                e.target.previousElementSibling.value,
+                company.id
+              )
+            }
             >
               {t("apply")}
             </Button>
@@ -274,10 +274,10 @@ const CompanyAdmin = ({
     return companiesList;
   };
 
-  const setNewTokensToProfessional = async (tokens, professionalId) => {
-    await professionalService.setNewTokensToProfessional(
+  const setNewTokensToCompany = async (tokens, companyId) => {
+    await companyService.setNewTokensToCompany(
       tokens,
-      professionalId,
+      companyId,
       session.accessToken
     );
     alert(t("tokens-setted"));

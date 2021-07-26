@@ -22,3 +22,7 @@
 .afterLess::after {
   display: none;
 }
+
+.imgProfile {
+  width: 50px;
+}

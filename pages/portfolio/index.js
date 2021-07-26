@@ -350,7 +350,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
                   }`}
                 >
                   <img
-                    className={`${filteredImagesStyles.cardImage}`}
+                    className={`${filteredImagesStyles.cardImage} cursor-pointer`}
                     src={buildingWork.previewImage}
                     alt="Professional preview"
                   />
@@ -359,7 +359,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
                 <div className={`${filteredImagesStyles.cardText}`}>
                   <Col className="col-auto">
                     <img
-                      className={`${filteredImagesStyles.imgProfile} rounded-circle`}
+                      className={`${indexStyles.imgProfile} rounded-circle`}
                       // src={buildingWork.entity.previewImage}
                     />
                   </Col>
@@ -425,7 +425,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
               <PlusSquareDotted size={100} />
             </Button>
           </Col>
-          <Col className="col-auto">{imagesCard}</Col>
+          <Col className="col-12">{imagesCard}</Col>
         </Row>
         <ModalForm
           size={"xl"}
