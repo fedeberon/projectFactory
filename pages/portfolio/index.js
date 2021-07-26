@@ -359,7 +359,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
                 <div className={`${filteredImagesStyles.cardText}`}>
                   <Col className="col-auto">
                     <img
-                      className={`${indexStyles.imgProfile} rounded-circle`}
+                      className={`${indexStyles.imgProfile}`}
                       // src={buildingWork.entity.previewImage}
                     />
                   </Col>
