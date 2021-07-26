@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useTranslation from "next-translate/useTranslation";
 import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
+import "swiper/swiper-bundle.css";
 import styles from "./SwiperProducts.module.css";
 
 // Custom Hooks

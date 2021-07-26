@@ -25,7 +25,7 @@ import * as productService from "../../services/productService";
 // Styles
 import productStyle from "./product.module.css";
 import Link from "next/link";
-import SwiperProducts from "../../components/Swiper/SwiperProducts/SwiperProducts";
+import SwiperProductsImages from "../../components/Swiper/SwiperProductsImages/SwiperProductsImages";
 
 const ProductDetail = (props) => {
   const { data } = props;
@@ -55,21 +55,12 @@ const ProductDetail = (props) => {
             </Row>
             <Row>
               <Col className="col-12 col-sm-7">
-                {/* <SwiperProducts
+                <SwiperProductsImages
                   products={data.images}
                   slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
                   slidesPerViewTablet={{ dimensionLimit: 768, slides: 1 }}
                   slidesPerViewDesktop={{ dimensionLimit: 992, slides: 1 }}
-                /> */}
-                <Card>
-                  <Card.Body>
-                    <img
-                      className={productStyle.img}
-                      src={data.product.previewImage}
-                      alt=""
-                    />
-                  </Card.Body>
-                </Card>
+                />
               </Col>
               <Col className="col-12 col-sm-5">
                 <h2 className={`${productStyle.tit}`}>
@@ -132,23 +123,6 @@ const ProductDetail = (props) => {
               </Link>
             </Col>
           </Col>
-        </Row>
-        <Row className="row-cols-1 row-cols-md-3 w-100 m-0">
-          {data.images.map((image, index) => {
-            return (
-              <Col className="p-2" key={index}>
-                <Card>
-                  <Card.Body>
-                    <img
-                      className={productStyle.img}
-                      src={image.path}
-                      alt={image.typeImage}
-                    />
-                  </Card.Body>
-                </Card>
-              </Col>
-            );
-          })}
         </Row>
       </Container>
     </Layout>
