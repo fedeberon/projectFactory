@@ -78,21 +78,24 @@ const ProductDetail = (props) => {
                 <Col>
                   <p>{data.product.description}</p>
                   <p>{`${t("price")}: $${data.product.price}`}</p>
-                  <p>Ancho: 58 cm / Altura: 85 cm / Profundidad: 56,5 cm</p>
+                  <p>
+                    {t("wide")}: 58 cm / {t("height")}: 85 cm / {t("depth")}:
+                    56,5 cm
+                  </p>
                 </Col>
                 <Col>
                   <div className="d-grid gap-2 w-50">
-                    <Button variant="dark" size="md" style={{ width: "200px" }}>
-                      <Envelope /> Consultar
-                    </Button>
+                    <PrimaryButton dark style={{ width: "200px" }}>
+                      <Envelope size={15} /> {t("consult")}
+                    </PrimaryButton>
                     <PrimaryButton style={{ width: "200px" }}>
-                      Comprar online
+                      {t("buy-online")}
                     </PrimaryButton>
                   </div>
                 </Col>
                 <Col>
                   <span className="leyenda">
-                    En la tienda online del vendedor
+                    {t("in-the-seller-is-online-shop")}
                   </span>
                 </Col>
               </Col>
@@ -123,7 +126,7 @@ const ProductDetail = (props) => {
                 )}-${data.product.company.id}`}
                 passHref
               >
-                <PrimaryButton style={{ width: "100px" }}>
+                <PrimaryButton className={`me-auto`}>
                   {t("view-more")}
                 </PrimaryButton>
               </Link>
