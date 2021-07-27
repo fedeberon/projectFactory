@@ -2,7 +2,7 @@
 import React from "react";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
-import { getSession } from "next-auth/client";
+import { useSession } from "next-auth/client";
 import {
   Badge,
   Button,
@@ -21,6 +21,7 @@ import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton"
 // Services
 import * as imageService from "../../services/imageService";
 import * as productService from "../../services/productService";
+import * as mercadopagoService from "../../services/mercadopagoService";
 
 // Styles
 import productStyle from "./product.module.css";
@@ -28,11 +29,31 @@ import Link from "next/link";
 import SwiperProducts from "../../components/Swiper/SwiperProducts/SwiperProducts";
 
 const ProductDetail = (props) => {
-  const { data } = props;
+  const [session] = useSession();
+  const { data, status } = props;
   const { t } = useTranslation("common");
-
+  
   const router = useRouter();
   const { id } = router.query;
+  
+  const buyProduct = async (id) => {
+    const mp = new MercadoPago(
+      process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY,
+      { locale: 'es-AR' }
+    );
+
+    const preference = await mercadopagoService.createPreferenceToProduct(id, session.accessToken);
+    mp.checkout(
+    {
+      preference: preference.id
+    });
+
+    const link = document.createElement("a");
+    document.body.appendChild(link);
+    link.href = preference.initPoint;
+    link.setAttribute("type", "hidden");
+    link.click();
+  };
 
   return (
     <Layout>
@@ -85,9 +106,22 @@ const ProductDetail = (props) => {
                     <Button variant="dark" size="md" style={{ width: "200px" }}>
                       <Envelope /> Consultar
                     </Button>
-                    <PrimaryButton style={{ width: "200px" }}>
-                      Comprar online
-                    </PrimaryButton>
+                    {session ?
+                      <PrimaryButton onClick={() => buyProduct(data.product.id)} style={{ width: "200px" }}>
+                        Comprar online
+                      </PrimaryButton>
+                    : 
+                      <Link href="/logIn">
+                        <PrimaryButton style={{ width: "200px" }}>
+                          Comprar online
+                        </PrimaryButton>
+                      </Link>
+                    }
+                    {status == "approved"  && (
+                      <div className="alert alert-success" role="alert">
+                        {`${t("product-purchased")}`}
+                      </div>
+                    )}
                   </div>
                 </Col>
                 <Col>
@@ -152,7 +186,7 @@ const ProductDetail = (props) => {
   );
 };
 
-export async function getServerSideProps({ params, req, res, locale }) {
+export async function getServerSideProps({ params, req, res, locale, query }) {
   let images = [];
   let product = {};
   let token;
@@ -173,6 +207,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   return {
     props: {
       data: { images, product },
+      status: query.status ? query.status : ""
     },
   };
 }

@@ -25,6 +25,7 @@ import ProfileDataStyles from "./ProfileData.module.css";
 const ProfileData = (props) => {
   const [session] = useSession();
   const [modalOpen, setModalOpen] = useState(false);
+  const [isLinkedWithMercadopago, setIsLinkedWithMercadopago] = useState(false);
   const [amountTokens, setAmountTokens] = useState(-1);
   const { t } = useTranslation("profile");
   const {
@@ -47,6 +48,8 @@ const ProfileData = (props) => {
   useEffect( async () => {
     const session = await getSession();
     const tokens = await userService.getAmountTokens(session.accessToken);
+    const isLinkedWithMercadopago = await userService.isLinkedWithMercadopago(session.accessToken);
+    setIsLinkedWithMercadopago(isLinkedWithMercadopago);
     setAmountTokens(tokens);
   }, []);
 

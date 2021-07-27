@@ -41,8 +41,26 @@ export const getAmountTokens = async (token) => {
   }
 };
 
+export const isLinkedWithMercadopago = async (token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const isLinked = localStorage.getItem("isLinkedWithMercadopago");
+  if (isLinked == null) {
+    try {
+      await API.get(`/users/is-linked-with-mercadopago`);
+      localStorage.setItem("isLinkedWithMercadopago", true);
+      return true;
+    } catch (e) {
+      localStorage.setItem("isLinkedWithMercadopago", false);
+      return false;
+    }
+  } else {
+    return isLinked == "true" ? true : false;
+  }
+};
+
 export const clearData = () => {
-  localStorage.setItem("amountTokens", -1);
+  localStorage.removeItem("amountTokens");
+  localStorage.removeItem("isLinkedWithMercadopago");
 };
 
 export const findAll = async (session) => {
