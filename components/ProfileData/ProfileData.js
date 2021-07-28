@@ -21,6 +21,7 @@ import { Briefcase } from "react-bootstrap-icons";
 
 //Styles
 import ProfileDataStyles from "./ProfileData.module.css";
+import MercadopagoButton from "../Buttons/MercadopagoButton/MercadopagoButton";
 
 const ProfileData = (props) => {
   const [session] = useSession();
@@ -34,7 +35,6 @@ const ProfileData = (props) => {
     setError,
     data,
     onBuyPlan,
-    linkToMercadopago,
     status,
   } = props;
   const [showModalPlan, setShowModalPlan] = useState(status == "approved");
@@ -83,12 +83,7 @@ const ProfileData = (props) => {
                     <Button onClick={toggleModalPlan}>
                       {t("buy-more-tokens")}
                     </Button>
-                    <a
-                      className={ProfileDataStyles.btnLinkAccount}
-                      href={linkToMercadopago}
-                    >
-                      {t("link-account-to-mercadopago")}
-                    </a>
+                    <MercadopagoButton/>
                   </div>
                 )}
               </Row>

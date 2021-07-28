@@ -16,13 +16,6 @@ const Profile = ({ data, imagesLiked, status }) => {
   const [session] = useSession();
   const { t } = useTranslation("common");
   const [error, setError] = useState("");
-  const [linkToMercadopago, setLinkToMercadopago] = useState("");
-  
-  useEffect(() => {
-    if (session) {
-      setLinkToMercadopago(getLinkToMercadopago());
-    }
-  }, [session]);
 
   const saveProfessional = async (data) => {
     try {
@@ -39,14 +32,6 @@ const Profile = ({ data, imagesLiked, status }) => {
   const savePreviewImage = async (token, previewImage) => {
     try {
       await professionalService.addPreviewImage(previewImage, token);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const saveImages = async (images, token) => {
-    try {
-      await professionalService.addImages(images, token);
     } catch (error) {
       console.error(error);
     }
@@ -84,21 +69,6 @@ const Profile = ({ data, imagesLiked, status }) => {
     return token;
   };
 
-  const getLinkToMercadopago = () => {
-    return `https://auth.mercadopago.com.ar/authorization?client_id=${process.env.NEXT_PUBLIC_MERCADOPAGO_CLIENT_ID}&response_type=code&state=${getState()}&platform_id=mp&redirect_uri=${process.env.NEXT_PUBLIC_MERCADOPAGO_REDIRECT_URI}`;
-  };
-
-  const getState = () => {
-    return `${uuidv4()}=${session.user.id}`;
-  };
-
-  const uuidv4 = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-  };
-
   const onBuyPlan = async (plan) => {
     const mp = new MercadoPago(
       process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY,
@@ -127,7 +97,6 @@ const Profile = ({ data, imagesLiked, status }) => {
           setError={setError}
           data={data}
           onBuyPlan={onBuyPlan}
-          linkToMercadopago={linkToMercadopago}
           status={status}
         />
         <SeeImagesLiked imagesLiked={imagesLiked} />

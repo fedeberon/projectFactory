@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import useTranslation from "next-translate/useTranslation";
-import styles from "./BuildingWork.module.css";
 import { Camera } from "react-bootstrap-icons";
 import Link from "next/link";
+import styles from "./BuildingWork.module.css";
 
 const BuildingWork = (props) => {
     const { buildingWork } = props;

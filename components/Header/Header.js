@@ -200,7 +200,7 @@ export default function Header() {
                     <Dropdown.Menu>
                       {isRole("ROLE_USER") && (
                         <>
-                          <Link href="/profile" passHref>
+                          <Link href={isRole("ROLE_COMPANY") ? `/companies/${session.user.name}-${session.user.id}` : "/profile"} passHref>
                             <Dropdown.Item>{t("header.profile")}</Dropdown.Item>
                           </Link>
                           <Dropdown.Divider />
