@@ -10,6 +10,7 @@ import Error from "../../components/Error";
 import Dropzone from "../Dropzone/Dropzone";
 import { useForm } from "react-hook-form";
 import { Building } from "react-bootstrap-icons";
+import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
 const CompanyCreator = () => {
   const [modalCompany, setModalCompany] = useState(false);
@@ -76,6 +77,7 @@ const CompanyCreator = () => {
         })
       );
     }
+    document.querySelector("#category").value = "";
   };
 
   const {
@@ -86,7 +88,16 @@ const CompanyCreator = () => {
   } = useForm();
 
   const onSubmit = async (
-    { name, email, contact, contactLoad, website, province, location, description },
+    {
+      name,
+      email,
+      contact,
+      contactLoad,
+      website,
+      province,
+      location,
+      description,
+    },
     event
   ) => {
     name = name.toLowerCase().trim();
@@ -149,6 +160,7 @@ const CompanyCreator = () => {
 
       <ModalForm
         size={"xl"}
+        fullscreen={"lg-down"}
         className={"Button"}
         modalTitle={t("company-creator.add-company")}
         formBody={
@@ -164,7 +176,7 @@ const CompanyCreator = () => {
                 </Col>
               </Row>
               <Row className="g-3">
-                <Col className="col-6">
+                <Col className="col-12 col-md-6">
                   <Form.Group>
                     <Form.Label htmlFor="company">
                       {t("company-creator.company-name")}
@@ -206,46 +218,47 @@ const CompanyCreator = () => {
                   </Form.Group>
 
                   <Form.Group>
-                    <Form.Label htmlFor="description">{t("description")}</Form.Label>
-                        <Form.Control
-                          type="textarea"
-                          id="description"
-                          rows="10"
-                          cols="50"
-                          placeholder={`${t("write-the-here-please", {
-                            namePlaceholder: t("the-description").toLowerCase(),
-                          })}`}
-                          className={
-                            "form-field" +
-                            (errors.description ? " has-error" : "")
-                          }
-                          style={{ resize: "none" }}
-                          {...register("description", {
-                            required: {
-                              value: true,
-                              message: `${t("is-required", {
-                                nameRequired: t("the-description"),
-                              })}`,
-                            },
-                            minLength: {
-                              value: 3,
-                              message: `${t("cannot-be-less-than-character", {
-                                nameInput: t("the-description"),
-                                numberCharacters: 3,
-                              })}`,
-                            },
-                            maxLength: {
-                              value: 255,
-                              message: `${t("cannot-be-more-than-character", {
-                                nameInput: t("description").toLowerCase(),
-                                numberCharacters: 255,
-                              })}`,
-                            }
-                          })}
-                          className={
-                            "form-field" + (errors.name ? " has-error" : "")
-                          }
-                        />
+                    <Form.Label htmlFor="description">
+                      {t("description")}
+                    </Form.Label>
+                    <Form.Control
+                      type="textarea"
+                      id="description"
+                      rows="10"
+                      cols="50"
+                      placeholder={`${t("write-the-here-please", {
+                        namePlaceholder: t("the-description").toLowerCase(),
+                      })}`}
+                      className={
+                        "form-field" + (errors.description ? " has-error" : "")
+                      }
+                      style={{ resize: "none" }}
+                      {...register("description", {
+                        required: {
+                          value: true,
+                          message: `${t("is-required", {
+                            nameRequired: t("the-description"),
+                          })}`,
+                        },
+                        minLength: {
+                          value: 3,
+                          message: `${t("cannot-be-less-than-character", {
+                            nameInput: t("the-description"),
+                            numberCharacters: 3,
+                          })}`,
+                        },
+                        maxLength: {
+                          value: 255,
+                          message: `${t("cannot-be-more-than-character", {
+                            nameInput: t("description").toLowerCase(),
+                            numberCharacters: 255,
+                          })}`,
+                        },
+                      })}
+                      className={
+                        "form-field" + (errors.name ? " has-error" : "")
+                      }
+                    />
                     {errors.description && (
                       <Form.Text
                         variant="danger"
@@ -423,7 +436,7 @@ const CompanyCreator = () => {
                     )}
                   </Form.Group>
                 </Col>
-                <Col className="col-6">
+                <Col className="col-12 col-md-6">
                   <Form.Group>
                     <Form.Label htmlFor="logo">
                       {t("company-creator.select-logo")}
@@ -455,16 +468,18 @@ const CompanyCreator = () => {
                   </Form.Group>
                 </Col>
 
-                <Col className="col-auto">
+                <Col className="col-12 order-1 order-md-2">
                   <Form.Group>
                     <Form.Label>
                       {t("company-creator.select-categories-please")}
                     </Form.Label>
-                    <Col className="col-12 d-flex">
+
+                    {/* <Col className="col-12 d-flex">
                       <Form.Control type="text" id="category" />
-                      <Button className="mx-4" onClick={AddCategory}>
+                      <PrimaryButton className="mx-4" 
+                        onClick={AddCategory}>
                         {t("company-creator.add-category")}
-                      </Button>
+                      </PrimaryButton>
                     </Col>
                     <Col className="col-auto">
                       <div className="my-3">
@@ -473,7 +488,31 @@ const CompanyCreator = () => {
                           onDeleteTag={removeTagCategory}
                         />
                       </div>
-                    </Col>
+                    </Col> */}
+
+                    <Row className="row-cols-1 row-cols-md-2 gap-2 gap-md-0">
+                      <Col className="col-12 col-md-6">
+                        <Row className="row-cols-1 row-cols-lg-2 gap-1 gap-lg-0">
+                          <Col>
+                            <Form.Control type="text" id="category" />
+                          </Col>
+                          <Col>
+                            <PrimaryButton
+                              onClick={AddCategory}
+                              className="mx-auto mx-lg-0"
+                            >
+                              {t("company-creator.add-category")}
+                            </PrimaryButton>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col className="col-auto col-md-6">
+                        <TagList
+                          tags={tagsCategories}
+                          onDeleteTag={removeTagCategory}
+                        />
+                      </Col>
+                    </Row>
                   </Form.Group>
                 </Col>
               </Row>
@@ -572,9 +611,9 @@ const CompanyCreator = () => {
               </Row>
               <Row>
                 <Col>
-                  <Button type="submit" variant="primary mt-1">
+                  <PrimaryButton dark type="submit" variant="primary mt-1">
                     {t("company-creator.add-company")}
-                  </Button>
+                  </PrimaryButton>
                 </Col>
               </Row>
               {error && (

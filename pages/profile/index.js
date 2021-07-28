@@ -19,7 +19,10 @@ const Profile = ({ data, imagesLiked, status }) => {
 
   const saveProfessional = async (data) => {
     try {
-      const professionalToken = await professionalService.become(data, session.accessToken);
+      const professionalToken = await professionalService.become(
+        data,
+        session.accessToken
+      );
 
       return professionalToken;
     } catch (error) {
@@ -56,7 +59,7 @@ const Profile = ({ data, imagesLiked, status }) => {
     delete data.backgroundImage;
     delete data.images;
     const token = await saveProfessional(data);
-    
+
     if (token != null) {
       if (previewImage) {
         await savePreviewImage(token, previewImage);
@@ -70,17 +73,18 @@ const Profile = ({ data, imagesLiked, status }) => {
   };
 
   const onBuyPlan = async (plan) => {
-    const mp = new MercadoPago(
-      process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY,
-      { locale: 'es-AR' }
-    );
-
-    const preference = await professionalService.generatePreferenceForToken(plan, session.accessToken);
-    mp.checkout(
-    {
-      preference: preference.id
+    const mp = new MercadoPago(process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY, {
+      locale: "es-AR",
     });
-  
+
+    const preference = await professionalService.generatePreferenceForToken(
+      plan,
+      session.accessToken
+    );
+    mp.checkout({
+      preference: preference.id,
+    });
+
     const link = document.createElement("a");
     document.body.appendChild(link);
     link.href = preference.initPoint;
@@ -120,6 +124,17 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
     };
   }
 
+  if (session.authorities.includes(process.env.NEXT_PUBLIC_ROLE_COMPANY)) {
+    return {
+      redirect: {
+        destination: `/companies/${session.user.name
+          .replace(/\s+/g, "-")
+          .toLowerCase()}-${session.user.id}`,
+        permanent: false,
+      },
+    };
+  }
+
   let token;
   let companies = [];
   let imagesLiked = [];
@@ -142,7 +157,7 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
     props: {
       data: companies,
       imagesLiked,
-      status: query.status ? query.status : ""
+      status: query.status ? query.status : "",
     },
   };
 }

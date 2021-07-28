@@ -18,7 +18,7 @@ import RolProfile from "../RolProfile";
 import FormProfessional from "../FormProfessional/FormProfessional";
 import Plans from "../Plans/Plans";
 import CompanyCreator from "../CompanyCreator/CompanyCreator";
-import { Briefcase } from "react-bootstrap-icons";
+import { Briefcase, PersonCircle } from "react-bootstrap-icons";
 
 //Styles
 import ProfileDataStyles from "./ProfileData.module.css";
@@ -95,15 +95,19 @@ const ProfileData = (props) => {
             <Col>
               <Row className="row-cols-1 row-cols-md-2 justify-content-center align-items-center">
                 <Col className="col-auto">
-                  <Figure className={`m-0`}>
-                    <Figure.Image
-                      width={200}
-                      height={200}
-                      className={`m-0`}
-                      src={session.user.image}
-                      roundedCircle
-                    ></Figure.Image>
-                  </Figure>
+                  {session.user.image ? (
+                    <Figure className={`m-0`}>
+                      <Figure.Image
+                        width={200}
+                        height={200}
+                        className={`${ProfileDataStyles.imgProfile} m-0`}
+                        src={session.user.image}
+                        roundedCircle
+                      ></Figure.Image>
+                    </Figure>
+                  ) : (
+                    <PersonCircle size={"auto"} />
+                  )}
                 </Col>
                 <Col className="col-auto">
                   <ListGroup className="text-break">
@@ -127,13 +131,16 @@ const ProfileData = (props) => {
 
       <ModalForm
         size={"xl"}
+        fullscreen={"lg-down"}
         modalTitle={t("formulary-plan.title")}
         className={"Button mt-50"}
         formBody={<Plans onBuyPlan={onBuyPlan} status={statusPurchased} />}
         modalOpen={{ open: showModalPlan, function: setShowModalPlan }}
       />
+
       <ModalForm
         size={"xl"}
+        fullscreen={"lg-down"}
         modalTitle={t("common:formulary.professional-form")}
         className={"Button mt-50"}
         formBody={
