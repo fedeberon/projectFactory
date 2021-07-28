@@ -1,7 +1,6 @@
 import API from "./api";
 import * as imageService from "./imageService";
 import { signIn } from "next-auth/client";
-import { getById } from "./professionalService";
 
 export const create = async (data, logo, backgroundImage, categories, token, userId) => {
   API.defaults.headers.common["Authorization"] = token;

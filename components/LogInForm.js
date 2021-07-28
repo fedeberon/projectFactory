@@ -22,6 +22,7 @@ const LogInForm = (props) => {
     try {
       await userService.login(username, password);
     } catch (e) {
+      console.log(e);
       setInvalidCredentials(true);
     }
   };
