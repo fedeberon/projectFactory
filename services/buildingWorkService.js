@@ -22,10 +22,14 @@ export const getAllByCompanyId = async (companyId , page, size) => {
   return await API.get(`/building-works/companies/${companyId}?page=${page}&size=${size}`);
 };
 
-export const getById = async (id, token) => {
-  API.defaults.headers.common["Authorization"] = token;
+export const getById = async (id) => {
   return await API.get(`/building-works/${id}`);
 };
+
+export const setNewTokensToBuildingWorkId = async (newTokens, buildingWorkId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/building-works/${buildingWorkId}/tokens/${newTokens}`);
+}
 
 export const addFolder = async (data, token) => {
   API.defaults.headers.common["Authorization"] = token;

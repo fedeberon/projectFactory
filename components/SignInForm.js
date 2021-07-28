@@ -17,9 +17,9 @@ const SignInForm = (props) => {
     handleSubmit,
   } = useForm();
 
-  const onSubmit = async ({ name, email, password }, event) => {
+  const onSubmit = async ({ email, password }, event) => {
     try {
-      await userService.add(name, password);
+      await userService.add(email, password);
     } catch (e) {
       setUsernameAlreadyExists(true);
     }
@@ -64,41 +64,6 @@ const SignInForm = (props) => {
                     className="invalid error-Form.Label text-danger"
                   >
                     {errors.email.message}
-                  </Form.Text>
-                )}
-              </FormGroup>
-              <FormGroup>
-                <Form.Label htmlFor="name">{t("name")}</Form.Label>
-                <Form.Control
-                  type="text"
-                  onClick={resetAlert}
-                  id="name"
-                  placeholder={t("write-the-here-please", {
-                    namePlaceholder: t("the-name").toLowerCase(),
-                  })}
-                  {...register("name", {
-                    required: {
-                      value: true,
-                      message: `${t("is-required", {
-                        nameRequired: t("the-name"),
-                      })}`,
-                    },
-                    minLength: {
-                      value: 3,
-                      message: `${t("cannot-be-less-than-character", {
-                        nameInput: t("the-name"),
-                        numberCharacters: 3,
-                      })}`,
-                    },
-                  })}
-                  className={"form-field" + (errors.name ? " has-error" : "")}
-                />
-                {errors.name && (
-                  <Form.Text
-                    variant="danger"
-                    className="invalid error-Form.Label text-danger"
-                  >
-                    {errors.name.message}
                   </Form.Text>
                 )}
               </FormGroup>

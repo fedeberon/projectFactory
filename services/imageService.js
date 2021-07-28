@@ -86,8 +86,7 @@ export const getProfessionalImagesByTagsLessFuntions = async (
   return images;
 };
 
-export const getImagesByBuildingWorksId = async (id, page, size, token) => {
-  API.defaults.headers.common["Authorization"] = token;
+export const getImagesByBuildingWorksId = async (id, page, size) => {
   const images = await API.get(
     `/images/building-works/${id}?page=${page}&size=${size}`
   );

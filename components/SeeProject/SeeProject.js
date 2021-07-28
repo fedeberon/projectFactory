@@ -13,7 +13,7 @@ import {
   Label,
   Row,
 } from "react-bootstrap";
-import CarouselProject from "../CarouselProject/CarouselProject";
+import SwiperCarouselProject from "../Swiper/SwiperCarouselProject/SwiperCarouselProject";
 import SeeProjectStyle from "./SeeProject.module.css";
 
 const SeeProject = ({ project, onEditProject, id, onBuyProyect, status }) => {
@@ -103,7 +103,11 @@ const SeeProject = ({ project, onEditProject, id, onBuyProyect, status }) => {
                   </Button>
                 )}
                 {project.purchased && (
-                  <Button variant={"primary"} id="btn-show-2FA" onClick={show2FA}>
+                  <Button
+                    variant={"primary"}
+                    id="btn-show-2FA"
+                    onClick={show2FA}
+                  >
                     {t("download-project")}
                   </Button>
                 )}
@@ -115,11 +119,11 @@ const SeeProject = ({ project, onEditProject, id, onBuyProyect, status }) => {
                   {t("project-edit")}
                 </Button>
               </Col>
-              {status == "approved"  &&
-              <div className="alert alert-success" role="alert">
-                {t("you-bought-this-project")}
-              </div>
-              }
+              {status == "approved" && (
+                <div className="alert alert-success" role="alert">
+                  {t("you-bought-this-project")}
+                </div>
+              )}
               <div className="cho-container"></div>
             </Row>
             <div hidden id="two-factor">
@@ -127,8 +131,9 @@ const SeeProject = ({ project, onEditProject, id, onBuyProyect, status }) => {
             </div>
             <div className="d-flex justify-content-center align-items-center my-3">
               <Col md={"12"}>
-                {project?.images?.map(image => 
-                <img key={image.id} src={image.path}/>)}
+                {project?.images?.map((image) => (
+                  <img key={image.id} src={image.path} />
+                ))}
               </Col>
             </div>
             <iframe
