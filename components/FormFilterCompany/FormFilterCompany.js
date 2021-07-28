@@ -4,6 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Button, Col, Form, FormGroup, Row } from "react-bootstrap";
 import Select from "react-select";
 import useSize from "../../hooks/window/useSize";
+import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
 const FormFilterCompany = (props) => {
   const { onGetFilterCompanies, setCompanies } = props;
@@ -47,7 +48,7 @@ const FormFilterCompany = (props) => {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Row
         className="row-cols-1 row-cols-md-3 gap-2 gap-md-0"
-        style={width >= 768 ? { height: 100 } : { height: 'auto' }}
+        style={width >= 768 ? { height: 100 } : { height: "auto" }}
       >
         <Col className="col-12 col-md-4">
           <FormGroup>
@@ -119,9 +120,9 @@ const FormFilterCompany = (props) => {
           </FormGroup>
         </Col>
         <Col className="col-12 col-md-4 align-self-center">
-          <Button type="submit" variant="primary">
+          <PrimaryButton type="submit" dark>
             {t("search")}
-          </Button>
+          </PrimaryButton>
         </Col>
       </Row>
     </Form>

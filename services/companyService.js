@@ -39,6 +39,11 @@ export const findAll = async (status, page, size) => {
   return await API.get(`/companies/status/${status}?page=${page}&size=${size}`);
 };
 
+export const setNewTokensToCompany = async (newTokens, companyId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/companies/${companyId}/tokens/${newTokens}`);
+}
+
 export const findAllByStatus = async (page, size, status) => {
   return await API.get(`/companies/status/${status}?page=${page}&size=${size}`);
 };

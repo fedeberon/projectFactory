@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  Col,
-  Row,
-  Button,
-  Form,
-} from "react-bootstrap";
+import { Col, Row, Button, Form } from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
 import ModalForm from "../ModalForm";
@@ -14,6 +9,7 @@ import FormTag from "../FormTag/FormTag";
 import InputImages from "../../components/InputImages/InputImages";
 import Error from "../../components/Error";
 import Dropzone from "../Dropzone/Dropzone";
+import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
 const FormObra = ({
   toggle,
@@ -25,7 +21,7 @@ const FormObra = ({
   images,
   setImages,
   changeState,
-  buildingWorkId
+  buildingWorkId,
 }) => {
   const { t } = useTranslation("common");
   const [currentImageTag, setCurrentImageTag] = useState({});
@@ -86,7 +82,10 @@ const FormObra = ({
           }
         }
         if (changeState.stateFormObra.put) {
-          const buildingWorkModify = await onSetbuildingWork(data, buildingWorkId);
+          const buildingWorkModify = await onSetbuildingWork(
+            data,
+            buildingWorkId
+          );
           if (buildingWorkModify) {
             setPreviewImage([]);
             event.target.reset();
@@ -113,14 +112,9 @@ const FormObra = ({
   return (
     <div>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Row className="row-cols-1 g-4">
+        <Row className="row-cols-1 gap-2">
           <Col>
-            <Row>
-              <Col className="col-12">
-                {/* <h2>{t("formulary.professional-profile")}</h2> */}
-              </Col>
-            </Row>
-            <Row>
+            <Row className="row-cols-1 row-cols-sm-2 gap-2 gap-sm-0">
               <Col>
                 <Form.Group>
                   <Form.Label htmlFor="name">{t("name")}</Form.Label>
@@ -167,7 +161,9 @@ const FormObra = ({
                   )}
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label htmlFor="description">{t("description")}</Form.Label>
+                  <Form.Label htmlFor="description">
+                    {t("description")}
+                  </Form.Label>
                   <Controller
                     name="description"
                     control={control}
@@ -197,10 +193,10 @@ const FormObra = ({
                     render={({ field }) => (
                       <Form.Control
                         {...field}
-                        type="textarea"
+                        as="textarea"
                         id="description"
-                        rows="10"
-                        cols="50"
+                        rows={6}
+                        cols={50}
                         placeholder={`${t("write-the-here-please", {
                           namePlaceholder: t("the-description").toLowerCase(),
                         })}`}
@@ -241,7 +237,9 @@ const FormObra = ({
             <Row>
               <Col className="p-0">
                 <Form.Group className="text-center">
-                  <Form.Label htmlFor="uploadFiles">{t("common:upload-images")}</Form.Label>
+                  <Form.Label htmlFor="uploadFiles">
+                    {t("common:upload-images")}
+                  </Form.Label>
                   <InputImages
                     images={images}
                     accept={"image/*"}
@@ -254,9 +252,9 @@ const FormObra = ({
               </Col>
             </Row>
             {changeState.stateFormObra.post && (
-              <Button type="submit" variant="primary mt-1">
+              <PrimaryButton dark type="submit">
                 {t("common:send")}
-              </Button>
+              </PrimaryButton>
             )}
             {changeState.stateFormObra.put && (
               <Button type="submit" variant="warning mt-1">

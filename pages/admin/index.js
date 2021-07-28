@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
 import { Button, Col, Row } from "react-bootstrap";
 import { CheckCircle, XCircle } from "react-bootstrap-icons";
-import { Col, Row } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 
 // Components
