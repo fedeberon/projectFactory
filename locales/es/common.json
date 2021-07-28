@@ -155,6 +155,7 @@
   "issuer-bank": "Banco emisor",
   "installments": "Cuotas",
   "project-purchased": "Has comprado este proyecto",
+  "product-purchased": "Has comprado este producto",
   "invalid-card": "Numero de tarjeta invalido",
 
   "FormTwoFactorAuthentication": "-------------------",
