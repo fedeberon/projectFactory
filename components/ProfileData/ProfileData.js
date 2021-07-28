@@ -6,6 +6,7 @@ import {
   Row,
   Col,
   Button,
+  Figure,
 } from "react-bootstrap";
 import { useSession, getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
@@ -22,6 +23,7 @@ import { Briefcase } from "react-bootstrap-icons";
 //Styles
 import ProfileDataStyles from "./ProfileData.module.css";
 import MercadopagoButton from "../Buttons/MercadopagoButton/MercadopagoButton";
+import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
 const ProfileData = (props) => {
   const [session] = useSession();
@@ -29,14 +31,8 @@ const ProfileData = (props) => {
   const [isLinkedWithMercadopago, setIsLinkedWithMercadopago] = useState(false);
   const [amountTokens, setAmountTokens] = useState(-1);
   const { t } = useTranslation("profile");
-  const {
-    onBecomeProfessional,
-    error,
-    setError,
-    data,
-    onBuyPlan,
-    status,
-  } = props;
+  const { onBecomeProfessional, error, setError, data, onBuyPlan, status } =
+    props;
   const [showModalPlan, setShowModalPlan] = useState(status == "approved");
   const [statusPurchased, setStatusPurchased] = useState(status);
 
@@ -45,10 +41,12 @@ const ProfileData = (props) => {
     setShowModalPlan(!showModalPlan);
   };
 
-  useEffect( async () => {
+  useEffect(async () => {
     const session = await getSession();
     const tokens = await userService.getAmountTokens(session.accessToken);
-    const isLinkedWithMercadopago = await userService.isLinkedWithMercadopago(session.accessToken);
+    const isLinkedWithMercadopago = await userService.isLinkedWithMercadopago(
+      session.accessToken
+    );
     setIsLinkedWithMercadopago(isLinkedWithMercadopago);
     setAmountTokens(tokens);
   }, []);
@@ -59,9 +57,9 @@ const ProfileData = (props) => {
     <Container>
       {session ? (
         <>
-          <Row className="row-cols-1 g-2">
-            <Row className="p-0">
-              <Row className="col-auto g-2 d-flex">
+          <Row className="row-cols-1 gap-2 row w-100 m-0">
+            <Col className="p-0">
+              <Row className="p-0 row m-0 w-100 gap-2 gap-md-0 justify-content-center">
                 {!session.authorities.includes("ROLE_PROFESSIONAL") &&
                 !session.authorities.includes("ROLE_ADMINISTRATOR") &&
                 !session.authorities.includes("ROLE_COMPANY") ? (
@@ -78,30 +76,48 @@ const ProfileData = (props) => {
                     </Col>
                   </>
                 ) : (
-                  <div>
-                    <span className="d-block">{`${t("your-tokens")}: ${amountTokens}`}</span>
-                    <Button onClick={toggleModalPlan}>
-                      {t("buy-more-tokens")}
-                    </Button>
-                    <MercadopagoButton/>
-                  </div>
+                  <>
+                    <Col className="col-auto">
+                      <span className="d-block">{`${t(
+                        "your-tokens"
+                      )}: ${amountTokens}`}</span>
+                      <PrimaryButton dark onClick={toggleModalPlan}>
+                        {t("buy-more-tokens")}
+                      </PrimaryButton>
+                    </Col>
+                    <Col className="col-auto d-flex align-items-end">
+                      <MercadopagoButton />
+                    </Col>
+                  </>
                 )}
               </Row>
-            </Row>
-            <Col>
-              <img className={`${ProfileDataStyles.imgProfile}`} src={session.user.image}></img>
             </Col>
             <Col>
-              <ListGroup>
-                <h3>{t("common:name")}</h3>
-                <ListGroupItem>{session.user.name}</ListGroupItem>
-                <h3>{t("common:email")}</h3>
-                <ListGroupItem>{session.user.email}</ListGroupItem>
-                <h3>{t("authority")}</h3>
-                <ListGroupItem>
-                  <RolProfile />
-                </ListGroupItem>
-              </ListGroup>
+              <Row className="row-cols-1 row-cols-md-2 justify-content-center align-items-center">
+                <Col className="col-auto">
+                  <Figure className={`m-0`}>
+                    <Figure.Image
+                      width={200}
+                      height={200}
+                      className={`m-0`}
+                      src={session.user.image}
+                      roundedCircle
+                    ></Figure.Image>
+                  </Figure>
+                </Col>
+                <Col className="col-auto">
+                  <ListGroup className="text-break">
+                    <h3>{t("common:name")}</h3>
+                    <ListGroupItem>{session.user.name}</ListGroupItem>
+                    <h3>{t("common:email")}</h3>
+                    <ListGroupItem>{session.user.email}</ListGroupItem>
+                    <h3>{t("authority")}</h3>
+                    <ListGroupItem>
+                      <RolProfile />
+                    </ListGroupItem>
+                  </ListGroup>
+                </Col>
+              </Row>
             </Col>
           </Row>
         </>
