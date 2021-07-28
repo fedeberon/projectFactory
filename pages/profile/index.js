@@ -162,11 +162,19 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
   if (!size || size <= 0) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
-
-  if (session) {
-    token = session.accessToken;
-    companies = await companyService.findAll("APPROVED", page, size, token);
-    imagesLiked = await imageService.getLikePhotos(page, size, token);
+  try {
+    if (session) {
+      token = session.accessToken;
+      companies = await companyService.findAll("APPROVED", page, size, token);
+      imagesLiked = await imageService.getLikePhotos(page, size, token);
+    }
+  } catch (e) {
+    return {
+      redirect: {
+        destination: "/logIn?expired",
+        permanent: false,
+      },
+    };
   }
 
   return {

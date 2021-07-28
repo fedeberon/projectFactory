@@ -480,21 +480,30 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (!size || size <= 0) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
+  try {
 
-  if (session) {
-    token = session.accessToken;
-    professionalId = session.user.id;
-    professional = await professionalService.getById(professionalId, token);
-    if (professional) {
-      buildingWorks = await buildingWorkService.getByProfessionalId(
-        professional.id,
-        page,
-        size,
-        token
-      );
+    if (session) {
+      token = session.accessToken;
+      professionalId = session.user.id;
+      professional = await professionalService.getById(professionalId, token);
+      if (professional) {
+        buildingWorks = await buildingWorkService.getByProfessionalId(
+          professional.id,
+          page,
+          size,
+          token
+        );
+      }
     }
+  } catch (e) {
+    return {
+      redirect: {
+        destination: "/logIn?expired",
+        permanent: false,
+      },
+    };
   }
-
+      
   return {
     props: {
       professional,

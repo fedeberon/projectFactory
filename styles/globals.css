@@ -70,3 +70,7 @@ body {
   padding-top: 55px;
   padding-bottom: 55px;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
