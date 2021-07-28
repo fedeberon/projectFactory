@@ -22,6 +22,7 @@ const LogInForm = (props) => {
     try {
       await userService.login(username, password);
     } catch (e) {
+      console.log(e);
       setInvalidCredentials(true);
     }
   };
@@ -33,26 +34,26 @@ const LogInForm = (props) => {
           <Card.Body>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Form.Group>
-                <Form.Label htmlFor="username">{t("username")}</Form.Label>
+                <Form.Label htmlFor="username">{t("email")}</Form.Label>
                 <Form.Control
                   type="text"
                   onClick={resetInvalidCredentials}
                   name="username"
                   id="username"
                   placeholder={t("write-the-here-please", {
-                    namePlaceholder: t("the-username").toLowerCase(),
+                    namePlaceholder: t("the-email").toLowerCase(),
                   })}
                   {...register("username", {
                     required: {
                       value: true,
                       message: `${t("is-required", {
-                        nameRequired: t("the-username"),
+                        nameRequired: t("the-email"),
                       })}`,
                     },
                     minLength: {
                       value: 3,
                       message: `${t("cannot-be-less-than-character", {
-                        nameInput: t("the-username"),
+                        nameInput: t("the-email"),
                         numberCharacters: 3,
                       })}`,
                     },

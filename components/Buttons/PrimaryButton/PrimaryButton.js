@@ -3,7 +3,8 @@ import { Button } from "react-bootstrap";
 import styles from "./PrimaryButton.module.css";
 
 const PrimaryButton = forwardRef((props, ref) => {
-  const { className, children, onClick, href, outline, style } = props;
+  const { className, children, onClick, href, outline, dark, style, type } =
+    props;
 
   return (
     <Button
@@ -14,11 +15,13 @@ const PrimaryButton = forwardRef((props, ref) => {
         outline
           ? `${styles.btnLightOutline} ${styles.btnLight}`
           : styles.btnLight
-      } 
+      }
+      ${dark ? styles.btnDark : ""} 
       d-flex align-items-center justify-content-center gap-1
       ${className ? className : ""}
       `}
       style={style}
+      type={type}
     >
       {children}
     </Button>

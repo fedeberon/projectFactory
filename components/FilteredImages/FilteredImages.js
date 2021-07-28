@@ -50,7 +50,10 @@ const FilteredImages = ({ isLoading, images }) => {
             <Card className={`${filteredImagesStyles.colCard}`}>
               <Card.Body className="p-0">
                 <Link
-                  href={`/building/[id]`}
+                  href={{
+                    pathname: "/building/[id]",
+                    query: {img : image.id}
+                  }}
                   as={`/building/${image.buildingWork?.name?.replace(
                     /\s+/g,
                     "-"
@@ -58,7 +61,7 @@ const FilteredImages = ({ isLoading, images }) => {
                   passHref
                 >
                   <img
-                    className={`${filteredImagesStyles.cardImage}`}
+                    className={`${filteredImagesStyles.cardImage} cursor-pointer`}
                     src={image.path}
                     alt="Professional preview"
                   />

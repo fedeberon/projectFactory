@@ -65,7 +65,7 @@ const CompanyDetails = ({ company, initalBuildingWorks, status, session }) => {
   }, [company])
 
   const buildingWorksList = (
-    <Row>
+    <Row className="g-2">
       {buildingWorks.map((buildingWork) => (
         <Col sm={6} md={6} lg={4} key={buildingWork.id}>
           <BuildingWork buildingWork={buildingWork} />

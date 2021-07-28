@@ -1,18 +1,22 @@
 import React from "react";
 import useTranslation from "next-translate/useTranslation";
 import { Camera } from "react-bootstrap-icons";
+import Link from "next/link";
+import styles from "./BuildingWork.module.css";
 
 const BuildingWork = (props) => {
     const { buildingWork } = props;
     const { t } = useTranslation("common");
 
     return (
-    <div className={`card`}>
-        <img
-        className="card-img-top"
-        src={buildingWork.previewImage}
-        alt="preview"
-        />
+    <div className={`${styles.divCard} card`}>
+        <Link href={`/building/${buildingWork.name.replace(/\s+/g, "-").toLowerCase()}-${buildingWork.id}`}>
+            <img
+            className="cursor-pointer card-img-top"
+            src={buildingWork.previewImage}
+            alt="preview"
+            />
+        </Link>
 
         <div className="card-body d-flex">
             <div className="w-75 d-flex align-items-center">

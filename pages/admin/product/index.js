@@ -252,12 +252,12 @@ const ProductAdmin = ({
               defaultValue={product.tokensAsigned}
             />
             <Button
-            // onClick={(e) =>
-            //   setNewTokensToproduct(
-            //     e.target.previousElementSibling.value,
-            //     product.id
-            //   )
-            // }
+            onClick={(e) =>
+              setNewTokensToProduct(
+                e.target.previousElementSibling.value,
+                product.id
+              )
+            }
             >
               {t("apply")}
             </Button>
@@ -274,11 +274,11 @@ const ProductAdmin = ({
   };
 
   const setNewTokensToProduct = async (tokens, productId) => {
-    // await productService.setNewTokensToProductId(
-    //   tokens,
-    //   productId,
-    //   session.accessToken
-    // );
+    await productService.setNewTokensToProductId(
+      tokens,
+      productId,
+      session.accessToken
+    );
     alert(t("tokens-setted"));
   };
 

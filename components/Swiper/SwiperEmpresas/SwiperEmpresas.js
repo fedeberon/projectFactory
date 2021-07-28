@@ -60,7 +60,7 @@ const SwiperEmpresas = (props) => {
                 <Row className="row-cols-1">
                   <Col>
                     <Link
-                      href={`/companies/${company.name.replace(/\s+/g, "-")}-${
+                      href={`/companies/${company.name.replace(/\s+/g, "-").toLowerCase()}-${
                         company.id
                       }`}
                       passHref
@@ -97,7 +97,7 @@ const SwiperEmpresas = (props) => {
                         href={`/companies/${company.name.replace(
                           /\s+/g,
                           "-"
-                        )}-${company.id}`}
+                        ).toLowerCase()}-${company.id}`}
                         passHref
                       >
                         <PrimaryButton>{t("common:view-more")}</PrimaryButton>
