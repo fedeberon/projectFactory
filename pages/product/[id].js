@@ -70,8 +70,9 @@ const ProductDetail = (props) => {
                   <p>{data.product.description}</p>
                   <p>{`${t("price")}: $${data.product.price}`}</p>
                   <p>
-                    {t("wide")}: 58 cm / {t("height")}: 85 cm / {t("depth")}:
-                    56,5 cm
+                    {t("width")}: {data.product.width} cm / {t("height")}:{" "}
+                    {data.product.height} cm / {t("depth")}:{data.product.depth}{" "}
+                    cm
                   </p>
                 </Col>
                 <Col>
@@ -101,7 +102,7 @@ const ProductDetail = (props) => {
               </h3>
               <h3 className={`${productStyle.titProjects}`}>
                 <Badge className={`${productStyle.badge}`} bg="" text="dark">
-                  23
+                  {data.product.company.countBuildingWorks}
                 </Badge>
                 {` Obras`}
               </h3>

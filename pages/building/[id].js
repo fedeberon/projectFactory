@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import Layout from "../../components/Layout/Layout";
-import CarouselProject from "../../components/CarouselProject/CarouselProject";
+import SwiperCarouselProject from "../../components/Swiper/SwiperCarouselProject/SwiperCarouselProject";
 import { getSession } from "next-auth/client";
 import * as imageService from "../../services/imageService";
 import * as buildingWorkService from "../../services/buildingWorkService";
 import Link from "next/link";
-import { Row, Col, Button, Card } from "react-bootstrap";
+import { Row, Col, Button, Card, Badge, Container } from "react-bootstrap";
 import buildingStyles from "./building.module.css";
+import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton";
+import { GeoAlt } from "react-bootstrap-icons";
+import FilteredImages from "../../components/FilteredImages/FilteredImages";
 
 const BuildingDetail = ({ data, session, imageClicked }) => {
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
@@ -16,6 +19,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [currentImageId, setCurrentImageId] = useState(null);
   const [reset, setReset] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const [tagsAuxiliar, setTagsAuxiliar] = useState([]);
   const { t } = useTranslation("common");
@@ -36,15 +40,19 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   };
 
   const getProfessionalsByTags = async () => {
+    setLoading(true);
     try {
-      return await imageService.getProfessionalImagesByTags(
+      const images = await imageService.getProfessionalImagesByTags(
         appliedFilters,
         pageSize.page,
         pageSize.size,
         session?.accessToken
       );
+      setLoading(false);
+      return images;
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -72,6 +80,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
       imageService.increaseVisit(firstImage);
       setImagenes(newArray);
       setAppliedFilters(firstImage.tags);
+      setTagsAuxiliar(firstImage.tags);
     }
   }, [data.images]);
 
@@ -85,71 +94,98 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
 
   return (
     <Layout>
-      <Row className="row-cols-1 g-2">
-        <Col>
-          <CarouselProject
-            setAppliedFilters={setAppliedFilters}
-            setCurrentImageId={setCurrentImageId}
-            images={imagenes}
-            reset={reset}
-          />
-        </Col>
-      </Row>
-      <section className="container py-2">
-        <Row>
+      <Container fluid className="p-0">
+        <SwiperCarouselProject
+          setAppliedFilters={setAppliedFilters}
+          setCurrentImageId={setCurrentImageId}
+          images={imagenes}
+          reset={reset}
+        />
+        <Row className="w-100 m-0">
           <Col>
-            <Row className="row-cols-md-2 g-4">
-              <Col className="col-md-2 col-12">
-                <Card body variant="outline-secondary">
-                  <Card.Title tag="h5">
-                    {data.buildingWork.professional?.company.name}
-                  </Card.Title>
-                  <Card.Text>
-                    {data.buildingWork.professional?.province}
-                  </Card.Text>
-                  <Card.Text>
-                    {data.buildingWork.professional?.location}
-                  </Card.Text>
-                  <Button>Ver Perfil</Button>
-                </Card>
-              </Col>
-              <Col className="col-md-10 col-12">
-                <Card className="border-0">
-                  <Card.Title tag="h5">{data.buildingWork.name}</Card.Title>
-                  <Card.Text>{data.buildingWork.description}</Card.Text>
-                </Card>
-              </Col>
-            </Row>
-            <Row className="row-cols-md-3">
-              {filteredImages.map((image) => (
-                <Col key={image.id} className="col-4">
-                  <Card>
-                    <Card.Body>
-                      <Link
-                        href={{
-                          pathname: "/building/[id]",
-                          query: {img : image.id}
-                        }}
-                        as={`/building/${image.buildingWork?.name?.replace(
-                          /\s+/g,
-                          "-"
-                        ).toLowerCase()}-${image.buildingWork.id}?img=${image.id}`}
-                        passHref
-                      >
-                        <Card.Img
-                          src={image.path}
-                          className={`${buildingStyles.imgCard} cursor-pointer`}
-                          onClick={resetCarousel}
-                        />
-                      </Link>
-                    </Card.Body>
+            <Container>
+              <Row className="w-100 gap-2 gap-lg-0 m-0">
+                <Col className="col-12 col-md-12 col-lg-9 order-lg-2">
+                  <Card className="border-0">
+                    <Card.Title
+                      tag="h5"
+                      className={`${buildingStyles.titObraDetail}`}
+                    >
+                      {data.buildingWork.name}
+                    </Card.Title>
+                    <Card.Text>{data.buildingWork.description}</Card.Text>
                   </Card>
                 </Col>
-              ))}
-            </Row>
+                <Col className="col-12 col-md-12 col-lg-3 order-lg-1">
+                  <Col
+                    className={`${buildingStyles.boxDeg} p-4 d-flex flex-column gap-2`}
+                  >
+                    <h3 className={`${buildingStyles.titName}`}>
+                      {data.buildingWork.professional.company.name}
+                    </h3>
+                    <h3 className={`${buildingStyles.titProjects}`}>
+                      <Badge
+                        className={`${buildingStyles.badge}`}
+                        bg=""
+                        text="dark"
+                      >
+                        {
+                          data.buildingWork.professional.company
+                            .countBuildingWorks
+                        }
+                      </Badge>
+                      {` Obras`}
+                    </h3>
+                    <h3
+                      className={`${buildingStyles.location} p-0 d-flex gap-2`}
+                    >
+                      <GeoAlt size={15} />
+                      {`${data.buildingWork.professional.company.location}, ${data.buildingWork.professional.company.province}`}
+                    </h3>
+
+                    <Link
+                      href={`/companies/${data.buildingWork.name
+                        .replace(/\s+/g, "-")
+                        .toLowerCase()}-${
+                        data.buildingWork.professional.company.id
+                      }`}
+                      passHref
+                    >
+                      <PrimaryButton className={`me-auto`}>
+                        {t("view-more")}
+                      </PrimaryButton>
+                    </Link>
+                  </Col>
+                </Col>
+              </Row>
+            </Container>
           </Col>
         </Row>
-      </section>
+        <section className="container py-2">
+          <Row>
+            <Col>
+              <div className={`${buildingStyles.related} row`}>
+                <div className="col">
+                  <h2 className={`${buildingStyles.tit}`}>
+                    {t("other-projects-of")}
+                    {tagsAuxiliar.map((tag) => {
+                      return ` ${tag.tag}`;
+                    })}
+                  </h2>
+                </div>
+              </div>
+              <Row className="row-cols-1 gap-2">
+                <Col>
+                  <FilteredImages
+                    isLoading={isLoading}
+                    images={filteredImages}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </section>
+      </Container>
     </Layout>
   );
 };

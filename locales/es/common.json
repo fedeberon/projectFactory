@@ -101,7 +101,7 @@
     "company-logo": "Logo de la empresa",
     "select-logo": "Seleccione el logo por favor",
     "select-background-image": "Seleccione una imagen de fondo por favor",
-    "select-categories-please": "Seleccione las categorias de la empresa",
+    "select-categories-please": "Seleccione las categorias",
     "categories": "Categorias",
     "the-category": "La categoria",
     "the-categories": "Las categorias",
@@ -254,7 +254,11 @@
   "buy-online": "Comprar online",
   "consult": "Consultar",
   "in-the-seller-is-online-shop": "En la tienda online del vendedor",
-  "wide": "Ancho",
+  "width": "Ancho",
+  "the-width": "El ancho",
   "height": "Altura",
-  "depth": "Profundidad"
+  "the-height": "La altura",
+  "depth": "Profundidad",
+  "the-depth": "La profundidad",
+  "other-projects-of": "Otros proyectos de"
 }

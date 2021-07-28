@@ -335,7 +335,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
   };
 
   const imagesCard = (
-    <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
+    <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       {isLoading ? (
         <SpinnerCustom />
       ) : (
@@ -429,6 +429,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
         </Row>
         <ModalForm
           size={"xl"}
+          fullscreen={"lg-down"}
           modalTitle={t("work-form")}
           className={"Button mt-50"}
           formBody={

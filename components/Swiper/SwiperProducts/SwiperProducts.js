@@ -59,7 +59,7 @@ const SwiperProducts = (props) => {
               <div className="swiper-slide">
                 <div className={styles.productList}>
                   <a
-                    href={`/product/${product?.name?.replace(/\s+/g, "-")}-${
+                    href={`/product/${product?.name?.replace(/\s+/g, "-").toLowerCase()}-${
                       product.id
                     }`}
                     className={styles.ancor}
@@ -84,9 +84,9 @@ const SwiperProducts = (props) => {
                     </Col>
                     <Col className="col-auto">
                       <Link
-                        href={`/product/${product?.name?.replace(/\s+/g, "-")}-${
-                          product.id
-                        }`}
+                        href={`/product/${product?.name
+                          ?.replace(/\s+/g, "-")
+                          .toLowerCase()}-${product.id}`}
                         passHref
                       >
                         <PrimaryButton href>{t("view-more")}</PrimaryButton>
