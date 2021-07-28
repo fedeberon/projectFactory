@@ -41,7 +41,9 @@ const Product = (props) => {
       </Card.Body>
       <Card.Footer className="d-flex justify-content-start bg-white">
         <Link
-          href={`/product/${product.name.replace(/\s+/g, "-")}-${product.id}`}
+          href={`/product/${product.name.replace(/\s+/g, "-").toLowerCase()}-${
+            product.id
+          }`}
         >
           <PrimaryButton>{t("common:view-more")}</PrimaryButton>
         </Link>

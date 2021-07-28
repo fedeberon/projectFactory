@@ -49,16 +49,14 @@ const ProjectDetail = ({ data, idSplit, status }) => {
 
   return (
     <Layout>
-      <section className="container py-2">
-        <SeeProject
-          project={project}
-          status={status}
-          onBuyProyect={onBuyProyect}
-          downloadProject={downloadProject}
-          onEditProject={editProject}
-          id={idSplit}
-        />
-      </section>
+      <SeeProject
+        project={project}
+        status={status}
+        onBuyProyect={onBuyProyect}
+        downloadProject={downloadProject}
+        onEditProject={editProject}
+        id={idSplit}
+      />
     </Layout>
   );
 };

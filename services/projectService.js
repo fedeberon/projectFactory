@@ -58,8 +58,8 @@ export const addImages = async (images, projectId, token) => {
 
 export const addImagesRecursive = async (images, projectId, token) => {
   const image = images.shift();
-  const response = await addImage(image, projectId, token);
-  if (response && images.length > 0) {
+  await addImage(image, projectId, token);
+  if (images.length > 0) {
     await addImagesRecursive(images, projectId, token);
   }
 };

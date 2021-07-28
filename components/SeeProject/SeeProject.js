@@ -3,20 +3,15 @@ import ModalForm from "../ModalForm";
 import useTranslation from "next-translate/useTranslation";
 import FormEditProject from "../FormEditProject";
 import { useRouter } from "next/router";
-import FormTwoFactorAuthentication from "../FormTwoFactorAuthentication";
 import {
-  Form,
-  Button,
-  Card,
   Col,
   Container,
-  Label,
   Row,
 } from "react-bootstrap";
-import CarouselProject from "../CarouselProject/CarouselProject";
 import SeeProjectStyle from "./SeeProject.module.css";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 import CardProject from "../CardProject/CardProject";
+import SwiperCarouselProject from "../Swiper/SwiperCarouselProject/SwiperCarouselProject";
 
 const SeeProject = ({ project, onEditProject, id, onBuyProyect, downloadProject, status }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -46,16 +41,21 @@ const SeeProject = ({ project, onEditProject, id, onBuyProyect, downloadProject,
         }
         modalOpen={{ open: modalOpen, function: setModalOpen }}
       />
-      <Container>
+      <div className="w-100 mb-4">
+        {project.images && 
+          <SwiperCarouselProject images={project.images} setCurrentImageId={()=>{}} setAppliedFilters={()=>{}}/>
+        }
+      </div>
+      <section className="container py-2">
         <Row>
           <Col sm={12} md={4} lg={3}>
             <aside className="boxdeg">
               <div>
                 <span className={SeeProjectStyle.asideTitle}>
-                  {t("project-name")}
+                  {t("-name")}
                 </span>
                 <span>{project.name}</span>
-              </div>
+              </div>project
 
               <hr />
 
@@ -144,20 +144,10 @@ const SeeProject = ({ project, onEditProject, id, onBuyProyect, downloadProject,
             </h2>
           </div>
         
-        <Row>
+        <Row className="g-2">
           {projectsOfProfessionalList}
         </Row>
-            {/* <div className="d-flex justify-content-center align-items-center my-3">
-              <Col md={"12"}>
-                {project?.images?.map((image) => (
-                  <img key={image.id} src={image.path} />
-                ))}
-              </Col>
-            </div>
-            
-            <h4>{t("other-projects-of-professional")}</h4>
-            {projectsOfProfessionalList} */}
-      </Container>
+      </section>
     </>
   );
 };

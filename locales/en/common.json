@@ -64,7 +64,7 @@
   "total-area": "Total Area",
   "year": "Year",
   "web-site": "WebSite",
-  "view-more": "View more",
+  "view-more": "More",
   "video-path": "Link to video",
 
   "write-the-web-site": "Write the website",
@@ -252,5 +252,15 @@
   "filter": "Filter",
   "product-information": "Product Information",
   "shared": "Shared",
-  "province-of": "Province of"
+  "province-of": "Province of",
+  "buy-online": "Buy Online",
+  "consult": "Consult",
+  "in-the-seller-is-online-shop": "In the seller's online shop",
+  "width": "Width",
+  "the-width": "The width",
+  "height": "Height",
+  "the-height": "The height",
+  "depth": "Depth",
+  "the-depth": "The depth",
+  "other-projects-of": "Other projects of"
 }

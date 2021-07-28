@@ -1,5 +1,8 @@
 import API from "./api";
 import { signIn } from "next-auth/client";
+import jwt_decode from "jwt-decode";
+import * as professionalService from "./professionalService";
+import * as companyService from "./companyService";
 
 export const signInCallBack = async (user, account, profile) => {
   const data = {
@@ -15,18 +18,37 @@ export const signInCallBack = async (user, account, profile) => {
   return token;
 };
 export const login = async (username, password) => {
-  const data = {
+  const credentials = {
     username,
     password,
   };
   
-  const { token } = await API.post(`/users/login`, data);
+  const { token } = await API.post(`/users/login`, credentials);
+  const tokenWithoutPrefix = token.split("Bearer ")[1];
+  const payload = jwt_decode(tokenWithoutPrefix);
+  const data = await getDataOfUserByPayload(payload);
+
   signIn('credentials', { 
     accessToken: token,
-    name: username,
-    callbackUrl: `${window.location.origin}/`
+    name: data.name != "" ? data.name : username,
+    callbackUrl: `${window.location.origin}/`,
+    image: data.previewImage
    });
   return token;
+};
+
+const getDataOfUserByPayload = async (payload) => {
+  const authorities = payload["authorities"];
+  const userId = payload["jti"];
+  if (authorities.includes("ROLE_PROFESSIONAL")) {
+    const professional = await professionalService.getById(userId);
+    return {"name" : professional.contact, "previewImage": professional.previewImage};
+  } else if (authorities.includes("ROLE_COMPANY")) {
+    const company = await companyService.findById(userId);
+    return {"name" : company.name, "previewImage": company.previewImage};
+  } else {
+    return {"name" : "" , "previewImage": ""};
+  }
 };
 
 export const getAmountTokens = async (token) => {
