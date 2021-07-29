@@ -1,85 +1,98 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Card,
-  CardBody,
-  Row,
-  Col,
-} from "reactstrap";
-import { useTranslation } from "react-i18next";
+import { Button, Form, Card, Row, Col } from "react-bootstrap";
+import useTranslation from "next-translate/useTranslation";
 import { signIn } from "next-auth/client";
 import { Google, Facebook, Instagram } from "react-bootstrap-icons";
+import * as userService from "../services/userService";
+import Link from "next/link";
 
 const LogInForm = (props) => {
+  const [invalidCredentials, setInvalidCredentials] = useState(false);
+  const { t } = useTranslation("common");
+  const resetInvalidCredentials = () => setInvalidCredentials(false);
 
-    const { t, lang } = useTranslation("common");
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
-    const {
-      register,
-      formState: { errors },
-      handleSubmit,
-    } = useForm();
-  
-    const onSubmit = async ({ email, password }, event) => {
-      let data = {
-        email,
-        password,
-      };
-    };
-  
+  const onSubmit = async ({ username, password }, event) => {
+    try {
+      await userService.login(username, password);
+    } catch (e) {
+      console.error(e);
+      setInvalidCredentials(true);
+    }
+  };
+
   return (
     <Row className="d-flex justify-content-center">
       <Col xs={6}>
         <Card>
-          <CardBody>
+          <Card.Body>
             <Form onSubmit={handleSubmit(onSubmit)}>
-              <FormGroup>
-                <Label for="email">{t("Email")}</Label>
-                <Input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder={t("Write the email here please")}
-                  {...register("email", {
+              <Form.Group>
+                <Form.Label htmlFor="username">{t("email")}</Form.Label>
+                <Form.Control
+                  type="text"
+                  onClick={resetInvalidCredentials}
+                  name="username"
+                  id="username"
+                  placeholder={t("write-the-here-please", {
+                    namePlaceholder: t("the-email").toLowerCase(),
+                  })}
+                  {...register("username", {
                     required: {
                       value: true,
-                      message: `${t("Email is required")}`,
+                      message: `${t("is-required", {
+                        nameRequired: t("the-email"),
+                      })}`,
                     },
                     minLength: {
                       value: 3,
-                      message: `${t("Email cannot be less than 3 character")}`,
+                      message: `${t("cannot-be-less-than-character", {
+                        nameInput: t("the-email"),
+                        numberCharacters: 3,
+                      })}`,
                     },
                   })}
-                  className={"form-field" + (errors.email ? " has-error" : "")}
+                  className={
+                    "form-field" + (errors.username ? " has-error" : "")
+                  }
                 />
-                {errors.email && (
-                  <FormText className="error-label">
-                    {errors.email.message}
-                  </FormText>
+                {errors.username && (
+                  <Form.Text
+                    variant="danger"
+                    className="invalid error-Form.Label text-danger"
+                  >
+                    {errors.username.message}
+                  </Form.Text>
                 )}
-              </FormGroup>
-              <FormGroup>
-                <Label for="password">{t("Password")}</Label>
-                <Input
+              </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor="password">{t("password")}</Form.Label>
+                <Form.Control
                   type="password"
                   id="password"
-                  placeholder={t("Write the password here please")}
+                  onClick={resetInvalidCredentials}
+                  placeholder={t("write-the-here-please", {
+                    namePlaceholder: t("the-password").toLowerCase(),
+                  })}
                   {...register("password", {
                     required: {
                       value: true,
-                      message: `${t("Password is required")}`,
+                      message: `${t("is-required", {
+                        nameRequired: t("the-password"),
+                      })}`,
                     },
                     minLength: {
                       value: 8,
-                      message: `${t(
-                        "Password cannot be less than 8 character"
-                      )}`,
+                      message: `${t("cannot-be-less-than-character", {
+                        nameInput: t("the-password"),
+                        numberCharacters: 8,
+                      })}`,
                     },
                   })}
                   className={
@@ -87,23 +100,67 @@ const LogInForm = (props) => {
                   }
                 />
                 {errors.password && (
-                  <FormText className="error-label">
+                  <Form.Text
+                    variant="danger"
+                    className="invalid error-Form.Label text-danger"
+                  >
                     {errors.password.message}
-                  </FormText>
+                  </Form.Text>
                 )}
-              </FormGroup>
-              <Button color="primary" className="mt-2">{t("Log In")}</Button>
+              </Form.Group>
+              <Button type="submit" variant="primary" className="mt-2">
+                {t("log-in")}
+              </Button>
+              {invalidCredentials && (
+                <div className="alert alert-danger" role="alert">
+                  {t("invalid-credentials")}
+                </div>
+              )}
             </Form>
-            <Label for="Registrarse">Ingresar con:</Label>
-            <Button onClick={signIn} color="danger" className="mx-2" size={25}><Google/></Button>
-            <Button onClick={signIn} color="primary" className="mx-2" size={25}><Facebook/></Button>
-            <Button onClick={signIn} color="secondary" className="mx-2" size={25}><Instagram/></Button>
-          </CardBody>
+            <Form.Label htmlFor="Registrarse">{t("log-in-with")}:</Form.Label>
+            <Button
+              onClick={() => signIn("google")}
+              variant="danger"
+              className="mx-2"
+            >
+              <Google size={25} />
+            </Button>
+            <Button
+              onClick={() => signIn("facebook")}
+              variant="primary"
+              className="mx-2"
+            >
+              <Facebook size={25} />
+            </Button>
+            <Button
+              onClick={() => signIn("instagram")}
+              variant="secondary"
+              className="mx-2"
+            >
+              <Instagram size={25} />
+            </Button>
+            <Row>
+              <Col>
+                <Card.Text>
+                  {t("don't-have-an-account-please")}
+                  <Link href={"/signIn"}>
+                    <a>{` ${t("register-here").toLowerCase()}`}</a>
+                  </Link>
+                </Card.Text>
+              </Col>
+            </Row>
+            <Row className="justify-content-end">
+              <Col className="col-auto">
+                <Link href={"/"}>
+                  <Button>{t("go-back")}</Button>
+                </Link>
+              </Col>
+            </Row>
+          </Card.Body>
         </Card>
       </Col>
     </Row>
   );
 };
-}
 
 export default LogInForm;

@@ -1,27 +1,30 @@
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import ProfileData from "../../components/ProfileData";
+import React, { useState, useEffect } from "react";
+import useTranslation from "next-translate/useTranslation";
+import ProfileData from "../../components/ProfileData/ProfileData";
 import { getSession, useSession } from "next-auth/client";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Layout from "../../components/Layout/Layout";
 
 // Services
 import * as professionalService from "../../services/professionalService";
 import * as companyService from "../../services/companyService";
+import * as imageService from "../../services/imageService";
 
-const Profile = ({data}) => {
+// Components
+import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
+
+const Profile = ({ data, imagesLiked, status }) => {
   const [session] = useSession();
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
   const [error, setError] = useState("");
 
-  const saveProfessional = async (data, token) => {
+  const saveProfessional = async (data) => {
     try {
-      const professionalToken = await professionalService.become(data, token);
+      const professionalToken = await professionalService.become(data, session.accessToken);
 
       return professionalToken;
     } catch (error) {
       console.error(error);
-      setError(`${t("EmailIsAlreadyExistPleaseWriteAnotherOne")}`);
+      setError(`${t("email-is-already-exist-please-write-another-one")}`);
       return null;
     }
   };
@@ -29,14 +32,6 @@ const Profile = ({data}) => {
   const savePreviewImage = async (token, previewImage) => {
     try {
       await professionalService.addPreviewImage(previewImage, token);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const saveImages = async (images, token) => {
-    try {
-      await professionalService.addImages(images, token);
     } catch (error) {
       console.error(error);
     }
@@ -51,15 +46,17 @@ const Profile = ({data}) => {
   };
 
   const onBecomeProfessional = async (data) => {
+    const company = { id: data.company.id };
+    const category = { id: data.category.id };
+    data.company = company;
+    data.category = category;
     const previewImage = data.previewImage;
     const backgroundImage = data.backgroundImage;
-    const images = data.images;
     delete data.previewImage;
     delete data.backgroundImage;
     delete data.images;
-
-    const token = await saveProfessional(data, session?.accessToken);
-
+    const token = await saveProfessional(data);
+    
     if (token != null) {
       if (previewImage) {
         await savePreviewImage(token, previewImage);
@@ -67,31 +64,65 @@ const Profile = ({data}) => {
       if (backgroundImage) {
         await saveBackgroundImage(token, backgroundImage);
       }
-      if (images.length > 0) {
-        await saveImages(images, token);
-      }
     }
-
+    await professionalService.updateToken(token, session.user.id);
     return token;
   };
 
+  const onBuyPlan = async (plan) => {
+    const mp = new MercadoPago(
+      process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY,
+      { locale: 'es-AR' }
+    );
+
+    const preference = await professionalService.generatePreferenceForToken(plan, session.accessToken);
+    mp.checkout(
+    {
+      preference: preference.id
+    });
+  
+    const link = document.createElement("a");
+    document.body.appendChild(link);
+    link.href = preference.initPoint;
+    link.setAttribute("type", "hidden");
+    link.click();
+  };
+
   return (
-    <Layout title={`${t("Profile")}`}>
-      <ProfileData
-        onBecomeProfessional={onBecomeProfessional}
-        error={error}
-        setError={setError}
-        data={data}
-      />
+    <Layout title={`${t("header.profile")}`}>
+      <section className="container py-2">
+        <ProfileData
+          onBecomeProfessional={onBecomeProfessional}
+          error={error}
+          setError={setError}
+          data={data}
+          onBuyPlan={onBuyPlan}
+          status={status}
+        />
+        <SeeImagesLiked imagesLiked={imagesLiked} />
+      </section>
     </Layout>
   );
 };
-export async function getServerSideProps({ params, req, res, locale }) {
+export async function getServerSideProps({ params, req, query, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
 
+  if (
+    !session ||
+    !session.authorities.includes(process.env.NEXT_PUBLIC_ROLE_USER)
+  ) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
   let token;
   let companies = [];
+  let imagesLiked = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -100,16 +131,26 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (!size || size <= 0) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
-
-  if (session) {
-    token = session.accessToken;
-    companies = await companyService.findAll(page, size, token);
+  try {
+    if (session) {
+      token = session.accessToken;
+      companies = await companyService.findAll("APPROVED", page, size, token);
+      imagesLiked = await imageService.getLikePhotos(page, size, token);
+    }
+  } catch (e) {
+    return {
+      redirect: {
+        destination: "/logIn?expired",
+        permanent: false,
+      },
+    };
   }
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common"])),
       data: companies,
+      imagesLiked,
+      status: query.status ? query.status : ""
     },
   };
 }

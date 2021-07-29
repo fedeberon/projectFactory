@@ -1,16 +1,16 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import Layout from "../../components/Layout/Layout";
 
 const ProfessionalDetail = () => {
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   const router = useRouter();
   const { id } = router.query;
 
   return (
-    <Layout title={`${t("ProfessionalDetail")}`}>
+    <Layout title={`${t("professional-detail")}`}>
       <p>Post: {id}</p>
     </Layout>
   );

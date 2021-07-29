@@ -1,18 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
 import { useForm, Controller } from "react-hook-form";
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  FormGroup,
-  FormText,
-  Input,
-  Label,
-  Row,
-} from "reactstrap";
-import { useTranslation } from "react-i18next";
+import { Button, Col, Container, Form, FormGroup, Row } from "react-bootstrap";
+import useTranslation from "next-translate/useTranslation";
 import Select from "react-select";
 import Dropzone from "./Dropzone/Dropzone";
 import * as youtubeService from "../services/youtubeService";
@@ -20,7 +10,7 @@ import InputImages from "../components/InputImages/InputImages";
 import FormTag from "../components/FormTag/FormTag";
 import ModalForm from "../components/ModalForm";
 
-const FormProject = ({ onAddProject, professionals, toggle }) => {
+const FormProject = ({ onAddProject, toggle }) => {
   const [session, loading] = useSession();
   const [options, setOptions] = useState([]);
 
@@ -30,7 +20,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
   const [modalTagOpen, setModalTagOpen] = useState(false);
   const [currentImageTag, setCurrentImageTag] = useState({});
 
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   const {
     control,
@@ -40,10 +30,6 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
     handleSubmit,
   } = useForm();
 
-  useEffect(async () => {
-    setOptions(professionals);
-  }, [professionals]);
-
   const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
   const showTagModal = (img) => {
     setModalTagOpen(true);
@@ -51,19 +37,11 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
   };
 
   const onSubmit = async (
-    {
-      name,
-      description,
-      totalArea,
-      website,
-      year,
-      professionalsSelected,
-      videoPath,
-    },
+    { name, description, totalArea, website, year, videoPath, price },
     event
   ) => {
     if (youtubeService.isValidVideo(videoPath)) {
-      // You should handle login logic with name, description, totalArea, website, year, professional selected, preview image, video path for form data
+      // You should handle login logic with name, description, totalArea, website, year, preview image, video path for form data
       let data = {
         name,
         description,
@@ -74,15 +52,15 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         images,
         file: file[0],
         videoPath,
+        price,
       };
-      let id = professionalsSelected.id;
-      onAddProject(data, id);
+      await onAddProject(data);
       event.target.reset();
       toggle();
     } else {
       setError("videoPath", {
         type: "manual",
-        message: t("InvalidLink"),
+        message: t("invalid-link"),
       });
     }
   };
@@ -93,45 +71,60 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         <Row className="row-cols-1 row-cols-md-2 g-3">
           <Col>
             <FormGroup>
-              <Label for="name">{t("Name")}</Label>
-              <Input
+              <Form.Label htmlFor="name">{t("name")}</Form.Label>
+              <Form.Control
                 type="text"
                 id="name"
-                placeholder={t("Write the name here please")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-name").toLowerCase(),
+                })}
                 {...register("name", {
                   required: {
                     value: true,
-                    message: `${t("Name is required")}`,
+                    message: `${t("is-required", {
+                      nameRequired: t("the-name"),
+                    })}`,
                   },
                   minLength: {
                     value: 3,
-                    message: `${t("Name cannot be less than 3 character")}`,
+                    message: `${t("cannot-be-less-than-character", {
+                      nameInput: t("the-name"),
+                      numberCharacters: 3,
+                    })}`,
                   },
                 })}
                 className={"form-field" + (errors.name ? " has-error" : "")}
               />
               {errors.name && (
-                <FormText className="invalid error-label">
+                <Form.Text
+                  variant="danger"
+                  className="invalid error-Form.Label text-danger"
+                >
                   {errors.name.message}
-                </FormText>
+                </Form.Text>
               )}
             </FormGroup>
             <FormGroup>
-              <Label for="description">{t("Description")}</Label>
-              <Input
+              <Form.Label htmlFor="description">{t("description")}</Form.Label>
+              <Form.Control
                 type="text"
                 id="description"
-                placeholder={t("Write the description here please")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-description").toLowerCase(),
+                })}
                 {...register("description", {
                   required: {
                     value: true,
-                    message: `${t("Description is required")}`,
+                    message: `${t("is-required", {
+                      nameRequired: t("the-description"),
+                    })}`,
                   },
                   minLength: {
                     value: 3,
-                    message: `${t(
-                      "Description cannot be less than 3 character"
-                    )}`,
+                    message: `${t("cannot-be-less-than-character", {
+                      nameInput: t("the-description"),
+                      numberCharacters: 3,
+                    })}`,
                   },
                 })}
                 className={
@@ -139,54 +132,72 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                 }
               />
               {errors.description && (
-                <FormText className="error-label">
+                <Form.Text
+                  variant="danger"
+                  className="invalid error-Form.Label text-danger"
+                >
                   {errors.description.message}
-                </FormText>
+                </Form.Text>
               )}
             </FormGroup>
 
             <FormGroup>
-              <Label for="email">{t("Write the website")}</Label>
-              <Input
+              <Form.Label htmlFor="email">{t("write-the-web-site")}</Form.Label>
+              <Form.Control
                 type="email"
                 id="email"
-                placeholder={t("Write the website here please")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-web-site").toLowerCase(),
+                })}
                 {...register("website", {
                   required: {
                     value: true,
-                    message: `${t("WebSite is required")}`,
+                    message: `${t("is-required", {
+                      nameRequired: t("the-web-site"),
+                    })}`,
                   },
                   minLength: {
                     value: 3,
-                    message: `${t("WebSite cannot be less than 3 character")}`,
+                    message: `${t("cannot-be-less-than-character", {
+                      nameInput: t("the-web-site"),
+                      numberCharacters: 3,
+                    })}`,
                   },
                 })}
                 className={"form-field" + (errors.website ? " has-error" : "")}
               />
               {errors.website && (
-                <FormText className="error-label">
+                <Form.Text
+                  variant="danger"
+                  className="invalid error-Form.Label text-danger"
+                >
                   {errors.website.message}
-                </FormText>
+                </Form.Text>
               )}
             </FormGroup>
             <Row>
               <Col xs={6}>
                 <FormGroup>
-                  <Label for="totalArea">{t("Total Area")}</Label>
-                  <Input
+                  <Form.Label htmlFor="totalArea">{t("total-area")}</Form.Label>
+                  <Form.Control
                     type="number"
                     id="totalArea"
-                    placeholder={t("Write the Total Area here please")}
+                    placeholder={t("write-the-here-please", {
+                      namePlaceholder: t("the-total-area").toLowerCase(),
+                    })}
                     {...register("totalArea", {
                       required: {
                         value: true,
-                        message: `${t("Total Area is required")}`,
+                        message: `${t("is-required", {
+                          nameRequired: t("the-total-area"),
+                        })}`,
                       },
                       minLength: {
                         value: 3,
-                        message: `${t(
-                          "Total Area cannot be less than 3 character"
-                        )}`,
+                        message: `${t("cannot-be-less-than-character", {
+                          nameInput: t("the-total-area"),
+                          numberCharacters: 3,
+                        })}`,
                       },
                     })}
                     className={
@@ -194,55 +205,75 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                     }
                   />
                   {errors.totalArea && (
-                    <FormText className="error-label">
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
+                    >
                       {errors.totalArea.message}
-                    </FormText>
+                    </Form.Text>
                   )}
                 </FormGroup>
               </Col>
               <Col xs={6}>
                 <FormGroup>
-                  <Label for="year">{t("Year")}</Label>
-                  <Input
+                  <Form.Label htmlFor="year">{t("year")}</Form.Label>
+                  <Form.Control
                     type="number"
                     id="year"
-                    placeholder={t("Write the Year here please")}
+                    placeholder={t("write-the-here-please", {
+                      namePlaceholder: t("the-year").toLowerCase(),
+                    })}
                     {...register("year", {
                       required: {
                         value: true,
-                        message: `${t("Year is required")}`,
+                        message: `${t("is-required", {
+                          nameRequired: t("the-year"),
+                        })}`,
                       },
                       minLength: {
                         value: 3,
-                        message: `${t("Year cannot be less than 3 character")}`,
+                        message: `${t("cannot-be-less-than-character", {
+                          nameInput: t("the-year"),
+                          numberCharacters: 3,
+                        })}`,
                       },
                     })}
                     className={"form-field" + (errors.year ? " has-error" : "")}
                   />
                   {errors.year && (
-                    <FormText className="error-label">
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
+                    >
                       {errors.year.message}
-                    </FormText>
+                    </Form.Text>
                   )}
                 </FormGroup>
               </Col>
             </Row>
 
             <FormGroup>
-              <Label for="videoPath">{t("WriteVideoPath")}</Label>
-              <Input
+              <Form.Label htmlFor="videoPath">{t("video-path")}</Form.Label>
+              <Form.Control
                 type="text"
                 name="videoPath"
                 id="videoPath"
-                placeholder={t("WriteVideoPathPlease")}
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("the-video-path").toLowerCase(),
+                })}
                 {...register("videoPath", {
                   required: {
                     value: true,
-                    message: `${t("VideoPathIsRequired")}`,
+                    message: `${t("is-required", {
+                      nameRequired: t("the-video-path"),
+                    })}`,
                   },
                   minLength: {
                     value: 3,
-                    message: `${t("VideoPathInvalid")}`,
+                    message: `${t("cannot-be-less-than-character", {
+                      nameInput: t("the-video-path"),
+                      numberCharacters: 3,
+                    })}`,
                   },
                 })}
                 className={
@@ -250,59 +281,65 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                 }
               />
               {errors.videoPath && (
-                <FormText className="error-label">
+                <Form.Text
+                  variant="danger"
+                  className="invalid error-Form.Label text-danger"
+                >
                   {errors.videoPath.message}
-                </FormText>
+                </Form.Text>
               )}
             </FormGroup>
 
             <FormGroup>
-              <Label for="professionalsSelected">
-                {t("ProfessionalsSelected")}
-              </Label>
-              <Controller
-                name="professionalsSelected"
-                control={control}
-                rules={{
+              <Form.Label htmlFor="price">{t("price")}</Form.Label>
+              <Form.Control
+                type="number"
+                name="price"
+                id="price"
+                placeholder={t("write-the-here-please", {
+                  namePlaceholder: t("price").toLowerCase(),
+                })}
+                {...register("price", {
                   required: {
                     value: true,
-                    message: `${t("professionalsSelected is required")}`,
+                    message: `${t("is-required", {
+                      nameRequired: t("price"),
+                    })}`,
                   },
-                }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    inputId={"professionalsSelected"}
-                    options={options}
-                    getOptionLabel={(option) => `${option?.contact}`}
-                    getOptionValue={(option) => `${option?.id}`}
-                    isClearable
-                  />
-                )}
+                  validate: {
+                    positive: (v) =>
+                      parseInt(v) > 0 || t("should-be-greater-than-0"),
+                  },
+                })}
+                className={"form-field" + (errors.price ? " has-error" : "")}
               />
-              {errors.professionalsSelected && (
-                <FormText className="error-label">
-                  {errors.professionalsSelected.message}
-                </FormText>
+              {errors.price && (
+                <Form.Text
+                  variant="danger"
+                  className="invalid error-Form.Label text-danger"
+                >
+                  {errors.price.message}
+                </Form.Text>
               )}
             </FormGroup>
           </Col>
           <Col>
             <FormGroup>
-              <Label for="filePreview">
-                {t("Select preview image for project")}
-              </Label>
+              <Form.Label htmlFor="filePreview">
+                {t("select-preview-image-for-project")}
+              </Form.Label>
               <Dropzone
                 newFiles={previewImage}
                 setFile={setPreviewImage}
                 accept={"image/*"}
                 multiple={false}
                 name={"previewImage"}
+                height={"90px"}
               />
             </FormGroup>
             <Col>
               <FormGroup>
-                <Label>{t("Upload Files")}</Label>
+                <Form.Label>{t("upload-files")}</Form.Label>
                 <br></br>
                 <Dropzone
                   newFiles={file}
@@ -310,6 +347,7 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
                   accept={"application/x-zip-compressed, application/zip"}
                   multiple={false}
                   name={"file"}
+                  height={"90px"}
                 />
               </FormGroup>
             </Col>
@@ -317,8 +355,9 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
         </Row>
 
         <FormGroup>
-          <Label for="uploadFiles">{t("Upload images")}</Label>
+          <Form.Label htmlFor="uploadFiles">{t("upload-images")}</Form.Label>
           <InputImages
+            images={images}
             accept={"image/*"}
             multiple={true}
             imagesEdited={setImages}
@@ -327,14 +366,15 @@ const FormProject = ({ onAddProject, professionals, toggle }) => {
           />
         </FormGroup>
 
-        <Button type="submit" color="primary mt-1">
-          {t("Send")}
+        <Button type="submit" variant="primary mt-1">
+          {t("send")}
         </Button>
       </Form>
 
       <ModalForm
+        size={"md"}
         className={"Button"}
-        modalTitle={t("AddTags")}
+        modalTitle={t("add-tags")}
         formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}
         modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
       />

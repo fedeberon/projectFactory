@@ -3,19 +3,16 @@ import { useSession } from "next-auth/client";
 import {
   Button,
   Col,
-  Container,
-  Form,
-  FormGroup,
-  FormText,
-  Input,
-  Label,
   Row,
-} from "reactstrap";
+  Form,
+} from "react-bootstrap";
 import ModalForm from "./ModalForm";
 import Autosuggest from "react-autosuggest";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import * as userService from "../services/userService";
 import autosuggestStyles from "./FormTag/Autosuggest.module.css";
+import Error from "../components/Error";
+import PrimaryButton from "./Buttons/PrimaryButton/PrimaryButton";
 
 const page = 0;
 const size = 5;
@@ -24,19 +21,37 @@ const AdministratorCreator = () => {
   const [modalAdministrator, setModalAdministrator] = useState(false);
   const [session] = useSession();
   const [administratorSelected, setAdministratorSelected] = useState({});
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
   const [tags, setTags] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [value, setValue] = useState("");
+  const [error, setError] = useState("");
+  const [timeErrorLive, setTimeErrorLive] = useState(0);
+
+  const showErrorToLimitTime = (error) => {
+    setError(error);
+    clearTimeout(timeErrorLive);
+    setTimeErrorLive(
+      setTimeout(() => {
+        setError("");
+      }, 3000)
+    );
+  };
 
   const toggle = () => setModalAdministrator(!modalAdministrator);
 
   const onAddAdministrator = async (administrator) => {
-    await userService.addAdministrator(
-      administratorSelected,
-      session.accessToken
-    );
-    toggle();
+    if (Object.keys(administratorSelected).length !== 0) {
+      await userService.addAdministrator(
+        administratorSelected,
+        session.accessToken
+      );
+      toggle();
+    } else {
+      showErrorToLimitTime(t("the-administrator-cannot-be-empty"));
+    }
+    setAdministratorSelected({});
+    setValue("");
   };
 
   // When suggestion is clicked, Autosuggest needs to populate the input
@@ -75,7 +90,7 @@ const AdministratorCreator = () => {
 
   // Autosuggest will pass through all these props to the input.
   const inputProps = {
-    placeholder: t("InsertUsername"),
+    placeholder: t("administrator-creator.insert-username"),
     value,
     onChange: onChange,
   };
@@ -92,16 +107,20 @@ const AdministratorCreator = () => {
   return (
     <>
       {session?.authorities?.includes("ROLE_ADMINISTRATOR") && (
-        <Button onClick={toggle}>{t("AddAdministrator")}</Button>
+        <PrimaryButton onClick={toggle}>
+          {t("administrator-creator.add-administrator")}
+        </PrimaryButton>
       )}
 
       <ModalForm
         className={"Button"}
-        modalTitle={t("AddAdministrator")}
+        modalTitle={t("administrator-creator.add-administrator")}
         formBody={
           <>
-            <h6>{t("PleaseSelectAdministrator")}</h6>
-            <Label for="administrator">{t("Username")}</Label>
+            <h6>{t("administrator-creator.please-select-administrator")}</h6>
+            <Form.Label htmlFor="administrator">
+              {t("administrator-creator.username")}
+            </Form.Label>
 
             <Autosuggest
               suggestions={suggestions}
@@ -114,9 +133,16 @@ const AdministratorCreator = () => {
               theme={autosuggestStyles}
             />
 
-            <Button className="my-4" onClick={onAddAdministrator}>
-              {t("AddAdministrator")}
-            </Button>
+            <PrimaryButton className="my-4" onClick={onAddAdministrator}>
+              {t("administrator-creator.add-administrator")}
+            </PrimaryButton>
+            {error && (
+              <Row className="mt-2">
+                <Col>
+                  <Error error={error} />
+                </Col>
+              </Row>
+            )}
           </>
         }
         modalOpen={{

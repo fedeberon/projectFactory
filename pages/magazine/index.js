@@ -1,18 +1,11 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import useTranslation from "next-translate/useTranslation";
 import Layout from "../../components/Layout/Layout";
 
 const Magazine = () => {
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
-  return <Layout title={`${t("Magazine")}`}></Layout>;
+  return <Layout title={`${t("magazine")}`}></Layout>;
 };
-
-export const getStaticProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale, ["common"])),
-  },
-});
 
 export default Magazine;

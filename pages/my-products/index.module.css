@@ -1,0 +1,63 @@
+.backgroundImg {
+  object-fit: cover;
+}
+
+.previewDiv {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 150px;
+}
+
+.previewImg {
+  border-radius: 50%;
+  position: relative;
+  object-fit: cover;
+  width: 300px;
+  height: 300px;
+  top: -150px;
+  z-index: 100;
+}
+.itemStatus {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 0 5px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border: 0;
+  border-radius: 0.325em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.cursorPointer {
+  cursor: pointer;
+}
+
+.imgRejected {
+  filter: opacity(15%);
+}
+
+.imgGray {
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+.afterLess::after {
+  display: none;
+}
+.imgProfile {
+  width: 50px;
+  height: 0;
+}
+.cardImage {
+  height: 350px;
+  -webkit-object-fit: contain;
+  object-fit: contain;
+  width: 100%;
+}

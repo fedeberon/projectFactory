@@ -10,8 +10,8 @@ import {
   Input,
   Label,
   Row,
-} from "reactstrap";
-import { useTranslation } from "react-i18next";
+} from "react-bootstrap";
+import useTranslation from "next-translate/useTranslation";
 import tagListStyles from "./TagList.module.css";
 
 const TagList = ({ tags, onDeleteTag }) => {

@@ -1,32 +1,41 @@
 import React from "react";
 import { InfoCircleFill } from "react-bootstrap-icons";
-import { Alert, Table } from "reactstrap";
-import { useTranslation } from "react-i18next";
+import { Alert, Table } from "react-bootstrap";
+import useTranslation from "next-translate/useTranslation";
+import { Form } from "react-bootstrap";
 
-const TableAdmin = ({ professionalList, title }) => {
+const TableAdmin = ({ listHead, listBody, title, onSearch }) => {
   const { t, lang } = useTranslation("common");
+
+  const handleChangeInput = async (e) => {
+    await onSearch(e.target.value);
+  };
 
   return (
     <Table hover striped>
       <thead>
         <tr className="text-center">
-          <th>#</th>
-          <th>{t("Image")}</th>
-          <th>{t("Contact")}</th>
-          <th>{t("Company")}</th>
-          <th>{t("Email")}</th>
-          <th>{t("Actions")}</th>
+          <th>
+            <Form.Control
+              type="search"
+              placeholder={t("table-admin.find-by-contact")}
+              onChange={handleChangeInput}
+            />
+          </th>
+          {listHead}
         </tr>
       </thead>
       <tbody>
-        {professionalList.length > 0 ? (
-          professionalList
+        {listBody.length > 0 ? (
+          listBody
         ) : (
           <tr>
-            <td colSpan="6" className="p-0">
-              <Alert color="primary text-center">
+            <td colSpan="8" className="p-0">
+              <Alert variant="primary" className="d-flex justify-content-center gap-2 ">
                 <InfoCircleFill size={25} />
-                {`${t("ThereAreNotMoreProfessional")} ${title.toLowerCase()}`}
+                {`${t(
+                  "table-admin.there-are-not-more"
+                )} ${title.toLowerCase()}`}
               </Alert>
             </td>
           </tr>

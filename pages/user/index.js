@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import { login } from "../../services/userService";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 const initialUsers = [];
 
 const Users = () => {
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
   const [users, setUsers] = useState(initialUsers);
 
   useEffect(async()=>{
@@ -14,7 +14,7 @@ const Users = () => {
   }, []);
 
   return (
-    <Layout title={t("User")}>
+    <Layout title={t("user")}>
       <ul>
         {users.map((user, index) => {
           return <li key={index}>{user}</li>;

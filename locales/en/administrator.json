@@ -1,0 +1,19 @@
+{
+  "pending": "Pending",
+  "approved": "Approved",
+  "disapproved": "Disapproved",
+  "managing-professionals": "Managing professionals",
+  "managing-companies": "Managing companies",
+  "managing-products": "Managing products",
+  "managing-buildingWorks": "Managing buildingWorks",
+
+  
+  "accept": "Accept",
+  "reject": "Reject",
+  "list-of": "List of",
+  "accept-images": "Accept images",
+  "managing-images": "Managing images",
+  "images-accepted": "Images accepted",
+  "tokens-setted" : "Tokens setted",
+  "apply" : "Apply"
+}

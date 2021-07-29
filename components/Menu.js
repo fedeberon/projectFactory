@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { useRouter } from "next/router";
 import Authentication from './Authentication';
-import{ Dropdown, DropdownItem, DropdownMenu, DropdownToggle, nav} from 'reactstrap';
+import{ Dropdown, DropdownItem, DropdownMenu, DropdownToggle, nav} from 'react-bootstrap';
     export default function Menu () {
         const[dropdown, setDropdown] =useState(false);
         const[dropdownUno, setDropdownUno] =useState(false);

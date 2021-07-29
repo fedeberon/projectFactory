@@ -30,11 +30,11 @@ axiosInstance.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     if (error.status === 403) {
-      location.href = "/logout";
+      location.href = "/logIn?expired";
     }
 
     // console.error("ERROR_API_AXIOS", error.response.data);
-    return Promise.reject(error?.response?.status);
+    return Promise.reject(error);
   }
 );
 

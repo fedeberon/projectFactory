@@ -1,4 +1,8 @@
 import API from "./api";
+import { signIn } from "next-auth/client";
+import jwt_decode from "jwt-decode";
+import * as professionalService from "./professionalService";
+import * as companyService from "./companyService";
 
 export const signInCallBack = async (user, account, profile) => {
   const data = {
@@ -14,13 +18,71 @@ export const signInCallBack = async (user, account, profile) => {
   return token;
 };
 export const login = async (username, password) => {
-  const data = {
+  const credentials = {
     username,
     password,
   };
   
-  const { token } = await API.post(`/users/login`, data);
+  const { token } = await API.post(`/users/login`, credentials);
+  const tokenWithoutPrefix = token.split("Bearer ")[1];
+  const payload = jwt_decode(tokenWithoutPrefix);
+  const data = await getDataOfUserByPayload(payload);
+
+  signIn('credentials', { 
+    accessToken: token,
+    name: data.name != "" ? data.name : username,
+    callbackUrl: `${window.location.origin}/`,
+    image: data.previewImage
+   });
   return token;
+};
+
+const getDataOfUserByPayload = async (payload) => {
+  const authorities = payload["authorities"];
+  const userId = payload["jti"];
+  if (authorities.includes("ROLE_PROFESSIONAL")) {
+    const professional = await professionalService.getById(userId);
+    return {"name" : professional.contact, "previewImage": professional.previewImage};
+  } else if (authorities.includes("ROLE_COMPANY")) {
+    const company = await companyService.findById(userId);
+    return {"name" : company.name, "previewImage": company.previewImage};
+  } else {
+    return {"name" : "" , "previewImage": ""};
+  }
+};
+
+export const getAmountTokens = async (token) => {
+  const actualTokens = localStorage.getItem("amountTokens");
+  if (actualTokens == null || actualTokens == -1) {
+    API.defaults.headers.common["Authorization"] = token;
+    const { tokens } = await API.get(`/users/tokens`);
+    localStorage.setItem("amountTokens",tokens);
+    return tokens;
+  } else {
+    return actualTokens;
+  }
+};
+
+export const isLinkedWithMercadopago = async (token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const isLinked = localStorage.getItem("isLinkedWithMercadopago");
+  if (isLinked == null) {
+    try {
+      await API.get(`/users/is-linked-with-mercadopago`);
+      localStorage.setItem("isLinkedWithMercadopago", true);
+      return true;
+    } catch (e) {
+      localStorage.setItem("isLinkedWithMercadopago", false);
+      return false;
+    }
+  } else {
+    return isLinked == "true" ? true : false;
+  }
+};
+
+export const clearData = () => {
+  localStorage.removeItem("amountTokens");
+  localStorage.removeItem("isLinkedWithMercadopago");
 };
 
 export const findAll = async (session) => {
@@ -32,14 +94,18 @@ export const getById = async (userId) => {
   return await API.get(`/users/${userId}`);
 };
 
-export const add = async (username, password, session) => {
+export const add = async (username, password) => {
   const data = {
     username,
     password,
   };
-  
-  API.defaults.headers.common["Authorization"] = session.accessToken;
   const { token } = await API.post(`/users/register`, data);
+  
+  signIn('credentials', { 
+    accessToken: token,
+    name: username,
+    callbackUrl: `${window.location.origin}/`
+   });
   return token;
 };
 

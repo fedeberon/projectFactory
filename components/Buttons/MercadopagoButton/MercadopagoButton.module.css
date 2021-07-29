@@ -1,0 +1,35 @@
+.btnLinkAccount::before {
+    background-image: url(http://static.mlstatic.com/org-img/mercadopago/wallet_mp_icon.svg);
+    background-size: 2.4285714285714284em 2.4285714285714284em;
+    width: 2.4285714285714284em;
+    height: 2.4285714285714284em;
+    position: absolute;
+    top: 0.14285714285714285em;
+    left: 0.14285714285714285em;
+    content: "";
+  }
+  
+  .btnLinkAccount:hover {
+    color: white;
+  }
+  
+  .btnLinkAccount {
+    margin-left: 15px;
+    text-decoration: none;
+    position: relative;
+    padding-left: 4.857142857142857em;
+    padding-right: 2.2857142857142856em;
+    white-space: nowrap;
+    height: 2.7142857142857144em;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.875em;
+    line-height: 2.7142857142857144;
+    background: #009ee3;
+    border-radius: 0.2857142857142857em;
+    color: #fff;
+    cursor: pointer;
+    text-transform: none;
+    border: 0;
+    -webkit-appearance: button;
+  }
+  

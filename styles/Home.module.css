@@ -122,5 +122,27 @@
 
 .inlineCode::before,
 .inlineCode::after {
-  content: '`';
+  content: "`";
+}
+
+.itemsTitle,
+.productsTitle {
+  margin: auto;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.itemsSmallTitle,
+.productsSmallTitle {
+  font-size: 12px;
+  font-weight: 400;
+  display: block;
+  margin-top: 5px;
+}
+
+.infoHead {
+  text-align: center;
+}
+.backgroundGray {
+  background-color: #f7f7f7;
 }

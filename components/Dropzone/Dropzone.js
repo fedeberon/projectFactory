@@ -1,10 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { CloudArrowUp, X, FileEarmarkZipFill } from "react-bootstrap-icons";
-import { Container } from "reactstrap";
+import { Container } from "react-bootstrap";
 import dropzoneStyle from "./Dropzone.module.css";
-import { Card, Button, CardHeader, CardBody, Row, Col } from "reactstrap";
-import { useTranslation } from "react-i18next";
+import { Card, Button, Row, Col } from "react-bootstrap";
+import useTranslation from "next-translate/useTranslation";
 
 const baseStyle = {
   flex: 1,
@@ -35,10 +35,10 @@ const rejectStyle = {
 };
 
 function Dropzone(props) {
-  const { newFiles, setFile, accept, multiple, name } = props;
+  const { newFiles, setFile, accept, multiple, name, height } = props;
   const [flagShow, setFlagShow] = useState(true);
 
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   const {
     acceptedFiles,
@@ -75,12 +75,6 @@ function Dropzone(props) {
 
   const toggle = () => setFlagShow(!flagShow);
 
-  // const files = newFiles?.map((file, index) => (
-  //   <li key={index}>
-  //     {file.name} - {file.size} bytes
-  //   </li>
-  // ));
-
   const removeImage = (file) => {
     const files = Array.from(newFiles);
 
@@ -100,15 +94,21 @@ function Dropzone(props) {
     toggle();
   };
 
+  useEffect(() => {
+    if (newFiles.length > 0) {
+      toggle();
+    }
+  }, [newFiles]);
+
   const thumbs = newFiles
     .filter((file) => !file.remove)
     .map((file, index) => (
       <Card key={index}>
-        <CardBody>
+        <Card.Body>
           <Row className="row-cols-1 text-end g-2">
             <Col className="text-align-end">
               <Button
-                color={"danger"}
+                variant={"danger"}
                 className="p-0"
                 onClick={(event) => {
                   event.preventDefault();
@@ -119,7 +119,7 @@ function Dropzone(props) {
               </Button>
             </Col>
             <Col></Col>
-            <Col>
+            <Col className="d-flex justify-content-center align-items-center">
               {accept === "application/x-zip-compressed, application/zip" ? (
                 <Row className="row-cols-1 text-center">
                   <Col>
@@ -136,12 +136,13 @@ function Dropzone(props) {
                   <img
                     src={file.preview}
                     className={`img-fluid ${dropzoneStyle.imgMid}`}
+                    style={{ height: height }}
                   />
                 </figure>
               )}
             </Col>
           </Row>
-        </CardBody>
+        </Card.Body>
       </Card>
     ));
 
@@ -153,7 +154,9 @@ function Dropzone(props) {
             <div {...getRootProps({ style })}>
               <input name={name} {...getInputProps()} />
               <CloudArrowUp size={45} />
-              <p>{`${t("DragAndDropSomeFilesHereOrClickToSelectFiles")}`}</p>
+              <p>{`${t(
+                "drag-and-drop-some-files-here-or-click-to-select-files"
+              )}`}</p>
             </div>
           ) : (
             <aside>{thumbs}</aside>

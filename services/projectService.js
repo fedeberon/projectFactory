@@ -4,11 +4,7 @@ import * as tagService from './tagService';
 
 export const findAll = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  const projects = await API.get(`/projects?page=${page}&size=${size}`);
-  projects.forEach((project) => {
-    project.previewImage = getPathToPreviewImage(project.id, project.previewImage);
-  });
-  return projects;
+  return await API.get(`/projects?page=${page}&size=${size}`);
 };
 
 
@@ -17,11 +13,10 @@ export const getById = async (id, token) => {
   const project = await API.get(`/projects/${id}`);
   let purchased = await isPurchased(project, token);
   project.purchased = purchased != undefined; 
-  project.previewImage = getPathToPreviewImage(project.id, project.previewImage);
   return project;
 };
 
-export const addProject = async (project, id, token) => {
+export const addProject = async (project, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const copyProject = Object.assign({}, project);
   delete copyProject.previewImage;
@@ -33,7 +28,7 @@ export const addProject = async (project, id, token) => {
     throw new Error(`Error, link to video invalid: ${err}`);
   }
 
-  const projectUploaded = await API.post(`/projects?professional=${id}`, copyProject);
+  const projectUploaded = await API.post(`/projects`, copyProject);
   
   if (project.previewImage) {
     await addPreviewImage(project.previewImage, projectUploaded.id, token);
@@ -58,14 +53,28 @@ export const addPreviewImage = async (image, projectId, token) => {
 };
 
 export const addImages = async (images, projectId, token) => {
-  API.defaults.headers.common["Authorization"] = token;
-  
-  images.forEach(async (image) => {
-    const imageData = new FormData();
-    const tags = tagService.getTags(image.tags);
-    imageData.append("imageFile", image);
-    imageData.append("tags", tags);
-    await API.post(`/images/projects/${projectId}`, imageData);
+  await addImagesRecursive(Array.from(images), projectId, token);
+};
+
+export const addImagesRecursive = async (images, projectId, token) => {
+  const image = images.shift();
+  await addImage(image, projectId, token);
+  if (images.length > 0) {
+    await addImagesRecursive(images, projectId, token);
+  }
+};
+
+export const addImage = async (image, projectId, token) => {
+  const imageData = new FormData();
+  const tags = tagService.getTags(image.tags);
+  imageData.append("imageFile", image);
+  imageData.append("tags", tags);
+  image.uploading = true;
+  return await API.post(`/images/projects/${projectId}`, imageData, {
+    onUploadProgress: progressEvent => {
+      const progress = Math.round(progressEvent.loaded / progressEvent.total * 100);
+      image.setProgress(progress);
+    }
   });
 };
 
@@ -80,7 +89,6 @@ export const edit = async (project, token) => {
   delete project.id;
   delete project.images;
   let projectEdited = await API.put(`/projects/${id}`, project);
-  projectEdited.previewImage = getPathToPreviewImage(id, projectEdited.previewImage);
   if (previewImage) {
     await addPreviewImage(previewImage, id, token);
     projectEdited.previewImage = URL.createObjectURL(previewImage);
@@ -116,25 +124,30 @@ const removeAndAddImages = async (images, id, token) => {
   
   for (let i = 0; i < images.length; i++) {
     let img = images[i];
-    if (img.added && img.remove) {
+    if (img.added && img.remove) { //is so that the image is already in the database and wants to delete it
       await API.delete(`/images/projects/${id}/${img.name}`);
-    } else if (!img.added) {
+    } else if (!img.added) { //a new image is not in the database 
       const imageData = new FormData();
       imageData.append("imageFile", img);
       imageData.append("tags", []);
       await API.post(`/images/projects/${id}`, imageData);
       const path = URL.createObjectURL(img);
       newImages.push({ path });
-    } else {
+    } else if (img.added) { //this in the database does not want to delete it but wants to update the tags or can not be the same
+      await editTags(img, token);
       newImages.push({ path: img.path });
     }
   };
   return newImages;
 };
 
-const getPathToPreviewImage = (projectId, imageId) => {
-  return `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/projects/${projectId}/preview/${imageId}`;
-}
+export const editTags = async (image, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const imageData = new FormData();
+  const tags = tagService.getTags(image.tags);
+  imageData.append("tags", tags);
+  return await API.put(`/images/${image.id}/projects/tags`, imageData);
+};
 
 export const getPurchasedProjects = async (token) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -149,11 +162,10 @@ export const isPurchased = async (project, token) => {
 
 export const findAllByProfessionalId = async (professionalId, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  const projects = await API.get(`/projects/professionals/${professionalId}?page=${page}&size=${size}`);
-  projects.forEach( project => {
-    project.previewImage = getPathToPreviewImage(project.id, project.previewImage);
-  });
-  return projects;
+  return await API.get(`/projects/professionals/${professionalId}?page=${page}&size=${size}`);
+  
 };
 
-export default {findAll, getById, addProject, addPreviewImage, addImages, edit, addFile, download, removeAndAddImages,getPurchasedProjects, isPurchased}
+export const findByNameAndActive = async (name, active, page, size) => {
+  return await API.get(`/projects/name/${name}/active/${active}?page=${page}&size=${size}`);
+}

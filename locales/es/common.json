@@ -1,0 +1,268 @@
+{
+  "header": {
+    "home": "Inicio",
+    "log-in": "Loguearse",
+    "log-out": "Cerrar sesión",
+    "signed-in-as": "Ingresado como",
+    "profile": "Perfil",
+    "portfolio": "Mi portafolio",
+    "search-placeholder": "Buscar ideas/ profesionales",
+    "search-by-ideas": "Buscar por ideas",
+    "search-by-professionals": "Buscar por profesionales",
+    "my-products": "Mis productos"
+  },
+
+  "product": "Producto",
+  "professional": "Profesional",
+  "professionals": "Profesionales",
+  "project": "Proyecto",
+  "products": "Productos",
+  "buildings": "Obras",
+  "projects": "Proyectos",
+  "magazine": "Magazine",
+  "about-us": "Sobre Nosotros",
+  "contact": "Contacto",
+  "administrator": "Administrador",
+  "company": "Empresa",
+  "companies": "Empresas",
+  "email": "Correo",
+  "add-tags": "Agregar Tags",
+  "add-title": "Agregar titulo",
+  "province": "Provincia",
+  "location": "Localidad",
+  "price": "Precio",
+  "invalid-link": "El link es invalido",
+  "image": "Imagen",
+
+  "is-required": "{{nameRequired}} es requerido",
+  "write-the-here-please": "Escriba {{namePlaceholder}} aquí por favor",
+  "cannot-be-less-than-character": "{{nameInput}} no puede tener menos de {{numberCharacters}} caracteres",
+  "cannot-be-more-than-character": "{{nameInput}} no puede tener más de {{numberCharacters}} caracteres",
+  "the-name": "El nombre",
+  "the-description": "La descripcion",
+  "the-total-area": "El área total",
+  "the-web-site": "El sitio web",
+  "the-year": "El año",
+  "the-video-path": "El enlace del video",
+  "the-email": "El email",
+  "the-image": "La imagen",
+  "the-tag": "El tag",
+  "the-price": "El precio",
+
+  "email-is-already-exist-please-write-another-one": "El email ya existe, por favor ingrese otro",
+  "magazine-detail": "Detalle de Magazine",
+  "professional-detail": "Detalle de Profesional",
+  "user": "Usuario",
+  "drag-and-drop-some-files-here-or-click-to-select-files": "Arrastre y suelte algun archivo aquí o haga click para seleccionar un archivo",
+
+  "FirstName": "Nombre",
+
+  "form-project": "Formulario Proyecto",
+  "loading": "Cargando",
+  "name": "Nombre",
+  "description": "Descripcion",
+  "total-area": "Área total",
+  "year": "Año",
+  "web-site": "Sitio Web",
+  "view-more": "Ver más",
+  "video-path": "Enlace al video",
+
+  "write-the-web-site": "Escriba el sitio web",
+  "professionals-selected": "Seleccione un profesional",
+  "select-preview-image-for-project": "Seleccione una imagen de previsualizacion para el proyecto",
+  "upload-files": "Subir archivos",
+  "upload-images": "Subir imagenes",
+  "send": "Enviar",
+
+  "pending": "Pendiente",
+  "approved": "Aprobado",
+  "rejected": "Rechazado",
+
+  "administrator-creator": {
+    "add-administrator": "Añadir administrador",
+    "insert-username": "Ingrese el nombre de usuario",
+    "please-select-administrator": "Ingrese el nombre de usuario para agregarlo como administrador",
+    "username": "Nombre de usuario"
+  },
+
+  "carousel-image-creator": {
+    "add-carousel-image": "Agregar imagen al carousel",
+    "please-select-carousel-images": "Por favor seleccione una o mas imagenes para añadir al carousel",
+    "images": "Imagenes",
+    "add-images": "Agregar imagenes",
+    "title": "Titulo",
+    "sub-title": "Subtitulo"
+  },
+
+  "company-creator": {
+    "form-company-creator": "Formulario creardor de empresa",
+    "add-company": "Agregar empresa",
+    "company-name": "Nombre de la empresa",
+    "company-logo": "Logo de la empresa",
+    "select-logo": "Seleccione el logo por favor",
+    "select-background-image": "Seleccione una imagen de fondo por favor",
+    "select-categories-please": "Seleccione las categorias",
+    "categories": "Categorias",
+    "the-category": "La categoria",
+    "the-categories": "Las categorias",
+    "add-category": "Agregar categoria",
+    "cannot-be-empty": "{{fieldName}} no puede estar vacía",
+    "already-exists": "{{fieldName}} ya existe"
+  },
+
+  "filter-list": {
+    "filters": "Filtros"
+  },
+
+  "tag-creator": {
+    "add-tag": "Agregar tag",
+    "please-select-tag": "Ingrese el nombre el nombre de un tag para agregarlo a la lista de tags"
+  },
+
+  "table-admin": {
+    "actions": "Acciones",
+    "there-are-not-more": "No hay más",
+    "find-by-contact": "Buscar por contacto",
+    "tokens": "Fichas"
+  },
+
+  "tabs": {
+    "list-of": "Lista de"
+  },
+
+  "form-tag": {
+    "tag": "Tag",
+    "insert-tag": "Ingrese el tag aquí por favor"
+  },
+
+  "seeProject": "------------------",
+  "project-detail": "Detalle de proyecto",
+  "project-name" : "Nombre del proyecto",
+  "project-edit": "Editar un proyecto",
+  "professional-contact": "Contacto del profesional",
+  "professional-email": "Correo del profesional",
+  "buy-project": "Comprar proyecto",
+  "you-bought-this-project": "Compraste este proyecto",
+  "download-project": "Descargar proyecto",
+  "other-projects-of-professional": "Otros proyectos de este profesional",
+  "other-projects-of-professional-description" : "Otros proyectos de {{professional}}",
+
+  "FormBuyProjects": "------------------",
+  "doc-type": "Tipo de documento",
+  "doc-number": "Número de documento",
+  "card-holder-name": "Titular de la tarjeta",
+  "due-date": "Fecha de vencimiento",
+  "card-number": "Número de la tarjeta",
+  "security-code": "Código de seguridad",
+  "issuer-bank": "Banco emisor",
+  "installments": "Cuotas",
+  "project-purchased": "Has comprado este proyecto",
+  "product-purchased": "Has comprado este producto",
+  "invalid-card": "Numero de tarjeta invalido",
+
+  "FormTwoFactorAuthentication": "-------------------",
+  "two-factor-authentication": "Doble factor de autentificacion",
+  "enter-code": "Ingresa el codigo de doble factor de autentificacion",
+  "download": "Descargar",
+  "wrong-code": "Codigo invalido",
+  "valid-code": "Codigo valido",
+
+  "project-edition-form": "Formulario edicion de proyecto",
+
+  "Footer": "--------------------------------",
+  "who-we-are": "Quienes somos",
+  "frequently-asked-questions": "Preguntas frecuentes",
+  "site-policies": "Politicas del sitio",
+  "all-rights-reserved": "Todos los derechos reservados",
+
+  "LogInForm": "--------------------------------",
+  "username": "Nombre de usuario",
+  "the-username": "El nombre de usuario",
+  "password": "Contraseña",
+  "the-password": "La contraseña",
+  "log-in-with": "Ingresar con",
+  "invalid-credentials": "Nombre de usuario o contraseña invalido",
+  "don't-have-an-account-please": "¿No tienes una cuenta? Por favor",
+  "register-here": "Regístrese aquí.",
+  "go-back": "Volver",
+
+  "Authentication": "--------------------------------",
+  "log-in": "Ingresar",
+  "sign-in": "Crear cuenta",
+  "username-already-exists": "El nombre de usuario ya existe",
+
+  "DE DONDE ES?": "--------------------------------",
+  "LogOut": "Cerrar sesión",
+  "SignedInAs": "Ingresado como",
+  "Profile": "Perfil",
+  "WriteTagHere": "Escriba el tag aquí por favor",
+
+  "TagCannotBe3OrLess": "El tag no puede tener menos de 3 caracteres",
+
+  "link": "Enlace",
+  "work-form": "Formulario de Obra",
+  "building-work-detail": "Detalle de obra",
+  "preview-image": "Imagen previsualizacion",
+  "select-preview-image-for-building-work": "Seleccione una imagen de previsualizacion para la obra",
+  "the-administrator-cannot-be-empty": "El administrador no puede estar vacío",
+
+  "formulary": {
+    "professional-form": "Formulario Profesional",
+    "professional-profile": "Perfil profesional",
+    "company": "Empresa",
+    "the-company": "La empresa",
+    "contact": "Contacto",
+    "the-contact": "El contacto",
+    "contact-email": "Email de contacto",
+    "the-contact-email": "El email de contacto",
+    "contact-charge": "Cargo del conctacto",
+    "the-contact-charge": "El cargo del conctacto",
+    "company-category": "Categoria de empresa",
+    "the-company-category": "La categoria de empresa",
+    "web-page": "Página Web",
+    "the-web-page": "La página web",
+    "location-of-the-company": "Ubicacion de la empresa",
+    "the-location-of-the-company": "La ubicacion de la empresa",
+    "the-province": "La provincia",
+    "the-location": "La localidad",
+    "telephone": "Telefono",
+    "the-telephone": "El telefono",
+    "select-profile-picture": "Seleccione la imagen de perfil",
+    "select-background-picture": "Seleccione la imagen de fondo"
+  },
+
+  "edit": "Editar",
+
+  "assign-tokens": "Assign tokens",
+  "photos": "Fotos",
+  "search": "Buscar",
+  "filter-by-option": "Filtrar por opcion",
+
+  "product-detail": "Detalle del producto",
+  "select-preview-image-for-the-product": "Seleccione la imagen de vista previa para el producto",
+  "product-form": "Formulario de producto",
+  "should-be-greater-than-0": "Debe ser superior a 0",
+  "date": "Fecha",
+  "building-work": "Obra",
+
+  "about-home": {
+    "a-factory-of-ideas": "Una fabrica de ideas",
+    "we-are-an-online-platform": "Somos una plataforma online conecta a miles de propietarios de viviendas con los profesionales del diseño."
+  },
+
+  "filter": "Filtar",
+  "product-information": "Información del producto",
+  "shared": "Compartir",
+  "province-of": "Provincia de",
+  "link-account-to-mercadopago": "Vincular con MercadoPago",
+  "buy-online": "Comprar online",
+  "consult": "Consultar",
+  "in-the-seller-is-online-shop": "En la tienda online del vendedor",
+  "width": "Ancho",
+  "the-width": "El ancho",
+  "height": "Altura",
+  "the-height": "La altura",
+  "depth": "Profundidad",
+  "the-depth": "La profundidad",
+  "other-projects-of": "Otros proyectos de"
+}

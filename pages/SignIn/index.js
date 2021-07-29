@@ -1,38 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Layout from "../../components/Layout/Layout";
-import { login } from "../../services/userService";
-import { useTranslation } from "react-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import useTranslation from "next-translate/useTranslation";
 import SignInForm from "../../components/SignInForm";
+import { getSession } from "next-auth/client";
 
-const initialUsers = [];
-
-const SignIn= () => {
-  const [users, setUsers] = useState(initialUsers);
-
-  useEffect(async()=>{
-    const users = await login("lucho","1234");
-    setUsers(users);
-  }, []);
-
-  const { t, lang } = useTranslation("common");
+const SignIn = () => {
+  const { t } = useTranslation("common");
   return (
-    <Layout title={t("Sign in")}
-    header={false}
-    >
-      <ul>
-        {users.map((user, index) => {
-          return <li key={index}>{user}</li>;
-        })}
-      </ul>
-      <SignInForm/>
+    <Layout title={t("sign-in")} header={false} footer={false}>
+      <section className="container py-2">
+        <SignInForm />
+      </section>
     </Layout>
   );
 };
-export const getStaticProps = async ({ locale }) => ({
-    props: {
-      ...(await serverSideTranslations(locale, ["common"])),
-    },
-  });
+
+export async function getServerSideProps({ params, req, query, res, locale }) {
+  // Get the user's session based on the request
+  const session = await getSession({ req });
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
 
 export default SignIn;
