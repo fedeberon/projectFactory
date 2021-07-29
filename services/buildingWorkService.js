@@ -68,6 +68,11 @@ export const removeAndAddImages = async (images, id, token) => {
   return newImages;
 };
 
+
+export const findByNameAndStatus = async (name, status, page, size) => {
+  return await API.get(`/building-works/name/${name}/status/${status}?page=${page}&size=${size}`);
+}
+
 export const editTags = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const imageData = new FormData();
@@ -81,6 +86,6 @@ export const setStatus = async (id, status, token) => {
   return await API.put(`/building-works/${id}/status/${status}`);
 };
 
-export const findByContactAndStatus = async (contact, status, page, size) => {
-  return await API.get(`/building-works/contact/${contact}/status/${status}?page=${page}&size=${size}`);
+export const findByContactAndStatus = async (name, status, page, size) => {
+  return await API.get(`/building-works/name/${name}/status/${status}?page=${page}&size=${size}`);
 };
