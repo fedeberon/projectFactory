@@ -16,7 +16,7 @@ const ImageLiked = ({ image }) => {
         src={image.path}
         alt="Card image cap"
       />
-      <Card.Body></Card.Body>
+      {/* <Card.Body></Card.Body> */}
     </Card>
   );
 };
