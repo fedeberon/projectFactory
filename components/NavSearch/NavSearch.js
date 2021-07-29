@@ -23,21 +23,13 @@ export default function NavSearch() {
           {/* <Navbar.Toggle aria-controls="navbar-light-example" /> */}
           <Navbar.Collapse id="navbar-light-example">
             <Nav className={styles.nav}>
-              {/* Professionals */}
-              <NavDropdown
-                className="navLink"
-                title={
-                  <span className={styles.navLink}>{t("professionals")}</span>
-                }
-              >
-                <Link href="/professional" passHref>
-                  <NavDropdown.Item>{t("professionals")}</NavDropdown.Item>
-                </Link>
+              {/* Companies */}
+              <Link href="/companies" passHref>
+                <Nav.Link>
+                  <span className={styles.navLink}>{t("companies")}</span>
+                </Nav.Link>
+              </Link>
 
-                <Link href="/companies" passHref>
-                  <NavDropdown.Item>{t("companies")}</NavDropdown.Item>
-                </Link>
-              </NavDropdown>
 
               {/* Products */}
               <Link href="/product" passHref>
@@ -46,10 +38,10 @@ export default function NavSearch() {
                 </Nav.Link>
               </Link>
 
-              {/* Projects */}
-              <Link href="/project" passHref>
+              {/* Ideas */}
+              <Link href="/ideas" passHref>
                 <Nav.Link>
-                  <span className={styles.navLink}>{t("projects")}</span>
+                  <span className={styles.navLink}>{t("header.ideas")}</span>
                 </Nav.Link>
               </Link>
 
