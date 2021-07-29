@@ -610,7 +610,7 @@ const CompanyCreator = () => {
                 </Col>
               </Row>
               <Row>
-                <Col>
+                <Col className="mt-2">
                   <PrimaryButton dark type="submit" variant="primary mt-1">
                     {t("company-creator.add-company")}
                   </PrimaryButton>
