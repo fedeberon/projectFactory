@@ -33,6 +33,7 @@
   "price": "Price",
   "invalid-link": "Invalid link",
   "image": "Image",
+  "new": "NEW",
 
   "is-required": "{{nameRequired}} is required",
   "write-the-here-please": "Write {{namePlaceholder}} here please",

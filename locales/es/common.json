@@ -33,6 +33,7 @@
   "price": "Precio",
   "invalid-link": "El link es invalido",
   "image": "Imagen",
+  "new": "NUEVO",
 
   "is-required": "{{nameRequired}} es requerido",
   "write-the-here-please": "Escriba {{namePlaceholder}} aquí por favor",
