@@ -70,3 +70,8 @@ body {
   padding-top: 55px;
   padding-bottom: 55px;
 }
+.list-group-item.active{
+  color: #161814 !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+}

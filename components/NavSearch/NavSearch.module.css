@@ -19,11 +19,103 @@
 .nav {
   margin-right: auto;
   margin-left: auto;
+  list-style: none;
+  height: 56px;
+  background:#fff;
 }
-
+.liNav:hover{
+  border-bottom: 2px solid #ffca05 !important;
+}
+.nav ul li a{
+  color: #161814;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 0;
+}
+ .nav ul > li {
+  display: inline-block;
+  padding: 1rem 1rem;
+} 
+.nav ul li ol {
+  display: none;
+  position: absolute;
+  width: 100%;
+}
+.nav ul li:hover > ol {
+  display: block;
+  left:0;
+  top: 58px;
+}
+.showDesplegable {
+  display: block !important;
+  left:0;
+  top: 58px;
+}
+.borderActive{
+  border-bottom: 2px solid #ffca05 !important;
+}
+.desplegable{
+  background-color: #FFFFFF;
+  list-style: none;
+  z-index: 1;
+  position: absolute;
+}
+.outSide{
+  height: 100vh;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0);
+  width: 100%;
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  top:186px;
+  display: none;
+}
+.showOutSide{
+  display: block;
+}
 .navLink {
   color: #161814;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.02em;
+  border: 0;
+  background-color: transparent;
+}
+.navLink:hover {
+  border-bottom: 2px solid #ffca05 !important;
+}
+.containerDesplegable{
+  height: 128px;
+}
+.link:hover {
+  background-color: #e2e6ea;
+  color: #212529;
+  border-color: #dae0e5;
+}
+.link {
+  color: #212529;
+  font-weight: 400;
+  text-decoration: none;
+  text-align: inherit;
+  background-color: transparent;
+  font-size: 14px;
+}
+.columnNavSearch {
+  padding: 0.1rem 1.5rem;
+}
+.subtitleNavSearch {
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0px;
+  line-height: 1.2;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+.rowNavSearch{
+  height: 40px;
+}
+.tabContent{
+  top: 40px;
 }
