@@ -167,9 +167,9 @@ const CompanyDetails = ({ company, initalBuildingWorks, status, session }) => {
                   title={
                     <h5>
                       <span className="badge">
-                        {company.countBuildingWorks}
+                        {company.countProducts}
                       </span>{" "}
-                      {t("buildings")}
+                      {t("products")}
                     </h5>
                   }
                 >
