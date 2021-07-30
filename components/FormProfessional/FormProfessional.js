@@ -123,7 +123,8 @@ const FormProfessional = ({
                     control={control}
                     rules={{
                       required: {
-                        value: optionSelect,
+                        value: false,
+                        // value: optionSelect,
                         message: `${t("common:is-required", {
                           nameRequired: t("common:formulary.the-company"),
                         })}`,
@@ -309,7 +310,8 @@ const FormProfessional = ({
                     control={control}
                     rules={{
                       required: {
-                        value: true,
+                        value: false,
+                        // value: true,
                         message: `${t("common:is-required", {
                           nameRequired: t(
                             "common:formulary.the-company-category"

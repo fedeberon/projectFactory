@@ -414,8 +414,8 @@ const Portfolio = ({ professional, buildingWorks }) => {
         <Row>
           <Col>
             <div className="text-center">
-              <h1>{`${professional.contact}`}</h1>
-              <h1>{`${professional.company?.name}`}</h1>
+              <h1>{professional.contact}</h1>
+              <h1>{professional?.company?.name}</h1>
             </div>
           </Col>
         </Row>
@@ -482,7 +482,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
   try {
-
     if (session) {
       token = session.accessToken;
       professionalId = session.user.id;
@@ -504,7 +503,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
       },
     };
   }
-      
+
   return {
     props: {
       professional,

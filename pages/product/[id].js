@@ -94,14 +94,14 @@ const ProductDetail = (props) => {
                   <p>{`${t("price")}: $${data.product.price}`}</p>
                   <p>
                     {t("width")}: {data.product.width} cm / {t("height")}:{" "}
-                    {data.product.height} cm / {t("depth")}:{data.product.depth}{" "}
+                    {data.product.height} cm / {t("depth")}{" "}:{data.product.depth}{" "}
                     cm
                   </p>
                 </Col>
                 <Col>
                   <div className="d-grid gap-2 w-50">
                     <PrimaryButton dark style={{ width: "200px" }}>
-                      <Envelope size={15} /> {t("consult")}
+                      <Envelope size={20} /> {t("consult")}
                     </PrimaryButton>
                     {session ? (
                       <PrimaryButton
