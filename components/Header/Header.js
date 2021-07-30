@@ -10,7 +10,7 @@ import Link from "next/link";
 import Image from "next/image";
 import SuggestionsSearch from "../SuggestionsSearch/SuggestionsSearch";
 import * as professionalService from "../../services/professionalService";
-import * as projectService from "../../services/projectService";
+import * as buildingWorkService from "../../services/buildingWorkService";
 import * as userService from "../../services/userService";
 import styles from "./Header.module.css";
 
@@ -97,15 +97,16 @@ export default function Header() {
           suggestion.link = "#";
         });
       } else {
-        newSuggestions = await projectService.findByNameAndActive(
+        newSuggestions = await buildingWorkService.findByNameAndStatus(
           value,
-          true,
+          "APPROVED",
           pageSize.page,
           pageSize.size
         );
+        console.log(newSuggestions);
         newSuggestions.forEach((suggestion) => {
           suggestion.value = suggestion.name;
-          suggestion.link = `project/${suggestion.name}-${suggestion.id}`;
+          suggestion.link = `building/${suggestion.name}-${suggestion.id}`;
         });
       }
     } else {
@@ -200,7 +201,7 @@ export default function Header() {
                     <Dropdown.Menu>
                       {isRole("ROLE_USER") && (
                         <>
-                          <Link href="/profile" passHref>
+                          <Link href={isRole("ROLE_COMPANY") ? `/companies/${session.user.name}-${session.user.id}` : "/profile"} passHref>
                             <Dropdown.Item>{t("header.profile")}</Dropdown.Item>
                           </Link>
                           <Dropdown.Divider />

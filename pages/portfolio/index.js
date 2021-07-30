@@ -335,7 +335,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
   };
 
   const imagesCard = (
-    <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
+    <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       {isLoading ? (
         <SpinnerCustom />
       ) : (
@@ -350,7 +350,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
                   }`}
                 >
                   <img
-                    className={`${filteredImagesStyles.cardImage}`}
+                    className={`${filteredImagesStyles.cardImage} cursor-pointer`}
                     src={buildingWork.previewImage}
                     alt="Professional preview"
                   />
@@ -414,8 +414,8 @@ const Portfolio = ({ professional, buildingWorks }) => {
         <Row>
           <Col>
             <div className="text-center">
-              <h1>{`${professional.contact}`}</h1>
-              <h1>{`${professional.company?.name}`}</h1>
+              <h1>{professional.contact}</h1>
+              <h1>{professional?.company?.name}</h1>
             </div>
           </Col>
         </Row>
@@ -429,6 +429,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
         </Row>
         <ModalForm
           size={"xl"}
+          fullscreen={"lg-down"}
           modalTitle={t("work-form")}
           className={"Button mt-50"}
           formBody={
@@ -480,19 +481,27 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (!size || size <= 0) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
-
-  if (session) {
-    token = session.accessToken;
-    professionalId = session.user.id;
-    professional = await professionalService.getById(professionalId, token);
-    if (professional) {
-      buildingWorks = await buildingWorkService.getByProfessionalId(
-        professional.id,
-        page,
-        size,
-        token
-      );
+  try {
+    if (session) {
+      token = session.accessToken;
+      professionalId = session.user.id;
+      professional = await professionalService.getById(professionalId, token);
+      if (professional) {
+        buildingWorks = await buildingWorkService.getByProfessionalId(
+          professional.id,
+          page,
+          size,
+          token
+        );
+      }
     }
+  } catch (e) {
+    return {
+      redirect: {
+        destination: "/logIn?expired",
+        permanent: false,
+      },
+    };
   }
 
   return {

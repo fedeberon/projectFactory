@@ -14,6 +14,15 @@ export const findMyProducts = async (page, size, token) => {
   return await API.get(`/products/my-products?page=${page}&size=${size}`);
 };
 
+export const getAllByCompanyId = async (companyId , page, size) => {
+  return await API.get(`/products/companies/${companyId}?page=${page}&size=${size}`);
+};
+
+export const setNewTokensToProductId = async (newTokens, productId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/products/${productId}/tokens/${newTokens}`);
+}
+
 export const findAllCategories = async (page, size) => {
   return await API.get(`/products/categories?page=${page}&size=${size}`);
 };

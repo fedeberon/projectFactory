@@ -157,7 +157,7 @@ const Project = ({ data, professionals, filters }) => {
                   <Card.Footer className="d-flex justify-content-end">
                     <Link
                       href={`/project/[id]`}
-                      as={`/project/${project.name.replace(/\s+/g, "-")}-${
+                      as={`/project/${project.name.replace(/\s+/g, "-").toLowerCase()}-${
                         project.id
                       }`}
                       passHref
@@ -192,10 +192,18 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
   if (session) {
-    token = session.accessToken;
-    projects = await projectService.findAll(page, size, token);
-    response = await professionalService.findAll(page, size, token);
-    filters = await tagService.findAll(token);
+    try {
+      token = session.accessToken;
+      projects = await projectService.findAll(page, size, token);
+      response = await professionalService.findAll(page, size, token);
+      filters = await tagService.findAll(token);
+    } catch (e) {
+      return { redirect: {
+        destination: "/logIn?expired",
+        permanent: false,
+      },
+    }
+    }
   }
 
   return {

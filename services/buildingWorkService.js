@@ -22,10 +22,14 @@ export const getAllByCompanyId = async (companyId , page, size) => {
   return await API.get(`/building-works/companies/${companyId}?page=${page}&size=${size}`);
 };
 
-export const getById = async (id, token) => {
-  API.defaults.headers.common["Authorization"] = token;
+export const getById = async (id) => {
   return await API.get(`/building-works/${id}`);
 };
+
+export const setNewTokensToBuildingWorkId = async (newTokens, buildingWorkId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/building-works/${buildingWorkId}/tokens/${newTokens}`);
+}
 
 export const addFolder = async (data, token) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -64,6 +68,11 @@ export const removeAndAddImages = async (images, id, token) => {
   return newImages;
 };
 
+
+export const findByNameAndStatus = async (name, status, page, size) => {
+  return await API.get(`/building-works/name/${name}/status/${status}?page=${page}&size=${size}`);
+}
+
 export const editTags = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const imageData = new FormData();
@@ -77,6 +86,6 @@ export const setStatus = async (id, status, token) => {
   return await API.put(`/building-works/${id}/status/${status}`);
 };
 
-export const findByContactAndStatus = async (contact, status, page, size) => {
-  return await API.get(`/building-works/contact/${contact}/status/${status}?page=${page}&size=${size}`);
+export const findByContactAndStatus = async (name, status, page, size) => {
+  return await API.get(`/building-works/name/${name}/status/${status}?page=${page}&size=${size}`);
 };

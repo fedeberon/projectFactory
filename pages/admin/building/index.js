@@ -255,12 +255,12 @@ const BuildingAdmin = ({
               defaultValue={buildingWork.tokensAsigned}
             />
             <Button
-            // onClick={(e) =>
-            //   setNewTokensToBuildingWork(
-            //     e.target.previousElementSibling.value,
-            //     buildingWork.id
-            //   )
-            // }
+            onClick={(e) =>
+              setNewTokensToBuildingWork(
+                e.target.previousElementSibling.value,
+                buildingWork.id
+              )
+            }
             >
               {t("apply")}
             </Button>
@@ -277,11 +277,11 @@ const BuildingAdmin = ({
   };
 
   const setNewTokensToBuildingWork = async (tokens, buildingWorkId) => {
-    // await buildingWorkService.setNewTokensToBuildingWorkId(
-    //   tokens,
-    //   buildingWorkId,
-    //   session.accessToken
-    // );
+    await buildingWorkService.setNewTokensToBuildingWorkId(
+      tokens,
+      buildingWorkId,
+      session.accessToken
+    );
     alert(t("tokens-setted"));
   };
 

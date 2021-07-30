@@ -33,6 +33,7 @@
   "price": "Price",
   "invalid-link": "Invalid link",
   "image": "Image",
+  "new": "NEW",
 
   "is-required": "{{nameRequired}} is required",
   "write-the-here-please": "Write {{namePlaceholder}} here please",
@@ -64,7 +65,7 @@
   "total-area": "Total Area",
   "year": "Year",
   "web-site": "WebSite",
-  "view-more": "View more",
+  "view-more": "More",
   "video-path": "Link to video",
 
   "write-the-web-site": "Write the website",
@@ -137,6 +138,7 @@
 
   "seeProject": "------------------",
   "project-detail": "Project detail",
+  "project-name" : "Name of project",
   "project-edit": "Project edit",
   "professional-contact": "Professional contact",
   "professional-email": "Professional email",
@@ -144,6 +146,7 @@
   "you-bought-this-project": "You bought this project",
   "download-project": "Download project",
   "other-projects-of-professional": "Other projects of this professional",
+  "other-projects-of-professional-description" : "Other projects of {{professional}}",
 
   "FormBuyProjects": "------------------",
   "doc-type": "Doc type",
@@ -155,6 +158,7 @@
   "issuer-bank": "Issuer bank",
   "installments": "Installments",
   "project-purchased": "You have purchased this project",
+  "product-purchased": "You have purchased this product",
   "invalid-card": "Invalid card number",
 
   "FormTwoFactorAuthentication": "-------------------",
@@ -250,5 +254,16 @@
   "filter": "Filter",
   "product-information": "Product Information",
   "shared": "Shared",
-  "province-of": "Province of"
+  "province-of": "Province of",
+  "link-account-to-mercadopago": "Link to MercadoPago",
+  "buy-online": "Buy Online",
+  "consult": "Consult",
+  "in-the-seller-is-online-shop": "In the seller's online shop",
+  "width": "Width",
+  "the-width": "The width",
+  "height": "Height",
+  "the-height": "The height",
+  "depth": "Depth",
+  "the-depth": "The depth",
+  "other-projects-of": "Other projects of"
 }

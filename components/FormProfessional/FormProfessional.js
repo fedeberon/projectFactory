@@ -10,6 +10,7 @@ import Error from "../Error";
 import Select from "react-select";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
 const FormProfessional = ({
   onAddProfessional,
@@ -122,7 +123,8 @@ const FormProfessional = ({
                     control={control}
                     rules={{
                       required: {
-                        value: optionSelect,
+                        value: false,
+                        // value: optionSelect,
                         message: `${t("common:is-required", {
                           nameRequired: t("common:formulary.the-company"),
                         })}`,
@@ -308,7 +310,8 @@ const FormProfessional = ({
                     control={control}
                     rules={{
                       required: {
-                        value: true,
+                        value: false,
+                        // value: true,
                         message: `${t("common:is-required", {
                           nameRequired: t(
                             "common:formulary.the-company-category"
@@ -458,9 +461,9 @@ const FormProfessional = ({
             </Row>
           </Col>
           <Col>
-            <Button type="submit" variant="primary mt-1">
+            <PrimaryButton dark type="submit" variant="primary mt-1">
               {t("common:send")}
-            </Button>
+            </PrimaryButton>
           </Col>
         </Row>
       </Form>

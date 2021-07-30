@@ -17,6 +17,8 @@
 .backgroundImage {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    height: 140px;
+    object-fit: cover;
 }
 
 .location {
@@ -46,4 +48,55 @@
 
 .section {
     margin-top: 4%;
+}
+
+.tabs h5 {
+    font-size: 15px;
+    margin: 0;
+}
+
+.tabContent {
+    padding-top: 30px;
+}
+
+@media (max-width: 1200px) {
+    .logoContainer {
+        left: 0;
+    }
+}
+
+@media (max-width: 990px) {
+    .companyName {
+        margin: 1% 0 0 27%;
+    }
+}
+
+@media (max-width: 990px) {
+    .companyName {
+        margin: 1% 0 0 38%;
+    }
+}
+
+@media (max-width: 490px) {
+    .logoContainer {
+        bottom: -38px;
+        width: 78px;
+        height: 78px;
+    }
+
+    .logo {
+        width: 72px;
+        height: 72px;
+        margin: 2px;
+    }
+
+    .companyName {
+        margin: 1% 0 0 18%;
+    }
+}
+
+@media (max-width: 450px) {
+    .companyName {
+        margin: 1% 0 0 28%;
+    }
 }

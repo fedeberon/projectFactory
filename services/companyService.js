@@ -1,9 +1,15 @@
 import API from "./api";
 import * as imageService from "./imageService";
 import { signIn } from "next-auth/client";
-import { getById } from "./professionalService";
 
-export const create = async (data, logo, backgroundImage, categories, token, userId) => {
+export const create = async (
+  data,
+  logo,
+  backgroundImage,
+  categories,
+  token,
+  userId
+) => {
   API.defaults.headers.common["Authorization"] = token;
   const newCategories = [];
   categories.map((category) => newCategories.push({ name: category.tag }));
@@ -27,9 +33,16 @@ export const create = async (data, logo, backgroundImage, categories, token, use
     name: data.contact,
     email: data.email,
     image: company.previewImage,
-    callbackUrl: `${window.location.origin}/profile`,
+    callbackUrl: `${window.location.origin}/companies/${company.name
+      .replace(/\s+/g, "-")
+      .toLowerCase()}-${company.id}`,
   });
 };
+
+/**
+ * @todo Implement this function.
+ */
+export const generatePreferenceForToken = async (plan, token) => {};
 
 export const getStartsWith = async (value, page, size) => {
   return await API.get(`/companies/name/${value}?page=${page}&size=${size}`);
@@ -37,6 +50,11 @@ export const getStartsWith = async (value, page, size) => {
 
 export const findAll = async (status, page, size) => {
   return await API.get(`/companies/status/${status}?page=${page}&size=${size}`);
+};
+
+export const setNewTokensToCompany = async (newTokens, companyId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/companies/${companyId}/tokens/${newTokens}`);
 };
 
 export const findAllByStatus = async (page, size, status) => {

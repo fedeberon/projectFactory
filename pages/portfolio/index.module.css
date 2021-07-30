@@ -19,9 +19,11 @@
   top: -150px;
   z-index: 100;
 }
+
 .afterLess::after {
   display: none;
 }
+
 .imgProfile {
   width: 50px;
   height: 0;

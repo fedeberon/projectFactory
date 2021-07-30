@@ -26,15 +26,16 @@ const ProjectDetail = ({ data, idSplit, status }) => {
   }, [session]);
 
   const onBuyProyect = async () => {
-    const mp = new MercadoPago(
-      process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY,
-      { locale: 'es-AR' }
-    );
+    const mp = new MercadoPago(process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY, {
+      locale: "es-AR",
+    });
 
-    const preference = await mercadopagoService.createPreferenceToProject(idSplit, session.accessToken);
-    mp.checkout(
-    {
-      preference: preference.id
+    const preference = await mercadopagoService.createPreferenceToProject(
+      idSplit,
+      session.accessToken
+    );
+    mp.checkout({
+      preference: preference.id,
     });
 
     const link = document.createElement("a");
@@ -42,13 +43,20 @@ const ProjectDetail = ({ data, idSplit, status }) => {
     link.href = preference.initPoint;
     link.setAttribute("type", "hidden");
     link.click();
-  }
+  };
+
+  const downloadProject = async () => projectService.download(idSplit, session.accessToken);
 
   return (
-    <Layout title={`${t("project-detail")}`}>
-      <section className="container py-2">
-        <SeeProject project={project} status={status} onBuyProyect={onBuyProyect} onEditProject={editProject} id={idSplit}/>
-      </section>
+    <Layout>
+      <SeeProject
+        project={project}
+        status={status}
+        onBuyProyect={onBuyProyect}
+        downloadProject={downloadProject}
+        onEditProject={editProject}
+        id={idSplit}
+      />
     </Layout>
   );
 };
@@ -60,7 +68,7 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
   let { page, size } = req.__NEXT_INIT_QUERY;
   let { id } = params; // params is necessary in case you reload the page from the url
   const split = id.split("-");
-  let idSplit = split[split.length -1];
+  let idSplit = split[split.length - 1];
   if (!page || page <= 0) {
     page = 0;
   }
@@ -82,12 +90,14 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
     token
   );
   project.images = dataImages;
-  project.projectsOfProfessional = projectsOfProfessional.filter(p => p.id != project.id);
+  project.projectsOfProfessional = projectsOfProfessional.filter(
+    (p) => p.id != project.id
+  );
   return {
     props: {
       data: project,
       idSplit,
-      status: query.status ? query.status : ""
+      status: query.status ? query.status : "",
     },
   };
 }

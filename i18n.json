@@ -15,6 +15,6 @@
     "/admin/building": ["administrator"],
     "/admin": ["administrator"],
     "/policies":["policies"],
-    "/product":["products"]
+    "/companies/[slug]":["profile"]
   }
 }

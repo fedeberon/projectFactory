@@ -3,34 +3,26 @@ import ModalForm from "../ModalForm";
 import useTranslation from "next-translate/useTranslation";
 import FormEditProject from "../FormEditProject";
 import { useRouter } from "next/router";
-import FormTwoFactorAuthentication from "../FormTwoFactorAuthentication";
 import {
-  Form,
-  Button,
-  Card,
   Col,
   Container,
-  Label,
   Row,
 } from "react-bootstrap";
-import CarouselProject from "../CarouselProject/CarouselProject";
 import SeeProjectStyle from "./SeeProject.module.css";
+import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
+import CardProject from "../CardProject/CardProject";
+import SwiperCarouselProject from "../Swiper/SwiperCarouselProject/SwiperCarouselProject";
 
-const SeeProject = ({ project, onEditProject, id, onBuyProyect, status }) => {
+const SeeProject = ({ project, onEditProject, id, onBuyProyect, downloadProject, status }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { t } = useTranslation("common");
   const router = useRouter();
 
   const toggleModal = () => setModalOpen(!modalOpen);
 
-  const show2FA = () => {
-    document.querySelector("#two-factor").hidden = false;
-    document.querySelector("#project-data").hidden = true;
-  };
-
   const projectsOfProfessionalList = project?.projectsOfProfessional?.map(
     (project) => {
-      return <img key={project.previewImage} src={project.previewImage} />;
+      return <Col key={project.id} sm={12} md={4} lg={3}><CardProject project={project}/></Col>;
     }
   );
 
@@ -49,102 +41,113 @@ const SeeProject = ({ project, onEditProject, id, onBuyProyect, status }) => {
         }
         modalOpen={{ open: modalOpen, function: setModalOpen }}
       />
-      <Container>
+      <div className="w-100 mb-4">
+        {project.images && 
+          <SwiperCarouselProject images={project.images} setCurrentImageId={()=>{}} setAppliedFilters={()=>{}}/>
+        }
+      </div>
+      <section className="container py-2">
         <Row>
-          <Col>
-            <Card>
-              <Card.Body>
-                <Card.Title tag="h5">{project.name}</Card.Title>
-                <Card.Subtitle tag="h6" className="mb-2 text-muted">
-                  <div id="project-data">
-                    <Row>
-                      <Col>
-                        <Form.Label>{t("professional-contact")}:</Form.Label>
-                        <p>{project.professional?.contact}</p>
-                      </Col>
-                      <Col>
-                        <Form.Label>{t("total-area")}:</Form.Label>
-                        <p>{project.totalArea}</p>
-                      </Col>
-                      <Col>
-                        <Form.Label>{t("year")}:</Form.Label>
-                        <p>{project.year}</p>
-                      </Col>
-                      <Col>
-                        <Form.Label>{t("web-site")}:</Form.Label>
-                        <p>{project.website}</p>
-                      </Col>
-                      <Col>
-                        <Form.Label>{t("professional-email")}:</Form.Label>
-                        <p>{project.professional?.email}</p>
-                      </Col>
-                    </Row>
-                  </div>
-                </Card.Subtitle>
-                <img
-                  className={`${SeeProjectStyle.img}`}
-                  src={project.previewImage}
-                  width="100%"
-                  alt="preview-image"
-                ></img>
-                <Card.Text>{project.description}</Card.Text>
-              </Card.Body>
-            </Card>
-            <Row className="my-2">
-              <Col>
-                {!project.purchased && (
-                  <Button
-                    className="mx-1"
-                    variant={"success"}
-                    id="btn-show-buy-project"
-                    onClick={onBuyProyect}
-                  >
-                    {t("buy-project")}
-                  </Button>
-                )}
-                {project.purchased && (
-                  <Button variant={"primary"} id="btn-show-2FA" onClick={show2FA}>
-                    {t("download-project")}
-                  </Button>
-                )}
-                <Button
-                  className="mx-1"
-                  variant={"warning"}
-                  onClick={toggleModal}
-                >
-                  {t("project-edit")}
-                </Button>
-              </Col>
-              {status == "approved"  &&
-              <div className="alert alert-success" role="alert">
-                {t("you-bought-this-project")}
+          <Col sm={12} md={4} lg={3}>
+            <aside className="boxdeg">
+              <div>
+                <span className={SeeProjectStyle.asideTitle}>
+                  {t("-name")}
+                </span>
+                <span>{project.name}</span>
+              </div>project
+
+              <hr />
+
+              <div>
+                <span className={SeeProjectStyle.asideTitle}>
+                  {t("professional-contact")}
+                </span>
+                <span className="d-block">{project.professional?.contact}</span>
               </div>
-              }
-              <div className="cho-container"></div>
-            </Row>
-            <div hidden id="two-factor">
-              <FormTwoFactorAuthentication projectId={id} />
+
+              <hr />
+              <div>
+                <span className={SeeProjectStyle.asideTitle}>
+                  {t("total-area")}
+                </span>
+                <span className="d-block">{project.totalArea}</span>
+              </div>
+
+              <hr />
+              <div>
+                <span className={SeeProjectStyle.asideTitle}>{t("year")}</span>
+                <span className="d-block">{project.year}</span>
+              </div>
+
+              <hr />
+              <div>
+                <span className={SeeProjectStyle.asideTitle}>
+                  {t("web-site")}
+                </span>
+                <span className="d-block">{project.website}</span>
+              </div>
+
+              <hr />
+              <div>
+                <Row>
+                  <Col sm={12} md={6} lg={6}>
+                    {!project.purchased ? (
+                      <PrimaryButton className="w-100" onClick={onBuyProyect}>
+                        {t("buy-project")}
+                      </PrimaryButton>
+                    ) : (
+                      <PrimaryButton className="w-100" onClick={downloadProject}>
+                        {t("download-project")}
+                      </PrimaryButton>
+                    )}
+                  </Col>
+                  <Col sm={12} md={6} lg={6}>
+                    <PrimaryButton className="w-100" onClick={toggleModal}>
+                      {t("project-edit")}
+                    </PrimaryButton>
+                  </Col>
+                </Row>
+              </div>
+
+              <hr />
+              <div>
+                {status == "approved" && (
+                  <div className="alert alert-success" role="alert">
+                    {t("you-bought-this-project")}
+                  </div>
+                )}
+              </div>
+            </aside>
+          </Col>
+
+          <Col>
+            <p>{project.description}</p>
+            <div className={SeeProjectStyle.videoResponsive}>
+              <iframe
+                src={`https://www.youtube.com/embed/${project.videoPath}`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
             </div>
-            <div className="d-flex justify-content-center align-items-center my-3">
-              <Col md={"12"}>
-                {project?.images?.map(image => 
-                <img key={image.id} src={image.path}/>)}
-              </Col>
-            </div>
-            <iframe
-              width="560"
-              height="315"
-              src={`https://www.youtube.com/embed/${project.videoPath}`}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-            <h4>{t("other-projects-of-professional")}</h4>
-            {projectsOfProfessionalList}
           </Col>
         </Row>
-      </Container>
+
+          <div className="my-4">
+            <h2 className={SeeProjectStyle.productsTitle}>
+              {t("other-projects-of-professional")}
+              <small>
+                {t("other-projects-of-professional-description", {professional: project.professional?.contact})}
+              </small>
+            </h2>
+          </div>
+        
+        <Row className="g-2">
+          {projectsOfProfessionalList}
+        </Row>
+      </section>
     </>
   );
 };

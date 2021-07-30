@@ -71,7 +71,11 @@ const MyProducts = (props) => {
     defaultValues: {
       name: "",
       description: "",
+      width: 0,
+      height: 0,
+      depth: 0,
       price: 0,
+      categories: [],
     },
   });
 
@@ -90,7 +94,11 @@ const MyProducts = (props) => {
     let copyProductsData = Object.assign({}, productData);
     copyProductsData.defaultValues.name = product.name;
     copyProductsData.defaultValues.description = product.description;
+    copyProductsData.defaultValues.width = product.width;
+    copyProductsData.defaultValues.height = product.height;
+    copyProductsData.defaultValues.depth = product.depth;
     copyProductsData.defaultValues.price = product.price;
+    copyProductsData.defaultValues.categories = product.categories;
 
     setProductData(copyProductsData);
 
@@ -153,7 +161,11 @@ const MyProducts = (props) => {
       defaultValues: {
         name: "",
         description: "",
+        width: 0,
+        height: 0,
+        depth: 0,
         price: 0,
+        categories: [],
       },
     };
     setProductData(defaultValues);
@@ -212,7 +224,7 @@ const MyProducts = (props) => {
   };
 
   const imagesCard = (
-    <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
+    <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       {isLoading ? (
         <SpinnerCustom />
       ) : (
@@ -222,12 +234,12 @@ const MyProducts = (props) => {
               <Card.Body className="p-0">
                 <Link
                   href={`/product/[id]`}
-                  as={`/product/${product.name.replace(/\s+/g, "-")}-${
-                    product.id
-                  }`}
+                  as={`/product/${product.name
+                    .replace(/\s+/g, "-")
+                    .toLowerCase()}-${product.id}`}
                 >
                   <img
-                    className={`${filteredImagesStyles.cardImage} ${
+                    className={`${indexStyles.cardImage} ${
                       indexStyles.cursorPointer
                     } ${
                       product.status === "PENDING"
@@ -243,9 +255,7 @@ const MyProducts = (props) => {
                 {isState(product)}
                 <div className={`${filteredImagesStyles.cardText}`}>
                   <Col className="col-auto">
-                    <img
-                      className={`${filteredImagesStyles.imgProfile} rounded-circle`}
-                    />
+                    <img className={`${indexStyles.imgProfile}`} />
                   </Col>
                   <Col className={`col-auto`}>
                     <Card.Text
@@ -289,8 +299,9 @@ const MyProducts = (props) => {
 
         <ModalForm
           size={"xl"}
+          fullscreen={"lg-down"}
           modalTitle={t("product-form")}
-          className={"Button mt-50"}
+          className={"Button"}
           formBody={
             <>
               <FormProduct
@@ -341,16 +352,27 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  const data = await productService.findMyProducts(
-    page,
-    size,
-    session.accessToken
-  );
+  try {
+    const data = await productService.findMyProducts(
+      page,
+      size,
+      session.accessToken
+    );
+  
 
-  return {
-    props: {
-      data,
-    },
-  };
+    return {
+      props: {
+        data,
+      },
+    };
+
+  } catch (e) {
+    return {
+      redirect: {
+        destination: "/logIn?expired",
+        permanent: false,
+      },
+    };
+  }
 }
 export default MyProducts;

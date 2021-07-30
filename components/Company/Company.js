@@ -24,10 +24,12 @@ const Company = (props) => {
       <Row className="no-gutters">
         <Col sm={5} md={4} lg={5} className={styles.figure}>
           <figure>
-            <a href="prof-detail.php">
-              <div className={`${styles.deg} deg`}></div>
-              <img src={company.backgroundImage} className="photo" />
-            </a>
+            <Link href={`/companies/${company.name.replace(/\s+/g, "-").toLowerCase()}-${company.id}`}>
+              <a>
+                <div className={`${styles.deg} deg`}></div>
+                <img src={company.backgroundImage} className="photo" />
+              </a>
+            </Link>
           </figure>
         </Col>
         <Col sm={7} md={5} lg={5} className={styles.info}>
@@ -42,13 +44,13 @@ const Company = (props) => {
         </Col>
         <Col sm={12} md={3} lg={2}>
           <div className={`${styles.boxdeg} boxdeg`}>
-            <h5><span className={`${styles.badge} badge`}>{company.countBuildingWorks}</span> {t("buildings")}</h5>
+            <h5><span className={`${styles.badge} badge`}>{company.countProducts}</span> {t("products")}</h5>
             <div className="d-flex">
               <GeoAlt className={styles.locationIcon}/>
               <div className={styles.location}>{company.location}. {`${t("province-of")} ${company.province}`}.</div>
             </div>
             <div className="d-flex justify-content-center">
-              <Link href={`/companies/${company.name.replace(/\s+/g, "-")}-${company.id}`}>
+              <Link href={`/companies/${company.name.replace(/\s+/g, "-").toLowerCase()}-${company.id}`}>
                 <PrimaryButton className="btn-sm">{t("view-more")}</PrimaryButton>
               </Link>
             </div>
