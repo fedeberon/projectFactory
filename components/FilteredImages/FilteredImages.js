@@ -43,7 +43,9 @@ const FilteredImages = ({ isLoading, images }) => {
   return (
     <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
       {isLoading ? (
-        <SpinnerCustom />
+        <Col>
+          <SpinnerCustom />
+        </Col>
       ) : (
         images.map((image, index) => (
           <Col key={index}>
@@ -52,12 +54,11 @@ const FilteredImages = ({ isLoading, images }) => {
                 <Link
                   href={{
                     pathname: "/building/[id]",
-                    query: {img : image.id}
+                    query: { img: image.id },
                   }}
-                  as={`/building/${image.buildingWork?.name?.replace(
-                    /\s+/g,
-                    "-"
-                  ).toLowerCase()}-${image.buildingWork.id}?img=${image.id}`}
+                  as={`/building/${image.buildingWork?.name
+                    ?.replace(/\s+/g, "-")
+                    .toLowerCase()}-${image.buildingWork.id}?img=${image.id}`}
                   passHref
                 >
                   <img

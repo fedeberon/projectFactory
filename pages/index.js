@@ -31,7 +31,7 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
+  // const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const [imagesCarousel, setImagesCarousel] = useState([]);
 
   let { t } = useTranslation("home");
@@ -98,13 +98,13 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
               </Col>
               <Col>
                 <Row>
-                  <Col>
+                  {/* <Col>
                     <OffCanvasFilter
                       filters={filters}
                       appliedFilters={appliedFilters}
                       setAppliedFilters={setAppliedFilters}
                     />
-                  </Col>
+                  </Col> */}
                 </Row>
               </Col>
               <Col>
