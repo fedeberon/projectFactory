@@ -4,6 +4,7 @@ import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 import myProductsStyles from "../../pages/my-products/index.module.css";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
+import styles from "./Product.module.css";
 
 const Product = (props) => {
   const { product } = props;
@@ -24,7 +25,7 @@ const Product = (props) => {
   return (
     <Card>
       <Card.Img
-        className="img-fluid"
+        className={`img-fluid ${styles.img}`}
         src={product.previewImage}
         alt={product.name}
       />
