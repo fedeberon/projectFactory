@@ -103,7 +103,6 @@ export default function Header() {
           pageSize.page,
           pageSize.size
         );
-        console.log(newSuggestions);
         newSuggestions.forEach((suggestion) => {
           suggestion.value = suggestion.name;
           suggestion.link = `building/${suggestion.name}-${suggestion.id}`;
