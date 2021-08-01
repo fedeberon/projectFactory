@@ -1,14 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Nav,
-  Navbar,
-  Container,
-  NavDropdown,
-  Tab,
-  ListGroup,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { CaretDownFill } from "react-bootstrap-icons";
 
 import useTranslation from "next-translate/useTranslation";
@@ -16,11 +7,15 @@ import { useSession } from "next-auth/client";
 import Link from "next/link";
 import styles from "./NavSearch.module.css";
 
+// Services
+import * as tagService from "../../services/tagService";
 import * as productService from "../../services/productService";
+
 export default function NavSearch() {
   const [session, loading] = useSession();
   const { t } = useTranslation("common");
   const [productCategories, setProductCategories] = useState([]);
+  const [filters, setfilters] = useState([]);
 
   const dropdowns = useRef([]);
   const divGris = useRef([]);
@@ -49,6 +44,9 @@ export default function NavSearch() {
   useEffect(async () => {
     const categories = await productService.findAllCategories(0, 99);
     setProductCategories(categories);
+    const filters = await getFilters();
+    setfilters(filters);
+    console.log("filters", filters);
   }, []);
 
   const isRole = (role) => {
@@ -63,15 +61,15 @@ export default function NavSearch() {
     e.target.click();
   };
 
-  const categories = [
-    { name: "Viviendas frente al mar" },
-    { name: "Viviendas en el campo" },
-    { name: "Viviendas en la montaña" },
-    { name: "Viviendas en las ciudad" },
-    { name: "Viviendas sustentables" },
-    { name: "Refacciones y Reciclajes" },
-    { name: "Comercial y Oficinas" },
-  ];
+  const getFilters = async () => {
+    try {
+      const filters = await tagService.findAll();
+      return filters;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const desplegable = (element, divGrisParam) => {
     let bodyHeight = {
       ol: parseInt(
@@ -147,10 +145,14 @@ export default function NavSearch() {
                     <Row className="py-2">
                       <Col className="col-auto">
                         <h5>Categorias</h5>
-                        {categories.map((category, index) => (
-                          <Link key={index} href="#" passHref>
+                        {filters.map((category, index) => (
+                          <Link
+                            key={index}
+                            href={`/ideas?filtros=${category.tag}`}
+                            passHref
+                          >
                             <li>
-                              <a className={styles.link}>{category.name} </a>
+                              <a className={styles.link}>{category.tag} </a>
                             </li>
                           </Link>
                         ))}
@@ -166,6 +168,7 @@ export default function NavSearch() {
                 onClick={(e) => toggle(divGris.current[0])}
                 className={styles.outSide}
               ></div>
+
               <li
                 ref={(li) => {
                   addDesplegable(li);
@@ -214,6 +217,7 @@ export default function NavSearch() {
                 onClick={(e) => toggle(divGris.current[1])}
                 className={styles.outSide}
               ></div>
+
               <li
                 ref={(li) => {
                   addDesplegable(li);
@@ -246,7 +250,10 @@ export default function NavSearch() {
                           </li>
                         </Link>
                         {productCategories.map((category, index) => (
-                          <Link key={index} href="/product">
+                          <Link
+                            key={index}
+                            href={`/product?category=${category.name}`}
+                          >
                             <li>
                               <a className={styles.link}>{category.name}</a>
                             </li>
