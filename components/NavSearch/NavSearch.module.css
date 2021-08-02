@@ -19,11 +19,145 @@
 .nav {
   margin-right: auto;
   margin-left: auto;
+  list-style: none;
+  height: 56px;
+  background: #fff;
+}
+.liNav a {
+  cursor: pointer;
 }
 
+.liNav:hover {
+  border-bottom: 2px solid #ffca05 !important;
+}
+
+.nav ul li a {
+  color: #161814;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 0;
+}
+.nav ul > li {
+  display: inline-block;
+  padding: 1rem 1rem;
+}
+.nav ul li ol {
+  display: none;
+  position: absolute;
+  width: 100%;
+}
+.nav ul li:hover ol {
+  display: block;
+  left: 0;
+  top: 58px;
+  z-index: 9;
+  background: #fff;
+}
+.overImportant {
+  z-index: 11 !important;
+}
+
+.showDesplegable {
+  display: block !important;
+  left: 0;
+  top: 58px;
+}
+
+.borderActive {
+  background: #f5f5f5;
+  border-bottom: 2px solid #ffca05 !important;
+}
+.desplegable {
+  background-color: #ffffff;
+  list-style: none;
+  z-index: 10;
+  position: absolute;
+}
+
+.desplegable > li {
+  list-style: none;
+}
+.outSide {
+  height: 100vh;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  z-index: 10;
+  position: absolute;
+  left: 0;
+  top: 186px;
+  display: none;
+}
+.showOutSide {
+  display: block;
+}
 .navLink {
   color: #161814;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.02em;
+  border: 0;
+  background-color: transparent;
+}
+.navLink:hover {
+  border-bottom: 2px solid #ffca05 !important;
+}
+.containerDesplegable {
+  /* height: 128px; */
+  height: auto;
+}
+
+.containerDesplegable li {
+  cursor: pointer;
+  padding: .1rem 1.5rem;
+}
+
+.containerDesplegable li:hover {
+  background-color: #e2e6ea;
+  color: #212529;
+  border-color: #dae0e5;
+}
+
+.link {
+  color: #212529;
+  font-weight: 400;
+  text-decoration: none;
+  text-align: inherit;
+  background-color: transparent;
+  font-size: 14px;
+}
+.columnNavSearch {
+  padding: 0.1rem 1.5rem;
+}
+.subtitleNavSearch {
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0px;
+  line-height: 1.2;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+.rowNavSearch {
+  height: 40px;
+}
+.tabContent {
+  top: 40px;
+}
+
+.liNav:hover .move {
+  transform: rotate(180deg);
+}
+
+.liNav.borderActive .move {
+  transform: rotate(180deg);
+}
+
+.move {
+  transform: rotate(0deg);
+  transition: transform 0.2s ease-in 0s;
+}
+
+.overFlowHidden {
+  overflow: hidden;
 }
