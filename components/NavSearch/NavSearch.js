@@ -250,7 +250,7 @@ export default function NavSearch() {
                   onClick={(e) => toggle(divGris.current[0])}
                   className={styles.outSide}
                 ></div>
-
+                {/* 
                 <li
                   ref={(li) => {
                     addDesplegable(li);
@@ -300,14 +300,14 @@ export default function NavSearch() {
                   }}
                   onClick={(e) => toggle(divGris.current[1])}
                   className={styles.outSide}
-                ></div>
+                ></div> */}
 
                 <li
                   ref={(li) => {
                     addDesplegable(li);
                   }}
                   onClick={(e) =>
-                    desplegable(dropdowns.current[2], divGris.current[2])
+                    desplegable(dropdowns.current[1], divGris.current[1])
                   }
                   className={`${styles.liNav}`}
                 >
@@ -352,16 +352,16 @@ export default function NavSearch() {
                   ref={(div) => {
                     addDivGris(div);
                   }}
-                  onClick={(e) => toggle(divGris.current[2])}
+                  onClick={(e) => toggle(divGris.current[1])}
                   className={styles.outSide}
                 ></div>
 
-                <li
+                {/* <li
                   ref={(li) => {
                     addDesplegable(li);
                   }}
                   onClick={(e) =>
-                    desplegable(dropdowns.current[3], divGris.current[3])
+                    desplegable(dropdowns.current[2], divGris.current[2])
                   }
                   className={`${styles.liNav}`}
                 >
@@ -396,10 +396,16 @@ export default function NavSearch() {
                   ref={(div) => {
                     addDivGris(div);
                   }}
-                  onClick={(e) => toggle(divGris.current[3])}
+                  onClick={(e) => toggle(divGris.current[2])}
                   className={styles.outSide}
-                ></div>
+                ></div> */}
               </>
+
+              <Link href="/companies" passHref>
+                <li className={styles.liNav}>
+                  <a className="text-decoration-none">{t("companies")}</a>
+                </li>
+              </Link>
 
               <Link href="/magazine" passHref>
                 <li className={styles.liNav}>
@@ -425,7 +431,7 @@ export default function NavSearch() {
                       addDesplegable(li);
                     }}
                     onClick={(e) =>
-                      desplegable(dropdowns.current[4], divGris.current[4])
+                      desplegable(dropdowns.current[2], divGris.current[2])
                     }
                     className={`${styles.liNav}`}
                   >
@@ -479,7 +485,7 @@ export default function NavSearch() {
                     ref={(div) => {
                       addDivGris(div);
                     }}
-                    onClick={(e) => toggle(divGris.current[3])}
+                    onClick={(e) => toggle(divGris.current[2])}
                     className={styles.outSide}
                   ></div>
                 </>
