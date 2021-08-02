@@ -16,6 +16,8 @@
     "/admin": ["administrator"],
     "/policies":["policies"],
     "/product":["products"],
-    "/companies/[slug]":["profile"]
+    "/companies/[slug]":["profile"],
+    "/magazine": ["magazine"],
+    "/magazine/create-magazine": ["magazine"]
   }
 }
