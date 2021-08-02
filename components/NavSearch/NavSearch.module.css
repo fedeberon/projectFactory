@@ -107,6 +107,12 @@
   /* height: 128px; */
   height: auto;
 }
+
+.containerDesplegable li {
+  cursor: pointer;
+  padding: .1rem 1.5rem;
+}
+
 .containerDesplegable li:hover {
   background-color: #e2e6ea;
   color: #212529;
