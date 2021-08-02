@@ -76,104 +76,113 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
 
   return (
     <Layout>
-      <SwiperCarouselHome images={imagesCarousel} />
-      <section className="container py-5">
-        <Row className="row-cols-1 gap-2">
-          <Col>
-            <ButtonGroup aria-label="Basic example" className="gap-1">
-              <CarouselImageCreator onAddCarouselImages={onAddCarouselImages} />
-              <AdministratorCreator />
-            </ButtonGroup>
-          </Col>
-          <Col>
-            <Row className="row-cols-1 gap-2">
-              <Col className={styles.infoHead}>
-                <h2 className={styles.itemsTitle}>
-                  {t("buildings")}
-                  <small className={styles.itemsSmallTitle}>
-                    {t("design-objects-for-your-spaces")}
-                  </small>
-                </h2>
-              </Col>
-              <Col>
-                <Row>
-                  {/* <Col>
+      <section className="content">
+        <SwiperCarouselHome images={imagesCarousel} />
+        <section className="container py-5">
+          <Row className="row-cols-1 gap-2">
+            <Col>
+              <ButtonGroup aria-label="Basic example" className="gap-1">
+                <CarouselImageCreator
+                  onAddCarouselImages={onAddCarouselImages}
+                />
+                <AdministratorCreator />
+              </ButtonGroup>
+            </Col>
+            <Col>
+              <Row className="row-cols-1 gap-2">
+                <Col className={styles.infoHead}>
+                  <h2 className={styles.itemsTitle}>
+                    {t("buildings")}
+                    <small className={styles.itemsSmallTitle}>
+                      {t("design-objects-for-your-spaces")}
+                    </small>
+                  </h2>
+                </Col>
+                <Col>
+                  <Row>
+                    {/* <Col>
                     <OffCanvasFilter
                       filters={filters}
                       appliedFilters={appliedFilters}
                       setAppliedFilters={setAppliedFilters}
                     />
                   </Col> */}
-                </Row>
+                  </Row>
+                </Col>
+                <Col>
+                  <FilteredImages
+                    isLoading={isLoading}
+                    images={filteredImages}
+                  />
+                </Col>
+                <div className="w-100">
+                  <Link href="/ideas">
+                    <PrimaryButton className="mx-auto my-4">
+                      {t("common:view-more")}
+                    </PrimaryButton>
+                  </Link>
+                </div>
+              </Row>
+            </Col>
+          </Row>
+        </section>
+        <AboutHome />
+        <section className="container-fluid py-5">
+          <Col>
+            <Row className="row-cols-1 gap-2">
+              <Col className={styles.infoHead}>
+                <h2 className={styles.productsTitle}>
+                  {t("common:products")}
+                  <small className={styles.productsSmallTitle}>
+                    {t("products-description")}
+                  </small>
+                </h2>
               </Col>
               <Col>
-                <FilteredImages isLoading={isLoading} images={filteredImages} />
+                <SwiperProducts
+                  products={products}
+                  slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
+                  slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
+                  slidesPerViewDesktop={{ dimensionLimit: 992, slides: 4 }}
+                />
               </Col>
-              <div className="w-100">
-                <Link href="/ideas">
-                  <PrimaryButton className="mx-auto my-4">{t("common:view-more")}</PrimaryButton>
-                </Link>
-              </div>
             </Row>
           </Col>
-        </Row>
-      </section>
-      <AboutHome />
-      <section className="container-fluid py-5">
-        <Col>
-          <Row className="row-cols-1 gap-2">
-            <Col className={styles.infoHead}>
-              <h2 className={styles.productsTitle}>
-                {t("common:products")}
-                <small className={styles.productsSmallTitle}>
-                  {t("products-description")}
-                </small>
-              </h2>
-            </Col>
-            <Col>
-              <SwiperProducts
-                products={products}
-                slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
-                slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
-                slidesPerViewDesktop={{ dimensionLimit: 992, slides: 4 }}
-              />
-            </Col>
-          </Row>
-        </Col>
-      </section>
-      <section className={`container-fluid py-5 ${styles.backgroundGray}`}>
-        <Col>
-          <Row className="row-cols-1 gap-2">
-            <Col className={styles.infoHead}>
+        </section>
+        <section className={`container-fluid py-5 ${styles.backgroundGray}`}>
+          <Col>
+            <Row className="row-cols-1 gap-2">
+              <Col className={styles.infoHead}>
+                <h2 className={styles.itemsTitle}>
+                  {t("common:companies")}
+                  <small className={styles.itemsSmallTitle}>
+                    {t("new-design-and-construction-companies")}
+                  </small>
+                </h2>
+              </Col>
+              <Col>
+                <SwiperEmpresas
+                  items={companies}
+                  slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
+                  slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
+                  slidesPerViewDesktop={{ dimensionLimit: 992, slides: 3 }}
+                />
+              </Col>
+            </Row>
+          </Col>
+        </section>
+        <section className={`container-fluid py-5`}>
+          <Col>
+            <div className={styles.infoHead}>
               <h2 className={styles.itemsTitle}>
-                {t("common:companies")}
+                {t("common:magazine")}
                 <small className={styles.itemsSmallTitle}>
-                  {t("new-design-and-construction-companies")}
+                  {t("new-design-architecture-and-deco")}
                 </small>
               </h2>
-            </Col>
-            <Col>
-              <SwiperEmpresas
-                items={companies}
-                slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
-                slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
-                slidesPerViewDesktop={{ dimensionLimit: 992, slides: 3 }}
-              />
-            </Col>
-          </Row>
-        </Col>
-      </section>
-      <section className={`container-fluid py-5`}>
-        <Col>
-          <div className={styles.infoHead}>
-            <h2 className={styles.itemsTitle}>
-              {t("common:magazine")}
-              <small className={styles.itemsSmallTitle}>
-                {t("new-design-architecture-and-deco")}
-              </small>
-            </h2>
-          </div>
-        </Col>
+            </div>
+          </Col>
+        </section>
       </section>
     </Layout>
   );

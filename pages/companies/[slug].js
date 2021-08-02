@@ -108,7 +108,7 @@ const CompanyDetails = ({ company, initialProducts, status, session }) => {
 
   return (
     <Layout>
-      <section className="container py-2">
+      <section className="container content">
         <img
           src={company.backgroundImage}
           className={`w-100 ${styles.backgroundImage}`}

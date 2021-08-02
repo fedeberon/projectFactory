@@ -287,7 +287,7 @@ const MyProducts = (props) => {
 
   return (
     <Layout>
-      <section className="container py-2">
+      <section className="container content">
         <Row className="row-cols-2 g-2">
           <Col className="col-auto">
             <Button variant="outline-primary" onClick={openModalProduct}>
@@ -358,14 +358,12 @@ export async function getServerSideProps({ params, req, res, locale }) {
       size,
       session.accessToken
     );
-  
 
     return {
       props: {
         data,
       },
     };
-
   } catch (e) {
     return {
       redirect: {

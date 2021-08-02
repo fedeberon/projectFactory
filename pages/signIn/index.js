@@ -7,8 +7,8 @@ import { getSession } from "next-auth/client";
 const SignIn = () => {
   const { t } = useTranslation("common");
   return (
-    <Layout title={t("sign-in")} header={false} footer={false}>
-      <section className="container py-2">
+    <Layout header={false} footer={false}>
+      <section className="container">
         <SignInForm />
       </section>
     </Layout>

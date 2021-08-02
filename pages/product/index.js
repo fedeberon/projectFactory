@@ -20,7 +20,7 @@ const Product = (props) => {
 
   return (
     <Layout>
-      <section className="container">
+      <section className="container content">
         <Row>
           <Sidebar>
             <h3>{t("products")}</h3>

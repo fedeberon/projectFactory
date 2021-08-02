@@ -17,8 +17,8 @@ const LogIn = (props) => {
   }, [])
 
   return (
-    <Layout title={t("log-in")} header={false} footer={false}>
-      <section className="container py-2">
+    <Layout header={false} footer={false}>
+      <section className="container">
         <LogInForm />
       </section>
     </Layout>
