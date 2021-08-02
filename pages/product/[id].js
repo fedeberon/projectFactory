@@ -59,7 +59,7 @@ const ProductDetail = (props) => {
 
   return (
     <Layout>
-      <Container className="py-5">
+      <Container className="content">
         <Row className="w-100 gap-2 gap-lg-0 m-0">
           <Col className="col-sm-12 col-md-12 col-lg-9 order-lg-2">
             <Row

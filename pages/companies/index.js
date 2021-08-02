@@ -36,24 +36,24 @@ const Companies = (props) => {
 
   return (
     <Layout>
-      <section className="container py-2">
+      <section className="container content">
         <Row>
           <Sidebar>
             <h3>{t("professionals")}</h3>
             <ul>
               <li>
                 <Link href={`/professional`}>
-                    <a>{t("professionals")}</a>
+                  <a>{t("professionals")}</a>
                 </Link>
               </li>
               <li>
                 <Link href={`/companies`}>
-                    <a>{t("companies")}</a>
+                  <a>{t("companies")}</a>
                 </Link>
               </li>
             </ul>
-          </Sidebar>        
-          
+          </Sidebar>
+
           <Col sm={12} md={8} lg={9}>
             <ContentHeader title={t("companies")} />
 

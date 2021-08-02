@@ -77,7 +77,7 @@ const index = ({ filters, session, filtersTags }) => {
 
   return (
     <Layout>
-      <section className="container py-5">
+      <section className="container content">
         <Row className="row-cols-1 gap-2">
           <Col className={styles.infoHead}>
             <h2 className={styles.itemsTitle}>{t("facades")}</h2>
