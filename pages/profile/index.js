@@ -49,10 +49,15 @@ const Profile = ({ data, imagesLiked, status }) => {
   };
 
   const onBecomeProfessional = async (data) => {
-    const company = { id: data.company.id };
-    const category = { id: data.category.id };
-    data.company = company;
-    data.category = category;
+    const company = { id: data.company?.id };
+    const category = { id: data.category?.id };
+    if (data.company.id != undefined) {
+      data.company = company;
+      data.category = category;
+    } else {
+      delete data.company;
+      delete data.category;
+    }
     const previewImage = data.previewImage;
     const backgroundImage = data.backgroundImage;
     delete data.previewImage;

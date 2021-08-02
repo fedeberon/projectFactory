@@ -121,6 +121,59 @@ export const uploadCompanyPreview = async (image, token) => {
   await API.post(`/images/companies/preview`, imageData);
 };
 
+export const uploadMagazinePreview = async (magazineId, previewImage, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const imageData = new FormData();
+  imageData.append("image", previewImage);
+  await API.post(`/images/magazines/${magazineId}/preview`, imageData);
+};
+
+/**
+ * Find all local memory images in content ( blob:http://localhost... ),
+ * upload them, and replace them with path to image of backend
+ * @param {String} content of the magazine with all images in local memory
+ * @param {Number} magazineId to upload images in that magazine
+ * @param {String} token 
+ */
+export const uploadLocalImagesFromContent = async (content, magazineId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  let indexOfBlob = content.indexOf('blob:');
+
+  while (indexOfBlob != -1) {
+    let actualChar = content.charAt(indexOfBlob);
+    let i = 0;
+    while (actualChar != '"') {
+      i++;
+      actualChar = content.charAt(indexOfBlob + i);
+    }
+
+    let indexOfEndBlob = indexOfBlob + i;
+    let localSrc = content.substring(indexOfBlob, indexOfEndBlob);
+    content = content.substring(0, indexOfBlob) + await fromLocalSrcToSrc(localSrc, magazineId, token) + content.substring(indexOfEndBlob, content.length);
+    indexOfBlob = content.indexOf('blob:');
+  }
+  
+  return content;
+};
+
+const fromLocalSrcToSrc = async (localSrc, magazineId, token) => {
+  const image = await fetch(localSrc);
+  let blob = await image.blob();
+  let file = new File([blob], `${localSrc}`, {
+    type: "image/jpg",
+  });
+
+  const { path } = await uploadToMagazine(file, magazineId, token);
+  return path;
+}
+
+export const uploadToMagazine = async (image, magazineId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const imageData = new FormData();
+  imageData.append("image", image);
+  return await API.post(`/images/magazines/${magazineId}`, imageData);
+};
+
 export const uploadCompanyBackground = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const imageData = new FormData();

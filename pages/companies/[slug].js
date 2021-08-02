@@ -11,7 +11,7 @@ import styles from "./slug.module.css";
 //Components
 import Layout from "../../components/Layout/Layout";
 import MercadopagoButton from "../../components/Buttons/MercadopagoButton/MercadopagoButton";
-import BuildingWork from "../../components/BuildingWork/BuildingWork";
+import Product from "../../components/ProductList/Product";
 import Plans from "../../components/Plans/Plans";
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton";
 import ModalForm from "../../components/ModalForm";
@@ -20,13 +20,13 @@ import ModalForm from "../../components/ModalForm";
 import * as companyService from "../../services/companyService";
 import * as professionalService from "../../services/professionalService";
 import * as userService from "../../services/userService";
-import * as buildingWorkService from "../../services/buildingWorkService";
+import * as productService from "../../services/productService";
 import * as imageService from "../../services/imageService";
 import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
 
-const CompanyDetails = ({ company, initalBuildingWorks, status, session }) => {
+const CompanyDetails = ({ company, initialProducts, status, session }) => {
   const { t } = useTranslation("common");
-  const [buildingWorks, setBuildingWorks] = useState(initalBuildingWorks);
+  const [products, setProducts] = useState(initialProducts);
   const [amountTokens, setAmountTokens] = useState(-1);
   const [imagesLiked, setImagesLiked] = useState([]);
   const [tabProfile, setTabProfile] = useState(<></>);
@@ -64,11 +64,11 @@ const CompanyDetails = ({ company, initalBuildingWorks, status, session }) => {
     }
   }, [company])
 
-  const buildingWorksList = (
+  const productsList = (
     <Row className="g-2">
-      {buildingWorks.map((buildingWork) => (
-        <Col sm={6} md={6} lg={4} key={buildingWork.id}>
-          <BuildingWork buildingWork={buildingWork} />
+      {products.map((product) => (
+        <Col sm={6} md={6} lg={4} key={product.id}>
+          <Product product={product} />
         </Col>
       ))}
     </Row>
@@ -158,22 +158,22 @@ const CompanyDetails = ({ company, initalBuildingWorks, status, session }) => {
 
             <Col sm={12} md={8} lg={9}>
               <Tabs
-                defaultActiveKey="building-works"
+                defaultActiveKey="products"
                 id="uncontrolled-tab-example"
                 className={`${styles.tabs} mb-3`}
               >
                 <Tab
-                  eventKey="building-works"
+                  eventKey="products"
                   title={
                     <h5>
                       <span className="badge">
-                        {company.countBuildingWorks}
+                        {company.countProducts}
                       </span>{" "}
-                      {t("buildings")}
+                      {t("products")}
                     </h5>
                   }
                 >
-                  <div className={styles.tabContent}>{buildingWorksList}</div>
+                  <div className={styles.tabContent}>{productsList}</div>
                 </Tab>
 
                 <Tab eventKey="profile" title={<h5>{t("header.profile")}</h5>}>
@@ -201,17 +201,19 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
   const split = slug.split("-");
   const companyId = split[split.length - 1];
   const company = await companyService.findById(companyId);
-  const initalBuildingWorks = await buildingWorkService.getAllByCompanyId(
+  const initialProducts = await productService.getAllByCompanyId(
     companyId,
     0,
     10
   );
 
+
+
   const session = await getSession({ req });
   return {
     props: {
       company,
-      initalBuildingWorks,
+      initialProducts,
       status : query.status ? query.status : "",
       session,
     },
