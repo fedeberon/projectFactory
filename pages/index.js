@@ -29,7 +29,7 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
+  const [pageSize, setPageSize] = useState({ page: 0, size: 6 });
   const [imagesCarousel, setImagesCarousel] = useState([]);
 
   let { t } = useTranslation("home");

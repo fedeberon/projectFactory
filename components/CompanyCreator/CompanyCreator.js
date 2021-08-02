@@ -100,7 +100,7 @@ const CompanyCreator = () => {
     },
     event
   ) => {
-    name = name.toLowerCase().trim();
+    name = name.trim();
     // You should handle login logic with name, preview and background images and form data
     let data = {
       name,

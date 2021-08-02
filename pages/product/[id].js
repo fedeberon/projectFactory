@@ -141,9 +141,9 @@ const ProductDetail = (props) => {
               </h3>
               <h3 className={`${productStyle.titProjects}`}>
                 <Badge className={`${productStyle.badge}`} bg="" text="dark">
-                  {data.product.company.countBuildingWorks}
+                  {data.product.company.countProducts}
                 </Badge>
-                {` Obras`}
+                {t("products")}
               </h3>
               <h3 className={`${productStyle.location} p-0 d-flex gap-2`}>
                 <GeoAlt size={15} />
