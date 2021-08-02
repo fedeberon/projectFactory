@@ -78,11 +78,10 @@ import * as productService from "../../services/productService";
 //   );
 // };
 
-export default function NavSearch() {
+export default function NavSearch({filters}) {
   const [session, loading] = useSession();
   const { t } = useTranslation("common");
   const [productCategories, setProductCategories] = useState([]);
-  const [filters, setfilters] = useState([]);
 
   const dropdowns = useRef([]);
   const divGris = useRef([]);
@@ -116,15 +115,6 @@ export default function NavSearch() {
   const isRole = (role) => {
     if (session) {
       return session.authorities.includes(role);
-    }
-  };
-
-  const getFilters = async () => {
-    try {
-      const filters = await tagService.findAll();
-      return filters;
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -180,11 +170,6 @@ export default function NavSearch() {
       ),
       []
     );
-
-  useEffect(async () => {
-    const filters1 = await getFilters();
-    setfilters(filters1);
-  }, []);
 
   return (
     <Container fluid className="m-0 p-0">
