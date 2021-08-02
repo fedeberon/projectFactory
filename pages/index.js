@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 import { ButtonGroup, Col, Row } from "react-bootstrap";
+import Link from "next/link";
 
 // Components
 import FilterList from "../components/FilterList/FilterList";
@@ -24,12 +25,12 @@ import styles from "../styles/Home.module.css";
 import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
 import OffCanvasFilter from "../components/OffCanvas/OffCanvasFilter.js/OffCanvasFilter";
+import PrimaryButton from "../components/Buttons/PrimaryButton/PrimaryButton";
 
 const Home = ({ filters, carouselImages, session, products, companies }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const [pageSize, setPageSize] = useState({ page: 0, size: 6 });
   const [imagesCarousel, setImagesCarousel] = useState([]);
 
   let { t } = useTranslation("home");
@@ -61,8 +62,8 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
     try {
       const images = await imageService.getProfessionalImagesByTags(
         appliedFilters,
-        pageSize.page,
-        pageSize.size,
+        0,
+        process.env.NEXT_PUBLIC_BUILDING_WORKS_PER_HOME,
         session?.accessToken
       );
       setLoading(false);
@@ -96,18 +97,23 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
               </Col>
               <Col>
                 <Row>
-                  <Col>
+                  {/* <Col>
                     <OffCanvasFilter
                       filters={filters}
                       appliedFilters={appliedFilters}
                       setAppliedFilters={setAppliedFilters}
                     />
-                  </Col>
+                  </Col> */}
                 </Row>
               </Col>
               <Col>
                 <FilteredImages isLoading={isLoading} images={filteredImages} />
               </Col>
+              <div className="w-100">
+                <Link href="/ideas">
+                  <PrimaryButton className="mx-auto my-4">{t("common:view-more")}</PrimaryButton>
+                </Link>
+              </div>
             </Row>
           </Col>
         </Row>

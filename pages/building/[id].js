@@ -116,7 +116,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
           images={imagenes}
           reset={reset}
         />
-        <Row className="w-100 m-0">
+        <Row className="w-100 m-0 mt-4">
           <Col>
             <Container>
               <Row className="w-100 gap-2 gap-lg-0 m-0 my-4">

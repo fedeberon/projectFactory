@@ -9,7 +9,8 @@
     "search-placeholder": "Find ideas/ professionals",
     "search-by-ideas": "Search by ideas",
     "search-by-professionals": "Search by professionals",
-    "my-products": "My products"
+    "my-products": "My products",
+    "ideas": "Ideas"
   },
 
   "product": "Product",
@@ -266,6 +267,7 @@
   "depth": "Depth",
   "the-depth": "The depth",
   "other-projects-of": "Other projects of",
+  "facades": "Facades",
   "other-building-works-of": "Other building works of ",
   "of" : "of",
   "month-01": "January",

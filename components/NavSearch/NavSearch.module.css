@@ -73,6 +73,7 @@
   list-style: none;
   z-index: 10;
   position: absolute;
+  border-bottom: 1px solid #ccc;
 }
 
 .desplegable > li {
