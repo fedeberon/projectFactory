@@ -470,7 +470,7 @@ const FormProduct = ({
               <Col className="order-2 order-md-1">
                 <FormGroup>
                   <Form.Label htmlFor="filePreview">
-                    {t("select-preview-image-for-building-work")}
+                    {t("select-preview-image-for-the-product")}
                   </Form.Label>
                   <Dropzone
                     newFiles={previewImage}

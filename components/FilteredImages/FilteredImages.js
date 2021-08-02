@@ -41,7 +41,7 @@ const FilteredImages = ({ isLoading, images }) => {
   };
 
   return (
-    <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4">
+    <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4 w-100 m-0">
       {isLoading ? (
         <Col>
           <SpinnerCustom />

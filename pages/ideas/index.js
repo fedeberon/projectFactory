@@ -21,7 +21,7 @@ import styles from "../../styles/Home.module.css";
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton";
 import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
-const index = ({ filters, session }) => {
+const index = ({ filters, session, filtersTags }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [pageSize, setPageSize] = useState({ page: 0, size: 30 });
@@ -68,6 +68,13 @@ const index = ({ filters, session }) => {
     }
   }, [pageSize]);
 
+  useEffect(() => {
+    if (filtersTags != "") {
+      filtersTags = [{ tag: filtersTags }];
+      setAppliedFilters(filtersTags);
+    }
+  }, [filtersTags]);
+
   return (
     <Layout>
       <section className="container py-5">
@@ -104,7 +111,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
 
-  let { page, size } = req.__NEXT_INIT_QUERY;
+  let { page, size, filters } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
     page = 0;
@@ -113,16 +120,13 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  const filters = await tagService.findAll();
-  const products = await productService.findAllByStatus(page, size, "APPROVED");
-  const companies = await companyService.findAll("APPROVED", page, size);
+  const imagesfilters = await tagService.findAll();
 
   return {
     props: {
-      filters: filters,
+      filters: imagesfilters,
       session,
-      companies,
-      products,
+      filtersTags: filters ? filters : "",
     },
   };
 }

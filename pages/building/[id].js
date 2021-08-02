@@ -18,6 +18,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [currentImageId, setCurrentImageId] = useState(null);
+  const [currentTag, setCurrentTag] = useState("");
   const [reset, setReset] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
@@ -53,6 +54,20 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
     } catch (error) {
       console.error(error);
       setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const tag = getTagOfTheCurrentImage();
+    setCurrentTag(tag);
+  }, [currentImageId]);
+
+  const getTagOfTheCurrentImage = () => {
+    const [currentImage] = data.images.filter(img => img.id === currentImageId);
+    if (currentImage) {
+      return currentImage.tags[0].tag;
+    } else {
+      return "";
     }
   };
 
@@ -104,7 +119,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
         <Row className="w-100 m-0 mt-4">
           <Col>
             <Container>
-              <Row className="w-100 gap-2 gap-lg-0 m-0">
+              <Row className="w-100 gap-2 gap-lg-0 m-0 my-4">
                 <Col className="col-12 col-md-12 col-lg-9 order-lg-2">
                   <Card className="border-0">
                     <Card.Title
@@ -121,40 +136,13 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
                     className={`${buildingStyles.boxDeg} p-4 d-flex flex-column gap-2`}
                   >
                     <h3 className={`${buildingStyles.titName}`}>
-                      {data.buildingWork.professional.company.name}
+                      {data.buildingWork.professional.contact}
                     </h3>
                     <h3 className={`${buildingStyles.titProjects}`}>
-                      <Badge
-                        className={`${buildingStyles.badge}`}
-                        bg=""
-                        text="dark"
-                      >
-                        {
-                          data.buildingWork.professional.company
-                            .countBuildingWorks
-                        }
-                      </Badge>
-                      {` Obras`}
-                    </h3>
-                    <h3
-                      className={`${buildingStyles.location} p-0 d-flex gap-2`}
-                    >
-                      <GeoAlt size={15} />
-                      {`${data.buildingWork.professional.company.location}, ${data.buildingWork.professional.company.province}`}
+                      <span className="d-block">{t("email")}</span>
+                      <span>{data.buildingWork.professional.email}</span>
                     </h3>
 
-                    <Link
-                      href={`/companies/${data.buildingWork.name
-                        .replace(/\s+/g, "-")
-                        .toLowerCase()}-${
-                        data.buildingWork.professional.company.id
-                      }`}
-                      passHref
-                    >
-                      <PrimaryButton className={`me-auto`}>
-                        {t("view-more")}
-                      </PrimaryButton>
-                    </Link>
                   </Col>
                 </Col>
               </Row>
@@ -167,10 +155,8 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
               <div className={`${buildingStyles.related} row`}>
                 <div className="col">
                   <h2 className={`${buildingStyles.tit}`}>
-                    {t("other-projects-of")}
-                    {tagsAuxiliar.map((tag) => {
-                      return ` ${tag.tag}`;
-                    })}
+                    {t("other-building-works-of")}
+                    {currentTag}
                   </h2>
                 </div>
               </div>
@@ -212,7 +198,7 @@ export async function getServerSideProps({ params, req, res, locale, query }) {
 
   images = await imageService.getImagesByBuildingWorksId(
     buildingWorkId,
-    page,
+    0,
     99
   );
   if (imageClicked === undefined) {
