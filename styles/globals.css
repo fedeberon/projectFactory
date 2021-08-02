@@ -96,3 +96,7 @@ h5 {
 .cursor-pointer {
   cursor: pointer !important;
 }
+
+.float-right {
+  float: right !important;
+}
