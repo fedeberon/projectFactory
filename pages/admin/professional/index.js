@@ -244,7 +244,7 @@ const ProfessionalAdmin = ({
             </figure>
           </td>
           <td>{professional.contact}</td>
-          <td>{professional.company.name}</td>
+          <td>{professional?.company?.name}</td>
           <td>{professional.email}</td>
           <td>{professional.statusUpdate}</td>
           <td>

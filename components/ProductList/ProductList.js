@@ -19,7 +19,7 @@ const ProductList = (props) => {
   }, [productsLocal])
 
   return (
-    <Row className="row-cols-3 g-2">
+    <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 g-2">
     
         {productsLocal.map((product) => 
         <Col key={product.id}>

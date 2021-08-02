@@ -44,7 +44,7 @@ const Company = (props) => {
         </Col>
         <Col sm={12} md={3} lg={2}>
           <div className={`${styles.boxdeg} boxdeg`}>
-            <h5><span className={`${styles.badge} badge`}>{company.countBuildingWorks}</span> {t("buildings")}</h5>
+            <h5><span className={`${styles.badge} badge`}>{company.countProducts}</span> {t("products")}</h5>
             <div className="d-flex">
               <GeoAlt className={styles.locationIcon}/>
               <div className={styles.location}>{company.location}. {`${t("province-of")} ${company.province}`}.</div>

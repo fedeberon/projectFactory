@@ -87,6 +87,12 @@ h5 {
   padding-bottom: 55px;
 }
 
+.list-group-item.active{
+  color: #161814 !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+
 .cursor-pointer {
   cursor: pointer !important;
 }

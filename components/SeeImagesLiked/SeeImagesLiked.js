@@ -10,7 +10,7 @@ const SeeImagesLiked = ({ imagesLiked }) => {
   return (
     <Container>
       <h1>{t("images-i-liked")}</h1>
-      <Row className="row-cols-3 g-2">
+      <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 g-2">
         {imagesLiked.map((image) => (
           <Col key={image.id}>
             <ImageLiked image={image} />

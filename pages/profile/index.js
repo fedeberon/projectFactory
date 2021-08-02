@@ -19,7 +19,10 @@ const Profile = ({ data, imagesLiked, status }) => {
 
   const saveProfessional = async (data) => {
     try {
-      const professionalToken = await professionalService.become(data, session.accessToken);
+      const professionalToken = await professionalService.become(
+        data,
+        session.accessToken
+      );
 
       return professionalToken;
     } catch (error) {
@@ -46,17 +49,22 @@ const Profile = ({ data, imagesLiked, status }) => {
   };
 
   const onBecomeProfessional = async (data) => {
-    const company = { id: data.company.id };
-    const category = { id: data.category.id };
-    data.company = company;
-    data.category = category;
+    const company = { id: data.company?.id };
+    const category = { id: data.category?.id };
+    if (data.company.id != undefined) {
+      data.company = company;
+      data.category = category;
+    } else {
+      delete data.company;
+      delete data.category;
+    }
     const previewImage = data.previewImage;
     const backgroundImage = data.backgroundImage;
     delete data.previewImage;
     delete data.backgroundImage;
     delete data.images;
     const token = await saveProfessional(data);
-    
+
     if (token != null) {
       if (previewImage) {
         await savePreviewImage(token, previewImage);
@@ -70,17 +78,18 @@ const Profile = ({ data, imagesLiked, status }) => {
   };
 
   const onBuyPlan = async (plan) => {
-    const mp = new MercadoPago(
-      process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY,
-      { locale: 'es-AR' }
-    );
-
-    const preference = await professionalService.generatePreferenceForToken(plan, session.accessToken);
-    mp.checkout(
-    {
-      preference: preference.id
+    const mp = new MercadoPago(process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY, {
+      locale: "es-AR",
     });
-  
+
+    const preference = await professionalService.generatePreferenceForToken(
+      plan,
+      session.accessToken
+    );
+    mp.checkout({
+      preference: preference.id,
+    });
+
     const link = document.createElement("a");
     document.body.appendChild(link);
     link.href = preference.initPoint;
@@ -120,6 +129,17 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
     };
   }
 
+  if (session.authorities.includes(process.env.NEXT_PUBLIC_ROLE_COMPANY)) {
+    return {
+      redirect: {
+        destination: `/companies/${session.user.name
+          .replace(/\s+/g, "-")
+          .toLowerCase()}-${session.user.id}`,
+        permanent: false,
+      },
+    };
+  }
+
   let token;
   let companies = [];
   let imagesLiked = [];
@@ -131,18 +151,26 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
   if (!size || size <= 0) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
-
-  if (session) {
-    token = session.accessToken;
-    companies = await companyService.findAll("APPROVED", page, size, token);
-    imagesLiked = await imageService.getLikePhotos(page, size, token);
+  try {
+    if (session) {
+      token = session.accessToken;
+      companies = await companyService.findAll("APPROVED", page, size, token);
+      imagesLiked = await imageService.getLikePhotos(page, size, token);
+    }
+  } catch (e) {
+    return {
+      redirect: {
+        destination: "/logIn?expired",
+        permanent: false,
+      },
+    };
   }
 
   return {
     props: {
       data: companies,
       imagesLiked,
-      status: query.status ? query.status : ""
+      status: query.status ? query.status : "",
     },
   };
 }

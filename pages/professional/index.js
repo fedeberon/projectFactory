@@ -53,16 +53,10 @@ const Professional = ({ data }) => {
                       {t("common:contact")}: {professional.contact}
                     </Card.Text>
                     <Card.Text>
-                      {t("common:company")}: {professional.company.name}
+                      {t("common:company")}: {professional?.company?.name}
                     </Card.Text>
                     <Card.Text>
                       {t("common:email")}: {professional.email}
-                    </Card.Text>
-                    <Card.Text>
-                      {t("common:province")}: {professional.province}
-                    </Card.Text>
-                    <Card.Text>
-                      {t("common:location")}: {professional.location}
                     </Card.Text>
                   </Card.Body>
                 </Card>

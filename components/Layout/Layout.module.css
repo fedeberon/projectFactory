@@ -6,7 +6,6 @@
   -o-filter: grayscale(100%);
   filter: gray;
 }
-
 .backgroundGray {
   background-color: #f7f7f7;
 }

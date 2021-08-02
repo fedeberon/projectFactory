@@ -33,6 +33,7 @@
   "price": "Precio",
   "invalid-link": "El link es invalido",
   "image": "Imagen",
+  "new": "NUEVO",
 
   "is-required": "{{nameRequired}} es requerido",
   "write-the-here-please": "Escriba {{namePlaceholder}} aquí por favor",
@@ -137,6 +138,7 @@
 
   "seeProject": "------------------",
   "project-detail": "Detalle de proyecto",
+  "project-name" : "Nombre del proyecto",
   "project-edit": "Editar un proyecto",
   "professional-contact": "Contacto del profesional",
   "professional-email": "Correo del profesional",
@@ -144,6 +146,7 @@
   "you-bought-this-project": "Compraste este proyecto",
   "download-project": "Descargar proyecto",
   "other-projects-of-professional": "Otros proyectos de este profesional",
+  "other-projects-of-professional-description" : "Otros proyectos de {{professional}}",
 
   "FormBuyProjects": "------------------",
   "doc-type": "Tipo de documento",

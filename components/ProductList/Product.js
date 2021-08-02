@@ -7,7 +7,7 @@ import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
 const Product = (props) => {
   const { product } = props;
-  const { t } = useTranslation("products");
+  const { t } = useTranslation("common");
 
   const isNew = (product) => {
     const today = new Date();
@@ -45,7 +45,7 @@ const Product = (props) => {
             product.id
           }`}
         >
-          <PrimaryButton>{t("common:view-more")}</PrimaryButton>
+          <PrimaryButton>{t("view-more")}</PrimaryButton>
         </Link>
       </Card.Footer>
     </Card>

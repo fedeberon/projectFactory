@@ -352,16 +352,27 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  const data = await productService.findMyProducts(
-    page,
-    size,
-    session.accessToken
-  );
+  try {
+    const data = await productService.findMyProducts(
+      page,
+      size,
+      session.accessToken
+    );
+  
 
-  return {
-    props: {
-      data,
-    },
-  };
+    return {
+      props: {
+        data,
+      },
+    };
+
+  } catch (e) {
+    return {
+      redirect: {
+        destination: "/logIn?expired",
+        permanent: false,
+      },
+    };
+  }
 }
 export default MyProducts;
