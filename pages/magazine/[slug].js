@@ -1,5 +1,5 @@
 //Frameworks
-import React from "react";
+import React, { useState, useEffect } from "react";
 import useTranslation from "next-translate/useTranslation";
 import parse from 'html-react-parser'
 import Link from "next/link";
@@ -18,8 +18,17 @@ import Magazine from "../../components/Magazine/Magazine";
 import styles from "./slug.module.css";
 
 const MagazineDetail = (props) => {
-  const { magazine, categories, relationatedMagazines } = props;
+  const { magazine } = props;
+  const [relationatedMagazines, setRelationatedMagazines] = useState([]);
+  const [categories, setCategories] = useState([]);
   const { t } = useTranslation("common");
+
+  useEffect(async () => {
+    const categories = await magazineService.findAllCategories(0, 99);
+    setCategories(categories);
+    const relationatedMagazines = await magazineService.findAllByCategory(magazine.category, "APPROVED", 0, 6);
+    setRelationatedMagazines(relationatedMagazines);
+  }, []);
 
   /**
    * Format date in yyyy-MM-dd to text
@@ -124,22 +133,25 @@ const MagazineDetail = (props) => {
   );
 };
 
-export async function getServerSideProps({ params }) {
-  // Should be getStaticProps for magazine and the categories and relationatedMagazines are dinamic loaded from client
+export async function getStaticProps({ params }) {
   let { slug } = params; // params is necessary in case you reload the page from the url
-  const categories = await magazineService.findAllCategories(0, 99);
   const split = slug.split("-");
   const magazineId = split[split.length - 1];
   const magazine = await magazineService.getById(magazineId);
-  const relationatedMagazines = await magazineService.findAllByCategory(magazine.category, "APPROVED", 0, 6);
 
   return {
     props: {
       magazine,
-      categories,
-      relationatedMagazines,
     },
   };
+}
+
+export const getStaticPaths = async () => {
+
+  return {
+      paths: [], //indicates that no page needs be created at build time
+      fallback: 'blocking' //indicates the type of fallback
+  }
 }
 
 export default MagazineDetail;
