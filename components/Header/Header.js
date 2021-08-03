@@ -21,6 +21,9 @@ import OffCanvasMenuCel from "../OffCanvas/OffCanvasMenuCel";
 // Custom Hooks
 import useSize from "../../hooks/window/useSize";
 
+// Services
+import * as tagService from "../../services/tagService";
+
 export default function Header() {
   const [dropdown, setDropdown] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -31,6 +34,7 @@ export default function Header() {
   const { width } = useSize();
   const [session, loading] = useSession();
   const inputSearch = useRef();
+  const [filters, setfilters] = useState([]);
 
   const router = useRouter();
 
@@ -120,6 +124,20 @@ export default function Header() {
     signOut();
   };
 
+  const getFilters = async () => {
+    try {
+      const filters = await tagService.findAll();
+      return filters;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(async () => {
+    const filters1 = await getFilters();
+    setfilters(filters1);
+  }, []);
+
   return (
     <>
       <Navbar collapseOnSelect expand="lg" className={`${styles.navbar}`}>
@@ -200,7 +218,14 @@ export default function Header() {
                     <Dropdown.Menu>
                       {isRole("ROLE_USER") && (
                         <>
-                          <Link href={isRole("ROLE_COMPANY") ? `/companies/${session.user.name}-${session.user.id}` : "/profile"} passHref>
+                          <Link
+                            href={
+                              isRole("ROLE_COMPANY")
+                                ? `/companies/${session.user.name}-${session.user.id}`
+                                : "/profile"
+                            }
+                            passHref
+                          >
                             <Dropdown.Item>{t("header.profile")}</Dropdown.Item>
                           </Link>
                           <Dropdown.Divider />
@@ -261,12 +286,12 @@ export default function Header() {
                 ))}
               </Col>
             </Navbar.Collapse>
-            {width < 992 && <OffCanvasMenuCel />}
+            {width < 992 && <OffCanvasMenuCel filters={filters}/>}
           </Col>
         </Row>
       </Navbar>
 
-      {width > 992 && <NavSearch />}
+      {width > 992 && <NavSearch filters={filters} />}
     </>
   );
 }

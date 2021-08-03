@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Nav,
   Navbar,
@@ -19,8 +19,9 @@ import { PersonCircle, Search } from "react-bootstrap-icons";
 import RolProfile from "../RolProfile";
 import * as userService from "../../services/userService";
 
-export default function NavSearchCel() {
+export default function NavSearchCel({ filters }) {
   const [session, loading] = useSession();
+
   const { t } = useTranslation("common");
 
   const router = useRouter();
@@ -47,6 +48,29 @@ export default function NavSearchCel() {
             <Nav className={`${styles.nav} flex-column m-0 gap-2`}>
               <NavDropdown
                 className="navLink"
+                title={<span className={styles.navLink}> {t("photos")}</span>}
+              >
+                {filters.map((category, index) => (
+                  <Link key={index} href={`/ideas?filters=${category.tag}`} passHref>
+                    <NavDropdown.Item>{category.tag}</NavDropdown.Item>
+                  </Link>
+                ))}
+              </NavDropdown>
+
+              <Link href="/product" passHref>
+                <Nav.Link>
+                  <span className={styles.navLink}>{t("products")}</span>
+                </Nav.Link>
+              </Link>
+
+              <Link href="/companies" passHref>
+                <Nav.Link>
+                  <span className={styles.navLink}>{t("companies")}</span>
+                </Nav.Link>
+              </Link>
+
+              {/* <NavDropdown
+                className="navLink"
                 title={
                   <span className={styles.navLink}>{t("professionals")}</span>
                 }
@@ -58,19 +82,13 @@ export default function NavSearchCel() {
                 <Link href="/companies" passHref>
                   <NavDropdown.Item>{t("companies")}</NavDropdown.Item>
                 </Link>
-              </NavDropdown>
+              </NavDropdown> */}
 
-              <Link href="/product" passHref>
-                <Nav.Link>
-                  <span className={styles.navLink}>{t("products")}</span>
-                </Nav.Link>
-              </Link>
-
-              <Link href="/project" passHref>
+              {/* <Link href="/project" passHref>
                 <Nav.Link>
                   <span className={styles.navLink}>{t("projects")}</span>
                 </Nav.Link>
-              </Link>
+              </Link> */}
 
               <Link href="/magazine" passHref>
                 <Nav.Link>
