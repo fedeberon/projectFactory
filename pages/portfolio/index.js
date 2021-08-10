@@ -15,6 +15,7 @@ import {
   Images,
   ThreeDotsVertical,
   PencilSquare,
+  PersonCircle,
 } from "react-bootstrap-icons";
 
 //Components
@@ -32,6 +33,7 @@ import * as imageService from "../../services/imageService";
 import indexStyles from "./index.module.css";
 import filteredImagesStyles from "../../components/FilteredImages/FilteredImages.module.css";
 import image from "next/image";
+import BackgroundDefault from "../../components/BackgroundDefault/BackgroundDefault";
 
 const CustomButtonTogle = ({ id, editBuildingWork, imageSize }) => {
   const [dropdownOpen, setOpen] = useState(false);
@@ -397,25 +399,40 @@ const Portfolio = ({ professional, buildingWorks }) => {
       <section className="container py-2">
         <Row className="row-cols-1">
           <Col>
-            <img
-              width={"100%"}
-              height={"300px"}
-              src={`${professional.backgroundImage}`}
-              className={indexStyles.backgroundImg}
-            />
-            <div className={indexStyles.previewDiv}>
+            {professional.backgroundImage ? (
               <img
+                width={"100%"}
+                height={"300px"}
+                src={`${professional.backgroundImage}`}
+                className={indexStyles.backgroundImg}
+              />
+            ) : (
+              <BackgroundDefault />
+            )}
+            <div className={indexStyles.previewDiv}>
+              {professional.previewImage ? (
+                <img
+                  src={professional.previewImage}
+                  className={indexStyles.previewImg}
+                ></img>
+              ) : (
+                // <BackgroundDefault className={indexStyles.previewImg}/>
+                <div className={indexStyles.previewImg}>
+                  <PersonCircle size={"100%"} />
+                </div>
+              )}
+              {/* <img
                 src={professional.previewImage}
                 className={indexStyles.previewImg}
-              ></img>
+              ></img> */}
             </div>
           </Col>
         </Row>
         <Row>
           <Col>
             <div className="text-center">
-              <h1>{professional.contact}</h1>
-              <h1>{professional?.company?.name}</h1>
+              <h1 className="text-break">{professional.contact}</h1>
+              <h1 className="text-break">{professional?.company?.name}</h1>
             </div>
           </Col>
         </Row>

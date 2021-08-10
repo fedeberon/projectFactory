@@ -286,7 +286,7 @@ export default function Header() {
                 ))}
               </Col>
             </Navbar.Collapse>
-            {width < 992 && <OffCanvasMenuCel filters={filters}/>}
+            {width < 992 && <OffCanvasMenuCel filters={filters} />}
           </Col>
         </Row>
       </Navbar>
