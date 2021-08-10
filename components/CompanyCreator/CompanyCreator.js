@@ -91,6 +91,7 @@ const CompanyCreator = () => {
     {
       name,
       email,
+      telephone,
       contact,
       contactLoad,
       website,
@@ -105,6 +106,7 @@ const CompanyCreator = () => {
     let data = {
       name,
       email,
+      phoneNumber: telephone,
       contact,
       description,
       contactLoad,
@@ -432,6 +434,50 @@ const CompanyCreator = () => {
                         className="invalid error-Form.Label text-danger"
                       >
                         {errors.email.message}
+                      </Form.Text>
+                    )}
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label htmlFor="telephone">
+                      {t("common:formulary.telephone")}
+                    </Form.Label>
+                    <Form.Control
+                      type="tel"
+                      name="telephone"
+                      id="telephone"
+                      placeholder={t("common:write-the-here-please", {
+                        namePlaceholder: t(
+                          "common:formulary.the-telephone"
+                        ).toLowerCase(),
+                      })}
+                      {...register("telephone", {
+                        required: {
+                          value: true,
+                          message: `${t("common:is-required", {
+                            nameRequired: t("common:formulary.the-telephone"),
+                          })}`,
+                        },
+                        minLength: {
+                          value: 10,
+                          message: `${t(
+                            "common:cannot-be-less-than-character",
+                            {
+                              nameInput: t("common:formulary.the-telephone"),
+                              numberCharacters: 10,
+                            }
+                          )}`,
+                        },
+                      })}
+                      className={
+                        "form-field" + (errors.telephone ? " has-error" : "")
+                      }
+                    />
+                    {errors.telephone && (
+                      <Form.Text
+                        variant="danger"
+                        className="invalid error-Form.Label text-danger"
+                      >
+                        {errors.telephone.message}
                       </Form.Text>
                     )}
                   </Form.Group>
