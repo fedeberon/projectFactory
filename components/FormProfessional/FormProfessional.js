@@ -274,10 +274,10 @@ const FormProfessional = ({
                         })}`,
                       },
                       minLength: {
-                        value: 3,
+                        value: 10,
                         message: `${t("common:cannot-be-less-than-character", {
                           nameInput: t("common:formulary.the-telephone"),
-                          numberCharacters: 3,
+                          numberCharacters: 10,
                         })}`,
                       },
                     })}
