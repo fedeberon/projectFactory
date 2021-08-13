@@ -5,7 +5,7 @@ import { List } from "react-bootstrap-icons";
 import NavSearchCel from "../NavSearchCel/NavSearchCel";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
-const OffCanvasMenuCel = ({filters}) => {
+const OffCanvasMenuCel = () => {
   const [show, setShow] = useState(false);
 
   const handleToggle = () => setShow((show) => !show);
@@ -27,7 +27,7 @@ const OffCanvasMenuCel = ({filters}) => {
           </Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <NavSearchCel filters={filters} />
+          <NavSearchCel />
         </Offcanvas.Body>
       </Offcanvas>
     </>

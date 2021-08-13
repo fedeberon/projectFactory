@@ -13,6 +13,7 @@
     "/admin/company": ["administrator"],
     "/admin/product": ["administrator"],
     "/admin/building": ["administrator"],
+    "/admin/categories": ["administrator"],
     "/admin": ["administrator"],
     "/policies":["policies"],
     "/magazine": ["magazine"],

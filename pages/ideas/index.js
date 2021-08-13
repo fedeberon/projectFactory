@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 import { Col, Row } from "react-bootstrap";
-import Link from "next/link";
 
 // Components
 import Layout from "../../components/Layout/Layout";
@@ -13,20 +12,16 @@ import OffCanvasFilter from "../../components/OffCanvas/OffCanvasFilter.js/OffCa
 // Services
 import * as tagService from "../../services/tagService";
 import * as imageService from "../../services/imageService";
-import * as productService from "../../services/productService";
-import * as companyService from "../../services/companyService";
 
 // Styles
 import styles from "../../styles/Home.module.css";
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton";
-import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
 const index = ({ filters, session, filtersTags }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [pageSize, setPageSize] = useState({ page: 0, size: 30 });
   const [isLoading, setLoading] = useState(false);
-  const [imagesLocal, setimagesLocal] = useState([]);
 
   let { t } = useTranslation("common");
 
@@ -107,11 +102,11 @@ const index = ({ filters, session, filtersTags }) => {
   );
 };
 
-export async function getServerSideProps({ params, req, res, locale }) {
+export async function getServerSideProps({ req }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
 
-  let { page, size, filters } = req.__NEXT_INIT_QUERY;
+  let { page, size, categories } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
     page = 0;
@@ -126,7 +121,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
     props: {
       filters: imagesfilters,
       session,
-      filtersTags: filters ? filters : "",
+      filtersTags: categories ? categories : "",
     },
   };
 }
