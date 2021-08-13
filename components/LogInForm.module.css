@@ -33,17 +33,33 @@
   /* text-shadow: 0 -1px -1px #1f2f52; */
 }
 
-.cardBody {
-  border-top: 10px solid;
-  border-radius: 10px;
+.card {
+  border-top: 12px solid #000;
+  border-radius: 8px;
 }
 
 .colDivision {
   border-right: 1px solid #ccc;
 }
 
+.cardBody {
+  padding: 60px 45px;
+}
+
+.textBold {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.textSmall {
+  font-size: 13px;
+}
 @media (max-width: 767px) {
   .colDivision {
     border-right: none;
+    border-bottom: 1px solid #ccc;
+  }
+  .cardBody {
+    padding: 1rem;
   }
 }

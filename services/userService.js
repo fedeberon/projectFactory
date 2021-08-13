@@ -22,18 +22,19 @@ export const login = async (username, password) => {
     username,
     password,
   };
-  
+
   const { token } = await API.post(`/users/login`, credentials);
   const tokenWithoutPrefix = token.split("Bearer ")[1];
   const payload = jwt_decode(tokenWithoutPrefix);
   const data = await getDataOfUserByPayload(payload);
 
-  signIn('credentials', { 
+  signIn("credentials", {
     accessToken: token,
-    name: data.name != "" ? data.name : username,
+    name: data.name,
+    email: data.email,
     callbackUrl: `${window.location.origin}/`,
-    image: data.previewImage
-   });
+    image: data.previewImage,
+  });
   return token;
 };
 
@@ -42,12 +43,20 @@ const getDataOfUserByPayload = async (payload) => {
   const userId = payload["jti"];
   if (authorities.includes("ROLE_PROFESSIONAL")) {
     const professional = await professionalService.getById(userId);
-    return {"name" : professional.contact, "previewImage": professional.previewImage};
+    return {
+      name: professional.contact,
+      email: professional.email,
+      previewImage: professional.previewImage,
+    };
   } else if (authorities.includes("ROLE_COMPANY")) {
     const company = await companyService.findById(userId);
-    return {"name" : company.name, "previewImage": company.previewImage};
+    return {
+      name: company.name,
+      email: company.email,
+      previewImage: company.previewImage,
+    };
   } else {
-    return {"name" : "" , "previewImage": ""};
+    return { name: "", email: "", previewImage: "" };
   }
 };
 
@@ -56,7 +65,7 @@ export const getAmountTokens = async (token) => {
   if (actualTokens == null || actualTokens == -1) {
     API.defaults.headers.common["Authorization"] = token;
     const { tokens } = await API.get(`/users/tokens`);
-    localStorage.setItem("amountTokens",tokens);
+    localStorage.setItem("amountTokens", tokens);
     return tokens;
   } else {
     return actualTokens;
@@ -100,12 +109,12 @@ export const add = async (username, password) => {
     password,
   };
   const { token } = await API.post(`/users/register`, data);
-  
-  signIn('credentials', { 
+
+  signIn("credentials", {
     accessToken: token,
     name: username,
-    callbackUrl: `${window.location.origin}/`
-   });
+    callbackUrl: `${window.location.origin}/`,
+  });
   return token;
 };
 
@@ -116,7 +125,7 @@ export const isUnique = async (email, session) => {
 
 export const loginWith2FA = async (code, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  return await API.post(`/users/2FA/login`,code);
+  return await API.post(`/users/2FA/login`, code);
 };
 
 export const getStartsWith = async (username, page, size, token) => {

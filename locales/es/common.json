@@ -188,8 +188,18 @@
   "register-here": "Regístrese aquí.",
   "go-back": "Volver",
 
+  "SignInForm": "--------------------------------",
+  "already-have-an-account?": "¿Ya tienes una cuenta?",
+  "start-sessions-here": "Inciar sesión aquí",
+  "connect-with": "Conectarse con",
+  "by-continuing-i-accept-the": "Al continuar, acepto los",
+  "terms-of-use": "Términos de uso",
+  "and-accept-the": "de Fabrica de proyectos y acepto la",
+  "privacy-policy": "Política de privacidad",
+  "project-factory-can-send-me-marketing-emails": "Fabrica de proyectos puede enviarme correos electrónicos de marketing",
+
   "Authentication": "--------------------------------",
-  "log-in": "Ingresar",
+  "log-in": "Inciar sesión",
   "sign-in": "Crear cuenta",
   "username-already-exists": "El nombre de usuario ya existe",
 
@@ -282,5 +292,9 @@
   "month-10": "Octubre",
   "month-11": "Noviembre",
   "month-12": "Diciembre",
-  "you-may-also-like": "También te pude interesar"
+  "you-may-also-like": "También te pude interesar",
+  "welcome-create-your-account": "Bienvenido! Creá tu cuenta",
+
+  "spanish": "Español",
+  "english": "Ingles"
 }

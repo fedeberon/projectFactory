@@ -9,10 +9,10 @@
   height: 36px;
 }
 
-.flag:hover {
+/* .flag:hover {
   transform: scale(0.7);
   cursor: pointer;
-}
+} */
 
 .pointer {
   cursor: pointer;
@@ -31,9 +31,13 @@
 
 .navbar {
   padding: 0;
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
 }
 
 .imgLogo {
-  max-width: 205px;
+  max-width: 220px;
+}
+
+.lessCaret button::before {
+  display: none !important;
 }

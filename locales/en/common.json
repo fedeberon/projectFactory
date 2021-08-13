@@ -46,7 +46,7 @@
   "the-web-site": "The web site",
   "the-year": "The year",
   "the-video-path": "The link to video",
-  "the-email": "the email",
+  "the-email": "The email",
   "the-image": "The image",
   "the-tag": "The tag",
   "the-price": "The price",
@@ -188,6 +188,16 @@
   "register-here": "Register here",
   "go-back": "Go back",
 
+  "SignInForm": "--------------------------------",
+  "already-have-an-account?": "Already have an account?",
+  "start-sessions-here": "Start sessions here",
+  "connect-with": "Connect with",
+  "by-continuing-i-accept-the": "By continuing, I accept the Fabrica de proyectos",
+  "terms-of-use": "Terms of Use",
+  "and-accept-the": "and accept the",
+  "privacy-policy": "Privacy Policy",
+  "project-factory-can-send-me-marketing-emails": "Fabrica de proyectos can send me marketing emails",
+
   "Authentication": "--------------------------------",
   "log-in": "Log in",
   "sign-in": "Sign in",
@@ -282,5 +292,9 @@
   "month-10": "October",
   "month-11": "November",
   "month-12": "December",
-  "you-may-also-like": "You may also like"
+  "you-may-also-like": "You may also like",
+  "welcome-create-your-account": "Welcome! Create your account",
+
+  "spanish": "Spanish",
+  "english": "English"
 }

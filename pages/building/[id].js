@@ -201,6 +201,7 @@ export async function getServerSideProps({ params, req, res, locale, query }) {
     0,
     99
   );
+
   if (imageClicked === undefined) {
     imageClicked = images[0].id;
   }

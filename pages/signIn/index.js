@@ -8,9 +8,7 @@ const SignIn = () => {
   const { t } = useTranslation("common");
   return (
     <Layout header={false} footer={false}>
-      <section className="container">
-        <SignInForm />
-      </section>
+      <SignInForm />
     </Layout>
   );
 };
