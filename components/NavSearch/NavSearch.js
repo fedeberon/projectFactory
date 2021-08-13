@@ -78,7 +78,7 @@ import * as productService from "../../services/productService";
 //   );
 // };
 
-export default function NavSearch({filters}) {
+export default function NavSearch({ filters }) {
   const [session, loading] = useSession();
   const { t } = useTranslation("common");
   const [productCategories, setProductCategories] = useState([]);
@@ -203,8 +203,15 @@ export default function NavSearch({filters}) {
                     <div className={`${styles.containerDesplegable} container`}>
                       <Row className="py-2">
                         <Col className="col-auto">
-                          <h5>Categorias</h5>
+                          <h5>{t("categories")}</h5>
                           <Row className={`row-cols-4`}>
+                            <Col className="col-auto">
+                              <Link href={`/ideas`} passHref>
+                                <li>
+                                  <a className={styles.link}>{t("all")} </a>
+                                </li>
+                              </Link>
+                            </Col>
                             {chunk(filters, 5).map((col, index) => (
                               <Col key={index} className="col-auto">
                                 {col.map((category, index) => (
@@ -261,7 +268,7 @@ export default function NavSearch({filters}) {
                     <div className={`${styles.containerDesplegable} container`}>
                       <Row className="py-2">
                         <Col className="col-auto">
-                          <h5>Categorias</h5>
+                          <h5>{t("categories")}</h5>
                           <Link href="/professional" passHref>
                             <li>
                               <a className={styles.link}>
@@ -312,7 +319,7 @@ export default function NavSearch({filters}) {
                     <div className={`${styles.containerDesplegable} container`}>
                       <Row className="py-2">
                         <Col className="col-auto">
-                          <h5>Categorias</h5>
+                          <h5>{t("categories")}</h5>
                           <Link href="/product">
                             <li>
                               <a className={styles.link}>{t("products")}</a>
@@ -366,7 +373,7 @@ export default function NavSearch({filters}) {
                     <div className={`${styles.containerDesplegable} container`}>
                       <Row className="py-2">
                         <Col className="col-auto">
-                          <h5>Categorias</h5>
+                          <h5>{t("categories")}</h5>
                           <Link href="/project" passHref>
                             <li>
                               <a className={styles.link}>{t("projects")}</a>
@@ -485,7 +492,7 @@ export default function NavSearch({filters}) {
   // terminar para el componente que queda un detalle
   // const itemsPhotos = (
   //   <>
-  //     <h5>Categorias</h5>
+  //     <h5>{t("categories")}</h5>
   //     <Row className={`row-cols-4`}>
   //       {chunk(filters, 10).map((col, index) => (
   //         <Col key={index} className="col-auto">
@@ -508,7 +515,7 @@ export default function NavSearch({filters}) {
 
   // const itemsProfessional = (
   //   <>
-  //     <h5>Categorias</h5>
+  //     <h5>{t("categories")}</h5>
   //     <Link href="/professional" passHref>
   //       <li>
   //         <a className={styles.link}>{t("professionals")}</a>
@@ -550,7 +557,7 @@ export default function NavSearch({filters}) {
 
   // const itemsProduct = (
   //   <>
-  //     <h5>Categorias</h5>
+  //     <h5>{t("categories")}</h5>
   //     <Link href="/product">
   //       <li>
   //         <a className={styles.link}>{t("products")}</a>

@@ -74,6 +74,10 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
     }
   };
 
+  useEffect(() => {
+    console.log(filteredImages);
+  }, [filteredImages]);
+
   return (
     <Layout>
       <section className="content">

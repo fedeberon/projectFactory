@@ -104,7 +104,6 @@
     "select-logo": "Select logo please",
     "select-background-image": "Select background please",
     "select-categories-please": "Select categories please",
-    "categories": "Categories",
     "the-category": "The category",
     "the-categories": "The categories",
     "add-category": "Add category",
@@ -139,7 +138,7 @@
 
   "seeProject": "------------------",
   "project-detail": "Project detail",
-  "project-name" : "Name of project",
+  "project-name": "Name of project",
   "project-edit": "Project edit",
   "professional-contact": "Professional contact",
   "professional-email": "Professional email",
@@ -147,7 +146,7 @@
   "you-bought-this-project": "You bought this project",
   "download-project": "Download project",
   "other-projects-of-professional": "Other projects of this professional",
-  "other-projects-of-professional-description" : "Other projects of {{professional}}",
+  "other-projects-of-professional-description": "Other projects of {{professional}}",
 
   "FormBuyProjects": "------------------",
   "doc-type": "Doc type",
@@ -279,7 +278,7 @@
   "other-projects-of": "Other projects of",
   "facades": "Facades",
   "other-building-works-of": "Other building works of ",
-  "of" : "of",
+  "of": "of",
   "month-01": "January",
   "month-02": "February",
   "month-03": "March",
@@ -296,5 +295,8 @@
   "welcome-create-your-account": "Welcome! Create your account",
 
   "spanish": "Spanish",
-  "english": "English"
+  "english": "English",
+
+  "all": "All",
+  "categories": "Categories"
 }

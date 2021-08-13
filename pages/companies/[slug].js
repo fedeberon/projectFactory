@@ -143,7 +143,7 @@ const CompanyDetails = ({ company, initialProducts, status, session }) => {
 
                 <div>
                   <span className={styles.asideTitle}>
-                    {t("company-creator.categories")}
+                    {t("categories")}
                   </span>
                   {company.categories.map((category, index) => (
                     <span key={index} className="d-block">

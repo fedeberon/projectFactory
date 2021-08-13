@@ -104,7 +104,6 @@
     "select-logo": "Seleccione el logo por favor",
     "select-background-image": "Seleccione una imagen de fondo por favor",
     "select-categories-please": "Seleccione las categorias",
-    "categories": "Categorias",
     "the-category": "La categoria",
     "the-categories": "Las categorias",
     "add-category": "Agregar categoria",
@@ -139,7 +138,7 @@
 
   "seeProject": "------------------",
   "project-detail": "Detalle de proyecto",
-  "project-name" : "Nombre del proyecto",
+  "project-name": "Nombre del proyecto",
   "project-edit": "Editar un proyecto",
   "professional-contact": "Contacto del profesional",
   "professional-email": "Correo del profesional",
@@ -147,7 +146,7 @@
   "you-bought-this-project": "Compraste este proyecto",
   "download-project": "Descargar proyecto",
   "other-projects-of-professional": "Otros proyectos de este profesional",
-  "other-projects-of-professional-description" : "Otros proyectos de {{professional}}",
+  "other-projects-of-professional-description": "Otros proyectos de {{professional}}",
 
   "FormBuyProjects": "------------------",
   "doc-type": "Tipo de documento",
@@ -296,5 +295,8 @@
   "welcome-create-your-account": "Bienvenido! Creá tu cuenta",
 
   "spanish": "Español",
-  "english": "Ingles"
+  "english": "Ingles",
+
+  "all": "Todas",
+  "categories": "Categorias"
 }
