@@ -7,6 +7,7 @@ import {
   Dropdown,
   Form,
   DropdownButton,
+  ButtonGroup,
 } from "react-bootstrap";
 import Authentication from "../Authentication/Authentication";
 import { useRouter } from "next/dist/client/router";
@@ -312,7 +313,7 @@ export default function Header(props) {
               <Col className="d-flex col-auto g-2">
                 <DropdownButton
                   className={styles.lessCaret}
-                  as={"ButtonGroup"}
+                  as={ButtonGroup}
                   key={"start"}
                   id={`dropdown-button-drop-${"start"}`}
                   drop={"start"}
