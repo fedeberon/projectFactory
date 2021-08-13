@@ -11,11 +11,41 @@ import * as imageService from "../../services/imageService";
 
 // Components
 import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
+import FilteredImages from "../../components/FilteredImages/FilteredImages";
+import { Col } from "react-bootstrap";
 
-const Profile = ({ data, imagesLiked, status }) => {
+const Profile = ({ data, status }) => {
   const [session] = useSession();
   const { t } = useTranslation("common");
   const [error, setError] = useState("");
+  const [isLoading, setLoading] = useState(false);
+  const [imagesLiked, setImagesLiked] = useState([]);
+  const [pageSize, setPageSize] = useState({ page: 0, size: 30 });
+
+  const onGetLikePhotos = async () => {
+    setLoading(true);
+    try {
+      const images = await imageService.getLikePhotos(
+        pageSize.page,
+        pageSize.size,
+        session?.accessToken
+      );
+      setImagesLiked(images);
+      // setTimeout(() => {
+        setLoading(false);
+      // }, 5000);
+      console.log("imagesLiked", imagesLiked);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(async () => {
+    // if (imagesLiked && session) {
+    await onGetLikePhotos();
+    // }
+  }, [session]);
 
   const saveProfessional = async (data) => {
     try {
@@ -108,7 +138,14 @@ const Profile = ({ data, imagesLiked, status }) => {
           onBuyPlan={onBuyPlan}
           status={status}
         />
-        <SeeImagesLiked imagesLiked={imagesLiked} />
+        {/* <SeeImagesLiked imagesLiked={imagesLiked} /> */}
+        <Col>
+          <FilteredImages
+            isLoading={isLoading}
+            images={imagesLiked}
+            disLiked={onGetLikePhotos}
+          />
+        </Col>
       </section>
     </Layout>
   );
@@ -155,7 +192,6 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
     if (session) {
       token = session.accessToken;
       companies = await companyService.findAll("APPROVED", page, size, token);
-      imagesLiked = await imageService.getLikePhotos(page, size, token);
     }
   } catch (e) {
     return {
@@ -169,7 +205,6 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
   return {
     props: {
       data: companies,
-      imagesLiked,
       status: query.status ? query.status : "",
     },
   };

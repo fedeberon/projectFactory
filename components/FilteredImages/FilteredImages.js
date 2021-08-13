@@ -6,9 +6,10 @@ import { Heart, HeartFill } from "react-bootstrap-icons";
 import { useSession } from "next-auth/client";
 import { setLikePhoto } from "../../services/imageService";
 import Link from "next/link";
+import Image from "next/image";
 import SpinnerCustom from "../SpinnerCustom/SpinnerCustom";
 
-const FilteredImages = ({ isLoading, images }) => {
+const FilteredImages = ({ isLoading, images, disLiked }) => {
   const [session] = useSession();
   const refLikes = useRef([]);
 
@@ -32,6 +33,10 @@ const FilteredImages = ({ isLoading, images }) => {
         heartsIco[0].style.display = "block";
         heartsIco[1].style.display = "none";
       } else {
+        if (disLiked != null) {
+          console.log("entre a disliked");
+          await disLiked();
+        }
         heartsIco[0].style.display = "none";
         heartsIco[1].style.display = "block";
       }
@@ -50,7 +55,7 @@ const FilteredImages = ({ isLoading, images }) => {
         images.map((image, index) => (
           <Col key={index}>
             <Card className={`${filteredImagesStyles.colCard}`}>
-              <Card.Body className="p-0">
+              <Card.Body className={`${filteredImagesStyles.cardImage} p-0 `}>
                 <Link
                   href={{
                     pathname: "/building/[id]",
@@ -58,11 +63,13 @@ const FilteredImages = ({ isLoading, images }) => {
                   }}
                   as={`/building/${image.buildingWork?.name
                     ?.replace(/\s+/g, "-")
-                    .toLowerCase()}-${image.buildingWork.id}?img=${image.id}`}
-                  passHref
+                    .toLowerCase()}-${image.buildingWork?.id}?img=${image.id}`}
                 >
-                  <img
-                    className={`${filteredImagesStyles.cardImage} cursor-pointer`}
+                  <Image
+                    layout="fill"
+                    objectFit="cover"
+                    quality={75}
+                    className={`cursor-pointer`}
                     src={image.path}
                     alt="Professional preview"
                   />
@@ -71,14 +78,14 @@ const FilteredImages = ({ isLoading, images }) => {
                   <Col className="col-auto">
                     <img
                       className={`${filteredImagesStyles.imgProfile} rounded-circle`}
-                      src={image.professional.previewImage}
+                      src={image.professional?.previewImage}
                     />
                   </Col>
                   <Col className={`col-auto`}>
                     <Card.Text
                       className={`${filteredImagesStyles.textShadowSm} fw-bold`}
                     >
-                      {`${image.professional.contact}`}
+                      {`${image.professional?.contact}`}
                     </Card.Text>
                   </Col>
                   <Col
