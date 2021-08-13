@@ -26,7 +26,7 @@ export const login = async (username, password) => {
   const { token } = await API.post(`/users/login`, credentials);
   const tokenWithoutPrefix = token.split("Bearer ")[1];
   const payload = jwt_decode(tokenWithoutPrefix);
-  const data = await getDataOfUserByPayload(payload);
+  const data = await getDataOfUserByPayload(payload, token);
 
   signIn("credentials", {
     accessToken: token,
@@ -38,7 +38,7 @@ export const login = async (username, password) => {
   return token;
 };
 
-const getDataOfUserByPayload = async (payload) => {
+const getDataOfUserByPayload = async (payload, token) => {
   const authorities = payload["authorities"];
   const userId = payload["jti"];
   if (authorities.includes("ROLE_PROFESSIONAL")) {
@@ -56,8 +56,14 @@ const getDataOfUserByPayload = async (payload) => {
       previewImage: company.previewImage,
     };
   } else {
-    return { name: "", email: "", previewImage: "" };
+    const user = await getMe(token);
+    return { name: user.username, email: user.email, previewImage: "" };
   }
+};
+
+export const getMe = async (token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.get(`/users/me`);
 };
 
 export const getAmountTokens = async (token) => {
