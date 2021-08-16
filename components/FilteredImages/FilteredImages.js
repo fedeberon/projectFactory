@@ -64,15 +64,18 @@ const FilteredImages = ({ isLoading, images, disLiked }) => {
                   as={`/building/${image.buildingWork?.name
                     ?.replace(/\s+/g, "-")
                     .toLowerCase()}-${image.buildingWork?.id}?img=${image.id}`}
+                  passHref
                 >
-                  <Image
-                    layout="fill"
-                    objectFit="cover"
-                    quality={75}
-                    className={`cursor-pointer`}
-                    src={image.path}
-                    alt="Professional preview"
-                  />
+                  <a>
+                    <Image
+                      layout="fill"
+                      objectFit="cover"
+                      quality={75}
+                      className={`cursor-pointer`}
+                      src={image.path}
+                      alt="Professional preview"
+                    />
+                  </a>
                 </Link>
                 <div className={`${filteredImagesStyles.cardText}`}>
                   <Col className="col-auto">
