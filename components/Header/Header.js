@@ -25,21 +25,15 @@ import useSize from "../../hooks/window/useSize";
 import * as tagService from "../../services/tagService";
 
 export default function Header() {
-  const [dropdown, setDropdown] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchActive, setSearchActive] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [searchByProfessionals, setSearchByProfessionals] = useState(true);
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const { width } = useSize();
-  const [session, loading] = useSession();
+  const [session] = useSession();
   const inputSearch = useRef();
-  const [filters, setfilters] = useState([]);
 
   const router = useRouter();
-
-  const toggle = () => setDropdown((dropdown) => !dropdown);
-  const toggle2 = () => setDropdownOpen((dropdownOpen) => !dropdownOpen);
 
   const { t } = useTranslation("common");
 
@@ -123,20 +117,6 @@ export default function Header() {
     userService.clearData();
     signOut();
   };
-
-  const getFilters = async () => {
-    try {
-      const filters = await tagService.findAll();
-      return filters;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(async () => {
-    const filters1 = await getFilters();
-    setfilters(filters1);
-  }, []);
 
   return (
     <>
@@ -286,12 +266,12 @@ export default function Header() {
                 ))}
               </Col>
             </Navbar.Collapse>
-            {width < 992 && <OffCanvasMenuCel filters={filters}/>}
+            {width < 992 && <OffCanvasMenuCel/>}
           </Col>
         </Row>
       </Navbar>
 
-      {width > 992 && <NavSearch filters={filters} />}
+      {width > 992 && <NavSearch />}
     </>
   );
 }

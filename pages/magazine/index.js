@@ -4,6 +4,7 @@ import { useSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 import { Col, Row } from "react-bootstrap";
 import Link from "next/link";
+import { useSelector } from 'react-redux';
 
 //Services
 import * as magazineService from "../../services/magazineService";
@@ -18,9 +19,10 @@ import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton"
 
 const MagazineDetails = (props) => {
   const [session] = useSession();
-  const { categories, magazines } = props;
+  const { magazines } = props;
   const { t } = useTranslation("magazine");
-  const [isLoading, setLoading] = useState(false);
+  const categories = useSelector(state => state.categories.magazines);
+  const [isLoading] = useState(false);
 
   const isRole = (role) => {
     if (session) {
@@ -76,8 +78,7 @@ const MagazineDetails = (props) => {
   );
 };
 
-export async function getServerSideProps({ params, req, res, locale, query }) {
-  const categories = await magazineService.findAllCategories(0, 99);
+export async function getServerSideProps({ query }) {
   let magazines;
   if (query.category) {
     magazines = await magazineService.findAllByCategory(query.category, "APPROVED", 0, 10);
@@ -87,7 +88,6 @@ export async function getServerSideProps({ params, req, res, locale, query }) {
 
   return {
     props: {
-      categories,
       magazines,
     },
   };

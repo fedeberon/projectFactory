@@ -62,6 +62,7 @@
   "form-project": "Form Project",
   "loading": "Loading",
   "name": "Name",
+  "type-category" : "Type of category",
   "description": "Description",
   "total-area": "Total Area",
   "year": "Year",
@@ -282,5 +283,6 @@
   "month-10": "October",
   "month-11": "November",
   "month-12": "December",
+  "categories" : "Categories",
   "you-may-also-like": "You may also like"
 }

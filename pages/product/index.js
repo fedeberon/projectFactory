@@ -1,9 +1,9 @@
 //Frameworks
 import React from "react";
-import { getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { Row, Col } from "react-bootstrap";
+import { useSelector } from 'react-redux';
 
 //Components
 import Layout from "../../components/Layout/Layout";
@@ -15,7 +15,8 @@ import * as productService from "../../services/productService";
 import ContentHeader from "../../components/ContentHeader/ContentHeader";
 
 const Product = (props) => {
-  const { data, categories, category } = props;
+  const { data, category } = props;
+  const categories = useSelector(state => state.categories.products);
   const { t } = useTranslation("common");
 
   return (
@@ -51,9 +52,8 @@ const Product = (props) => {
   );
 };
 
-export async function getServerSideProps({ params, req, res, locale, query }) {
+export async function getServerSideProps({ req, query }) {
   // Get the user's session based on the request
-  const session = await getSession({ req });
   let products = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
   let status = "APPROVED";
@@ -75,12 +75,9 @@ export async function getServerSideProps({ params, req, res, locale, query }) {
   } else {
     products = await productService.findAll(status, page, size);
   }
-  const categories = await productService.findAllCategories(page, size);
-
   return {
     props: {
       data: products,
-      categories,
       category: category ? category : "",
     },
   };

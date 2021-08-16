@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { CaretDownFill } from "react-bootstrap-icons";
 
@@ -6,10 +6,10 @@ import useTranslation from "next-translate/useTranslation";
 import { useSession } from "next-auth/client";
 import Link from "next/link";
 import styles from "./NavSearch.module.css";
+import { useDispatch, useSelector } from 'react-redux';
 
 // Services
-import * as tagService from "../../services/tagService";
-import * as productService from "../../services/productService";
+import * as categoryService from "../../services/categoryService";
 
 // terminar componente tiene una pequeña falla
 // const CustomDropdown = ({ children, items }) => {
@@ -78,10 +78,13 @@ import * as productService from "../../services/productService";
 //   );
 // };
 
-export default function NavSearch({filters}) {
-  const [session, loading] = useSession();
+export default function NavSearch() {
+  const [session] = useSession();
   const { t } = useTranslation("common");
-  const [productCategories, setProductCategories] = useState([]);
+  const dispatch = useDispatch();
+  const categoriesInitializated = useSelector(state => state.categories.initializated);
+  const productCategories = useSelector(state => state.categories.products);
+  const buildingWorkCategories = useSelector(state => state.categories.buildingWorks);
 
   const dropdowns = useRef([]);
   const divGris = useRef([]);
@@ -108,8 +111,9 @@ export default function NavSearch({filters}) {
   };
 
   useEffect(async () => {
-    const categories = await productService.findAllCategories(0, 99);
-    setProductCategories(categories);
+    if (!categoriesInitializated) {
+      categoryService.dispatchCategories(dispatch);
+    }
   }, []);
 
   const isRole = (role) => {
@@ -203,19 +207,19 @@ export default function NavSearch({filters}) {
                     <div className={`${styles.containerDesplegable} container`}>
                       <Row className="py-2">
                         <Col className="col-auto">
-                          <h5>Categorias</h5>
+                          <h5>{t("categories")}</h5>
                           <Row className={`row-cols-4`}>
-                            {chunk(filters, 5).map((col, index) => (
+                            {chunk(buildingWorkCategories, 5).map((col, index) => (
                               <Col key={index} className="col-auto">
                                 {col.map((category, index) => (
                                   <Link
                                     key={index}
-                                    href={`/ideas?filters=${category.tag}`}
+                                    href={`/ideas?filters=${category.name}`}
                                     passHref
                                   >
                                     <li>
                                       <a className={styles.link}>
-                                        {category.tag}{" "}
+                                        {category.name}
                                       </a>
                                     </li>
                                   </Link>
@@ -312,7 +316,7 @@ export default function NavSearch({filters}) {
                     <div className={`${styles.containerDesplegable} container`}>
                       <Row className="py-2">
                         <Col className="col-auto">
-                          <h5>Categorias</h5>
+                          <h5>{t("categories")}</h5>
                           <Link href="/product">
                             <li>
                               <a className={styles.link}>{t("products")}</a>
@@ -459,6 +463,11 @@ export default function NavSearch({filters}) {
                             <Link href="/admin/building" passHref>
                               <li>
                                 <a className={styles.link}>{t("buildings")}</a>
+                              </li>
+                            </Link>
+                            <Link href="/admin/categories" passHref>
+                              <li>
+                                <a className={styles.link}>{t("company-creator.categories")}</a>
                               </li>
                             </Link>
                           </Col>

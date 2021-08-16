@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Nav,
   Navbar,
-  Container,
   NavDropdown,
   Row,
   Col,
@@ -15,12 +14,17 @@ import Link from "next/link";
 import styles from "./NavSearchCel.module.css";
 import Authentication from "../Authentication/Authentication";
 import Image from "next/image";
-import { PersonCircle, Search } from "react-bootstrap-icons";
+import { PersonCircle } from "react-bootstrap-icons";
 import RolProfile from "../RolProfile";
 import * as userService from "../../services/userService";
+import { useDispatch, useSelector } from 'react-redux';
+import * as categoryService from "../../services/categoryService";
 
-export default function NavSearchCel({ filters }) {
-  const [session, loading] = useSession();
+export default function NavSearchCel() {
+  const [session] = useSession();
+  const categoriesInitializated = useSelector(state => state.categories.initializated);
+  const productCategories = useSelector(state => state.categories.products);
+  const dispatch = useDispatch();
 
   const { t } = useTranslation("common");
 
@@ -37,6 +41,12 @@ export default function NavSearchCel({ filters }) {
     signOut();
   };
 
+  useEffect(async () => {
+    if (!categoriesInitializated) {
+      categoryService.dispatchCategories(dispatch);
+    }
+  }, []);
+
   return (
     <>
       <div className={styles.band2}>
@@ -50,9 +60,9 @@ export default function NavSearchCel({ filters }) {
                 className="navLink"
                 title={<span className={styles.navLink}> {t("photos")}</span>}
               >
-                {filters.map((category, index) => (
-                  <Link key={index} href={`/ideas?filters=${category.tag}`} passHref>
-                    <NavDropdown.Item>{category.tag}</NavDropdown.Item>
+                {productCategories.map((category, index) => (
+                  <Link key={index} href={`/ideas?categories=${category.name}`} passHref>
+                    <NavDropdown.Item>{category.name}</NavDropdown.Item>
                   </Link>
                 ))}
               </NavDropdown>

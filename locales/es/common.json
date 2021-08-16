@@ -62,6 +62,7 @@
   "form-project": "Formulario Proyecto",
   "loading": "Cargando",
   "name": "Nombre",
+  "type-category" : "Tipo de categoria",
   "description": "Descripcion",
   "total-area": "Área total",
   "year": "Año",
@@ -282,5 +283,6 @@
   "month-10": "Octubre",
   "month-11": "Noviembre",
   "month-12": "Diciembre",
+  "categories" : "Categorías",
   "you-may-also-like": "También te pude interesar"
 }
