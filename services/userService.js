@@ -4,7 +4,7 @@ import jwt_decode from "jwt-decode";
 import * as professionalService from "./professionalService";
 import * as companyService from "./companyService";
 
-export const signInCallBack = async (user, account, profile) => {
+export const signInCallBack = async (user, account) => {
   const data = {
     name: user.name,
     email: user.email,
@@ -42,7 +42,7 @@ const getDataOfUserByPayload = async (payload, token) => {
   const authorities = payload["authorities"];
   const userId = payload["jti"];
   if (authorities.includes("ROLE_PROFESSIONAL")) {
-    const professional = await professionalService.getById(userId);
+    const professional = await professionalService.getById(userId, token);
     return {
       name: professional.contact,
       email: professional.email,

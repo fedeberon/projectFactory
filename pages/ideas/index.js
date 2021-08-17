@@ -24,7 +24,7 @@ import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 const index = ({ filters, session, filtersTags }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
-  const [pageSize, setPageSize] = useState({ page: 0, size: 30 });
+  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const [isLoading, setLoading] = useState(false);
   const [imagesLocal, setimagesLocal] = useState([]);
 
@@ -48,7 +48,7 @@ const index = ({ filters, session, filtersTags }) => {
   };
 
   const changePage = () => {
-    setPageSize({ page: pageSize.page++, size: 9 });
+    setPageSize({ page: pageSize.page+1, size: 10 });
   };
 
   useEffect(async () => {

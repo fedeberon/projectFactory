@@ -6,11 +6,8 @@ import SwiperCarouselProject from "../../components/Swiper/SwiperCarouselProject
 import { getSession } from "next-auth/client";
 import * as imageService from "../../services/imageService";
 import * as buildingWorkService from "../../services/buildingWorkService";
-import Link from "next/link";
-import { Row, Col, Button, Card, Badge, Container } from "react-bootstrap";
+import { Row, Col, Card, Container } from "react-bootstrap";
 import buildingStyles from "./building.module.css";
-import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton";
-import { GeoAlt } from "react-bootstrap-icons";
 import FilteredImages from "../../components/FilteredImages/FilteredImages";
 
 const BuildingDetail = ({ data, session, imageClicked }) => {
@@ -176,7 +173,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   );
 };
 
-export async function getServerSideProps({ params, req, res, locale, query }) {
+export async function getServerSideProps({ params, req, query }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
   let token;

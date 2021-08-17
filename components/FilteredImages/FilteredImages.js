@@ -89,7 +89,7 @@ const FilteredImages = ({ isLoading, images, disLiked }) => {
                     <Image
                       layout="fill"
                       objectFit="cover"
-                      quality={75}
+                      quality={50}
                       className={`cursor-pointer`}
                       src={image.path}
                       alt="Professional preview"
