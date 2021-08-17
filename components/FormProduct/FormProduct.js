@@ -9,6 +9,9 @@ import Dropzone from "../Dropzone/Dropzone";
 import { Col, Row, Button, Form, FormGroup } from "react-bootstrap";
 import TagList from "../TagList/TagList";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
+import CategorySelector from "../CategorySelector/CategorySelector";
+import { useDispatch, useSelector } from "react-redux";
+import { categoriesActions } from "../../store";
 
 const FormProduct = ({
   toggle,
@@ -23,9 +26,10 @@ const FormProduct = ({
   productId,
 }) => {
   const { t } = useTranslation("common");
+  const dispatch = useDispatch();
   const [error, setError] = useState("");
   const [timeErrorLive, setTimeErrorLive] = useState(0);
-  const [tagsCategories, setTagsCategories] = useState([]);
+  const selectedCategories = useSelector(state => state.categories.selectedCategories);
   const [modalTagOpen, setModalTagOpen] = useState(false);
   const [currentImageTag, setCurrentImageTag] = useState({});
 
@@ -44,71 +48,85 @@ const FormProduct = ({
 
   const {
     control,
-    register,
     formState: { errors },
     handleSubmit,
   } = useForm(productData);
 
-  const onSubmit = async (
-    { name, description, price, width, height, depth },
-    event
-  ) => {
-    let data = {
-      previewImage: previewImage[0],
-      images,
-      name,
-      description,
-      price,
-      width,
-      height,
-      depth,
-    };
+  const hasPreviewImage = () => previewImage.length > 0;
+
+  const hasCategories = () => selectedCategories.length > 0;
+
+  const hasAnyError = () => {
     if (!imagesHasTags()) {
       showErrorToLimitTime(
         t("is-required", {
           nameRequired: t("form-tag.tag"),
         })
       );
-      return;
+      return true;
     }
 
-    if (!(previewImage.length > 0)) {
+    if (!hasPreviewImage()) {
       showErrorToLimitTime(
         t("is-required", {
           nameRequired: t("preview-image"),
         })
       );
-      return;
+      return true;
     }
 
-    if (!(tagsCategories.length > 0)) {
+    if (!hasCategories()) {
       showErrorToLimitTime(
         t("company-creator.cannot-be-empty", {
           fieldName: t("company-creator.the-categories"),
         })
       );
-      return;
+      return true;
     }
-    data.categories = tagsCategories.map((tag) => {
-      return { name: tag.tag };
-    });
-    if (changeState.stateFormProduct.post) {
-      const product = await onAddProduct(data);
-      if (product) {
-        setPreviewImage([]);
-        event.target.reset();
-        setError("");
-        toggle();
+
+    return false;
+  };
+
+  const onSubmit = async (
+    { name, description, price, width, height, depth },
+    event
+  ) => {
+    const error = hasAnyError();
+
+    if (!error) {
+      const data = {
+        previewImage: previewImage[0],
+        categories: selectedCategories,
+        images,
+        name,
+        description,
+        price,
+        width,
+        height,
+        depth,
+      };
+
+      if (changeState.stateFormProduct.post) {
+        const product = await onAddProduct(data);
+        if (product) {
+          setPreviewImage([]);
+          event.target.reset();
+          setError("");
+          toggle();
+        }
       }
-    }
-    if (changeState.stateFormProduct.put) {
-      const productModify = await onSetProduct(data, productId);
-      if (productModify) {
-        setPreviewImage([]);
-        event.target.reset();
-        setError("");
-        toggle();
+
+      if (changeState.stateFormProduct.put) {
+        const productModify = await onSetProduct(data, productId);
+        if (productModify) {
+          setPreviewImage([]);
+          event.target.reset();
+          setError("");
+          toggle();
+        }
       }
+
+      dispatch(categoriesActions.setSelectedCategories([]));
     }
   };
 
@@ -121,52 +139,6 @@ const FormProduct = ({
     }
   };
 
-  const isEqual = (tag) => {
-    for (const elem of tagsCategories) {
-      if (elem.tag === tag.tag.toLowerCase()) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  const AddCategory = (event) => {
-    const category = document
-      .querySelector("#category")
-      .value.toLowerCase()
-      .trim();
-    const parse = { tag: category };
-    if (category !== "") {
-      if (!isEqual(parse)) {
-        const newTagsCategories = Array.from(tagsCategories);
-        newTagsCategories.push(parse);
-        setTagsCategories(newTagsCategories);
-      } else {
-        showErrorToLimitTime(
-          t("company-creator.already-exists", {
-            fieldName: t("company-creator.the-category"),
-          })
-        );
-      }
-    } else {
-      showErrorToLimitTime(
-        t("company-creator.cannot-be-empty", {
-          fieldName: t("company-creator.the-category"),
-        })
-      );
-    }
-    document.querySelector("#category").value = "";
-  };
-
-  const removeTagCategory = (tagCategory) => {
-    const newTagsCategories = Array.from(tagsCategories);
-    const index = newTagsCategories.indexOf(tagCategory);
-    if (index > -1) {
-      newTagsCategories.splice(index, 1);
-      setTagsCategories(newTagsCategories);
-    }
-  };
-
   const showTagModal = (img) => {
     setModalTagOpen(true);
     setCurrentImageTag(img);
@@ -174,10 +146,8 @@ const FormProduct = ({
 
   useEffect(() => {
     if (productData) {
-      productData.defaultValues.categories.forEach(
-        (category) => (category.tag = category.name)
-      );
-      setTagsCategories(productData.defaultValues.categories);
+      const categories = productData.defaultValues.categories;
+      dispatch(categoriesActions.setSelectedCategories(categories));
     }
   }, [productData]);
 
@@ -490,24 +460,13 @@ const FormProduct = ({
                   <Row className="row-cols-1 row-cols-md-2 gap-2 gap-md-0">
                     <Col className="col-12 col-md-6">
                       <Row className="row-cols-1 row-cols-lg-2 gap-1 gap-lg-0">
-                        <Col>
-                          <Form.Control type="text" id="category" />
-                        </Col>
-                        <Col>
-                          <PrimaryButton
-                            onClick={AddCategory}
-                            className="mx-auto mx-lg-0"
-                          >
-                            {t("company-creator.add-category")}
-                          </PrimaryButton>
+                        <Col className="col-12">
+                          <CategorySelector typeCategory="PRODUCT"/>
                         </Col>
                       </Row>
                     </Col>
                     <Col className="col-auto col-md-6">
-                      <TagList
-                        tags={tagsCategories}
-                        onDeleteTag={removeTagCategory}
-                      />
+                      <TagList/>
                     </Col>
                   </Row>
                 </Form.Group>

@@ -4,21 +4,24 @@ import { Button, Row, Col, Form } from "react-bootstrap";
 import ModalForm from "../ModalForm";
 import useTranslation from "next-translate/useTranslation";
 import * as companyService from "../../services/companyService";
-import companyCreatorStyles from "./CompanyCreator.module.css";
 import TagList from "../TagList/TagList";
 import Error from "../../components/Error";
 import Dropzone from "../Dropzone/Dropzone";
 import { useForm } from "react-hook-form";
 import { Building } from "react-bootstrap-icons";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
+import CategorySelector from "../CategorySelector/CategorySelector";
+import { useDispatch, useSelector } from "react-redux";
+import { categoriesActions } from "../../store";
 
 const CompanyCreator = () => {
+  const dispatch = useDispatch();
   const [modalCompany, setModalCompany] = useState(false);
   const [session] = useSession();
   const { t } = useTranslation("common");
   const [previewImage, setPreviewImage] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState([]);
-  const [tagsCategories, setTagsCategories] = useState([]);
+  const selectedCategories = useSelector(state => state.categories.selectedCategories);
   const [error, setError] = useState("");
   const [timeErrorLive, setTimeErrorLive] = useState(0);
 
@@ -32,56 +35,9 @@ const CompanyCreator = () => {
     );
   };
 
-  const isEqual = (tag) => {
-    for (const elem of tagsCategories) {
-      if (elem.tag === tag.tag.toLowerCase()) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  const removeTagCategory = (tagCategory) => {
-    const newTagsCategories = Array.from(tagsCategories);
-    const index = newTagsCategories.indexOf(tagCategory);
-    if (index > -1) {
-      newTagsCategories.splice(index, 1);
-      setTagsCategories(newTagsCategories);
-    }
-  };
-
   const toggle = () => setModalCompany(!modalCompany);
 
-  const AddCategory = () => {
-    const category = document
-      .querySelector("#category")
-      .value.toLowerCase()
-      .trim();
-    const parse = { tag: category };
-    if (category !== "") {
-      if (!isEqual(parse)) {
-        const newTagsCategories = Array.from(tagsCategories);
-        newTagsCategories.push(parse);
-        setTagsCategories(newTagsCategories);
-      } else {
-        showErrorToLimitTime(
-          t("company-creator.already-exists", {
-            fieldName: t("company-creator.the-category"),
-          })
-        );
-      }
-    } else {
-      showErrorToLimitTime(
-        t("company-creator.cannot-be-empty", {
-          fieldName: t("company-creator.the-category"),
-        })
-      );
-    }
-    document.querySelector("#category").value = "";
-  };
-
   const {
-    control,
     register,
     formState: { errors },
     handleSubmit,
@@ -98,8 +54,7 @@ const CompanyCreator = () => {
       province,
       location,
       description,
-    },
-    event
+    }
   ) => {
     name = name.trim();
     // You should handle login logic with name, preview and background images and form data
@@ -117,18 +72,17 @@ const CompanyCreator = () => {
 
     if (name !== "") {
       if (previewImage.length != 0 && backgroundImage.length != 0) {
-        if (tagsCategories.length > 0) {
+        if (selectedCategories.length > 0) {
           await companyService.create(
             data,
             previewImage[0],
             backgroundImage[0],
-            tagsCategories,
+            selectedCategories,
             session?.accessToken,
             session.user.id
           );
-          setTagsCategories([]);
-          setPreviewImage([]);
           toggle();
+          dispatch(categoriesActions.setSelectedCategories([]));
         } else {
           showErrorToLimitTime(
             t("company-creator.cannot-be-empty", {
@@ -156,7 +110,6 @@ const CompanyCreator = () => {
     <>
       <Button variant="dark" onClick={toggle}>
         <Building size={25} />
-        {` `}
         {t("profile:become-in-a-company")}
       </Button>
 
@@ -257,9 +210,6 @@ const CompanyCreator = () => {
                           })}`,
                         },
                       })}
-                      className={
-                        "form-field" + (errors.name ? " has-error" : "")
-                      }
                     />
                     {errors.description && (
                       <Form.Text
@@ -520,43 +470,12 @@ const CompanyCreator = () => {
                       {t("company-creator.select-categories-please")}
                     </Form.Label>
 
-                    {/* <Col className="col-12 d-flex">
-                      <Form.Control type="text" id="category" />
-                      <PrimaryButton className="mx-4" 
-                        onClick={AddCategory}>
-                        {t("company-creator.add-category")}
-                      </PrimaryButton>
-                    </Col>
-                    <Col className="col-auto">
-                      <div className="my-3">
-                        <TagList
-                          tags={tagsCategories}
-                          onDeleteTag={removeTagCategory}
-                        />
-                      </div>
-                    </Col> */}
-
                     <Row className="row-cols-1 row-cols-md-2 gap-2 gap-md-0">
                       <Col className="col-12 col-md-6">
-                        <Row className="row-cols-1 row-cols-lg-2 gap-1 gap-lg-0">
-                          <Col>
-                            <Form.Control type="text" id="category" />
-                          </Col>
-                          <Col>
-                            <PrimaryButton
-                              onClick={AddCategory}
-                              className="mx-auto mx-lg-0"
-                            >
-                              {t("company-creator.add-category")}
-                            </PrimaryButton>
-                          </Col>
-                        </Row>
+                        <CategorySelector typeCategory="COMPANY"/>
                       </Col>
                       <Col className="col-auto col-md-6">
-                        <TagList
-                          tags={tagsCategories}
-                          onDeleteTag={removeTagCategory}
-                        />
+                        <TagList/>
                       </Col>
                     </Row>
                   </Form.Group>

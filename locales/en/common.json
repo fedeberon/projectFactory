@@ -93,7 +93,6 @@
     "please-select-carousel-images": "Please select one or more images to add in carousel",
     "images": "Images",
     "add-images": "Add images",
-    "title": "Title",
     "sub-title": "SubTitle"
   },
 
@@ -136,6 +135,12 @@
   "form-tag": {
     "tag": "Tag",
     "insert-tag": "Insert tag here please"
+  },
+
+  "form-category": {
+    "category": "Category",
+    "insert-category": "Insert category here please",
+    "write-complete-category": "Write the complete category name"
   },
 
   "seeProject": "------------------",
@@ -271,6 +276,8 @@
   "facades": "Facades",
   "other-building-works-of": "Other building works of ",
   "of" : "of",
+  "title": "Title",
+  "author": "Author",
   "month-01": "January",
   "month-02": "February",
   "month-03": "March",

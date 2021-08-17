@@ -8,6 +8,7 @@ const { reducer, actions } = createSlice({
     magazines: [],
     companies: [],
     buildingWorks: [],
+    selectedCategories: []
   },
   reducers: {
     setInitializated(state, action) {
@@ -23,8 +24,11 @@ const { reducer, actions } = createSlice({
         state.companies = action.payload;
     },
     setBuildingWorks(state, action) {
-        state.buildingWorks = action.payload;
+      state.buildingWorks = action.payload;
     },
+    setSelectedCategories(state, action) {
+      state.selectedCategories = action.payload;
+  },
   }
 });
 

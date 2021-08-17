@@ -14,7 +14,7 @@ const Magazine = (props) => {
     >
       <Card>
         <div className={styles.divImg}>
-          <label className={styles.label}>{magazine.category}</label>
+          <label className={styles.label}>{magazine.category.name}</label>
           <img
             className={`${styles.img} cursor-pointer`}
             src={magazine.previewImage}

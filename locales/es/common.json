@@ -93,7 +93,6 @@
     "please-select-carousel-images": "Por favor seleccione una o mas imagenes para añadir al carousel",
     "images": "Imagenes",
     "add-images": "Agregar imagenes",
-    "title": "Titulo",
     "sub-title": "Subtitulo"
   },
 
@@ -136,6 +135,12 @@
   "form-tag": {
     "tag": "Tag",
     "insert-tag": "Ingrese el tag aquí por favor"
+  },
+
+  "form-category": {
+    "category": "Categoría",
+    "insert-category": "Ingrese la categoría aquí por favor",
+    "write-complete-category": "Escriba el nombre completo de la categoría"
   },
 
   "seeProject": "------------------",
@@ -271,6 +276,8 @@
   "facades": "Fachadas",
   "other-building-works-of": "Otras obras de ",
   "of": "de",
+  "title": "Titulo",
+  "author": "Autor",
   "month-01": "Enero",
   "month-02": "Febrero",
   "month-03": "Marzo",
