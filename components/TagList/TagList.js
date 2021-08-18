@@ -1,31 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  FormGroup,
-  FormText,
-  Input,
-  Label,
-  Row,
-} from "react-bootstrap";
-import useTranslation from "next-translate/useTranslation";
+import React from "react";
 import tagListStyles from "./TagList.module.css";
+import { useDispatch, useSelector } from 'react-redux';
+import { categoriesActions } from '../../store';
 
-const TagList = ({ tags, onDeleteTag }) => {
-  
+const TagList = () => {
+  const dispatch = useDispatch();
+  const selectedTags = useSelector(state => state.categories.selectedCategories);
+
   const handleDeleteTag = (event, tag) => {
-    event.preventDefault();
-    onDeleteTag(tag);
+      event.preventDefault();
+      onDeleteTag(tag);
+  };
+
+  const onDeleteTag = (tag) => {
+      dispatch(categoriesActions.setSelectedCategories(selectedTags.filter(t => t !== tag)));
   };
 
   return (
     <ul className={tagListStyles.ul}>
-        {tags.map((tag, index) => (
+        {selectedTags.map((tag, index) => (
           <li key={index} className={tagListStyles.li}>
-              <span className={tagListStyles.span}>{tag.tag}</span>
+              <span className={tagListStyles.span}>{tag.name}</span>
               <button className={tagListStyles.closeBtn} onClick={(event) => handleDeleteTag(event, tag)}>x</button>
           </li>
         ))}

@@ -14,6 +14,10 @@ export const findAllByTypeCategory = async (typeCategory) => {
     return API.get(`/categories/type-category/${typeCategory}`);
 };
 
+export const getAllByTypeCategoryAndStartsWith = async (typeCategory, name) => {
+    return API.get(`/categories/type-category/${typeCategory}/name/${name}`);
+};
+
 export const dispatchCategories = async (dispatch) => {
     const productCategories = await findAllByTypeCategory("PRODUCT");
     dispatch(categoriesActions.setProducts(productCategories));

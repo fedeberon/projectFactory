@@ -206,7 +206,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
     if (session) {
       try {
         let folder = await buildingWorkService.addFolder(
-          { name: data.name, description: data.description },
+          { name: data.name, description: data.description, categories: data.categories },
           session.accessToken
         );
         if (folder) {

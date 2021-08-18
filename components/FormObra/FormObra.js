@@ -10,6 +10,10 @@ import InputImages from "../../components/InputImages/InputImages";
 import Error from "../../components/Error";
 import Dropzone from "../Dropzone/Dropzone";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
+import CategorySelector from "../CategorySelector/CategorySelector";
+import TagList from "../TagList/TagList";
+import { useDispatch, useSelector } from "react-redux";
+import { categoriesActions } from "../../store";
 
 const FormObra = ({
   toggle,
@@ -23,11 +27,13 @@ const FormObra = ({
   changeState,
   buildingWorkId,
 }) => {
+  const dispatch = useDispatch();
   const { t } = useTranslation("common");
   const [currentImageTag, setCurrentImageTag] = useState({});
   const [modalTagOpen, setModalTagOpen] = useState(false);
   const [error, setError] = useState("");
   const [timeErrorLive, setTimeErrorLive] = useState(0);
+  const selectedCategories = useSelector(state => state.categories.selectedCategories);
 
   const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
 
@@ -57,57 +63,84 @@ const FormObra = ({
 
   const {
     control,
-    register,
     formState: { errors },
     handleSubmit,
   } = useForm(buildingWorkData);
 
-  const onSubmit = async ({ name, description }, event) => {
-    if (imagesHasTags()) {
-      let data = {
-        previewImage: previewImage[0],
-        images,
-        name,
-        description,
-      };
-      if (previewImage.length > 0) {
-        //aca
-        if (changeState.stateFormObra.post) {
-          const buildingWork = await onAddbuildingWork(data);
-          if (buildingWork) {
-            setPreviewImage([]);
-            event.target.reset();
-            setError("");
-            toggle();
-          }
-        }
-        if (changeState.stateFormObra.put) {
-          const buildingWorkModify = await onSetbuildingWork(
-            data,
-            buildingWorkId
-          );
-          if (buildingWorkModify) {
-            setPreviewImage([]);
-            event.target.reset();
-            setError("");
-            toggle();
-          }
-        }
-      } else {
-        showErrorToLimitTime(
-          t("is-required", {
-            nameRequired: t("preview-image"),
-          })
-        );
-      }
-    } else {
+  const hasPreviewImage = () => previewImage.length > 0;
+
+  const hasAnyCategory = () => selectedCategories.length > 0;
+
+  const hasAnyError = () => {
+    if (!imagesHasTags()) {
       showErrorToLimitTime(
         t("is-required", {
           nameRequired: t("form-tag.tag"),
         })
       );
+      return true;
     }
+
+    if (!error && !hasPreviewImage()) {
+      showErrorToLimitTime(
+        t("is-required", {
+          nameRequired: t("preview-image"),
+        })
+      );
+      return true;
+    }
+
+    if (!error && !hasAnyCategory()) {
+      showErrorToLimitTime(
+        t("is-required", {
+          nameRequired: t("categories"),
+        })
+      );
+      return true;
+    }
+
+    return false;
   };
+
+  const onSubmit = async ({ name, description }, event) => {
+    const error = hasAnyError();
+
+    if (!error) {
+      let data = {
+        previewImage: previewImage[0],
+        categories: selectedCategories,
+        images,
+        name,
+        description,
+      };
+  
+      if (changeState.stateFormObra.post) {
+        const buildingWork = await onAddbuildingWork(data);
+        if (buildingWork) {
+          setPreviewImage([]);
+          event.target.reset();
+          setError("");
+          toggle();
+        }
+      }
+  
+      if (changeState.stateFormObra.put) {
+        const buildingWorkModify = await onSetbuildingWork(
+          data,
+          buildingWorkId
+        );
+  
+        if (buildingWorkModify) {
+          setPreviewImage([]);
+          event.target.reset();
+          setError("");
+          toggle();
+        }
+      }
+
+      dispatch(categoriesActions.setSelectedCategories([]));
+    }
+  }
 
   return (
     <div>
@@ -217,6 +250,12 @@ const FormObra = ({
                     </Form.Text>
                   )}
                 </Form.Group>
+                <div className="mt-4">
+                  <CategorySelector typeCategory="BUILDING_WORK"/>
+                </div>
+                <div className="mt-4">
+                  <TagList/>
+                </div>
               </Col>
               <Col>
                 <Form.Group>

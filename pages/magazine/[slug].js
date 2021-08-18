@@ -6,6 +6,7 @@ import Link from "next/link";
 
 //Services
 import * as magazineService from "../../services/magazineService";
+import * as categoryService from "../../services/categoryService";
 
 //Components
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton";
@@ -16,17 +17,16 @@ import Magazine from "../../components/Magazine/Magazine";
 
 //Styles
 import styles from "./slug.module.css";
+import { useSelector } from "react-redux";
 
 const MagazineDetail = (props) => {
   const { magazine } = props;
   const [relationatedMagazines, setRelationatedMagazines] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const categories = useSelector(state => state.categories.magazines);
   const { t } = useTranslation("common");
 
   useEffect(async () => {
-    const categories = await magazineService.findAllCategories(0, 99);
-    setCategories(categories);
-    const relationatedMagazines = await magazineService.findAllByCategory(magazine.category, "APPROVED", 0, 6);
+    const relationatedMagazines = await magazineService.findAllByCategory(magazine.category.name, "APPROVED", 0, 6);
     setRelationatedMagazines(relationatedMagazines);
   }, []);
 
@@ -53,7 +53,7 @@ const MagazineDetail = (props) => {
             <nav className={styles.breadcrumb}>
               <span><Link href="/magazine"><a>{t("magazine")}</a></Link></span>
               <span> / </span>
-              <span><Link href={`/magazine?category=${magazine.category}`}><a>{magazine.category}</a></Link></span>
+              <span><Link href={`/magazine?category=${magazine.category.name}`}><a>{magazine.category.name}</a></Link></span>
             </nav>
           </Col>
 
@@ -63,7 +63,7 @@ const MagazineDetail = (props) => {
                 
                 <div className={`${styles.magList} detail`}>
                   <figure>
-                    <div className={styles.label}>{magazine.category}</div>
+                    <div className={styles.label}>{magazine.category.name}</div>
                     <img src={magazine.previewImage} className={styles.photo} />
                   </figure>
                   <div className={styles.info}>

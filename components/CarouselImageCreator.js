@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSession } from "next-auth/client";
 import { Button, Container, Form } from "react-bootstrap";
 import ModalForm from "./ModalForm";
@@ -35,11 +35,6 @@ const CarouselImageCreator = ({ onAddCarouselImages }) => {
 
     setModalAddTitle(false);
   };
-
-  useEffect(() => {
-    if (modalAddImages) {
-    }
-  }, [modalAddImages]);
 
   return (
     <>
@@ -86,7 +81,7 @@ const CarouselImageCreator = ({ onAddCarouselImages }) => {
             ></img>
             <Form.Group>
               <Form.Label htmlFor="input-title">
-                {t("carousel-image-creator.title")}
+                {t("title")}
               </Form.Label>
               <br></br>
               <Form.Control id="input-title" />

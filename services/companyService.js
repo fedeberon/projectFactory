@@ -11,11 +11,9 @@ export const create = async (
   userId
 ) => {
   API.defaults.headers.common["Authorization"] = token;
-  const newCategories = [];
-  categories.map((category) => newCategories.push({ name: category.tag }));
   const companyRequest = {
     name: data.name,
-    categories: newCategories,
+    categories,
     email: data.email,
     contact: data.contact,
     description: data.description,
@@ -38,11 +36,6 @@ export const create = async (
       .toLowerCase()}-${company.id}`,
   });
 };
-
-/**
- * @todo Implement this function.
- */
-export const generatePreferenceForToken = async (plan, token) => {};
 
 export const getStartsWith = async (value, page, size) => {
   return await API.get(`/companies/name/${value}?page=${page}&size=${size}`);
