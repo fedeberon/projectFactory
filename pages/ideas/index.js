@@ -20,7 +20,7 @@ import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton"
 const index = ({ filters, session, filtersTags }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
-  const [pageSize, setPageSize] = useState({ page: 0, size: 30 });
+  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const [isLoading, setLoading] = useState(false);
 
   let { t } = useTranslation("common");
@@ -43,7 +43,7 @@ const index = ({ filters, session, filtersTags }) => {
   };
 
   const changePage = () => {
-    setPageSize({ page: pageSize.page++, size: 9 });
+    setPageSize({ page: pageSize.page + 1, size: 10 });
   };
 
   useEffect(async () => {
@@ -70,6 +70,12 @@ const index = ({ filters, session, filtersTags }) => {
     }
   }, [filtersTags]);
 
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      changePage();
+    }, 1500);
+  };
+
   return (
     <Layout>
       <section className="container content">
@@ -89,13 +95,16 @@ const index = ({ filters, session, filtersTags }) => {
             </Row>
           </Col>
           <Col>
-            <FilteredImages isLoading={isLoading} images={filteredImages} />
+            <FilteredImages
+              images={filteredImages}
+              fetchMoreData={fetchMoreData}
+            />
           </Col>
-          <Col>
+          {/* <Col>
             <PrimaryButton dark onClick={changePage}>
               {t("view-more")}
             </PrimaryButton>
-          </Col>
+          </Col> */}
         </Row>
       </section>
     </Layout>

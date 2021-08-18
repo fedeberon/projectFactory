@@ -20,12 +20,12 @@ class MyDocument extends Document {
           />
 
           {/* Favicons */}
-          <link rel="shortcut icon" type="image/x-icon" href="./favicon/favicon.ico"/>
-          <link rel="icon" type="image/png" href="./favicon/32.png" sizes="32x32"/>
-          <link rel="apple-touch-icon" sizes="60x60" href="./favicon/60.png"/>
-          <link rel="apple-touch-icon" sizes="76x76" href="./favicon/76.png"/>
-          <link rel="apple-touch-icon" sizes="120x120" href="./favicon/120.png"/>
-          <link rel="apple-touch-icon" sizes="152x152" href="./favicon/152.png"/>
+          <link rel="shortcut icon" type="image/x-icon" href="/favicon/favicon.ico"/>
+          <link rel="icon" type="image/png" href="/favicon/32.png" sizes="32x32"/>
+          <link rel="apple-touch-icon" sizes="60x60" href="/favicon/60.png"/>
+          <link rel="apple-touch-icon" sizes="76x76" href="/favicon/76.png"/>
+          <link rel="apple-touch-icon" sizes="120x120" href="/favicon/120.png"/>
+          <link rel="apple-touch-icon" sizes="152x152" href="/favicon/152.png"/>
           <meta name="apple-mobile-web-app-capable" content="yes"/>
           <meta name="apple-touch-fullscreen" content="yes"/>
           <meta name="apple-mobile-web-app-status-bar-style" content="default"/>

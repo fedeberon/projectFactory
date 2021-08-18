@@ -40,7 +40,7 @@
   box-shadow: 0 0 0 0.2rem rgb(100 100 100 / 50%);
 }
 
-.btnDark {
+.btnDark, .btnYellow {
   background-color: #000000;
   border-color: #000000;
   color: #fff;
@@ -57,6 +57,12 @@
   color: #fff;
   background-color: #be1d7b;
   border-color: #be1d7b;
+}
+
+.btnYellow:hover {
+  color: #000;
+  background-color: #FFCA05;
+  border-color: #FFCA05;
 }
 
 .btnLg {

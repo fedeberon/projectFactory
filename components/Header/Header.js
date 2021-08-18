@@ -1,10 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Navbar, InputGroup, Col, Row, Dropdown, Form } from "react-bootstrap";
+import {
+  Navbar,
+  InputGroup,
+  Col,
+  Row,
+  Dropdown,
+  Form,
+  DropdownButton,
+  ButtonGroup,
+} from "react-bootstrap";
 import Authentication from "../Authentication/Authentication";
 import { useRouter } from "next/dist/client/router";
 import useTranslation from "next-translate/useTranslation";
 import { signOut, useSession } from "next-auth/client";
-import { PersonCircle, Search } from "react-bootstrap-icons";
+import { Globe, PersonCircle, Search, Translate } from "react-bootstrap-icons";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -23,8 +32,12 @@ import useSize from "../../hooks/window/useSize";
 
 // Services
 import * as tagService from "../../services/tagService";
+import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
-export default function Header() {
+export default function Header(props) {
+  const { navSearch, finder, authentication } = props;
+  const [dropdown, setDropdown] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchActive, setSearchActive] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [searchByProfessionals, setSearchByProfessionals] = useState(true);
@@ -36,6 +49,11 @@ export default function Header() {
   const router = useRouter();
 
   const { t } = useTranslation("common");
+
+  const language = [
+    { id: 1, name: t("spanish") },
+    { id: 2, name: t("english") },
+  ];
 
   const isRole = (role) => {
     if (session) {
@@ -68,16 +86,20 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    if (searchActive) inputSearch.current.focus();
-    else inputSearch.current.blur();
+    if (searchActive && finder) inputSearch.current.focus();
+    else inputSearch.current?.blur();
   }, [searchActive]);
 
   const handleOnBlurInputSearch = () => {
-    if (searchActive) inputSearch.current.focus();
+    if (searchActive && finder) inputSearch.current.focus();
     else inputSearch.current.blur();
   };
 
-  useEffect(() => searchProjectsOrProfessionals(), [searchByProfessionals]);
+  useEffect(() => {
+    if (finder) {
+      searchProjectsOrProfessionals();
+    }
+  }, [searchByProfessionals]);
 
   const searchProjectsOrProfessionals = async () => {
     const value = inputSearch.current.value;
@@ -120,49 +142,62 @@ export default function Header() {
 
   return (
     <>
-      <Navbar collapseOnSelect expand="lg" className={`${styles.navbar}`}>
-        <Row className="row-cols-3 justify-content-between align-items-center w-100 gap-2 gap-md-0 m-0 mb-2 mb-sm-0">
+      <Navbar
+        collapseOnSelect
+        expand={navSearch ? "lg" : true}
+        className={`${styles.navbar}`}
+      >
+        <Row
+          className={`justify-content-between align-items-center w-100 m-0
+            ${
+              navSearch
+                ? "row-cols-3 gap-2 gap-md-0  mb-2 mb-sm-0"
+                : "row-cols-1 "
+            }`}
+        >
           <Col className="col-auto col-sm-auto col-lg-4 p-0">
             <Link href="/" passHref>
               <Navbar.Brand className="p-0 m-0">
                 <img
                   className={`${styles.imgLogo}`}
-                  width={"100%"}
+                  width={"auto"}
                   height={"auto"}
-                  alt=""
-                  src={"/logo.svg"}
+                  alt="logo.svg"
+                  src={navSearch ? "/logo.svg" : "/logo_92x92.svg"}
                 />
               </Navbar.Brand>
             </Link>
           </Col>
           <Col className="col-12 col-sm-auto col-md-5 col-lg-4 order-3 order-sm-2">
-            <InputGroup className="d-flex">
-              <Form.Label htmlFor="Search"></Form.Label>
-              <SuggestionsSearch
-                active={searchActive}
-                suggestions={suggestions}
-                input={inputSearch.current}
-                onChangeCheckIdeas={() => setSearchByProfessionals(false)}
-                onChangeCheckProjects={() => setSearchByProfessionals(true)}
-              />
-              <InputGroup>
-                <Form.Control
-                  type="search"
-                  name="search"
-                  autoComplete="off"
-                  ref={inputSearch}
-                  id="exampleSearch"
-                  className={`${styles.inputSearch} nav-search`}
-                  placeholder={t("header.search-placeholder")}
-                  onChange={searchProjectsOrProfessionals}
-                  onFocus={() => setSearchActive(true)}
-                  onBlur={handleOnBlurInputSearch}
+            {finder && (
+              <InputGroup className="d-flex">
+                <Form.Label htmlFor="Search"></Form.Label>
+                <SuggestionsSearch
+                  active={searchActive}
+                  suggestions={suggestions}
+                  input={inputSearch.current}
+                  onChangeCheckIdeas={() => setSearchByProfessionals(false)}
+                  onChangeCheckProjects={() => setSearchByProfessionals(true)}
                 />
-                <InputGroup.Text className={styles.buttonSearch}>
-                  <Search />
-                </InputGroup.Text>
+                <InputGroup>
+                  <Form.Control
+                    type="search"
+                    name="search"
+                    autoComplete="off"
+                    ref={inputSearch}
+                    id="exampleSearch"
+                    className={`${styles.inputSearch} nav-search`}
+                    placeholder={t("header.search-placeholder")}
+                    onChange={searchProjectsOrProfessionals}
+                    onFocus={() => setSearchActive(true)}
+                    onBlur={handleOnBlurInputSearch}
+                  />
+                  <InputGroup.Text className={styles.buttonSearch}>
+                    <Search />
+                  </InputGroup.Text>
+                </InputGroup>
               </InputGroup>
-            </InputGroup>
+            )}
           </Col>
           <Col className="col-auto col-sm-auto col-lg-4 order-2">
             <Navbar.Collapse className="justify-content-end gap-2">
@@ -246,32 +281,53 @@ export default function Header() {
               </Row>
               <Row className="row">
                 <Col className="col-6 my-md-0 my-4">
-                  <Authentication />
+                  {authentication ? (
+                    <Authentication />
+                  ) : (
+                    <Link href={"/"}>
+                      <PrimaryButton className="text-nowrap">
+                        {t("go-back")}
+                      </PrimaryButton>
+                    </Link>
+                  )}
                 </Col>
               </Row>
               <Col className="d-flex col-auto g-2">
-                {router.locales.map((locale, index) => (
-                  <Col key={locale} className="mx-1 col-auto">
-                    <Link href={router.asPath} locale={locale}>
-                      <div className={`${styles.flag}`}>
-                        <Image
-                          src={`/flag_${index}.png`}
-                          width={35}
-                          height={35}
-                          alt=""
-                        />
-                      </div>
-                    </Link>
-                  </Col>
-                ))}
+                <DropdownButton
+                  className={styles.lessCaret}
+                  as={ButtonGroup}
+                  key={"start"}
+                  id={`dropdown-button-drop-${"start"}`}
+                  drop={"start"}
+                  variant="dark"
+                  title={<Globe size={18} />}
+                >
+                  {router.locales.map((locale, index) => (
+                    <Dropdown.Item key={locale}>
+                      <Link href={router.asPath} locale={locale}>
+                        <div
+                          className={`${styles.flag} d-flex gap-2 align-items-center`}
+                        >
+                          <Image
+                            src={`/flag_${index}.png`}
+                            width={35}
+                            height={35}
+                            alt=""
+                          />
+                          <h6>{language[index].name}</h6>
+                        </div>
+                      </Link>
+                    </Dropdown.Item>
+                  ))}
+                </DropdownButton>
               </Col>
             </Navbar.Collapse>
-            {width < 992 && <OffCanvasMenuCel/>}
+            {width < 992 && navSearch && <OffCanvasMenuCel />}
           </Col>
         </Row>
       </Navbar>
 
-      {width > 992 && <NavSearch />}
+      {width > 992 && navSearch && <NavSearch />}
     </>
   );
 }
