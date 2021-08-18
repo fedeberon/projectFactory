@@ -74,10 +74,6 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
     }
   };
 
-  useEffect(() => {
-    console.log(filteredImages);
-  }, [filteredImages]);
-
   return (
     <Layout>
       <section className="content">
@@ -103,21 +99,7 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
                   </h2>
                 </Col>
                 <Col>
-                  <Row>
-                    {/* <Col>
-                    <OffCanvasFilter
-                      filters={filters}
-                      appliedFilters={appliedFilters}
-                      setAppliedFilters={setAppliedFilters}
-                    />
-                  </Col> */}
-                  </Row>
-                </Col>
-                <Col>
-                  <FilteredImages
-                    isLoading={isLoading}
-                    images={filteredImages}
-                  />
+                  <FilteredImages images={filteredImages} limit={true} />
                 </Col>
                 <div className="w-100">
                   <Link href="/ideas">

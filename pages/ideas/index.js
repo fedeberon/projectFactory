@@ -48,7 +48,7 @@ const index = ({ filters, session, filtersTags }) => {
   };
 
   const changePage = () => {
-    setPageSize({ page: pageSize.page+1, size: 10 });
+    setPageSize({ page: pageSize.page + 1, size: 10 });
   };
 
   useEffect(async () => {
@@ -75,6 +75,12 @@ const index = ({ filters, session, filtersTags }) => {
     }
   }, [filtersTags]);
 
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      changePage();
+    }, 1500);
+  };
+
   return (
     <Layout>
       <section className="container content">
@@ -94,13 +100,16 @@ const index = ({ filters, session, filtersTags }) => {
             </Row>
           </Col>
           <Col>
-            <FilteredImages isLoading={isLoading} images={filteredImages} />
+            <FilteredImages
+              images={filteredImages}
+              fetchMoreData={fetchMoreData}
+            />
           </Col>
-          <Col>
+          {/* <Col>
             <PrimaryButton dark onClick={changePage}>
               {t("view-more")}
             </PrimaryButton>
-          </Col>
+          </Col> */}
         </Row>
       </section>
     </Layout>
