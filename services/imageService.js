@@ -230,7 +230,9 @@ export const setLikePhoto = async (image, token) => {
 
 export const getLikePhotos = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  let images = await API.get(`/images/liked?page=${page}&size=${size}`);
+  let { images, count } = await API.get(
+    `/images/liked?page=${page}&size=${size}`
+  );
   images.forEach((image) => {
     image.div = null;
     image.setLike = (div) => {

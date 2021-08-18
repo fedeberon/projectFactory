@@ -43,14 +43,10 @@ export default function Header(props) {
   const [searchByProfessionals, setSearchByProfessionals] = useState(true);
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const { width } = useSize();
-  const [session, loading] = useSession();
+  const [session] = useSession();
   const inputSearch = useRef();
-  const [filters, setfilters] = useState([]);
 
   const router = useRouter();
-
-  const toggle = () => setDropdown((dropdown) => !dropdown);
-  const toggle2 = () => setDropdownOpen((dropdownOpen) => !dropdownOpen);
 
   const { t } = useTranslation("common");
 
@@ -143,20 +139,6 @@ export default function Header(props) {
     userService.clearData();
     signOut();
   };
-
-  const getFilters = async () => {
-    try {
-      const filters = await tagService.findAll();
-      return filters;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(async () => {
-    const filters1 = await getFilters();
-    setfilters(filters1);
-  }, []);
 
   return (
     <>
@@ -340,12 +322,12 @@ export default function Header(props) {
                 </DropdownButton>
               </Col>
             </Navbar.Collapse>
-            {width < 992 && navSearch && <OffCanvasMenuCel filters={filters} />}
+            {width < 992 && navSearch && <OffCanvasMenuCel />}
           </Col>
         </Row>
       </Navbar>
 
-      {width > 992 && navSearch && <NavSearch filters={filters} />}
+      {width > 992 && navSearch && <NavSearch />}
     </>
   );
 }

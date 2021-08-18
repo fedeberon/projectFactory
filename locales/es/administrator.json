@@ -6,6 +6,7 @@
   "managing-companies": "Administrar empresas",
   "managing-products": "Administrar productos",
   "managing-buildingWorks": "Administrar obras",
+  "managing-categories": "Administrar categorías",
 
   "accept": "Aceptar",
   "reject": "Rechazar",
@@ -14,5 +15,19 @@
   "managing-images": "Administrar imagenes",
   "images-accepted": "Imagenes aceptadas",
   "tokens-setted" : "Tokens establecidos",
-  "apply" : "Aplicar"
+  "apply" : "Aplicar",
+
+  "administrator-categories" : {
+    "category-name-label" : "Escriba el nombre de la categoría",
+    "category-name-placeholder" : "Escriba el nombre",
+    "category-type-label" : "Seleccione el tipo de la categoría",
+    "category-type-required": "El tipo de categoria es obligatorio",
+    "category-type-placeholder" : "Seleccione una",
+    "category-type-product" : "Producto",
+    "category-type-building-work" : "Obra",
+    "category-type-magazine" : "Magazine",
+    "category-type-company" : "Empresa",
+    "add-category" : "Agregar categoría",
+    "categories-table-label" : "Categorías actuales"
+  }
 }

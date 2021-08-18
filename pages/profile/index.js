@@ -147,7 +147,7 @@ const Profile = ({ data, status }) => {
   };
 
   useEffect(async () => {
-    const images = await onGetLikePhotos();
+    await onGetLikePhotos();
     // if (images.length != 0) {
     //   console.log(images);
     //   // setImagesLiked([...imagesLiked, ...images]);

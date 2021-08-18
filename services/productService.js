@@ -23,10 +23,6 @@ export const setNewTokensToProductId = async (newTokens, productId, token) => {
   return await API.put(`/products/${productId}/tokens/${newTokens}`);
 }
 
-export const findAllCategories = async (page, size) => {
-  return await API.get(`/products/categories?page=${page}&size=${size}`);
-};
-
 export const addProduct = async (product, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const images = Array.from(product.images);
