@@ -1,8 +1,10 @@
+//Frameworks
 import React, { useState, useEffect } from "react";
 import useTranslation from "next-translate/useTranslation";
 import ProfileData from "../../components/ProfileData/ProfileData";
 import { getSession, useSession } from "next-auth/client";
 import Layout from "../../components/Layout/Layout";
+import { Col } from "react-bootstrap";
 
 // Services
 import * as professionalService from "../../services/professionalService";
@@ -10,12 +12,45 @@ import * as companyService from "../../services/companyService";
 import * as imageService from "../../services/imageService";
 
 // Components
-import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
+// import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
+import FilteredImages from "../../components/FilteredImages/FilteredImages";
+import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
-const Profile = ({ data, imagesLiked, status }) => {
+const Profile = ({ data, status }) => {
   const [session] = useSession();
   const { t } = useTranslation("common");
   const [error, setError] = useState("");
+  const [isLoading, setLoading] = useState(false);
+  const [imagesLiked, setImagesLiked] = useState([]);
+  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
+
+  const onGetLikePhotos = async () => {
+    setLoading(true);
+    console.log(pageSize.page, pageSize.size);
+    try {
+      const images = await imageService.getLikePhotos(
+        pageSize.page,
+        pageSize.size,
+        session?.accessToken
+      );
+      console.log(imagesLiked);
+
+      const filterimagesLiked = images.filter(
+        (img) => img.id != imagesLiked.id
+      );
+      const filterImages = filterimagesLiked.filter(
+        (img) => img.liked != false
+      );
+
+      setImagesLiked([...filterImages]);
+      // setImagesLiked(images);
+      setLoading(false);
+      return images;
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
 
   const saveProfessional = async (data) => {
     try {
@@ -97,6 +132,29 @@ const Profile = ({ data, imagesLiked, status }) => {
     link.click();
   };
 
+  // const changeToNotLikeAnymore = (images) => {
+  //   const filterImages = images.filter((img) => imagesLiked.id != img.id);
+  //   setImagesLiked([...filterImages]);
+  // };
+  const changePage = () => {
+    setPageSize({ page: pageSize.page + 1, size: 10 });
+  };
+
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      changePage();
+    }, 1500);
+  };
+
+  useEffect(async () => {
+    await onGetLikePhotos();
+    // if (images.length != 0) {
+    //   console.log(images);
+    //   // setImagesLiked([...imagesLiked, ...images]);
+    //   changeToNotLikeAnymore(images);
+    // }
+  }, [pageSize, session]);
+
   return (
     <Layout title={`${t("header.profile")}`}>
       <section className="container py-2">
@@ -108,7 +166,20 @@ const Profile = ({ data, imagesLiked, status }) => {
           onBuyPlan={onBuyPlan}
           status={status}
         />
-        <SeeImagesLiked imagesLiked={imagesLiked} />
+        {/* <SeeImagesLiked imagesLiked={imagesLiked} /> */}
+        <Col>
+          <h1>{t("profile:images-i-liked")}</h1>
+          {isLoading && !imagesLiked ? (
+            <SpinnerCustom />
+          ) : (
+            <FilteredImages
+              isLoading={isLoading}
+              images={imagesLiked}
+              disLiked={onGetLikePhotos}
+              fetchMoreData={fetchMoreData}
+            />
+          )}
+        </Col>
       </section>
     </Layout>
   );
@@ -142,7 +213,6 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
 
   let token;
   let companies = [];
-  let imagesLiked = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -155,7 +225,6 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
     if (session) {
       token = session.accessToken;
       companies = await companyService.findAll("APPROVED", page, size, token);
-      imagesLiked = await imageService.getLikePhotos(page, size, token);
     }
   } catch (e) {
     return {
@@ -169,7 +238,6 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
   return {
     props: {
       data: companies,
-      imagesLiked,
       status: query.status ? query.status : "",
     },
   };

@@ -85,7 +85,7 @@ const ProfileData = (props) => {
                         {t("buy-more-tokens")}
                       </PrimaryButton>
                     </Col>
-                    <Col className="col-auto d-flex align-items-end">
+                    <Col className="col-auto d-flex align-items-end p-0">
                       <MercadopagoButton />
                     </Col>
                   </>
@@ -106,7 +106,7 @@ const ProfileData = (props) => {
                       ></Figure.Image>
                     </Figure>
                   ) : (
-                    <PersonCircle size={"auto"} />
+                    <PersonCircle size={"100%"} />
                   )}
                 </Col>
                 <Col className="col-auto">

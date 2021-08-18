@@ -121,7 +121,11 @@ export const uploadCompanyPreview = async (image, token) => {
   await API.post(`/images/companies/preview`, imageData);
 };
 
-export const uploadMagazinePreview = async (magazineId, previewImage, token) => {
+export const uploadMagazinePreview = async (
+  magazineId,
+  previewImage,
+  token
+) => {
   API.defaults.headers.common["Authorization"] = token;
   const imageData = new FormData();
   imageData.append("image", previewImage);
@@ -133,11 +137,15 @@ export const uploadMagazinePreview = async (magazineId, previewImage, token) => 
  * upload them, and replace them with path to image of backend
  * @param {String} content of the magazine with all images in local memory
  * @param {Number} magazineId to upload images in that magazine
- * @param {String} token 
+ * @param {String} token
  */
-export const uploadLocalImagesFromContent = async (content, magazineId, token) => {
+export const uploadLocalImagesFromContent = async (
+  content,
+  magazineId,
+  token
+) => {
   API.defaults.headers.common["Authorization"] = token;
-  let indexOfBlob = content.indexOf('blob:');
+  let indexOfBlob = content.indexOf("blob:");
 
   while (indexOfBlob != -1) {
     let actualChar = content.charAt(indexOfBlob);
@@ -149,10 +157,13 @@ export const uploadLocalImagesFromContent = async (content, magazineId, token) =
 
     let indexOfEndBlob = indexOfBlob + i;
     let localSrc = content.substring(indexOfBlob, indexOfEndBlob);
-    content = content.substring(0, indexOfBlob) + await fromLocalSrcToSrc(localSrc, magazineId, token) + content.substring(indexOfEndBlob, content.length);
-    indexOfBlob = content.indexOf('blob:');
+    content =
+      content.substring(0, indexOfBlob) +
+      (await fromLocalSrcToSrc(localSrc, magazineId, token)) +
+      content.substring(indexOfEndBlob, content.length);
+    indexOfBlob = content.indexOf("blob:");
   }
-  
+
   return content;
 };
 
@@ -165,7 +176,7 @@ const fromLocalSrcToSrc = async (localSrc, magazineId, token) => {
 
   const { path } = await uploadToMagazine(file, magazineId, token);
   return path;
-}
+};
 
 export const uploadToMagazine = async (image, magazineId, token) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -219,7 +230,20 @@ export const setLikePhoto = async (image, token) => {
 
 export const getLikePhotos = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  let images = await API.get(`/images/liked?page=${page}&size=${size}`);
+  let { images, count } = await API.get(
+    `/images/liked?page=${page}&size=${size}`
+  );
+  images.forEach((image) => {
+    image.div = null;
+    image.setLike = (div) => {
+      image.div = div;
+    };
+    image.like = async (callback) => {
+      image.liked = !image.liked;
+      await callback(image);
+    };
+    image.name = image.path;
+  });
   return images;
 };
 

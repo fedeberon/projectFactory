@@ -105,7 +105,6 @@
     "select-logo": "Seleccione el logo por favor",
     "select-background-image": "Seleccione una imagen de fondo por favor",
     "select-categories-please": "Seleccione las categorias",
-    "categories": "Categorias",
     "the-category": "La categoria",
     "the-categories": "Las categorias",
     "add-category": "Agregar categoria",
@@ -140,7 +139,7 @@
 
   "seeProject": "------------------",
   "project-detail": "Detalle de proyecto",
-  "project-name" : "Nombre del proyecto",
+  "project-name": "Nombre del proyecto",
   "project-edit": "Editar un proyecto",
   "professional-contact": "Contacto del profesional",
   "professional-email": "Correo del profesional",
@@ -148,7 +147,7 @@
   "you-bought-this-project": "Compraste este proyecto",
   "download-project": "Descargar proyecto",
   "other-projects-of-professional": "Otros proyectos de este profesional",
-  "other-projects-of-professional-description" : "Otros proyectos de {{professional}}",
+  "other-projects-of-professional-description": "Otros proyectos de {{professional}}",
 
   "FormBuyProjects": "------------------",
   "doc-type": "Tipo de documento",
@@ -189,8 +188,18 @@
   "register-here": "Regístrese aquí.",
   "go-back": "Volver",
 
+  "SignInForm": "--------------------------------",
+  "already-have-an-account?": "¿Ya tienes una cuenta?",
+  "start-sessions-here": "Inciar sesión aquí",
+  "connect-with": "Conectarse con",
+  "by-continuing-i-accept-the": "Al continuar, acepto los",
+  "terms-of-use": "Términos de uso",
+  "and-accept-the": "de Fabrica de proyectos y acepto la",
+  "privacy-policy": "Política de privacidad",
+  "project-factory-can-send-me-marketing-emails": "Fabrica de proyectos puede enviarme correos electrónicos de marketing",
+
   "Authentication": "--------------------------------",
-  "log-in": "Ingresar",
+  "log-in": "Inciar sesión",
   "sign-in": "Crear cuenta",
   "username-already-exists": "El nombre de usuario ya existe",
 
@@ -283,6 +292,14 @@
   "month-10": "Octubre",
   "month-11": "Noviembre",
   "month-12": "Diciembre",
-  "categories" : "Categorías",
-  "you-may-also-like": "También te pude interesar"
+  "you-may-also-like": "También te pude interesar",
+  "welcome-create-your-account": "Bienvenido! Creá tu cuenta",
+
+  "spanish": "Español",
+  "english": "Ingles",
+
+  "all": "Todas",
+  "categories": "Categorias",
+
+  "yay-You-have-seen-it-all": "¡Sí! Lo has visto todo"
 }

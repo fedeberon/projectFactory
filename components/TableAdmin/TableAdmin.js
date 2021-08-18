@@ -12,7 +12,7 @@ const TableAdmin = ({ listHead, listBody, title, onSearch }) => {
   };
 
   return (
-    <Table hover striped>
+    <Table hover striped responsive>
       <thead>
         <tr className="text-center">
           <th>

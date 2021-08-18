@@ -18,6 +18,7 @@
   height: 300px;
   top: -150px;
   z-index: 100;
+  background-color: #FFF;
 }
 
 .afterLess::after {
@@ -27,4 +28,12 @@
 .imgProfile {
   width: 50px;
   height: 0;
+}
+
+@media (max-width: 425px) {
+  .previewImg {
+    width: 150px;
+    height: 150px;
+    top: -50%;
+  }
 }

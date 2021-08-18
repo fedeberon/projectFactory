@@ -40,7 +40,7 @@ const Layout = ({ children, title, footer = true, header = true }) => {
     <>
       {header && (
         <div className="bg-light">
-          <Header />
+          <Header navSearch={true} finder={true} authentication={true} />
         </div>
       )}
 
@@ -49,9 +49,7 @@ const Layout = ({ children, title, footer = true, header = true }) => {
         {title && <h1 className="text-center">{title}</h1>}
 
         {/* Content */}
-        {/* <section className="content"> */}
-          {children}
-        {/* </section> */}
+        {children}
       </main>
 
       {footer && (

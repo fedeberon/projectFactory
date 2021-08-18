@@ -46,7 +46,7 @@
   "the-web-site": "The web site",
   "the-year": "The year",
   "the-video-path": "The link to video",
-  "the-email": "the email",
+  "the-email": "The email",
   "the-image": "The image",
   "the-tag": "The tag",
   "the-price": "The price",
@@ -105,7 +105,6 @@
     "select-logo": "Select logo please",
     "select-background-image": "Select background please",
     "select-categories-please": "Select categories please",
-    "categories": "Categories",
     "the-category": "The category",
     "the-categories": "The categories",
     "add-category": "Add category",
@@ -140,7 +139,7 @@
 
   "seeProject": "------------------",
   "project-detail": "Project detail",
-  "project-name" : "Name of project",
+  "project-name": "Name of project",
   "project-edit": "Project edit",
   "professional-contact": "Professional contact",
   "professional-email": "Professional email",
@@ -148,7 +147,7 @@
   "you-bought-this-project": "You bought this project",
   "download-project": "Download project",
   "other-projects-of-professional": "Other projects of this professional",
-  "other-projects-of-professional-description" : "Other projects of {{professional}}",
+  "other-projects-of-professional-description": "Other projects of {{professional}}",
 
   "FormBuyProjects": "------------------",
   "doc-type": "Doc type",
@@ -188,6 +187,16 @@
   "don't-have-an-account-please": "Don't have an account? Please",
   "register-here": "Register here",
   "go-back": "Go back",
+
+  "SignInForm": "--------------------------------",
+  "already-have-an-account?": "Already have an account?",
+  "start-sessions-here": "Start sessions here",
+  "connect-with": "Connect with",
+  "by-continuing-i-accept-the": "By continuing, I accept the Fabrica de proyectos",
+  "terms-of-use": "Terms of Use",
+  "and-accept-the": "and accept the",
+  "privacy-policy": "Privacy Policy",
+  "project-factory-can-send-me-marketing-emails": "Fabrica de proyectos can send me marketing emails",
 
   "Authentication": "--------------------------------",
   "log-in": "Log in",
@@ -270,7 +279,7 @@
   "other-projects-of": "Other projects of",
   "facades": "Facades",
   "other-building-works-of": "Other building works of ",
-  "of" : "of",
+  "of": "of",
   "month-01": "January",
   "month-02": "February",
   "month-03": "March",
@@ -283,6 +292,14 @@
   "month-10": "October",
   "month-11": "November",
   "month-12": "December",
-  "categories" : "Categories",
-  "you-may-also-like": "You may also like"
+  "you-may-also-like": "You may also like",
+  "welcome-create-your-account": "Welcome! Create your account",
+
+  "spanish": "Spanish",
+  "english": "English",
+
+  "all": "All",
+  "categories": "Categories",
+
+  "yay-You-have-seen-it-all": "Yay! You have seen it all"
 }
