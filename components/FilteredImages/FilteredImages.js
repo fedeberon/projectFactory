@@ -5,7 +5,12 @@ import { useSession } from "next-auth/client";
 import Link from "next/link";
 import Image from "next/image";
 import { Alert, Card, Col, Row } from "react-bootstrap";
-import { Heart, HeartFill, InfoCircleFill } from "react-bootstrap-icons";
+import {
+  Heart,
+  HeartFill,
+  InfoCircleFill,
+  PersonCircle,
+} from "react-bootstrap-icons";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 // Styles
@@ -22,9 +27,9 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
   const refLikes = useRef([]);
   const [hasMore, setHasMore] = useState(true);
 
-  useEffect(() => {
-    console.log("images", images.length);
-  }, [images]);
+  // useEffect(() => {
+  //   console.log("images", images.length);
+  // }, [images]);
 
   refLikes.current = [];
 
@@ -47,7 +52,6 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
         heartsIco[1].style.display = "none";
       } else {
         if (disLiked != null) {
-          console.log("entre a disliked");
           await disLiked();
         }
         heartsIco[0].style.display = "none";
@@ -81,7 +85,6 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
     // setHasMore(
     //   !limit || (!images.length === 0 && images.length > 10) ? true : false
     // );
-    console.log(images.length >= 10);
     setHasMore(images.length >= 10 ? true : false);
   }, [images]);
 
@@ -154,10 +157,14 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
                     </Link>
                     <div className={`${filteredImagesStyles.cardText}`}>
                       <Col className="col-auto">
-                        <img
-                          className={`${filteredImagesStyles.imgProfile} rounded-circle`}
-                          src={image.professional?.previewImage}
-                        />
+                        {image.professional.previewImage ? (
+                          <img
+                            className={`${filteredImagesStyles.imgProfile} rounded-circle`}
+                            src={image.professional?.previewImage}
+                          />
+                        ) : (
+                          <PersonCircle size={50} />
+                        )}
                       </Col>
                       <Col className={`col-auto`}>
                         <Card.Text

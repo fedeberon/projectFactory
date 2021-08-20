@@ -106,7 +106,7 @@ const ProfileData = (props) => {
                       ></Figure.Image>
                     </Figure>
                   ) : (
-                    <PersonCircle size={"100%"} />
+                    <PersonCircle size={200} />
                   )}
                 </Col>
                 <Col className="col-auto">
