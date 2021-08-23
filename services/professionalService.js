@@ -1,18 +1,28 @@
 import API from "./api";
+import { signIn } from "next-auth/client";
+import * as tagService from "./tagService";
+import * as imageService from "./imageService";
 
-export const findAll = async (page, size, token) => {
-  API.defaults.headers.common["Authorization"] = token;
-  const professionals = await API.get(`/professionals?page=${page}&size=${size}`);
-  professionals.forEach((professional) => {
-    professional.previewImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${professional.id}/${professional.previewImage}`;
-    professional.backgroundImage = `${process.env.NEXT_PUBLIC_HOST_BACKEND}/images/professionals/${professional.id}/${professional.backgroundImage}`;
-  });
-  return professionals;
+export const findAll = async (page, size) => {
+  return await API.get(`/professionals?page=${page}&size=${size}`);
 };
 
 export const getById = async (id, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.get(`/professionals/${id}`);
+};
+
+export const getByIdWithImages = async (id, page, size, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const professional = await getById(id, token);
+  const images = await imageService.getProfessionalImages(
+    id,
+    page,
+    size,
+    token
+  );
+  professional.images = images;
+  return professional;
 };
 
 export const addProfessional = async (professional, token) => {
@@ -22,20 +32,105 @@ export const addProfessional = async (professional, token) => {
   return await API.post(`/professionals`, professional);
 };
 
-export const addPreviewImage = async (image, professionalId, token) => {
+export const addPreviewImage = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const imageData = new FormData();
-  imageData.append('imageFile', image);
-  imageData.append('professional',professionalId);
-  return await API.post(`/images/professional/preview`, imageData);
+  imageData.append("imageFile", image);
+  return await API.post(`/images/professionals/preview`, imageData);
 };
 
-export const addBackgroundImage = async (image, professionalId, token) => {
+export const addImage = async (image, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const tags = tagService.getTags(image.tags);
+  const imageData = new FormData();
+  imageData.append("image", image);
+  imageData.append("tags", tags);
+  image.uploading = true;
+  return await API.post(`/images/professionals`, imageData, {
+    onUploadProgress: (progressEvent) => {
+      const progress = Math.round(
+        (progressEvent.loaded / progressEvent.total) * 100
+      );
+      image.setProgress(progress);
+    },
+  });
+};
+
+export const addImages = async (images, token) => {
+  await addImagesRecursive(Array.from(images), token);
+};
+
+const addImagesRecursive = async (images, token) => {
+  const image = images.shift();
+  const response = await addImage(image, token);
+  if (response && images.length > 0) {
+    await addImagesRecursive(images, token);
+  }
+};
+
+export const addBackgroundImage = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const imageData = new FormData();
-  imageData.append('imageFile', image);
-  imageData.append('professional',professionalId);
-  return await API.post(`/images/professional/background`, imageData);
+  imageData.append("imageFile", image);
+  return await API.post(`/images/professionals/background`, imageData);
 };
 
-export { addBackgroundImage, addPreviewImage, addProfessional, getById, findAll };
+export const become = async (data, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const response = await API.post(`/professionals/become`, data);
+  return response.token;
+};
+
+export const updateToken = async (token, userId) => {
+  const professional = await getById(userId, token);
+  signIn("credentials", {
+    accessToken: token,
+    name: professional.contact,
+    email: professional.email,
+    image: professional.previewImage ? profesional.previewImage : "",
+    callbackUrl: `${window.location.origin}/profile`,
+  });
+};
+
+export const getForApproved = async (status, page, size, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.get(
+    `/professionals/status/${status}?page=${page}&size=${size}`
+  );
+};
+
+export const setEnebleProfessional = async (id, status, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/professionals/${id}/status/${status}`);
+};
+
+export const findByUsernameAndStatus = async (username, status, page, size) => {
+  return await API.get(
+    `/professionals/username/${username}/status/${status}?page=${page}&size=${size}`
+  );
+};
+
+export const findByContactAndStatus = async (contact, status, page, size) => {
+  return await API.get(
+    `/professionals/contact/${contact}/status/${status}?page=${page}&size=${size}`
+  );
+};
+
+export const setNewTokensToProfessional = async (
+  newTokens,
+  professionalId,
+  token
+) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.put(`/professionals/${professionalId}/tokens/${newTokens}`);
+};
+
+export const generatePreferenceForToken = async (plan, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const backUrl = {
+    success: window.location.href,
+    failure: window.location.href,
+    pending: window.location.href,
+  };
+  return await API.post(`/mercadopago/plan/${plan}/create-preference`, backUrl);
+};

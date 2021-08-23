@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
-import Header from "../../components/Header";
-import { useTranslation } from "react-i18next";
+import useTranslation from "next-translate/useTranslation";
 import { getSession, useSession } from "next-auth/client";
-import { Container } from "reactstrap";
-import SeeProject from "../../components/SeeProject";
+import SeeProject from "../../components/SeeProject/SeeProject";
 import * as projectService from "../../services/projectService";
 import * as imageService from "../../services/imageService";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Layout from "../../components/Layout/Layout";
+import * as mercadopagoService from "../../services/mercadopagoService";
 
-const ProjectDetail = ({ data }) => {
+const ProjectDetail = ({ data, idSplit, status }) => {
   const [session, loading] = useSession();
 
   const [project, setProject] = useState({});
 
-  const { t, lang } = useTranslation("common");
+  const { t } = useTranslation("common");
 
   const editProject = async (project) => {
     const newProject = await projectService.edit(project, session.accessToken);
@@ -26,23 +25,50 @@ const ProjectDetail = ({ data }) => {
     }
   }, [session]);
 
+  const onBuyProyect = async () => {
+    const mp = new MercadoPago(process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY, {
+      locale: "es-AR",
+    });
+
+    const preference = await mercadopagoService.createPreferenceToProject(
+      idSplit,
+      session.accessToken
+    );
+    mp.checkout({
+      preference: preference.id,
+    });
+
+    const link = document.createElement("a");
+    document.body.appendChild(link);
+    link.href = preference.initPoint;
+    link.setAttribute("type", "hidden");
+    link.click();
+  };
+
+  const downloadProject = async () => projectService.download(idSplit, session.accessToken);
+
   return (
-    <Container fluid>
-      <Header lang={lang} />
-      <SeeProject project={project} onEditProject={editProject} />
-    </Container>
+    <Layout>
+      <SeeProject
+        project={project}
+        status={status}
+        onBuyProyect={onBuyProyect}
+        downloadProject={downloadProject}
+        onEditProject={editProject}
+        id={idSplit}
+      />
+    </Layout>
   );
 };
 
-export async function getServerSideProps({ params, req, res, locale }) {
+export async function getServerSideProps({ params, req, query, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
-
-  let token;
-  let project = {};
+  const token = session.accessToken;
   let { page, size } = req.__NEXT_INIT_QUERY;
   let { id } = params; // params is necessary in case you reload the page from the url
-
+  const split = id.split("-");
+  let idSplit = split[split.length - 1];
   if (!page || page <= 0) {
     page = 0;
   }
@@ -50,22 +76,28 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  if (session) {
-    token = session.accessToken;
-    project = await projectService.getById(id, token);
-    const dataImages = await imageService.getImages(
-      project.id,
-      token,
-      page,
-      size
-    );
-    project.images = dataImages;
-  }
-
+  const project = await projectService.getById(idSplit, token);
+  const dataImages = await imageService.getProjectImages(
+    project.id,
+    token,
+    page,
+    size
+  );
+  const projectsOfProfessional = await projectService.findAllByProfessionalId(
+    project.professional.id,
+    page,
+    size,
+    token
+  );
+  project.images = dataImages;
+  project.projectsOfProfessional = projectsOfProfessional.filter(
+    (p) => p.id != project.id
+  );
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common"])),
       data: project,
+      idSplit,
+      status: query.status ? query.status : "",
     },
   };
 }

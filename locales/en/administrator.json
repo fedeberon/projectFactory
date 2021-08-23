@@ -1,0 +1,34 @@
+{
+  "pending": "Pending",
+  "approved": "Approved",
+  "disapproved": "Disapproved",
+  "managing-professionals": "Managing professionals",
+  "managing-companies": "Managing companies",
+  "managing-products": "Managing products",
+  "managing-buildingWorks": "Managing building works",
+  "managing-categories": "Managing categories",
+
+  
+  "accept": "Accept",
+  "reject": "Reject",
+  "list-of": "List of",
+  "accept-images": "Accept images",
+  "managing-images": "Managing images",
+  "images-accepted": "Images accepted",
+  "tokens-setted" : "Tokens setted",
+  "apply" : "Apply",
+
+  "administrator-categories" : {
+    "category-name-label" : "Write the name of the category",
+    "category-name-placeholder" : "Write the name",
+    "category-type-label" : "Select the type of the category",
+    "category-type-required": "The category type is required",
+    "category-type-placeholder" : "Select one",
+    "category-type-product" : "Product",
+    "category-type-building-work" : "Building work",
+    "category-type-magazine" : "Magazine",
+    "category-type-company" : "Company",
+    "add-category" : "Add category",
+    "categories-table-label" : "Current categories"
+  }
+}

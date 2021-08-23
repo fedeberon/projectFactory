@@ -1,0 +1,77 @@
+.btnLight {
+  background-color: transparent;
+  border-color: #000000;
+  color: #000000;
+  border: 1px;
+  border-style: solid;
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.btnLightOutline {
+  border-color: #fff;
+  color: #fff;
+}
+
+.btnLight:hover {
+  background-color: #e2e6ea;
+  color: #212529;
+  border-color: #dae0e5;
+}
+
+.btnLight:focus,
+.btnLight:active {
+  color: #212529;
+  background-color: #e2e6ea;
+  border-color: #dae0e5;
+  -webkit-box-shadow: 0 0 0 0.2rem rgb(216 217 219 / 50%);
+  box-shadow: 0 0 0 0.2rem rgb(216 217 219 / 50%);
+}
+
+.btnLight:checked + .btnLight:focus,
+.btnLight:active + .btnLight:focus,
+.btnLight:active:focus,
+.btnLight.active:focus,
+.show > .btnLight.dropdown-toggle:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgb(100 100 100 / 50%);
+  box-shadow: 0 0 0 0.2rem rgb(100 100 100 / 50%);
+}
+
+.btnDark, .btnYellow {
+  background-color: #000000;
+  border-color: #000000;
+  color: #fff;
+  border: 1px;
+  border-style: solid;
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.btnDark:hover {
+  color: #fff;
+  background-color: #be1d7b;
+  border-color: #be1d7b;
+}
+
+.btnYellow:hover {
+  color: #000;
+  background-color: #FFCA05;
+  border-color: #FFCA05;
+}
+
+.btnLg {
+  font-weight: 500;
+  font-size: 0.8rem;
+  padding: 0.5rem 1.5rem;
+}
+
+.btn-light-border {
+  color: #fff;
+  border: 1px solid #fff;
+}

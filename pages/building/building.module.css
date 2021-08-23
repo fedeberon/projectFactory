@@ -1,0 +1,73 @@
+.imgCard {
+  height: 400px;
+  object-fit: cover;
+  width: 100%;
+}
+.boxDeg {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  background: linear-gradient(
+    0deg,
+    rgba(247, 247, 247, 0) 0%,
+    rgba(247, 247, 247, 1) 100%
+  );
+}
+
+.titName {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.titProjects {
+  font-size: 14px;
+  font-weight: 500;
+
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-top: 1px solid #e2e2e2;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.badge {
+  background-color: #ffca05;
+}
+
+.location {
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 5px;
+  font-size: 12px;
+  font-weight: 300;
+  margin-top: 10px;
+  padding-left: 20px;
+  min-height: 18px;
+  /* background-image: url(../img/map-maker.svg); */
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+}
+
+.tit {
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.related .tit {
+  margin: auto;
+  text-align: center;
+  border-top: 1px solid #E2E2E2;
+  margin-top: 30px;
+  margin-bottom: 25px;
+  padding-top: 25px;
+  font-size: 13px;
+}
+
+.titObraDetail {
+  position: relative;
+  border-top: 2px solid #000;
+  padding-top: 20px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 500;
+}

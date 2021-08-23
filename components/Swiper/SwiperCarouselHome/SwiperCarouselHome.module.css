@@ -1,0 +1,136 @@
+.swiper {
+  max-height: 511px;
+}
+.swiperSlile {
+  height: 511px !important;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slideCaptions {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  color: #fff;
+  width: 50%;
+  height: 511px;
+  z-index: 999;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.swiper-slide-active .slideCaptions {
+  animation: fadeinup 1.5s;
+  opacity: 1;
+}
+
+.sig,
+.prev {
+  color: #fff !important;
+}
+
+.text {
+  padding-left: 70px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  max-width: 450px;
+}
+
+.tit {
+  font-size: 27px;
+  line-height: 33px;
+  margin-bottom: 15px;
+}
+
+.mobile {
+  display: none;
+}
+
+.description {
+  font-size: 18px;
+  line-height: 24px;
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+.btnViewMore {
+  color: #fff;
+  border: 1px solid #fff;
+  font-weight: 500;
+  font-size: 0.8rem;
+  padding: 0.5rem 1.5rem;
+  line-height: 1.5;
+  border-radius: 0.3rem;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  background-color: transparent;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  text-decoration: none;
+}
+
+.btnViewMore:hover {
+  color: #212529;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 767px) {
+  .display {
+    display: none;
+  }
+}
+
+.swiperButtonNext,
+.swiperButtonPrev {
+  color: #000 !important;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+}
+
+.swiperButtonNext:active,
+.swiperButtonPrev:active {
+  background: rgb(255, 255, 255);
+}
+
+.swiperButtonNext:hover {
+  color: rgb(0, 122, 255) !important;
+  animation: moveDirecctionRight 0.4s infinite alternate;
+  /* left: 0; */
+}
+.swiperButtonPrev:hover {
+  color: rgb(0, 122, 255) !important;
+  animation: moveDirecctionLeft 0.4s infinite alternate;
+  /* right: 0; */
+}
+
+@keyframes moveDirecctionLeft {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: 10px;
+  }
+}
+
+@keyframes moveDirecctionRight {
+  0% {
+    right: 0;
+  }
+  100% {
+    right: 10px;
+  }
+}

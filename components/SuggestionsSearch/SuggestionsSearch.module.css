@@ -1,0 +1,62 @@
+.dropDownSearch {
+    position: absolute;
+    top: 37px;
+    display: flex;
+    
+    width: 95.5%;
+    border: 1px solid #CED4DA;
+    border-radius: 0 0 5px 5px !important;
+    background-color: white;
+    padding: 10px 0 10px 0;
+    opacity: 0;
+    transition: opacity .4s;
+    display: flex;
+    flex-direction: column;
+}
+
+.dropDownSearchActive {
+    z-index: 2;
+    opacity: 1;
+}
+
+.divCheckboxs {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.previewImage {
+    width: 75px;
+    height: 75px;
+}
+
+.suggestionContainer {
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+    cursor: pointer;
+    padding: 10px;
+    display: flex;
+}
+
+.suggestionContainer:hover {
+    background-color: #f8f9fa;
+}
+
+.spanMatch {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.divName {
+    display: flex;
+    margin: auto;
+}
+
+.link {
+    text-decoration: none;
+    color: black;
+}
+
+.link:hover {
+    color: black;
+}

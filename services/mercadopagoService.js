@@ -91,4 +91,22 @@ const setInstallments = (status, response, elements) => {
   }
 }
 
-export default {processPayment, completeElements, getTokenAndPay}
+export const createPreferenceToProject = async (projectId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const backUrl = {
+    success : window.location.href,
+    failure : window.location.href,
+    pending : window.location.href
+  }
+  return await API.post(`/mercadopago/projects/${projectId}/create-preference`, backUrl);
+};
+
+export const createPreferenceToProduct = async (productId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  const backUrl = {
+    success : window.location.href,
+    failure : window.location.href,
+    pending : window.location.href
+  }
+  return await API.post(`/mercadopago/products/${productId}/create-preference`, backUrl);
+};

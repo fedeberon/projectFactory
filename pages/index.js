@@ -1,82 +1,206 @@
-import Head from "next/head";
+// Frameworks
+import React, { useEffect, useState } from "react";
+import { getSession } from "next-auth/client";
+import useTranslation from "next-translate/useTranslation";
+import { ButtonGroup, Col, Row } from "react-bootstrap";
+import Link from "next/link";
+
+// Components
+import FilterList from "../components/FilterList/FilterList";
+import FilteredImages from "../components/FilteredImages/FilteredImages";
+import Layout from "../components/Layout/Layout";
+import SwiperCarouselHome from "../components/Swiper/SwiperCarouselHome/SwiperCarouselHome";
+import AboutHome from "../components/AboutHome/AboutHome";
+import SwiperEmpresas from "../components/Swiper/SwiperEmpresas/SwiperEmpresas";
+import SwiperProducts from "../components/Swiper/SwiperProducts/SwiperProducts";
+
+// Services
+import * as tagService from "../services/tagService";
+import * as imageService from "../services/imageService";
+import * as productService from "../services/productService";
+import * as companyService from "../services/companyService";
+
+// Styles
 import styles from "../styles/Home.module.css";
-import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import Header from "../components/Header";
-import { Container } from "reactstrap";
+import CarouselImageCreator from "../components/CarouselImageCreator";
+import AdministratorCreator from "../components/AdministratorCreator";
+import OffCanvasFilter from "../components/OffCanvas/OffCanvasFilter.js/OffCanvasFilter";
+import PrimaryButton from "../components/Buttons/PrimaryButton/PrimaryButton";
 
-const Code = (p) => <code className={styles.inlineCode} {...p} />;
+const Home = ({ filters, carouselImages, session, products, companies }) => {
+  const [filteredImages, setFilteredImages] = useState([]);
+  const [appliedFilters, setAppliedFilters] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [imagesCarousel, setImagesCarousel] = useState([]);
 
-const Home = () => {
-  const { t, lang } = useTranslation("common");
+  let { t } = useTranslation("home");
+
+  useEffect(async () => {
+    const images = await getProfessionalsByTags();
+    if (images) {
+      setFilteredImages(images);
+    }
+  }, [appliedFilters]);
+
+  const onAddCarouselImages = async () => {
+    try {
+      const carouselImages = await imageService.findCarouselImages();
+      setImagesCarousel(carouselImages);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(async () => {
+    if (carouselImages) {
+      await onAddCarouselImages();
+    }
+  }, [carouselImages]);
+
+  const getProfessionalsByTags = async () => {
+    setLoading(true);
+    try {
+      const images = await imageService.getProfessionalImagesByTags(
+        appliedFilters,
+        0,
+        process.env.NEXT_PUBLIC_BUILDING_WORKS_PER_HOME,
+        session?.accessToken
+      );
+      setLoading(false);
+      return images;
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
 
   return (
-    <>
-      <Head>
-        <title>Home</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Container fluid>
-        <Header lang={lang} />
-        <main className={styles.main}>
-          <h1 className={styles.title}>
-            {t("Welcome")} to {process.env.NEXT_PUBLIC_PROJECT_NAME}
-          </h1>
-
-          <p className={styles.description}>
-            Get started by editing{" "}
-            <code className={styles.code}>pages/index.js</code>
-          </p>
-          <div className={styles.grid}>
-            <a href="https://nextjs.org/docs" className={styles.card}>
-              <h3>Documentation &rarr;</h3>
-              <p>Find in-depth information about Next.js features and API.</p>
-            </a>
-
-            <a href="https://nextjs.org/learn" className={styles.card}>
-              <h3>Learn &rarr;</h3>
-              <p>Learn about Next.js in an interactive course with quizzes!</p>
-            </a>
-
-            <a
-              href="https://github.com/vercel/next.js/tree/master/examples"
-              className={styles.card}
-            >
-              <h3>Examples &rarr;</h3>
-              <p>Discover and deploy boilerplate example Next.js projects.</p>
-            </a>
-
-            <a
-              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              className={styles.card}
-            >
-              <h3>Deploy &rarr;</h3>
-              <p>
-                Instantly deploy your Next.js site to a public URL with Vercel.
-              </p>
-            </a>
-          </div>
-        </main>
-
-        <footer className={styles.footer}>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Powered by{" "}
-            <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-          </a>
-        </footer>
-      </Container>
-    </>
+    <Layout>
+      <section className="content">
+        <SwiperCarouselHome images={imagesCarousel} />
+        <section className="container py-5">
+          <Row className="row-cols-1 gap-2">
+            <Col>
+              <ButtonGroup aria-label="Basic example" className="gap-1">
+                <CarouselImageCreator
+                  onAddCarouselImages={onAddCarouselImages}
+                />
+                <AdministratorCreator />
+              </ButtonGroup>
+            </Col>
+            <Col>
+              <Row className="row-cols-1 gap-2">
+                <Col className={styles.infoHead}>
+                  <h2 className={styles.itemsTitle}>
+                    {t("buildings")}
+                    <small className={styles.itemsSmallTitle}>
+                      {t("design-objects-for-your-spaces")}
+                    </small>
+                  </h2>
+                </Col>
+                <Col>
+                  <FilteredImages images={filteredImages} limit={true} />
+                </Col>
+                <div className="w-100">
+                  <Link href="/ideas">
+                    <PrimaryButton className="mx-auto my-4">
+                      {t("common:view-more")}
+                    </PrimaryButton>
+                  </Link>
+                </div>
+              </Row>
+            </Col>
+          </Row>
+        </section>
+        <AboutHome />
+        <section className="container-fluid py-5">
+          <Col>
+            <Row className="row-cols-1 gap-2">
+              <Col className={styles.infoHead}>
+                <h2 className={styles.productsTitle}>
+                  {t("common:products")}
+                  <small className={styles.productsSmallTitle}>
+                    {t("products-description")}
+                  </small>
+                </h2>
+              </Col>
+              <Col>
+                <SwiperProducts
+                  products={products}
+                  slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
+                  slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
+                  slidesPerViewDesktop={{ dimensionLimit: 992, slides: 4 }}
+                />
+              </Col>
+            </Row>
+          </Col>
+        </section>
+        <section className={`container-fluid py-5 ${styles.backgroundGray}`}>
+          <Col>
+            <Row className="row-cols-1 gap-2">
+              <Col className={styles.infoHead}>
+                <h2 className={styles.itemsTitle}>
+                  {t("common:companies")}
+                  <small className={styles.itemsSmallTitle}>
+                    {t("new-design-and-construction-companies")}
+                  </small>
+                </h2>
+              </Col>
+              <Col>
+                <SwiperEmpresas
+                  items={companies}
+                  slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
+                  slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
+                  slidesPerViewDesktop={{ dimensionLimit: 992, slides: 3 }}
+                />
+              </Col>
+            </Row>
+          </Col>
+        </section>
+        <section className={`container-fluid py-5`}>
+          <Col>
+            <div className={styles.infoHead}>
+              <h2 className={styles.itemsTitle}>
+                {t("common:magazine")}
+                <small className={styles.itemsSmallTitle}>
+                  {t("new-design-architecture-and-deco")}
+                </small>
+              </h2>
+            </div>
+          </Col>
+        </section>
+      </section>
+    </Layout>
   );
 };
 
-export const getStaticProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale, ["common"])),
-  },
-});
+export async function getServerSideProps({ params, req, res, locale }) {
+  // Get the user's session based on the request
+  const session = await getSession({ req });
+
+  let { page, size } = req.__NEXT_INIT_QUERY;
+
+  if (!page || page <= 0) {
+    page = 0;
+  }
+  if (!size || size <= 0) {
+    size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
+  }
+
+  const filters = await tagService.findAll();
+  const carouselImages = await imageService.findCarouselImages();
+  const products = await productService.findAllByStatus(page, size, "APPROVED");
+  const companies = await companyService.findAll("APPROVED", page, size);
+
+  return {
+    props: {
+      filters: filters,
+      carouselImages,
+      session,
+      companies,
+      products,
+    },
+  };
+}
 
 export default Home;

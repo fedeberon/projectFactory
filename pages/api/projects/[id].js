@@ -1,12 +1,12 @@
 import { getSession } from "next-auth/client";
-import { getById, setProject } from "../../../services/projectService";
+import { getById, addProject } from "../../../services/projectService";
 
 export default async function handler(req, res) {
   const session = await getSession({ req });
 
   if (req.method === "POST") {
     let { id } = req.query;
-    const project = await setProject(req.body, session.accessToken, id);
+    const project = await addProject(req.body, session.accessToken, id);
     return res.status(200).json(project);
   }
 

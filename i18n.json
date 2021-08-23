@@ -1,0 +1,23 @@
+{
+  "locales": ["es", "en"],
+  "defaultLocale": "es",
+  "pages": {
+    "*": ["common"],
+    "/": ["home"],
+    "/about": ["about"],
+    "/contact": ["contact"],
+    "/professional": ["professional"],
+    "/profile": ["profile"],
+    "/project": ["project"],
+    "/admin/professional": ["administrator"],
+    "/admin/company": ["administrator"],
+    "/admin/product": ["administrator"],
+    "/admin/building": ["administrator"],
+    "/admin/categories": ["administrator"],
+    "/admin": ["administrator"],
+    "/policies":["policies"],
+    "/magazine": ["magazine"],
+    "/magazine/create-magazine": ["magazine"],
+    "/companies/[slug]":["profile"]
+  }
+}

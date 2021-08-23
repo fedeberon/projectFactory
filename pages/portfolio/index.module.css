@@ -1,0 +1,39 @@
+.backgroundImg {
+  object-fit: cover;
+}
+
+.previewDiv {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 150px;
+}
+
+.previewImg {
+  border-radius: 50%;
+  position: relative;
+  object-fit: cover;
+  width: 300px;
+  height: 300px;
+  top: -150px;
+  z-index: 100;
+  background-color: #FFF;
+}
+
+.afterLess::after {
+  display: none;
+}
+
+.imgProfile {
+  width: 50px;
+  height: 0;
+}
+
+@media (max-width: 425px) {
+  .previewImg {
+    width: 150px;
+    height: 150px;
+    top: -50%;
+  }
+}
