@@ -33,6 +33,9 @@ const Portfolio = ({ professional, buildingWorks }) => {
   });
   const [buildingWorkId, setBuildingWorkId] = useState(null);
 
+  useEffect(() => {
+    console.log(localBuildingWorks);
+  }, [localBuildingWorks]);
   const [buildingWorkData, setBuildingWorkData] = useState({
     defaultValues: {
       name: "",
@@ -367,6 +370,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
               localBuildingWorks={localBuildingWorks}
               editBuildingWork={editBuildingWork}
               fetchMoreData={fetchMoreData}
+              profileHidden={true}
             />
           </Col>
         </Row>

@@ -5,7 +5,7 @@ import { Alert, Card, Col, Row } from "react-bootstrap";
 import { useSession } from "next-auth/client";
 import Image from "next/image";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { InfoCircleFill } from "react-bootstrap-icons";
+import { Images, InfoCircleFill, PersonCircle } from "react-bootstrap-icons";
 import useTranslation from "next-translate/useTranslation";
 
 // Components
@@ -26,6 +26,7 @@ const ImagesGroup = (props) => {
     editBuildingWork,
     fetchMoreData,
     limit,
+    profileHidden,
   } = props;
   const [session] = useSession();
   const [hasMore, setHasMore] = useState(true);
@@ -163,11 +164,26 @@ const ImagesGroup = (props) => {
                     </Link>
                     {isState(buildingWork)}
                     <div className={`${filteredImagesStyles.cardText}`}>
-                      <Col className="col-auto">
+                      {/* <Col className="col-auto">
                         <img
                           className={`${styles.imgProfile}`}
-                          // src={buildingWork.entity.previewImage}
+                          src={buildingWork?.professional?.previewImage}
                         />
+                      </Col> */}
+                      <Col className="col-auto">
+                        {buildingWork.professional?.previewImage && !profileHidden  ? (
+                          <img
+                            className={`${filteredImagesStyles.imgProfile} rounded-circle`}
+                            src={buildingWork.professional.previewImage}
+                          />
+                        ) : buildingWork.professional && !profileHidden ? (
+                          <PersonCircle size={50} />
+                        ) : (
+                          <img
+                            className={`${filteredImagesStyles.imgProfile} invisible`}
+                            // src={buildingWork.professional.previewImage}
+                          />
+                        )}
                       </Col>
                       <Col className={`col-auto`}>
                         <Card.Text
@@ -175,17 +191,33 @@ const ImagesGroup = (props) => {
                         >
                           {buildingWork.name}
                         </Card.Text>
+                        {!profileHidden && (
+                          <Card.Text
+                            className={`${filteredImagesStyles.textShadowSm} ${styles.parrafoName} fw-bold`}
+                          >
+                            {buildingWork.professional.contact}
+                          </Card.Text>
+                        )}
                       </Col>
                       <Col
                         className={`col-auto ${filteredImagesStyles.containerHeart}`}
                       >
-                        {session && (
+                        {session && editBuildingWork ? (
                           <div>
                             <CustomButtonToggle
                               id={buildingWork.id}
                               editBuildingWork={editBuildingWork}
                               imageSize={buildingWork.countImages}
                             />
+                          </div>
+                        ) : (
+                          <div style={{ width: "51px", height: "51px" }}>
+                            <Images
+                              className={`${filteredImagesStyles.heart}`}
+                              color={"white"}
+                              size={25}
+                            />
+                            {` ${buildingWork.countImages} Photos`}
                           </div>
                         )}
                       </Col>

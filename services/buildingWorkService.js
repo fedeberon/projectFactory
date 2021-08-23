@@ -1,8 +1,8 @@
 import API from "./api";
 import * as tagService from "./tagService";
 
-export const findAll = async (status, page, size, token) => {
-  API.defaults.headers.common["Authorization"] = token;
+export const findAll = async (status, page, size) => {
+  // API.defaults.headers.common["Authorization"] = token;
   return await API.get(
     `/building-works/status/${status}?page=${page}&size=${size}`
   );
