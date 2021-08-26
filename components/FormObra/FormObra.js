@@ -11,9 +11,10 @@ import Error from "../../components/Error";
 import Dropzone from "../Dropzone/Dropzone";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 import CategorySelector from "../CategorySelector/CategorySelector";
-import TagList from "../TagList/TagList";
+import CategoryList from "../List/CategoryList/CategoryList";
 import { useDispatch, useSelector } from "react-redux";
 import { categoriesActions } from "../../store";
+import image from "next/image";
 
 const FormObra = ({
   toggle,
@@ -33,7 +34,9 @@ const FormObra = ({
   const [modalTagOpen, setModalTagOpen] = useState(false);
   const [error, setError] = useState("");
   const [timeErrorLive, setTimeErrorLive] = useState(0);
-  const selectedCategories = useSelector(state => state.categories.selectedCategories);
+  const selectedCategories = useSelector(
+    (state) => state.categories.selectedCategories
+  );
 
   const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
 
@@ -47,9 +50,17 @@ const FormObra = ({
     );
   };
 
-  const imagesHasTags = () => {
+  const imagesHasTags = (statePut) => {
     if (images.length > 0) {
+      if (statePut) {
+        images.map(img=>{
+          if(img.tags.length == 0) {
+            img.tags.push("delete");
+          }
+        })
+      }
       const imagesWithoutTags = images.filter((img) => img.tags.length == 0);
+      // console.log("imagesHasTags", images);
       return imagesWithoutTags.length == 0;
     } else {
       return true;
@@ -71,8 +82,8 @@ const FormObra = ({
 
   const hasAnyCategory = () => selectedCategories.length > 0;
 
-  const hasAnyError = () => {
-    if (!imagesHasTags()) {
+  const hasAnyError = (statePut) => {
+    if (!imagesHasTags(statePut)) {
       showErrorToLimitTime(
         t("is-required", {
           nameRequired: t("form-tag.tag"),
@@ -103,7 +114,7 @@ const FormObra = ({
   };
 
   const onSubmit = async ({ name, description }, event) => {
-    const error = hasAnyError();
+    const error = hasAnyError(changeState.stateFormObra.put);
 
     if (!error) {
       let data = {
@@ -113,7 +124,7 @@ const FormObra = ({
         name,
         description,
       };
-  
+
       if (changeState.stateFormObra.post) {
         const buildingWork = await onAddbuildingWork(data);
         if (buildingWork) {
@@ -123,13 +134,13 @@ const FormObra = ({
           toggle();
         }
       }
-  
+
       if (changeState.stateFormObra.put) {
         const buildingWorkModify = await onSetbuildingWork(
           data,
           buildingWorkId
         );
-  
+
         if (buildingWorkModify) {
           setPreviewImage([]);
           event.target.reset();
@@ -140,7 +151,7 @@ const FormObra = ({
 
       dispatch(categoriesActions.setSelectedCategories([]));
     }
-  }
+  };
 
   return (
     <div>
@@ -251,10 +262,10 @@ const FormObra = ({
                   )}
                 </Form.Group>
                 <div className="mt-4">
-                  <CategorySelector typeCategory="BUILDING_WORK"/>
+                  <CategorySelector typeCategory="BUILDING_WORK" />
                 </div>
                 <div className="mt-4">
-                  <TagList/>
+                  <CategoryList />
                 </div>
               </Col>
               <Col>

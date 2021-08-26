@@ -1,9 +1,11 @@
 import API from "./api";
 import * as tagService from "./tagService";
 
-export const findAll = async (status, page, size, token) => {
-  API.defaults.headers.common["Authorization"] = token;
-  return await API.get(`/building-works/status/${status}?page=${page}&size=${size}`);
+export const findAll = async (status, page, size) => {
+  // API.defaults.headers.common["Authorization"] = token;
+  return await API.get(
+    `/building-works/status/${status}?page=${page}&size=${size}`
+  );
 };
 
 export const getByProfessionalId = async (
@@ -18,18 +20,24 @@ export const getByProfessionalId = async (
   );
 };
 
-export const getAllByCompanyId = async (companyId , page, size) => {
-  return await API.get(`/building-works/companies/${companyId}?page=${page}&size=${size}`);
+export const getAllByCompanyId = async (companyId, page, size) => {
+  return await API.get(
+    `/building-works/companies/${companyId}?page=${page}&size=${size}`
+  );
 };
 
 export const getById = async (id) => {
   return await API.get(`/building-works/${id}`);
 };
 
-export const setNewTokensToBuildingWorkId = async (newTokens, buildingWorkId, token) => {
+export const setNewTokensToBuildingWorkId = async (
+  newTokens,
+  buildingWorkId,
+  token
+) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.put(`/building-works/${buildingWorkId}/tokens/${newTokens}`);
-}
+};
 
 export const addFolder = async (data, token) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -68,10 +76,11 @@ export const removeAndAddImages = async (images, id, token) => {
   return newImages;
 };
 
-
 export const findByNameAndStatus = async (name, status, page, size) => {
-  return await API.get(`/building-works/name/${name}/status/${status}?page=${page}&size=${size}`);
-}
+  return await API.get(
+    `/building-works/name/${name}/status/${status}?page=${page}&size=${size}`
+  );
+};
 
 export const editTags = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -87,5 +96,37 @@ export const setStatus = async (id, status, token) => {
 };
 
 export const findByContactAndStatus = async (name, status, page, size) => {
-  return await API.get(`/building-works/name/${name}/status/${status}?page=${page}&size=${size}`);
+  return await API.get(
+    `/building-works/name/${name}/status/${status}?page=${page}&size=${size}`
+  );
+};
+
+export const getCountByProfessional = async (id) => {
+  return await API.get(`/building-works/professional/${id}/count`);
+};
+
+export const getCount = async (status) => {
+  return await API.get(`/building-works/status/${status}/count`);
+};
+
+export const getAllByCategoryAndStatus = async (
+  status,
+  arrayCategories,
+  page,
+  size
+) => {
+  if (arrayCategories.length == 0) {
+    return findAll(status, page, size);
+  }
+  let categoriesSeparatedByCommas = "";
+  let arrayNew = arrayCategories.map((category, index) => {
+    return (categoriesSeparatedByCommas += `,${category}`);
+  });
+
+  categoriesSeparatedByCommas = categoriesSeparatedByCommas.substring(1);
+  // console.log("categoriesSeparatedByCommas", categoriesSeparatedByCommas);
+  
+  return await API.get(
+    `/building-works/status/${status}/categories/${categoriesSeparatedByCommas}?page=${page}&size=${size}`
+  );
 };

@@ -1,28 +1,16 @@
+// Frameworks
 import React, { useEffect, useState } from "react";
 import { getSession, useSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
-import Link from "next/link";
-import {
-  Card,
-  Dropdown,
-  DropdownButton,
-  Col,
-  Row,
-  Button,
-} from "react-bootstrap";
-import {
-  PlusSquareDotted,
-  Images,
-  ThreeDotsVertical,
-  PencilSquare,
-  PersonCircle,
-} from "react-bootstrap-icons";
+import { Col, Row, Button } from "react-bootstrap";
+import { PlusSquareDotted, PersonCircle } from "react-bootstrap-icons";
 
-//Components
+// Components
 import ModalForm from "../../components/ModalForm";
 import FormObra from "../../components/FormObra/FormObra";
 import Layout from "../../components/Layout/Layout";
-import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
+import BackgroundDefault from "../../components/BackgroundDefault/BackgroundDefault";
+import ImagesGroup from "../../components/ImagesGroup/ImagesGroup";
 
 // Services
 import * as professionalService from "../../services/professionalService";
@@ -31,56 +19,23 @@ import * as imageService from "../../services/imageService";
 
 // Styles
 import indexStyles from "./index.module.css";
-import filteredImagesStyles from "../../components/FilteredImages/FilteredImages.module.css";
-import image from "next/image";
-import BackgroundDefault from "../../components/BackgroundDefault/BackgroundDefault";
 
-const CustomButtonTogle = ({ id, editBuildingWork, imageSize }) => {
-  const [dropdownOpen, setOpen] = useState(false);
-  const toggle = () => setOpen((dropdownOpen) => !dropdownOpen);
-
-  return (
-    <>
-      <Dropdown drop="left" align="end">
-        <Dropdown.Toggle
-          variant="light"
-          id="dropdown-autoclose-true"
-          className={indexStyles.afterLess}
-        >
-          <ThreeDotsVertical color={"dark"} size={25} />
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Header>
-            <Images
-              className={`${filteredImagesStyles.heart}`}
-              color={"white"}
-              size={25}
-            />
-            {` ${imageSize} Photos`}
-          </Dropdown.Header>
-          <Dropdown.Divider />
-          <Dropdown.Item
-            onClick={() => {
-              editBuildingWork(id);
-            }}
-          >
-            <PencilSquare color={"red"} size={25} />
-            {` Edit`}
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-    </>
-  );
-};
-
-const Portfolio = ({ professional, buildingWorks }) => {
-  const [session] = useSession();
+const Portfolio = ({ professional, buildingWorks, session }) => {
+  // const [session] = useSession();
   const { t } = useTranslation("common");
   const [previewImage, setPreviewImage] = useState([]);
   const [images, setImages] = useState([]);
-  const [localBuildingWorks, setLocalBuildingWorks] = useState([]);
-  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
+  const [localBuildingWorks, setLocalBuildingWorks] = useState(buildingWorks);
+  const [pageSize, setPageSize] = useState({ page: 1, size: 3 });
+  const [paginationMultipleImage, setPaginationMultipleImage] = useState({
+    page: 0,
+    size: 100,
+  });
   const [buildingWorkId, setBuildingWorkId] = useState(null);
+
+  // useEffect(() => {
+  //   console.log(localBuildingWorks);
+  // }, [localBuildingWorks]);
 
   const [buildingWorkData, setBuildingWorkData] = useState({
     defaultValues: {
@@ -88,6 +43,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
       description: "",
     },
   });
+
   const [modalOpen, setModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [stateFormObra, setStateFormObra] = useState({
@@ -98,7 +54,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
   const toggleModal = () => setModalOpen(!modalOpen);
 
   const updateCardsBuildingWorks = async () => {
-    let buildingWorks = [];
+    let newBuildingWorks = [];
     setLoading(true);
     if (session) {
       let token = session.accessToken;
@@ -108,15 +64,81 @@ const Portfolio = ({ professional, buildingWorks }) => {
         token
       );
       if (professional) {
-        buildingWorks = await buildingWorkService.getByProfessionalId(
+        // resetPage();
+        newBuildingWorks = await buildingWorkService.getByProfessionalId(
           professional.id,
           pageSize.page,
           pageSize.size,
           token
         );
-        setLocalBuildingWorks(buildingWorks);
+
+        // const newBuildingWorks = buildingWorks.filter(
+        //   (buildingWork) =>
+        //     !localBuildingWorks.some((local) => local.id === buildingWork.id)
+        // );
+
+        // console.log("las que tengo", localBuildingWorks);
+        // console.log("las nuevas", buildingWorks);
+        // console.log("filtradas sin repetir", [
+        //   ...newBuildingWorks,
+        //   ...localBuildingWorks,
+        // ]);
+
+        const count = await getTotalBuildingWorksByProfessional();
+        // console.log("TOTAL:", count.count);
+
+        // console.log({
+        //   ...localBuildingWorks,
+        //   buildingWorks: [
+        //     ...localBuildingWorks.buildingWorks,
+        //     // ...buildingWorks.buildingWorks,
+        //     newBuildingWorks[newBuildingWorks.length - 1],
+        //   ],
+        //   count: count,
+        // });
+        // console.log("COPY-------");
+
+        // console.log("COPY_ALL_NEWs", newBuildingWorks);
+        // console.log("COPY_END", newBuildingWorks[newBuildingWorks.length - 1]);
+        const endArray = newBuildingWorks[newBuildingWorks.length - 1];
+
+        if (count.count) {
+          setLocalBuildingWorks({
+            ...localBuildingWorks,
+            buildingWorks: [
+              ...localBuildingWorks.buildingWorks,
+              // ...buildingWorks.buildingWorks,
+              ...[endArray],
+            ],
+            count: count.count,
+          });
+        }
+        // setLocalBuildingWorks({
+        //   buildingWorks: buildingWorks,
+        //   count,
+        // });
+
+        // setLocalBuildingWorks({
+        //   ...localBuildingWorks,
+        //   buildingWorks: [
+        //     ...localBuildingWorks.buildingWorks,
+        //     ...buildingWorks.buildingWorks,
+        //   ],
+        // });
+
         setLoading(false);
       }
+    }
+  };
+
+  const getTotalBuildingWorksByProfessional = async () => {
+    try {
+      const count = await buildingWorkService.getCountByProfessional(
+        session.user.id
+      );
+      return count;
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -206,9 +228,14 @@ const Portfolio = ({ professional, buildingWorks }) => {
     if (session) {
       try {
         let folder = await buildingWorkService.addFolder(
-          { name: data.name, description: data.description, categories: data.categories },
+          {
+            name: data.name,
+            description: data.description,
+            categories: data.categories,
+          },
           session.accessToken
         );
+        // console.log("new---------", folder);
         if (folder) {
           let preview = await onAddPreviewImageToBuildingWork(
             folder,
@@ -217,6 +244,8 @@ const Portfolio = ({ professional, buildingWorks }) => {
           if (data.images.length > 0) {
             let images = await onAddImagesToBuildingWork(folder, data.images);
           }
+          // const newBuildingWork = await buildingWorkService.getById(folder.id);
+          // console.log("newBuildingWork", newBuildingWork);
           updateCardsBuildingWorks();
           return true;
         }
@@ -248,7 +277,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
       post: false,
       put: true,
     });
-    const [buildingWork] = localBuildingWorks.filter((d) => d.id == id);
+    const [buildingWork] = localBuildingWorks.buildingWorks.filter((d) => d.id == id);
     let copyBuildingWorkData = Object.assign({}, buildingWorkData);
     copyBuildingWorkData.defaultValues.name = buildingWork.name;
     copyBuildingWorkData.defaultValues.description = buildingWork.description;
@@ -295,8 +324,8 @@ const Portfolio = ({ professional, buildingWorks }) => {
     try {
       let dataImages = await imageService.getImagesByBuildingWorksId(
         id,
-        pageSize.page,
-        pageSize.size,
+        paginationMultipleImage.page,
+        paginationMultipleImage.size,
         session.accessToken
       );
       return dataImages;
@@ -305,94 +334,62 @@ const Portfolio = ({ professional, buildingWorks }) => {
     }
   };
 
-  useEffect(async () => {
-    if (buildingWorks) {
-      setLocalBuildingWorks(buildingWorks);
-    }
-  }, [buildingWorks]);
+  // useEffect(async () => {
+  //   if (buildingWorks) {
+  //     setLocalBuildingWorks(buildingWorks);
+  //   }
+  // }, [buildingWorks]);
 
-  const isState = (buildingWork) => {
-    let statusColor;
-    let ico;
-    // if (product.status === "PENDING") {
-    //   statusColor = `bg-warning text-dark`;
-    //   ico = <ExclamationCircle className={`${statusColor}`} size={15} />;
-    // }
-    // if (product.status === "APPROVED") {
-    //   statusColor = "bg-success";
-    //   ico = <Check2Circle className={`${statusColor}`} size={15} />;
-    // }
-    // if (product.status === "REJECTED") {
-    //   statusColor = `bg-danger`;
-    //   ico = <XCircle className={`${statusColor}`} size={15} />;
-    // }
-    // return (
-    //   <>
-    //     <CardText className={`${indexStyles.itemStatus} ${statusColor} m-0`}>
-    //       {ico}
-    //       {t(product.status.toLowerCase())}
-    //     </CardText>
-    //   </>
-    // );
+  const onGetByProfessionalId = async () => {
+    setLoading(true);
+    try {
+      if (session) {
+        const buildingWorks = await buildingWorkService.getByProfessionalId(
+          professional.id,
+          pageSize.page,
+          pageSize.size,
+          session.accessToken
+        );
+
+        setLoading(false);
+        return buildingWorks;
+      }
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   };
 
-  const imagesCard = (
-    <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      {isLoading ? (
-        <SpinnerCustom />
-      ) : (
-        localBuildingWorks.map((buildingWork, index) => (
-          <Col key={index}>
-            <Card className={`${filteredImagesStyles.colCard}`}>
-              <Card.Body className="p-0">
-                <Link
-                  href={`/building/[id]`}
-                  as={`/building/${buildingWork.name.replace(/\s+/g, "-")}-${
-                    buildingWork.id
-                  }`}
-                >
-                  <img
-                    className={`${filteredImagesStyles.cardImage} cursor-pointer`}
-                    src={buildingWork.previewImage}
-                    alt="Professional preview"
-                  />
-                </Link>
-                {isState(buildingWork)}
-                <div className={`${filteredImagesStyles.cardText}`}>
-                  <Col className="col-auto">
-                    <img
-                      className={`${indexStyles.imgProfile}`}
-                      // src={buildingWork.entity.previewImage}
-                    />
-                  </Col>
-                  <Col className={`col-auto`}>
-                    <Card.Text
-                      className={`${filteredImagesStyles.textShadowSm} fw-bold`}
-                    >
-                      {buildingWork.name}
-                    </Card.Text>
-                  </Col>
-                  <Col
-                    className={`col-auto ${filteredImagesStyles.containerHeart}`}
-                  >
-                    {session && (
-                      <div>
-                        <CustomButtonTogle
-                          id={buildingWork.id}
-                          editBuildingWork={editBuildingWork}
-                          imageSize={buildingWork.countImages}
-                        />
-                      </div>
-                    )}
-                  </Col>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))
-      )}
-    </Row>
-  );
+  useEffect(async () => {
+    const images = await onGetByProfessionalId();
+    const buildingWorks = {
+      buildingWorks: images,
+    };
+    if (images) {
+      // setLocalBuildingWorks([...localBuildingWorks, ...images]);
+      setLocalBuildingWorks({
+        ...localBuildingWorks,
+        buildingWorks: [
+          ...localBuildingWorks.buildingWorks,
+          ...buildingWorks.buildingWorks,
+        ],
+      });
+    }
+  }, [pageSize]);
+
+  const resetPage = () => {
+    const { page } = { page: 0 };
+    setPageSize({ ...pageSize, page });
+  };
+
+  const changePage = () => {
+    const { page } = { page: pageSize.page + 1 };
+    setPageSize({ ...pageSize, page });
+  };
+
+  const fetchMoreData = () => {
+    changePage();
+  };
 
   return (
     <Layout>
@@ -436,13 +433,22 @@ const Portfolio = ({ professional, buildingWorks }) => {
             </div>
           </Col>
         </Row>
-        <Row className="row-cols-2 g-2">
-          <Col className="col-auto">
+        <Row className="row-cols-1 gap-4">
+          <Col className="col-auto mx-auto mx-md-0">
             <Button variant="outline-primary" onClick={openModalBuilderWork}>
               <PlusSquareDotted size={100} />
             </Button>
           </Col>
-          <Col className="col-12">{imagesCard}</Col>
+          <Col className="col-12">
+            <ImagesGroup
+              isLoading={isLoading}
+              localBuildingWorks={localBuildingWorks}
+              editBuildingWork={editBuildingWork}
+              fetchMoreData={fetchMoreData}
+              profileHidden={true}
+              getTotalBuildingWorks={getTotalBuildingWorksByProfessional}
+            />
+          </Col>
         </Row>
         <ModalForm
           size={"xl"}
@@ -490,6 +496,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   let professionalId;
   let professional = [];
   let buildingWorks = [];
+  let count = 0;
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -507,12 +514,16 @@ export async function getServerSideProps({ params, req, res, locale }) {
         buildingWorks = await buildingWorkService.getByProfessionalId(
           professional.id,
           page,
-          size,
+          3,
           token
+        );
+        count = await buildingWorkService.getCountByProfessional(
+          professionalId
         );
       }
     }
   } catch (e) {
+    console.error(e);
     return {
       redirect: {
         destination: "/logIn?expired",
@@ -524,7 +535,11 @@ export async function getServerSideProps({ params, req, res, locale }) {
   return {
     props: {
       professional,
-      buildingWorks,
+      buildingWorks: {
+        buildingWorks: buildingWorks,
+        count: count.count,
+      },
+      session,
     },
   };
 }

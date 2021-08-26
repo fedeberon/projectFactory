@@ -17,7 +17,7 @@ import Layout from "../../../components/Layout/Layout";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton/PrimaryButton";
 import CategorySelector from "../../../components/CategorySelector/CategorySelector";
 import { useSelector } from "react-redux";
-import TagList from "../../../components/TagList/TagList";
+import CategoryList from "../../../components/List/CategoryList/CategoryList";
 import { Col, Form, Row } from "react-bootstrap";
 import Dropzone from "../../../components/Dropzone/Dropzone";
 import Error from "../../../components/Error";
@@ -213,7 +213,7 @@ const index = () => {
                 {selectedCategories.length === 0 ? 
                   <CategorySelector typeCategory="MAGAZINE"/>
                 :
-                <TagList/>
+                <CategoryList/>
                 }
               </Form.Group>
             </Col>
