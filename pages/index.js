@@ -19,6 +19,7 @@ import * as tagService from "../services/tagService";
 import * as imageService from "../services/imageService";
 import * as productService from "../services/productService";
 import * as companyService from "../services/companyService";
+import * as buildingWorkService from "../services/buildingWorkService";
 
 // Styles
 import styles from "../styles/Home.module.css";
@@ -26,21 +27,30 @@ import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
 import OffCanvasFilter from "../components/OffCanvas/OffCanvasFilter.js/OffCanvasFilter";
 import PrimaryButton from "../components/Buttons/PrimaryButton/PrimaryButton";
+import ImagesGroup from "../components/ImagesGroup/ImagesGroup";
 
-const Home = ({ filters, carouselImages, session, products, companies }) => {
+const Home = ({
+  buildingWorks,
+  carouselImages,
+  session,
+  products,
+  companies,
+}) => {
   const [filteredImages, setFilteredImages] = useState([]);
-  const [appliedFilters, setAppliedFilters] = useState([]);
+  // const [appliedFilters, setAppliedFilters] = useState([]);
+  const [localBuildingWorks, setLocalBuildingWorks] = useState(buildingWorks);
+  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const [isLoading, setLoading] = useState(false);
   const [imagesCarousel, setImagesCarousel] = useState([]);
 
   let { t } = useTranslation("home");
 
-  useEffect(async () => {
-    const images = await getProfessionalsByTags();
-    if (images) {
-      setFilteredImages(images);
-    }
-  }, [appliedFilters]);
+  // useEffect(async () => {
+  //   const images = await getProfessionalsByTags();
+  //   if (images) {
+  //     setFilteredImages(images);
+  //   }
+  // }, [appliedFilters]);
 
   const onAddCarouselImages = async () => {
     try {
@@ -57,22 +67,49 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
     }
   }, [carouselImages]);
 
-  const getProfessionalsByTags = async () => {
-    setLoading(true);
+  // const getProfessionalsByTags = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const images = await imageService.getProfessionalImagesByTags(
+  //       appliedFilters,
+  //       0,
+  //       process.env.NEXT_PUBLIC_BUILDING_WORKS_PER_HOME,
+  //       session?.accessToken
+  //     );
+  //     setLoading(false);
+  //     return images;
+  //   } catch (error) {
+  //     console.error(error);
+  //     setLoading(false);
+  //   }
+  // };
+
+  const getTotalBuildingWorks = async () => {
+    const status = "APPROVED";
     try {
-      const images = await imageService.getProfessionalImagesByTags(
-        appliedFilters,
-        0,
-        process.env.NEXT_PUBLIC_BUILDING_WORKS_PER_HOME,
-        session?.accessToken
-      );
-      setLoading(false);
-      return images;
+      const total = await buildingWorkService.getCount(status);
+      return total;
     } catch (error) {
       console.error(error);
-      setLoading(false);
     }
   };
+
+  const changePage = () => {
+    const { page } = { page: pageSize.page + 1 };
+    setPageSize({ ...pageSize, page });
+  };
+
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      changePage();
+    }, 1500);
+  };
+
+  useEffect(async () => {
+    if (buildingWorks) {
+      setLocalBuildingWorks(buildingWorks);
+    }
+  }, [buildingWorks]);
 
   return (
     <Layout>
@@ -99,7 +136,14 @@ const Home = ({ filters, carouselImages, session, products, companies }) => {
                   </h2>
                 </Col>
                 <Col>
-                  <FilteredImages images={filteredImages} limit={true} />
+                  {/* <FilteredImages images={filteredImages} limit={true} /> */}
+                  <ImagesGroup
+                    isLoading={isLoading}
+                    localBuildingWorks={localBuildingWorks}
+                    fetchMoreData={fetchMoreData}
+                    getTotalBuildingWorks={getTotalBuildingWorks}
+                    limit={true}
+                  />
                 </Col>
                 <div className="w-100">
                   <Link href="/ideas">
@@ -187,14 +231,21 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  const filters = await tagService.findAll();
+  const status = "APPROVED";
+  // const filters = await tagService.findAll();
   const carouselImages = await imageService.findCarouselImages();
-  const products = await productService.findAllByStatus(page, size, "APPROVED");
-  const companies = await companyService.findAll("APPROVED", page, size);
+  const products = await productService.findAllByStatus(page, size, status);
+  const companies = await companyService.findAll(status, page, size);
+  const buildingWorks = await buildingWorkService.getAllByCategoryAndStatus(
+    status,
+    [],
+    page,
+    process.env.NEXT_PUBLIC_BUILDING_WORKS_PER_HOME
+  );
 
   return {
     props: {
-      filters: filters,
+      buildingWorks: buildingWorks,
       carouselImages,
       session,
       companies,

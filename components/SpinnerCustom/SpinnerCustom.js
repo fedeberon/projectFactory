@@ -8,7 +8,7 @@ const SpinnerCustom = (props) => {
   return (
     <Row className={className}>
       <Col className="d-flex align-items-center gap-2">
-        <Spinner animation="grow" variant="warning" />
+        <Spinner animation="border" variant="warning" />
         {`${t("loading")}...`}
       </Col>
     </Row>

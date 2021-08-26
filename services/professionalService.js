@@ -87,7 +87,7 @@ export const updateToken = async (token, userId) => {
     accessToken: token,
     name: professional.contact,
     email: professional.email,
-    image: professional.previewImage ? profesional.previewImage : "",
+    image: professional.previewImage ? professional.previewImage : "",
     callbackUrl: `${window.location.origin}/profile`,
   });
 };

@@ -26,14 +26,12 @@ const Profile = ({ data, status }) => {
 
   const onGetLikePhotos = async () => {
     setLoading(true);
-    console.log(pageSize.page, pageSize.size);
     try {
       const images = await imageService.getLikePhotos(
         pageSize.page,
         pageSize.size,
         session?.accessToken
       );
-      console.log(imagesLiked);
 
       const filterimagesLiked = images.filter(
         (img) => img.id != imagesLiked.id
@@ -149,7 +147,6 @@ const Profile = ({ data, status }) => {
   useEffect(async () => {
     await onGetLikePhotos();
     // if (images.length != 0) {
-    //   console.log(images);
     //   // setImagesLiked([...imagesLiked, ...images]);
     //   changeToNotLikeAnymore(images);
     // }

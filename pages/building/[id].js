@@ -60,9 +60,12 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   }, [currentImageId]);
 
   const getTagOfTheCurrentImage = () => {
-    const [currentImage] = data.images.filter(img => img.id === currentImageId);
+    const [currentImage] = data.images.filter(
+      (img) => img.id === currentImageId
+    );
+    // console.log("currentImage----",currentImage);
     if (currentImage) {
-      return currentImage.tags[0].tag;
+      return currentImage.tags[0].name;
     } else {
       return "";
     }
@@ -139,7 +142,6 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
                       <span className="d-block">{t("email")}</span>
                       <span>{data.buildingWork.professional.email}</span>
                     </h3>
-
                   </Col>
                 </Col>
               </Row>
@@ -193,11 +195,7 @@ export async function getServerSideProps({ params, req, query }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  images = await imageService.getImagesByBuildingWorksId(
-    buildingWorkId,
-    0,
-    99
-  );
+  images = await imageService.getImagesByBuildingWorksId(buildingWorkId, 0, 99, session?.accessToken);
 
   if (imageClicked === undefined) {
     imageClicked = images[0].id;
