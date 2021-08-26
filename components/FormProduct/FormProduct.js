@@ -7,7 +7,7 @@ import FormTag from "../FormTag/FormTag";
 import Error from "../Error";
 import Dropzone from "../Dropzone/Dropzone";
 import { Col, Row, Button, Form, FormGroup } from "react-bootstrap";
-import CategoryList from "../CategoryList/CategoryList";
+import CategoryList from "../List/CategoryList/CategoryList";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 import CategorySelector from "../CategorySelector/CategorySelector";
 import { useDispatch, useSelector } from "react-redux";
