@@ -18,7 +18,6 @@ const BackgroundDefault = (props) => {
   //           .getPropertyValue("width")
   //           .split("px")[0]
   //       );
-  //     console.log(width);
   //     backgroundDefault.current.style.height = width + "px";
   //   }
   // }, [width]);

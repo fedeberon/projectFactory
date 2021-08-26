@@ -21,15 +21,6 @@
   background-color: #FFF;
 }
 
-.afterLess::after {
-  display: none;
-}
-
-.imgProfile {
-  width: 50px;
-  height: 0;
-}
-
 @media (max-width: 425px) {
   .previewImg {
     width: 150px;

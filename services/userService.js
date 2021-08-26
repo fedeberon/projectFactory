@@ -32,8 +32,8 @@ export const login = async (username, password) => {
     accessToken: token,
     name: data.name,
     email: data.email,
-    callbackUrl: `${window.location.origin}/`,
     image: data.previewImage,
+    callbackUrl: `${window.location.origin}/`,
   });
   return token;
 };
@@ -46,14 +46,14 @@ const getDataOfUserByPayload = async (payload, token) => {
     return {
       name: professional.contact,
       email: professional.email,
-      previewImage: professional.previewImage,
+      previewImage: professional.previewImage ? professional.previewImage : "",
     };
   } else if (authorities.includes("ROLE_COMPANY")) {
     const company = await companyService.findById(userId);
     return {
       name: company.name,
       email: company.email,
-      previewImage: company.previewImage,
+      previewImage: company.previewImage ? company.previewImage : "",
     };
   } else {
     const user = await getMe(token);
@@ -109,9 +109,10 @@ export const getById = async (userId) => {
   return await API.get(`/users/${userId}`);
 };
 
-export const add = async (username, password) => {
+export const add = async (username, email, password) => {
   const data = {
     username,
+    email,
     password,
   };
   const { token } = await API.post(`/users/register`, data);
@@ -119,6 +120,8 @@ export const add = async (username, password) => {
   signIn("credentials", {
     accessToken: token,
     name: username,
+    email: email,
+    image: "",
     callbackUrl: `${window.location.origin}/`,
   });
   return token;

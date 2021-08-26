@@ -4,7 +4,7 @@ import { Button, Row, Col, Form } from "react-bootstrap";
 import ModalForm from "../ModalForm";
 import useTranslation from "next-translate/useTranslation";
 import * as companyService from "../../services/companyService";
-import TagList from "../TagList/TagList";
+import CategoryList from "../List/CategoryList/CategoryList";
 import Error from "../../components/Error";
 import Dropzone from "../Dropzone/Dropzone";
 import { useForm } from "react-hook-form";
@@ -475,7 +475,7 @@ const CompanyCreator = () => {
                         <CategorySelector typeCategory="COMPANY"/>
                       </Col>
                       <Col className="col-auto col-md-6">
-                        <TagList/>
+                        <CategoryList/>
                       </Col>
                     </Row>
                   </Form.Group>

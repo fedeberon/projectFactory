@@ -1,9 +1,9 @@
 import React from "react";
-import tagListStyles from "./TagList.module.css";
+import CategoryListStyles from "./CategoryList.module.css";
 import { useDispatch, useSelector } from 'react-redux';
-import { categoriesActions } from '../../store';
+import { categoriesActions } from '../../../store';
 
-const TagList = () => {
+const CategoryList = () => {
   const dispatch = useDispatch();
   const selectedTags = useSelector(state => state.categories.selectedCategories);
 
@@ -17,15 +17,15 @@ const TagList = () => {
   };
 
   return (
-    <ul className={tagListStyles.ul}>
+    <ul className={CategoryListStyles.ul}>
         {selectedTags.map((tag, index) => (
-          <li key={index} className={tagListStyles.li}>
-              <span className={tagListStyles.span}>{tag.name}</span>
-              <button className={tagListStyles.closeBtn} onClick={(event) => handleDeleteTag(event, tag)}>x</button>
+          <li key={index} className={CategoryListStyles.li}>
+              <span className={CategoryListStyles.span}>{tag.name}</span>
+              <button className={CategoryListStyles.closeBtn} onClick={(event) => handleDeleteTag(event, tag)}>x</button>
           </li>
         ))}
     </ul>
   );
 };
 
-export default TagList;
+export default CategoryList;

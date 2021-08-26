@@ -7,7 +7,7 @@ import FormTag from "../FormTag/FormTag";
 import Error from "../Error";
 import Dropzone from "../Dropzone/Dropzone";
 import { Col, Row, Button, Form, FormGroup } from "react-bootstrap";
-import TagList from "../TagList/TagList";
+import CategoryList from "../List/CategoryList/CategoryList";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 import CategorySelector from "../CategorySelector/CategorySelector";
 import { useDispatch, useSelector } from "react-redux";
@@ -466,7 +466,7 @@ const FormProduct = ({
                       </Row>
                     </Col>
                     <Col className="col-auto col-md-6">
-                      <TagList/>
+                      <CategoryList/>
                     </Col>
                   </Row>
                 </Form.Group>

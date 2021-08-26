@@ -26,9 +26,9 @@ const SignInForm = (props) => {
     handleSubmit,
   } = useForm();
 
-  const onSubmit = async ({ email, password }, event) => {
+  const onSubmit = async ({ username, email, password }, event) => {
     try {
-      await userService.add(email, password);
+      await userService.add(username, email, password);
     } catch (e) {
       setUsernameAlreadyExists(true);
     }

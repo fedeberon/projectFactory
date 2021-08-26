@@ -6,75 +6,199 @@ import { Col, Row } from "react-bootstrap";
 
 // Components
 import Layout from "../../components/Layout/Layout";
-import FilteredImages from "../../components/FilteredImages/FilteredImages";
 import OffCanvasFilter from "../../components/OffCanvas/OffCanvasFilter.js/OffCanvasFilter";
 
 // Services
-import * as tagService from "../../services/tagService";
-import * as imageService from "../../services/imageService";
+import * as buildingWorkService from "../../services/buildingWorkService";
 
 // Styles
 import styles from "../../styles/Home.module.css";
-import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton";
+import ImagesGroup from "../../components/ImagesGroup/ImagesGroup";
+import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
-const index = ({ filters, session, filtersTags }) => {
-  const [filteredImages, setFilteredImages] = useState([]);
+const index = ({ session, filtersTags, buildingWorks }) => {
   const [appliedFilters, setAppliedFilters] = useState([]);
-  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
+  const [pageSize, setPageSize] = useState({
+    page: 1,
+    size: process.env.NEXT_PUBLIC_SIZE_PER_PAGE,
+  });
+
+  // const [pageSizeFilter, setPageSizeFilter] = useState({
+  //   page: 0,
+  //   size: process.env.NEXT_PUBLIC_SIZE_PER_PAGE,
+  // });
+
   const [isLoading, setLoading] = useState(false);
+  const [localBuildingWorks, setLocalBuildingWorks] = useState(buildingWorks);
+  const [localBuildingWorksFilter, setLocalBuildingWorksFilter] =
+    useState(buildingWorks);
 
   let { t } = useTranslation("common");
 
-  const getProfessionalsByTags = async () => {
-    setLoading(true);
+  const changePage = () => {
+    const { page } = { page: pageSize.page + 1 };
+    setPageSize({ ...pageSize, page });
+  };
+  // const changePageFilter = () => {
+  //   const { page } = { page: pageSizeFilter.page + 1 };
+  //   setPageSizeFilter({ ...pageSizeFilter, page });
+  // };
+
+  const resetPage = () => {
+    const { page } = { page: 1 };
+    setPageSize({ ...pageSize, page });
+  };
+
+  // const resetPageFilter = () => {
+  //   const { page } = { page: 0 };
+  //   setPageSizeFilter({ ...pageSizeFilter, page });
+  // };
+
+  const onGetAllByCategoryAndStatus = async (status) => {
+    // setLoading(true);
     try {
-      const images = await imageService.getProfessionalImagesByTags(
+      const filterImages = await buildingWorkService.getAllByCategoryAndStatus(
+        status,
         appliedFilters,
         pageSize.page,
-        pageSize.size,
-        session?.accessToken
+        pageSize.size
       );
-      setLoading(false);
-      return images;
+      // setLoading(false);
+      return filterImages;
     } catch (error) {
       console.error(error);
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
-  const changePage = () => {
-    setPageSize({ page: pageSize.page + 1, size: 10 });
-  };
+  // const onGetAllByCategoryAndStatusFilter = async (status) => {
+  //   // setLoading(true);
+  //   try {
+  //     const filterImages = await buildingWorkService.getAllByCategoryAndStatus(
+  //       status,
+  //       appliedFilters,
+  //       pageSizeFilter.page,
+  //       pageSizeFilter.size
+  //     );
+  //     // setLoading(false);
+  //     return filterImages;
+  //   } catch (error) {
+  //     console.error(error);
+  //     // setLoading(false);
+  //   }
+  // };
 
-  useEffect(async () => {
-    const images = await getProfessionalsByTags();
-    if (images) {
-      setFilteredImages(images);
-    }
-  }, [appliedFilters]);
+  // 1 llamada es este
+  // useEffect(async () => {
+  //   console.log("appliedFilters", appliedFilters);
+  //   if (appliedFilters.length > 0) {
+  //     const buildingWorks = await onGetAllByCategoryAndStatus("APPROVED");
+  //     console.log("buildingWorks_Filtradas", buildingWorks);
+  //     // resetPage();
+  //     // setLocalBuildingWorks({ buildingWorks: [], count: 0 });
+  //     setLocalBuildingWorksFilter(buildingWorks);
+  //   }
+  // }, [appliedFilters]);
 
+  // el 2do llamada es este otro
   useEffect(async () => {
-    const images = await getProfessionalsByTags();
-    if (images) {
-      const newImages = filteredImages.concat(images);
-      setFilteredImages(
-        newImages.filter((v, i, a) => a.findIndex((t) => t.id === v.id) === i)
-      );
-    }
+    // console.log("----------> efect pageSize <----------");
+    // console.log("pageSize---", pageSize);
+    const status = "APPROVED";
+    const buildingWorks = await onGetAllByCategoryAndStatus("APPROVED");
+    // console.log("onGetAllByCategoryAndStatus---", buildingWorks);
+    // console.log(
+    //   "onGetAllByCategoryAndStatus---",
+    //   buildingWorks.buildingWorks.slice(buildingWorks.buildingWorks.length - 1)
+    // );
+    // console.log("//////////-> efect pageSize <-//////////");
+
+    // console.log({
+    //   ...localBuildingWorks,
+    //   buildingWorks: [
+    //     ...localBuildingWorks.buildingWorks,
+    //     ...buildingWorks.buildingWorks,
+    //   ],
+    // });
+    setLocalBuildingWorks({
+      ...localBuildingWorks,
+      buildingWorks: [
+        ...localBuildingWorks.buildingWorks,
+        ...buildingWorks.buildingWorks,
+      ],
+    });
   }, [pageSize]);
 
-  useEffect(() => {
-    if (filtersTags != "") {
-      filtersTags = [{ tag: filtersTags }];
-      setAppliedFilters(filtersTags);
-    }
-  }, [filtersTags]);
+  // useEffect(async () => {
+  //   console.log("----------> efect pageSize <----------");
+  //   console.log("pageSize---", pageSize);
+  //   const status = "APPROVED";
+  //   const buildingWorks = await onGetAllByCategoryAndStatusFilter("APPROVED");
+  //   console.log("onGetAllByCategoryAndStatusFILTER---", buildingWorks);
+  //   // console.log(
+  //   //   "onGetAllByCategoryAndStatus---",
+  //   //   buildingWorks.buildingWorks.slice(buildingWorks.buildingWorks.length - 1)
+  //   // );
+  //   console.log("//////////-> efect pageSize <-//////////");
+
+  //   // console.log({
+  //   //   ...localBuildingWorks,
+  //   //   buildingWorks: [
+  //   //     ...localBuildingWorks.buildingWorks,
+  //   //     ...buildingWorks.buildingWorks,
+  //   //   ],
+  //   // });
+  //   setLocalBuildingWorksFilter({
+  //     ...localBuildingWorksFilter,
+  //     buildingWorks: [
+  //       ...localBuildingWorksFilter.buildingWorks,
+  //       ...buildingWorks.buildingWorks,
+  //     ],
+  //   });
+  //   setLocalBuildingWorksFilter({ buildingWorks: [], count: 0 });
+  // }, [pageSizeFilter]);
+
+  // useEffect(() => {
+  //   if (localBuildingWorks) {
+  //     console.log(localBuildingWorks.count);
+  //   }
+  // }, [localBuildingWorks]);
 
   const fetchMoreData = () => {
-    setTimeout(() => {
-      changePage();
-    }, 1500);
+    // setTimeout(() => {
+    changePage();
+    // console.log("FETCH_MORE_DATA pageSize---", pageSize);
+    // }, 1500);
   };
+  // const fetchMoreDataFilter = () => {
+  //   // setTimeout(() => {
+  //   changePageFilter();
+  //   console.log("FETCH_MORE_DATA_FILTER pageSize---", pageSizeFilter);
+  //   // }, 1500);
+  // };
+
+  // useEffect(async () => {
+  //   if (buildingWorks) {
+  //     console.log("buildingWorks getServerSideProps", buildingWorks);
+  //     setLocalBuildingWorks(buildingWorks);
+  //   }
+  // }, [buildingWorks]);
+
+  const getTotalBuildingWorks = async () => {
+    const status = "APPROVED";
+    try {
+      const total = await buildingWorkService.getCount(status);
+      return total;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (filtersTags) {
+      setAppliedFilters([filtersTags]);
+    }
+  }, [filtersTags]);
 
   return (
     <Layout>
@@ -87,7 +211,6 @@ const index = ({ filters, session, filtersTags }) => {
             <Row>
               <Col>
                 <OffCanvasFilter
-                  filters={filters}
                   appliedFilters={appliedFilters}
                   setAppliedFilters={setAppliedFilters}
                 />
@@ -95,16 +218,28 @@ const index = ({ filters, session, filtersTags }) => {
             </Row>
           </Col>
           <Col>
-            <FilteredImages
-              images={filteredImages}
+            {/* {isLoading ? (
+              <SpinnerCustom />
+            ) : ( */}
+            {/* // <></> */}
+
+            {/* {appliedFilters.length > 0 ? ( */}
+            {/* <ImagesGroup
+              isLoading={isLoading}
+              localBuildingWorks={localBuildingWorksFilter}
+              fetchMoreData={fetchMoreDataFilter}
+              getTotalBuildingWorks={getTotalBuildingWorks}
+            /> */}
+            {/* ) : ( */}
+            <ImagesGroup
+              isLoading={isLoading}
+              localBuildingWorks={localBuildingWorks}
               fetchMoreData={fetchMoreData}
+              getTotalBuildingWorks={getTotalBuildingWorks}
             />
+            {/* )} */}
+            {/* )} */}
           </Col>
-          {/* <Col>
-            <PrimaryButton dark onClick={changePage}>
-              {t("view-more")}
-            </PrimaryButton>
-          </Col> */}
         </Row>
       </section>
     </Layout>
@@ -124,13 +259,25 @@ export async function getServerSideProps({ req }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  const imagesfilters = await tagService.findAll();
-
+  const arrayCategories = [];
+  let buildingWorks = { buildingWorks: [], count: 0 };
+  const status = "APPROVED";
+  if (categories != undefined) {
+    arrayCategories.push(categories);
+    buildingWorks = await buildingWorkService.getAllByCategoryAndStatus(
+      status,
+      arrayCategories,
+      page,
+      size
+    );
+  } else {
+    buildingWorks = await buildingWorkService.findAll(status, page, size);
+  }
   return {
     props: {
-      filters: imagesfilters,
       session,
       filtersTags: categories ? categories : "",
+      buildingWorks: buildingWorks,
     },
   };
 }

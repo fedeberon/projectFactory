@@ -191,7 +191,7 @@ const BuildingAdmin = ({
         pageSize.size,
         session?.accessToken
       );
-      return buildingWorksNotAppoved;
+      return buildingWorksNotAppoved.buildingWorks;
     } catch (error) {
       console.error(error);
     }
@@ -205,7 +205,7 @@ const BuildingAdmin = ({
         pageSize.size,
         session?.accessToken
       );
-      return buildingWorksNotApproved;
+      return buildingWorksNotApproved.buildingWorks;
     } catch (error) {
       console.error(error);
     }
@@ -255,12 +255,12 @@ const BuildingAdmin = ({
               defaultValue={buildingWork.tokensAsigned}
             />
             <Button
-            onClick={(e) =>
-              setNewTokensToBuildingWork(
-                e.target.previousElementSibling.value,
-                buildingWork.id
-              )
-            }
+              onClick={(e) =>
+                setNewTokensToBuildingWork(
+                  e.target.previousElementSibling.value,
+                  buildingWork.id
+                )
+              }
             >
               {t("apply")}
             </Button>
@@ -455,9 +455,9 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   return {
     props: {
-      buildingWorksNotApproved,
-      buildingWorksApproved,
-      buildingWorksRejected,
+      buildingWorksNotApproved: buildingWorksNotApproved.buildingWorks,
+      buildingWorksApproved: buildingWorksApproved.buildingWorks,
+      buildingWorksRejected: buildingWorksRejected.buildingWorks,
       session,
     },
   };
