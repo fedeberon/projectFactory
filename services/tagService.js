@@ -5,10 +5,11 @@ export const getStartsWith = async (tag, token) => {
   return await API.get(`/tags/${tag}`);
 };
 
-export const getTags = tags => {
+export const getTags = (tags) => {
+  // console.log("getTags---", tags);
   const rawTags = [];
-  tags.forEach(tag => {
-    rawTags.push(tag.tag);
+  tags.forEach((tag) => {
+    rawTags.push(tag.name);
   });
 
   return rawTags;
@@ -21,4 +22,4 @@ export const findAll = async () => {
 export const addTag = async (tag, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.post(`/tags`, tag);
-}; 
+};

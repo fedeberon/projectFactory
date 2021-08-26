@@ -20,22 +20,23 @@ import * as imageService from "../../services/imageService";
 // Styles
 import indexStyles from "./index.module.css";
 
-const Portfolio = ({ professional, buildingWorks }) => {
-  const [session] = useSession();
+const Portfolio = ({ professional, buildingWorks, session }) => {
+  // const [session] = useSession();
   const { t } = useTranslation("common");
   const [previewImage, setPreviewImage] = useState([]);
   const [images, setImages] = useState([]);
-  const [localBuildingWorks, setLocalBuildingWorks] = useState([]);
-  const [pageSize, setPageSize] = useState({ page: 0, size: 3 });
+  const [localBuildingWorks, setLocalBuildingWorks] = useState(buildingWorks);
+  const [pageSize, setPageSize] = useState({ page: 1, size: 3 });
   const [paginationMultipleImage, setPaginationMultipleImage] = useState({
     page: 0,
     size: 100,
   });
   const [buildingWorkId, setBuildingWorkId] = useState(null);
 
-  useEffect(() => {
-    console.log(localBuildingWorks);
-  }, [localBuildingWorks]);
+  // useEffect(() => {
+  //   console.log(localBuildingWorks);
+  // }, [localBuildingWorks]);
+
   const [buildingWorkData, setBuildingWorkData] = useState({
     defaultValues: {
       name: "",
@@ -53,7 +54,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
   const toggleModal = () => setModalOpen(!modalOpen);
 
   const updateCardsBuildingWorks = async () => {
-    let buildingWorks = [];
+    let newBuildingWorks = [];
     setLoading(true);
     if (session) {
       let token = session.accessToken;
@@ -64,19 +65,80 @@ const Portfolio = ({ professional, buildingWorks }) => {
       );
       if (professional) {
         // resetPage();
-        buildingWorks = await buildingWorkService.getByProfessionalId(
+        newBuildingWorks = await buildingWorkService.getByProfessionalId(
           professional.id,
           pageSize.page,
           pageSize.size,
           token
         );
 
-        // const localBuildingWorksFilter = buildingWorks.filter(
-        //   (buildingWorks) => buildingWorks.id != localBuildingWorks.id
+        // const newBuildingWorks = buildingWorks.filter(
+        //   (buildingWork) =>
+        //     !localBuildingWorks.some((local) => local.id === buildingWork.id)
         // );
-        setLocalBuildingWorks(buildingWorks);
+
+        // console.log("las que tengo", localBuildingWorks);
+        // console.log("las nuevas", buildingWorks);
+        // console.log("filtradas sin repetir", [
+        //   ...newBuildingWorks,
+        //   ...localBuildingWorks,
+        // ]);
+
+        const count = await getTotalBuildingWorksByProfessional();
+        // console.log("TOTAL:", count.count);
+
+        // console.log({
+        //   ...localBuildingWorks,
+        //   buildingWorks: [
+        //     ...localBuildingWorks.buildingWorks,
+        //     // ...buildingWorks.buildingWorks,
+        //     newBuildingWorks[newBuildingWorks.length - 1],
+        //   ],
+        //   count: count,
+        // });
+        // console.log("COPY-------");
+
+        // console.log("COPY_ALL_NEWs", newBuildingWorks);
+        // console.log("COPY_END", newBuildingWorks[newBuildingWorks.length - 1]);
+        const endArray = newBuildingWorks[newBuildingWorks.length - 1];
+
+        if (count.count) {
+          setLocalBuildingWorks({
+            ...localBuildingWorks,
+            buildingWorks: [
+              ...localBuildingWorks.buildingWorks,
+              // ...buildingWorks.buildingWorks,
+              ...[endArray],
+            ],
+            count: count.count,
+          });
+        }
+        // setLocalBuildingWorks({
+        //   buildingWorks: buildingWorks,
+        //   count,
+        // });
+
+        // setLocalBuildingWorks({
+        //   ...localBuildingWorks,
+        //   buildingWorks: [
+        //     ...localBuildingWorks.buildingWorks,
+        //     ...buildingWorks.buildingWorks,
+        //   ],
+        // });
+
         setLoading(false);
       }
+    }
+  };
+
+  const getTotalBuildingWorksByProfessional = async () => {
+    try {
+      const count = await buildingWorkService.getCountByProfessional(
+        session.user.id
+      );
+      return count;
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -173,6 +235,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
           },
           session.accessToken
         );
+        // console.log("new---------", folder);
         if (folder) {
           let preview = await onAddPreviewImageToBuildingWork(
             folder,
@@ -181,6 +244,8 @@ const Portfolio = ({ professional, buildingWorks }) => {
           if (data.images.length > 0) {
             let images = await onAddImagesToBuildingWork(folder, data.images);
           }
+          // const newBuildingWork = await buildingWorkService.getById(folder.id);
+          // console.log("newBuildingWork", newBuildingWork);
           updateCardsBuildingWorks();
           return true;
         }
@@ -212,7 +277,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
       post: false,
       put: true,
     });
-    const [buildingWork] = localBuildingWorks.filter((d) => d.id == id);
+    const [buildingWork] = localBuildingWorks.buildingWorks.filter((d) => d.id == id);
     let copyBuildingWorkData = Object.assign({}, buildingWorkData);
     copyBuildingWorkData.defaultValues.name = buildingWork.name;
     copyBuildingWorkData.defaultValues.description = buildingWork.description;
@@ -269,11 +334,11 @@ const Portfolio = ({ professional, buildingWorks }) => {
     }
   };
 
-  useEffect(async () => {
-    if (buildingWorks) {
-      setLocalBuildingWorks(buildingWorks);
-    }
-  }, [buildingWorks]);
+  // useEffect(async () => {
+  //   if (buildingWorks) {
+  //     setLocalBuildingWorks(buildingWorks);
+  //   }
+  // }, [buildingWorks]);
 
   const onGetByProfessionalId = async () => {
     setLoading(true);
@@ -297,8 +362,18 @@ const Portfolio = ({ professional, buildingWorks }) => {
 
   useEffect(async () => {
     const images = await onGetByProfessionalId();
+    const buildingWorks = {
+      buildingWorks: images,
+    };
     if (images) {
-      setLocalBuildingWorks([...localBuildingWorks, ...images]);
+      // setLocalBuildingWorks([...localBuildingWorks, ...images]);
+      setLocalBuildingWorks({
+        ...localBuildingWorks,
+        buildingWorks: [
+          ...localBuildingWorks.buildingWorks,
+          ...buildingWorks.buildingWorks,
+        ],
+      });
     }
   }, [pageSize]);
 
@@ -371,6 +446,7 @@ const Portfolio = ({ professional, buildingWorks }) => {
               editBuildingWork={editBuildingWork}
               fetchMoreData={fetchMoreData}
               profileHidden={true}
+              getTotalBuildingWorks={getTotalBuildingWorksByProfessional}
             />
           </Col>
         </Row>
@@ -420,6 +496,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   let professionalId;
   let professional = [];
   let buildingWorks = [];
+  let count = 0;
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -440,9 +517,13 @@ export async function getServerSideProps({ params, req, res, locale }) {
           3,
           token
         );
+        count = await buildingWorkService.getCountByProfessional(
+          professionalId
+        );
       }
     }
   } catch (e) {
+    console.error(e);
     return {
       redirect: {
         destination: "/logIn?expired",
@@ -454,7 +535,11 @@ export async function getServerSideProps({ params, req, res, locale }) {
   return {
     props: {
       professional,
-      buildingWorks,
+      buildingWorks: {
+        buildingWorks: buildingWorks,
+        count: count.count,
+      },
+      session,
     },
   };
 }

@@ -157,7 +157,7 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
                     </Link>
                     <div className={`${filteredImagesStyles.cardText}`}>
                       <Col className="col-auto">
-                        {image.professional.previewImage ? (
+                        {image.professional?.previewImage ? (
                           <img
                             className={`${filteredImagesStyles.imgProfile} rounded-circle`}
                             src={image.professional?.previewImage}

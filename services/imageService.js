@@ -46,7 +46,7 @@ export const getProfessionalImagesByTags = async (tags, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
   let concatenatedTags = "";
   tags.forEach((tag) => {
-    concatenatedTags = `${concatenatedTags}tags=${tag.tag}&`;
+    concatenatedTags = `${concatenatedTags}tags=${tag.name}&`;
   });
   concatenatedTags = concatenatedTags.substring(0, concatenatedTags.length - 1);
 
@@ -87,7 +87,7 @@ export const getProfessionalImagesByTagsLessFuntions = async (
 };
 
 export const getImagesByBuildingWorksId = async (id, page, size, token) => {
-  API.defaults.headers.common["Authorization"] = token;
+  // API.defaults.headers.common["Authorization"] = token;
   const images = await API.get(
     `/images/building-works/${id}?page=${page}&size=${size}`
   );
@@ -271,6 +271,7 @@ export const addImagesToBuildingWork = async (data, token) => {
 const addToBuildingWork = async (id, image) => {
   const imageData = new FormData();
   const tags = tagService.getTags(image.tags);
+  // console.log("addToBuildingWork----", tags);
   imageData.append("image", image);
   imageData.append("tags", tags);
   return await API.post(`/images/building-works/${id}`, imageData, {

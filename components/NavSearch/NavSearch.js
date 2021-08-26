@@ -226,7 +226,7 @@ export default function NavSearch({ filters }) {
                                   {col.map((category, index) => (
                                     <Link
                                       key={index}
-                                      href={`/ideas?filters=${category.name}`}
+                                      href={`/ideas?categories=${category.name}`}
                                       passHref
                                     >
                                       <li>

@@ -104,3 +104,29 @@ export const findByContactAndStatus = async (name, status, page, size) => {
 export const getCountByProfessional = async (id) => {
   return await API.get(`/building-works/professional/${id}/count`);
 };
+
+export const getCount = async (status) => {
+  return await API.get(`/building-works/status/${status}/count`);
+};
+
+export const getAllByCategoryAndStatus = async (
+  status,
+  arrayCategories,
+  page,
+  size
+) => {
+  if (arrayCategories.length == 0) {
+    return findAll(status, page, size);
+  }
+  let categoriesSeparatedByCommas = "";
+  let arrayNew = arrayCategories.map((category, index) => {
+    return (categoriesSeparatedByCommas += `,${category}`);
+  });
+
+  categoriesSeparatedByCommas = categoriesSeparatedByCommas.substring(1);
+  // console.log("categoriesSeparatedByCommas", categoriesSeparatedByCommas);
+  
+  return await API.get(
+    `/building-works/status/${status}/categories/${categoriesSeparatedByCommas}?page=${page}&size=${size}`
+  );
+};

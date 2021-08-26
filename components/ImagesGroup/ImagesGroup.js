@@ -25,24 +25,25 @@ const ImagesGroup = (props) => {
     localBuildingWorks,
     editBuildingWork,
     fetchMoreData,
-    limit,
+    limit = false,
     profileHidden,
+    getTotalBuildingWorks,
   } = props;
   const [session] = useSession();
   const [hasMore, setHasMore] = useState(true);
 
   const { t } = useTranslation("common");
 
-  const getTotalBuildingWorksByProfessional = async () => {
-    try {
-      const total = await buildingWorkService.getCountByProfessional(
-        session.user.id
-      );
-      return total;
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const getTotalBuildingWorksByProfessional = async () => {
+  //   try {
+  //     const total = await buildingWorkService.getCountByProfessional(
+  //       session.user.id
+  //     );
+  //     return total;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const isState = (buildingWork) => {
     let statusColor;
@@ -88,14 +89,27 @@ const ImagesGroup = (props) => {
       ? Buffer.from(str).toString("base64")
       : window.btoa(str);
 
-  useEffect(async () => {
-    if (localBuildingWorks.length > 0 && session) {
-      const { count } = await getTotalBuildingWorksByProfessional();
-      if (localBuildingWorks.length == count) {
+  useEffect(() => {
+    console.group(
+      "voy mostrando: ",
+      localBuildingWorks.buildingWorks.length
+    );
+    // console.log("limit", limit);
+    if (localBuildingWorks.buildingWorks.length > 0) {
+      // const { count } = await getTotalBuildingWorks();
+      // console.log("TOTAL:", count);
+      // console.log("TOTAL:", localBuildingWorks.count);
+
+      if (localBuildingWorks.buildingWorks.length == localBuildingWorks.count) {
         setHasMore(false);
+      } else {
+        setHasMore(true);
       }
     }
-  }, [localBuildingWorks, session]);
+
+    console.table(localBuildingWorks.buildingWorks);
+    console.table(localBuildingWorks.count);
+  }, [localBuildingWorks]);
 
   return (
     <Row className="w-100 m-0">
@@ -103,7 +117,7 @@ const ImagesGroup = (props) => {
         <SpinnerCustom />
       ) : ( */}
       <Col>
-        {localBuildingWorks.length === 0 ? (
+        {localBuildingWorks.buildingWorks.length === 0 ? (
           <Col xs={12}>
             <Alert
               variant="primary"
@@ -116,10 +130,10 @@ const ImagesGroup = (props) => {
         ) : (
           <InfiniteScroll
             className="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4 "
-            dataLength={localBuildingWorks.length}
+            dataLength={localBuildingWorks.buildingWorks.length}
             next={fetchMoreData}
             hasMore={hasMore}
-            loader={<SpinnerCustom className="w-100 m-0 my-2" />}
+            loader={!limit && <SpinnerCustom className="w-100 m-0 my-2" />}
             endMessage={
               !limit && (
                 <Col xs={12}>
@@ -134,7 +148,7 @@ const ImagesGroup = (props) => {
               )
             }
           >
-            {localBuildingWorks.map((buildingWork, index) => (
+            {localBuildingWorks.buildingWorks.map((buildingWork, index) => (
               <Col key={index}>
                 <Card className={`${filteredImagesStyles.colCard}`}>
                   <Card.Body
@@ -171,7 +185,8 @@ const ImagesGroup = (props) => {
                         />
                       </Col> */}
                       <Col className="col-auto">
-                        {buildingWork.professional?.previewImage && !profileHidden  ? (
+                        {buildingWork.professional?.previewImage &&
+                        !profileHidden ? (
                           <img
                             className={`${filteredImagesStyles.imgProfile} rounded-circle`}
                             src={buildingWork.professional.previewImage}
