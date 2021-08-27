@@ -3,6 +3,6 @@ const nextTranslate = require("next-translate");
 module.exports = {
   ...nextTranslate(),
   images: {
-    domains: ["*.vercel.app"],
+    domains: ["vps-2103012-x.dattaweb.com"],
   },
 };
