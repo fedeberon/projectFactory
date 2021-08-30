@@ -124,8 +124,7 @@ export const getAllByCategoryAndStatus = async (
   });
 
   categoriesSeparatedByCommas = categoriesSeparatedByCommas.substring(1);
-  // console.log("categoriesSeparatedByCommas", categoriesSeparatedByCommas);
-  
+
   return await API.get(
     `/building-works/status/${status}/categories/${categoriesSeparatedByCommas}?page=${page}&size=${size}`
   );

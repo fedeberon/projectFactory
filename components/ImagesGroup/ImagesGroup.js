@@ -90,16 +90,7 @@ const ImagesGroup = (props) => {
       : window.btoa(str);
 
   useEffect(() => {
-    console.group(
-      "voy mostrando: ",
-      localBuildingWorks.buildingWorks.length
-    );
-    // console.log("limit", limit);
     if (localBuildingWorks.buildingWorks.length > 0) {
-      // const { count } = await getTotalBuildingWorks();
-      // console.log("TOTAL:", count);
-      // console.log("TOTAL:", localBuildingWorks.count);
-
       if (localBuildingWorks.buildingWorks.length == localBuildingWorks.count) {
         setHasMore(false);
       } else {
@@ -107,15 +98,15 @@ const ImagesGroup = (props) => {
       }
     }
 
-    console.table(localBuildingWorks.buildingWorks);
-    console.table(localBuildingWorks.count);
+    // console.table(
+    //   "OBRAS EN EL COMPONENTE IMAGE_GROUP",
+    //   localBuildingWorks.buildingWorks
+    // );
+    // console.log(localBuildingWorks.count);
   }, [localBuildingWorks]);
 
   return (
     <Row className="w-100 m-0">
-      {/* {isLoading ? (
-        <SpinnerCustom />
-      ) : ( */}
       <Col>
         {localBuildingWorks.buildingWorks.length === 0 ? (
           <Col xs={12}>
@@ -156,10 +147,10 @@ const ImagesGroup = (props) => {
                   >
                     <Link
                       href={`/building/[id]`}
-                      as={`/building/${buildingWork.name.replace(
+                      as={`/building/${buildingWork?.name.replace(
                         /\s+/g,
                         "-"
-                      )}-${buildingWork.id}`}
+                      )}-${buildingWork?.id}`}
                     >
                       <a>
                         <Image
@@ -167,7 +158,7 @@ const ImagesGroup = (props) => {
                           objectFit="cover"
                           quality={50}
                           className={` cursor-pointer`}
-                          src={buildingWork.previewImage}
+                          src={buildingWork?.previewImage}
                           alt="Professional preview"
                           placeholder="blur"
                           blurDataURL={`data:image/svg+xml;base64,${toBase64(
@@ -185,13 +176,13 @@ const ImagesGroup = (props) => {
                         />
                       </Col> */}
                       <Col className="col-auto">
-                        {buildingWork.professional?.previewImage &&
+                        {buildingWork?.professional?.previewImage &&
                         !profileHidden ? (
                           <img
                             className={`${filteredImagesStyles.imgProfile} rounded-circle`}
-                            src={buildingWork.professional.previewImage}
+                            src={buildingWork?.professional.previewImage}
                           />
-                        ) : buildingWork.professional && !profileHidden ? (
+                        ) : buildingWork?.professional && !profileHidden ? (
                           <PersonCircle size={50} />
                         ) : (
                           <img
@@ -204,13 +195,13 @@ const ImagesGroup = (props) => {
                         <Card.Text
                           className={`${filteredImagesStyles.textShadowSm} ${styles.parrafoName} fw-bold`}
                         >
-                          {buildingWork.name}
+                          {buildingWork?.name}
                         </Card.Text>
                         {!profileHidden && (
                           <Card.Text
                             className={`${filteredImagesStyles.textShadowSm} ${styles.parrafoName} fw-bold`}
                           >
-                            {buildingWork.professional.contact}
+                            {buildingWork?.professional.contact}
                           </Card.Text>
                         )}
                       </Col>
@@ -222,7 +213,7 @@ const ImagesGroup = (props) => {
                             <CustomButtonToggle
                               id={buildingWork.id}
                               editBuildingWork={editBuildingWork}
-                              imageSize={buildingWork.countImages}
+                              imageSize={buildingWork?.countImages}
                             />
                           </div>
                         ) : (
@@ -232,7 +223,7 @@ const ImagesGroup = (props) => {
                               color={"white"}
                               size={25}
                             />
-                            {` ${buildingWork.countImages} Photos`}
+                            {` ${buildingWork?.countImages} Photos`}
                           </div>
                         )}
                       </Col>

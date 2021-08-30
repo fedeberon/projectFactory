@@ -14,24 +14,17 @@ import * as buildingWorkService from "../../services/buildingWorkService";
 // Styles
 import styles from "../../styles/Home.module.css";
 import ImagesGroup from "../../components/ImagesGroup/ImagesGroup";
-import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
 const index = ({ session, filtersTags, buildingWorks }) => {
-  const [appliedFilters, setAppliedFilters] = useState([]);
+  const [appliedFilters, setAppliedFilters] = useState(filtersTags);
   const [pageSize, setPageSize] = useState({
     page: 1,
     size: process.env.NEXT_PUBLIC_SIZE_PER_PAGE,
   });
-
-  // const [pageSizeFilter, setPageSizeFilter] = useState({
-  //   page: 0,
-  //   size: process.env.NEXT_PUBLIC_SIZE_PER_PAGE,
-  // });
+  const [countFirst, setCountFirst] = useState(false);
 
   const [isLoading, setLoading] = useState(false);
   const [localBuildingWorks, setLocalBuildingWorks] = useState(buildingWorks);
-  const [localBuildingWorksFilter, setLocalBuildingWorksFilter] =
-    useState(buildingWorks);
 
   let { t } = useTranslation("common");
 
@@ -39,20 +32,11 @@ const index = ({ session, filtersTags, buildingWorks }) => {
     const { page } = { page: pageSize.page + 1 };
     setPageSize({ ...pageSize, page });
   };
-  // const changePageFilter = () => {
-  //   const { page } = { page: pageSizeFilter.page + 1 };
-  //   setPageSizeFilter({ ...pageSizeFilter, page });
-  // };
 
   const resetPage = () => {
-    const { page } = { page: 1 };
+    const { page } = { page: 0 };
     setPageSize({ ...pageSize, page });
   };
-
-  // const resetPageFilter = () => {
-  //   const { page } = { page: 0 };
-  //   setPageSizeFilter({ ...pageSizeFilter, page });
-  // };
 
   const onGetAllByCategoryAndStatus = async (status) => {
     // setLoading(true);
@@ -71,118 +55,9 @@ const index = ({ session, filtersTags, buildingWorks }) => {
     }
   };
 
-  // const onGetAllByCategoryAndStatusFilter = async (status) => {
-  //   // setLoading(true);
-  //   try {
-  //     const filterImages = await buildingWorkService.getAllByCategoryAndStatus(
-  //       status,
-  //       appliedFilters,
-  //       pageSizeFilter.page,
-  //       pageSizeFilter.size
-  //     );
-  //     // setLoading(false);
-  //     return filterImages;
-  //   } catch (error) {
-  //     console.error(error);
-  //     // setLoading(false);
-  //   }
-  // };
-
-  // 1 llamada es este
-  // useEffect(async () => {
-  //   console.log("appliedFilters", appliedFilters);
-  //   if (appliedFilters.length > 0) {
-  //     const buildingWorks = await onGetAllByCategoryAndStatus("APPROVED");
-  //     console.log("buildingWorks_Filtradas", buildingWorks);
-  //     // resetPage();
-  //     // setLocalBuildingWorks({ buildingWorks: [], count: 0 });
-  //     setLocalBuildingWorksFilter(buildingWorks);
-  //   }
-  // }, [appliedFilters]);
-
-  // el 2do llamada es este otro
-  useEffect(async () => {
-    // console.log("----------> efect pageSize <----------");
-    // console.log("pageSize---", pageSize);
-    const status = "APPROVED";
-    const buildingWorks = await onGetAllByCategoryAndStatus("APPROVED");
-    // console.log("onGetAllByCategoryAndStatus---", buildingWorks);
-    // console.log(
-    //   "onGetAllByCategoryAndStatus---",
-    //   buildingWorks.buildingWorks.slice(buildingWorks.buildingWorks.length - 1)
-    // );
-    // console.log("//////////-> efect pageSize <-//////////");
-
-    // console.log({
-    //   ...localBuildingWorks,
-    //   buildingWorks: [
-    //     ...localBuildingWorks.buildingWorks,
-    //     ...buildingWorks.buildingWorks,
-    //   ],
-    // });
-    setLocalBuildingWorks({
-      ...localBuildingWorks,
-      buildingWorks: [
-        ...localBuildingWorks.buildingWorks,
-        ...buildingWorks.buildingWorks,
-      ],
-    });
-  }, [pageSize]);
-
-  // useEffect(async () => {
-  //   console.log("----------> efect pageSize <----------");
-  //   console.log("pageSize---", pageSize);
-  //   const status = "APPROVED";
-  //   const buildingWorks = await onGetAllByCategoryAndStatusFilter("APPROVED");
-  //   console.log("onGetAllByCategoryAndStatusFILTER---", buildingWorks);
-  //   // console.log(
-  //   //   "onGetAllByCategoryAndStatus---",
-  //   //   buildingWorks.buildingWorks.slice(buildingWorks.buildingWorks.length - 1)
-  //   // );
-  //   console.log("//////////-> efect pageSize <-//////////");
-
-  //   // console.log({
-  //   //   ...localBuildingWorks,
-  //   //   buildingWorks: [
-  //   //     ...localBuildingWorks.buildingWorks,
-  //   //     ...buildingWorks.buildingWorks,
-  //   //   ],
-  //   // });
-  //   setLocalBuildingWorksFilter({
-  //     ...localBuildingWorksFilter,
-  //     buildingWorks: [
-  //       ...localBuildingWorksFilter.buildingWorks,
-  //       ...buildingWorks.buildingWorks,
-  //     ],
-  //   });
-  //   setLocalBuildingWorksFilter({ buildingWorks: [], count: 0 });
-  // }, [pageSizeFilter]);
-
-  // useEffect(() => {
-  //   if (localBuildingWorks) {
-  //     console.log(localBuildingWorks.count);
-  //   }
-  // }, [localBuildingWorks]);
-
   const fetchMoreData = () => {
-    // setTimeout(() => {
     changePage();
-    // console.log("FETCH_MORE_DATA pageSize---", pageSize);
-    // }, 1500);
   };
-  // const fetchMoreDataFilter = () => {
-  //   // setTimeout(() => {
-  //   changePageFilter();
-  //   console.log("FETCH_MORE_DATA_FILTER pageSize---", pageSizeFilter);
-  //   // }, 1500);
-  // };
-
-  // useEffect(async () => {
-  //   if (buildingWorks) {
-  //     console.log("buildingWorks getServerSideProps", buildingWorks);
-  //     setLocalBuildingWorks(buildingWorks);
-  //   }
-  // }, [buildingWorks]);
 
   const getTotalBuildingWorks = async () => {
     const status = "APPROVED";
@@ -194,10 +69,37 @@ const index = ({ session, filtersTags, buildingWorks }) => {
     }
   };
 
-  useEffect(() => {
-    if (filtersTags) {
-      setAppliedFilters([filtersTags]);
+  // 1 llamada es este
+  useEffect(async () => {
+    if (countFirst) {
+      setLocalBuildingWorks({ buildingWorks: [], count: 0 });
+      setPageSize({
+        page: 0,
+        size: process.env.NEXT_PUBLIC_SIZE_PER_PAGE,
+      });
+    } else {
+      setCountFirst(true);
     }
+  }, [appliedFilters]);
+
+  // el 2do llamada es este otro
+  useEffect(async () => {
+    const status = "APPROVED";
+    const buildingWorks = await onGetAllByCategoryAndStatus("APPROVED");
+    if (buildingWorks) {
+      setLocalBuildingWorks({
+        ...localBuildingWorks,
+        buildingWorks: [
+          ...localBuildingWorks.buildingWorks,
+          ...buildingWorks.buildingWorks,
+        ],
+        count: buildingWorks.count,
+      });
+    }
+  }, [pageSize]);
+
+  useEffect(() => {
+    setAppliedFilters(filtersTags);
   }, [filtersTags]);
 
   return (
@@ -205,7 +107,9 @@ const index = ({ session, filtersTags, buildingWorks }) => {
       <section className="container content">
         <Row className="row-cols-1 gap-2">
           <Col className={styles.infoHead}>
-            <h2 className={styles.itemsTitle}>{t("facades")}</h2>
+            <h2 className={styles.itemsTitle}>
+              {appliedFilters.length === 0 ? t("buildings") : appliedFilters[0]}
+            </h2>
           </Col>
           <Col>
             <Row>
@@ -218,27 +122,12 @@ const index = ({ session, filtersTags, buildingWorks }) => {
             </Row>
           </Col>
           <Col>
-            {/* {isLoading ? (
-              <SpinnerCustom />
-            ) : ( */}
-            {/* // <></> */}
-
-            {/* {appliedFilters.length > 0 ? ( */}
-            {/* <ImagesGroup
-              isLoading={isLoading}
-              localBuildingWorks={localBuildingWorksFilter}
-              fetchMoreData={fetchMoreDataFilter}
-              getTotalBuildingWorks={getTotalBuildingWorks}
-            /> */}
-            {/* ) : ( */}
             <ImagesGroup
               isLoading={isLoading}
               localBuildingWorks={localBuildingWorks}
               fetchMoreData={fetchMoreData}
               getTotalBuildingWorks={getTotalBuildingWorks}
             />
-            {/* )} */}
-            {/* )} */}
           </Col>
         </Row>
       </section>
@@ -276,7 +165,7 @@ export async function getServerSideProps({ req }) {
   return {
     props: {
       session,
-      filtersTags: categories ? categories : "",
+      filtersTags: arrayCategories,
       buildingWorks: buildingWorks,
     },
   };
