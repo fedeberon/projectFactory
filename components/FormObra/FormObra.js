@@ -323,7 +323,8 @@ const FormObra = ({
       )}
 
       <ModalForm
-        size={"md"}
+        size={"lg"}
+        fullscreen={"lg-down"}
         className={"Button"}
         modalTitle={t("common:add-tags")}
         formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}
