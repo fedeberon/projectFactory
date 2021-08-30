@@ -19,6 +19,7 @@ import * as imageService from "../../services/imageService";
 
 // Styles
 import indexStyles from "./index.module.css";
+import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
 const Portfolio = ({ professional, buildingWorks, session }) => {
   // const [session] = useSession();
@@ -54,78 +55,86 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   const toggleModal = () => setModalOpen(!modalOpen);
 
   const updateCardsBuildingWorks = async () => {
-    let newBuildingWorks = [];
+    let newBuildingWorks = {
+      buildingWorks: [],
+      count: 0,
+    };
     setLoading(true);
     if (session) {
-      let token = session.accessToken;
-      let professionalId = session.user.id;
-      let professional = await professionalService.getById(
-        professionalId,
-        token
-      );
-      if (professional) {
-        // resetPage();
-        newBuildingWorks = await buildingWorkService.getByProfessionalId(
-          professional.id,
-          pageSize.page,
-          pageSize.size,
+      try {
+        let token = session.accessToken;
+        let professionalId = session.user.id;
+        let professional = await professionalService.getById(
+          professionalId,
           token
         );
+        if (professional) {
+          // resetPage();
+          newBuildingWorks = await buildingWorkService.getByProfessionalId(
+            professional.id,
+            pageSize.page,
+            pageSize.size,
+            token
+          );
 
-        // const newBuildingWorks = buildingWorks.filter(
-        //   (buildingWork) =>
-        //     !localBuildingWorks.some((local) => local.id === buildingWork.id)
-        // );
+          // const newBuildingWorks = buildingWorks.filter(
+          //   (buildingWork) =>
+          //     !localBuildingWorks.some((local) => local.id === buildingWork.id)
+          // );
 
-        // console.log("las que tengo", localBuildingWorks);
-        // console.log("las nuevas", buildingWorks);
-        // console.log("filtradas sin repetir", [
-        //   ...newBuildingWorks,
-        //   ...localBuildingWorks,
-        // ]);
+          // console.log("las que tengo", localBuildingWorks);
+          // console.log("las nuevas", buildingWorks);
+          // console.log("filtradas sin repetir", [
+          //   ...newBuildingWorks,
+          //   ...localBuildingWorks,
+          // ]);
 
-        const count = await getTotalBuildingWorksByProfessional();
-        // console.log("TOTAL:", count.count);
+          const count = await getTotalBuildingWorksByProfessional();
+          // console.log("TOTAL:", count.count);
 
-        // console.log({
-        //   ...localBuildingWorks,
-        //   buildingWorks: [
-        //     ...localBuildingWorks.buildingWorks,
-        //     // ...buildingWorks.buildingWorks,
-        //     newBuildingWorks[newBuildingWorks.length - 1],
-        //   ],
-        //   count: count,
-        // });
-        // console.log("COPY-------");
+          // console.log({
+          //   ...localBuildingWorks,
+          //   buildingWorks: [
+          //     ...localBuildingWorks.buildingWorks,
+          //     // ...buildingWorks.buildingWorks,
+          //     newBuildingWorks[newBuildingWorks.length - 1],
+          //   ],
+          //   count: count,
+          // });
+          // console.log("COPY-------");
 
-        // console.log("COPY_ALL_NEWs", newBuildingWorks);
-        // console.log("COPY_END", newBuildingWorks[newBuildingWorks.length - 1]);
-        const endArray = newBuildingWorks[newBuildingWorks.length - 1];
+          // console.log("COPY_ALL_NEWs", newBuildingWorks);
+          // console.log("COPY_END", newBuildingWorks[newBuildingWorks.length - 1]);
+          const endArray = newBuildingWorks[newBuildingWorks.length - 1];
 
-        if (count.count) {
-          setLocalBuildingWorks({
-            ...localBuildingWorks,
-            buildingWorks: [
-              ...localBuildingWorks.buildingWorks,
-              // ...buildingWorks.buildingWorks,
-              ...[endArray],
-            ],
-            count: count.count,
-          });
+          if (count.count) {
+            setLocalBuildingWorks({
+              ...localBuildingWorks,
+              buildingWorks: [
+                ...localBuildingWorks.buildingWorks,
+                // ...buildingWorks.buildingWorks,
+                ...[endArray],
+              ],
+              count: count.count,
+            });
+          }
+          // setLocalBuildingWorks({
+          //   buildingWorks: buildingWorks,
+          //   count,
+          // });
+
+          // setLocalBuildingWorks({
+          //   ...localBuildingWorks,
+          //   buildingWorks: [
+          //     ...localBuildingWorks.buildingWorks,
+          //     ...buildingWorks.buildingWorks,
+          //   ],
+          // });
+
+          setLoading(false);
         }
-        // setLocalBuildingWorks({
-        //   buildingWorks: buildingWorks,
-        //   count,
-        // });
-
-        // setLocalBuildingWorks({
-        //   ...localBuildingWorks,
-        //   buildingWorks: [
-        //     ...localBuildingWorks.buildingWorks,
-        //     ...buildingWorks.buildingWorks,
-        //   ],
-        // });
-
+      } catch (error) {
+        console.log(error);
         setLoading(false);
       }
     }
@@ -277,7 +286,9 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
       post: false,
       put: true,
     });
-    const [buildingWork] = localBuildingWorks.buildingWorks.filter((d) => d.id == id);
+    const [buildingWork] = localBuildingWorks.buildingWorks.filter(
+      (d) => d.id == id
+    );
     let copyBuildingWorkData = Object.assign({}, buildingWorkData);
     copyBuildingWorkData.defaultValues.name = buildingWork.name;
     copyBuildingWorkData.defaultValues.description = buildingWork.description;
@@ -440,14 +451,18 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
             </Button>
           </Col>
           <Col className="col-12">
-            <ImagesGroup
-              isLoading={isLoading}
-              localBuildingWorks={localBuildingWorks}
-              editBuildingWork={editBuildingWork}
-              fetchMoreData={fetchMoreData}
-              profileHidden={true}
-              getTotalBuildingWorks={getTotalBuildingWorksByProfessional}
-            />
+            {isLoading ? (
+              <SpinnerCustom />
+            ) : (
+              <ImagesGroup
+                isLoading={isLoading}
+                localBuildingWorks={localBuildingWorks}
+                editBuildingWork={editBuildingWork}
+                fetchMoreData={fetchMoreData}
+                profileHidden={true}
+                getTotalBuildingWorks={getTotalBuildingWorksByProfessional}
+              />
+            )}
           </Col>
         </Row>
         <ModalForm
