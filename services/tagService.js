@@ -5,6 +5,11 @@ export const getStartsWith = async (tag, token) => {
   return await API.get(`/tags/${tag}`);
 };
 
+export const getStartsWithTypeTag = async (tag, typeTag, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.get(`/tags/${tag}/type-tag/${typeTag}`);
+};
+
 export const getTags = (tags) => {
   // console.log("getTags---", tags);
   const rawTags = [];
