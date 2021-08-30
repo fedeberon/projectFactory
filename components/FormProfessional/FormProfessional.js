@@ -401,7 +401,7 @@ const FormProfessional = ({
                     })}
                     {...register("website", {
                       required: {
-                        value: true,
+                        value: false,
                         message: `${t("common:is-required", {
                           nameRequired: t("common:formulary.the-web-page"),
                         })}`,
