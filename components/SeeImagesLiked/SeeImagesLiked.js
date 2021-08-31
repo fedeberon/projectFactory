@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import ImageLiked from "./ImageLiked";
 import useTranslation from "next-translate/useTranslation";
 
 const SeeImagesLiked = ({ imagesLiked }) => {
-
   const { t } = useTranslation("profile");
 
   return (

@@ -40,7 +40,7 @@
     "react-themeable": "^1.1.0",
     "redux": "^4.1.0",
     "styled-components": "^5.3.0",
-    "swiper": "^6.7.5"
+    "swiper": "^7.0.2"
   },
   "devDependencies": {
     "css-loader": "^5.2.6",

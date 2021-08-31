@@ -9,6 +9,7 @@ import * as buildingWorkService from "../../services/buildingWorkService";
 import { Row, Col, Card, Container } from "react-bootstrap";
 import buildingStyles from "./building.module.css";
 import FilteredImages from "../../components/FilteredImages/FilteredImages";
+import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
 const BuildingDetail = ({ data, session, imageClicked }) => {
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
@@ -18,6 +19,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   const [currentTag, setCurrentTag] = useState("");
   const [reset, setReset] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [isLoadingSwiper, setLoadingSwiper] = useState(false);
 
   const [tagsAuxiliar, setTagsAuxiliar] = useState([]);
   const { t } = useTranslation("common");
@@ -72,6 +74,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   };
 
   const onLoadImage = async () => {
+    setLoadingSwiper(true);
     const newArray = [];
     await Promise.all(
       data.images.map(async (image) => {
@@ -83,6 +86,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
         newArray.push(image);
       })
     );
+    setLoadingSwiper(false);
     return newArray;
   };
 
@@ -110,12 +114,16 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   return (
     <Layout>
       <Container fluid className="p-0">
-        <SwiperCarouselProject
-          setAppliedFilters={setAppliedFilters}
-          setCurrentImageId={setCurrentImageId}
-          images={imagenes}
-          reset={reset}
-        />
+        {isLoadingSwiper ? (
+          <SpinnerCustom center />
+        ) : (
+          <SwiperCarouselProject
+            setAppliedFilters={setAppliedFilters}
+            setCurrentImageId={setCurrentImageId}
+            images={imagenes}
+            reset={reset}
+          />
+        )}
         <Row className="w-100 m-0 mt-4">
           <Col>
             <Container>
@@ -195,9 +203,14 @@ export async function getServerSideProps({ params, req, query }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  images = await imageService.getImagesByBuildingWorksId(buildingWorkId, 0, 99, session?.accessToken);
+  images = await imageService.getImagesByBuildingWorksId(
+    buildingWorkId,
+    0,
+    99,
+    session?.accessToken
+  );
 
-  if (imageClicked === undefined) {
+  if (imageClicked === undefined && images) {
     imageClicked = images[0].id;
   }
   buildingWork = await buildingWorkService.getById(buildingWorkId);

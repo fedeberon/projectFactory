@@ -4,7 +4,12 @@ import useTranslation from "next-translate/useTranslation";
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 import TagCreator from "../TagCreator";
 
-const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
+const FilterList = ({
+  filters,
+  appliedFilters,
+  setAppliedFilters,
+  handleToggle,
+}) => {
   const { t } = useTranslation("common");
   const [tags, setTags] = useState([]);
   const [activeState, setActiveState] = useState("");
@@ -31,6 +36,7 @@ const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
     // newAppliedFilters.push(filter);
     // setAppliedFilters(newAppliedFilters);
     setAppliedFilters([filter]);
+    handleToggle();
   };
 
   const removeFilter = (filter) => {
