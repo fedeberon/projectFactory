@@ -64,11 +64,11 @@
 
 .swiperButtonNext,
 .swiperButtonPrev {
-  color: #000;
+  color: #000 !important;
   background: rgba(255, 255, 255, 0.7);
   padding: 10px;
-  width: auto;
-  height: auto;
+  width: auto !important;
+  height: auto !important;
   border-radius: 10px;
   backdrop-filter: blur(5px);
 }
@@ -79,12 +79,14 @@
 }
 
 .swiperButtonNext:hover {
-  color: rgb(0, 122, 255);
+  color: rgb(0, 122, 255) !important;
   animation: moveDirecctionRight 0.4s infinite alternate;
+  /* left: 0; */
 }
 .swiperButtonPrev:hover {
-  color: rgb(0, 122, 255);
+  color: rgb(0, 122, 255) !important;
   animation: moveDirecctionLeft 0.4s infinite alternate;
+  /* right: 0; */
 }
 
 @keyframes moveDirecctionLeft {
@@ -106,14 +108,21 @@
 }
 
 .pagination {
+  /* background-color: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  width: 20% !important;
+  padding: 0 5px;
+  margin-left: 40%;
+  margin-right: 40%; */
   background-color: rgba(0, 0, 0, 0.4);
   bottom: 10px;
-  left: 50%;
+  left: 50% !important;
   transform: translateX(-50%);
-  width: auto;
+  width: auto !important;
   border-radius: 4px;
   color: #fff;
   padding: 3px 10px;
+  display: block;
 }
 
 .swiper-container {

@@ -8,7 +8,7 @@ import PrimaryButton from "../../Buttons/PrimaryButton/PrimaryButton";
 import { useSelector } from "react-redux";
 
 const OffCanvasFilter = (props) => {
-  const { filters, appliedFilters, setAppliedFilters,resetPage } = props;
+  const { filters, appliedFilters, setAppliedFilters, resetPage } = props;
   const [show, setShow] = useState(false);
   let { t } = useTranslation("common");
 
@@ -41,6 +41,7 @@ const OffCanvasFilter = (props) => {
                 filters={destructuringCategories}
                 appliedFilters={appliedFilters}
                 setAppliedFilters={setAppliedFilters}
+                handleToggle={handleToggle}
               />
             </aside>
           </Col>

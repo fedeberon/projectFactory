@@ -252,6 +252,11 @@ export default function NavSearch({ filters }) {
                   onClick={(e) => toggle(divGris.current[0])}
                   className={styles.outSide}
                 ></div>
+                <Link href="/professional" passHref>
+                  <li className={styles.liNav}>
+                    <a className="text-decoration-none">{t("professionals")}</a>
+                  </li>
+                </Link>
                 {/* 
                 <li
                   ref={(li) => {

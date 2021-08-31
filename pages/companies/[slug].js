@@ -45,11 +45,11 @@ const CompanyDetails = ({ company, initialProducts, status, session }) => {
         <span>{company.description}</span>
         {isOwner() && (
           <div className="mt-4">
-            <MercadopagoButton />
+            {/* <MercadopagoButton />
             <span className="d-block mt-4">{`${t(
               "profile:your-tokens"
               )}: ${tokens}`}</span>
-            <PrimaryButton onClick={toggleModalPlan}>{t("profile:buy-more-tokens")}</PrimaryButton>
+            <PrimaryButton onClick={toggleModalPlan}>{t("profile:buy-more-tokens")}</PrimaryButton> */}
             <div className="mt-4">
               <SeeImagesLiked imagesLiked={liked} />
             </div>
