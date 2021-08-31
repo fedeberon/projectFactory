@@ -1,17 +1,30 @@
+// Frameworks
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useTranslation from "next-translate/useTranslation";
-import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
-import styles from "./SwiperCarouselHome.module.css";
-import "swiper/swiper-bundle.css";
 import Link from "next/link";
+
+// Styles
+import styles from "./SwiperCarouselHome.module.css";
+
+// swiper bundle styles
+import "swiper/css/bundle";
+
+// modules styles
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+// Components
 import PrimaryButton from "../../Buttons/PrimaryButton/PrimaryButton";
+
+// Modules
+import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
+SwiperCore.use([Autoplay, Pagination, Navigation]);
+
 /**
  * Docs of swiperJS in
  * https://swiperjs.com/react
  */
-
-SwiperCore.use([Autoplay, Pagination, Navigation]);
 
 const SwiperCarouselHome = (props) => {
   const { images } = props;

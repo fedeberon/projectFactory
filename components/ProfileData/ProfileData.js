@@ -59,7 +59,7 @@ const ProfileData = (props) => {
         <>
           <Row className="row-cols-1 gap-2 row w-100 m-0">
             <Col className="p-0">
-              {/* <Row className="p-0 row m-0 w-100 gap-2 gap-md-0 justify-content-center">
+              <Row className="p-0 row m-0 w-100 gap-2 gap-md-0 justify-content-center">
                 {!session.authorities.includes("ROLE_PROFESSIONAL") &&
                 !session.authorities.includes("ROLE_ADMINISTRATOR") &&
                 !session.authorities.includes("ROLE_COMPANY") ? (
@@ -77,7 +77,7 @@ const ProfileData = (props) => {
                   </>
                 ) : (
                   <>
-                    <Col className="col-auto">
+                    {/* <Col className="col-auto">
                       <span className="d-block">{`${t(
                         "your-tokens"
                       )}: ${amountTokens}`}</span>
@@ -87,10 +87,10 @@ const ProfileData = (props) => {
                     </Col>
                     <Col className="col-auto d-flex align-items-end p-0">
                       <MercadopagoButton />
-                    </Col>
+                    </Col> */}
                   </>
                 )}
-              </Row> */}
+              </Row>
             </Col>
             <Col>
               <Row className="row-cols-1 row-cols-md-2 justify-content-center align-items-center">

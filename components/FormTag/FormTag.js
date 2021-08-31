@@ -49,7 +49,9 @@ const FormTag = ({ toggle, image }) => {
   } = useForm();
 
   useEffect(() => {
-    setTags(image.tags);
+    if (image) {
+      setTags(image.tags);
+    }
   }, [image]);
 
   const onSubmit = async (event) => {

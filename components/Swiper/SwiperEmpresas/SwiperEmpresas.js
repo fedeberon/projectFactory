@@ -1,21 +1,34 @@
+// Frameworks
 import React, { useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
-import "swiper/swiper-bundle.css";
-import styles from "./SwiperEmpresas.module.css";
 import Link from "next/link";
 import { Col, Row } from "react-bootstrap";
 
+//Styles
+import styles from "./SwiperEmpresas.module.css";
+
+// swiper bundle styles
+import "swiper/css/bundle";
+
+// modules styles
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+
 // Custom Hooks
 import useSize from "../../../hooks/window/useSize";
+
+// Components
 import PrimaryButton from "../../Buttons/PrimaryButton/PrimaryButton";
+
+// Modules
+import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
+SwiperCore.use([Autoplay, Pagination, Navigation]);
+
 /**
  * Docs of swiperJS in
  * https://swiperjs.com/react
  */
-
-SwiperCore.use([Autoplay, Pagination, Navigation]);
 
 const SwiperEmpresas = (props) => {
   const { t } = useTranslation("common");
@@ -60,9 +73,9 @@ const SwiperEmpresas = (props) => {
                 <Row className="row-cols-1">
                   <Col>
                     <Link
-                      href={`/companies/${company.name.replace(/\s+/g, "-").toLowerCase()}-${
-                        company.id
-                      }`}
+                      href={`/companies/${company.name
+                        .replace(/\s+/g, "-")
+                        .toLowerCase()}-${company.id}`}
                       passHref
                     >
                       <a className={styles.ancor}>
@@ -94,10 +107,9 @@ const SwiperEmpresas = (props) => {
                     </Col>
                     <Col className={"col-auto m-2"}>
                       <Link
-                        href={`/companies/${company.name.replace(
-                          /\s+/g,
-                          "-"
-                        ).toLowerCase()}-${company.id}`}
+                        href={`/companies/${company.name
+                          .replace(/\s+/g, "-")
+                          .toLowerCase()}-${company.id}`}
                         passHref
                       >
                         <PrimaryButton>{t("common:view-more")}</PrimaryButton>

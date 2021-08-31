@@ -90,6 +90,7 @@ const ImagesGroup = (props) => {
       : window.btoa(str);
 
   useEffect(() => {
+    
     if (localBuildingWorks.buildingWorks.length > 0) {
       if (localBuildingWorks.buildingWorks.length == localBuildingWorks.count) {
         setHasMore(false);
@@ -211,7 +212,7 @@ const ImagesGroup = (props) => {
                         {session && editBuildingWork ? (
                           <div>
                             <CustomButtonToggle
-                              id={buildingWork.id}
+                              id={buildingWork?.id}
                               editBuildingWork={editBuildingWork}
                               imageSize={buildingWork?.countImages}
                             />

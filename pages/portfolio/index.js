@@ -352,7 +352,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   // }, [buildingWorks]);
 
   const onGetByProfessionalId = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       if (session) {
         const buildingWorks = await buildingWorkService.getByProfessionalId(
@@ -362,12 +362,12 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
           session.accessToken
         );
 
-        setLoading(false);
+        // setLoading(false);
         return buildingWorks;
       }
     } catch (error) {
       console.error(error);
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -415,7 +415,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
                 className={indexStyles.backgroundImg}
               />
             ) : (
-              <BackgroundDefault />
+              <BackgroundDefault image={false} />
             )}
             <div className={indexStyles.previewDiv}>
               {professional.previewImage ? (
@@ -451,9 +451,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
             </Button>
           </Col>
           <Col className="col-12">
-            {isLoading ? (
-              <SpinnerCustom />
-            ) : (
+            {localBuildingWorks.buildingWorks.length > 0 && (
               <ImagesGroup
                 isLoading={isLoading}
                 localBuildingWorks={localBuildingWorks}
