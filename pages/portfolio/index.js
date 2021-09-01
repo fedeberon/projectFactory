@@ -80,6 +80,9 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
 
           const count = await getTotalBuildingWorksByProfessional();
           const endArray = newBuildingWorks[newBuildingWorks.length - 1];
+          const buildingWorks = {
+            buildingWorks: endArray
+          }
 
           if (count.count) {
             setLocalBuildingWorks({
@@ -87,7 +90,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
               buildingWorks: [
                 ...localBuildingWorks.buildingWorks,
                 // ...buildingWorks.buildingWorks,
-                ...[endArray],
+                ...buildingWorks.buildingWorks,
               ],
               count: count.count,
             });
@@ -323,6 +326,10 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   //   }
   // }, [buildingWorks]);
 
+  useEffect(() => {
+    console.log(localBuildingWorks);
+  }, [localBuildingWorks])
+
   const onGetByProfessionalId = async () => {
     // setLoading(true);
     try {
@@ -344,10 +351,10 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   };
 
   useEffect(async () => {
-    const images = await onGetByProfessionalId();
-    const buildingWorks = {
-      buildingWorks: images,
-    };
+    const buildingWorks = await onGetByProfessionalId();
+    // const buildingWorks = {
+    //   buildingWorks: images,
+    // };
     if (images) {
       // setLocalBuildingWorks([...localBuildingWorks, ...images]);
       setLocalBuildingWorks({
@@ -502,9 +509,9 @@ export async function getServerSideProps({ params, req, res, locale }) {
           3,
           token
         );
-        count = await buildingWorkService.getCountByProfessional(
-          professionalId
-        );
+        // count = await buildingWorkService.getCountByProfessional(
+        //   professionalId
+        // );
       }
     }
   } catch (e) {
@@ -520,10 +527,12 @@ export async function getServerSideProps({ params, req, res, locale }) {
   return {
     props: {
       professional,
-      buildingWorks: {
-        buildingWorks: buildingWorks,
-        count: count.count,
-      },
+      buildingWorks,
+
+      // buildingWorks: {
+      //   buildingWorks: buildingWorks,
+      //   count: count.count,
+      // },
       session,
     },
   };
