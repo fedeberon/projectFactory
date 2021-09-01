@@ -60,7 +60,6 @@ const FormObra = ({
         })
       }
       const imagesWithoutTags = images.filter((img) => img.tags.length == 0);
-      // console.log("imagesHasTags", images);
       return imagesWithoutTags.length == 0;
     } else {
       return true;
