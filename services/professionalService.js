@@ -134,3 +134,7 @@ export const generatePreferenceForToken = async (plan, token) => {
   };
   return await API.post(`/mercadopago/plan/${plan}/create-preference`, backUrl);
 };
+
+export const getCount = async (status) => {
+  return await API.get(`/professionals/status/${status}/count`);
+};
