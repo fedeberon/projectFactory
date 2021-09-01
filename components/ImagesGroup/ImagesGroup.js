@@ -99,11 +99,6 @@ const ImagesGroup = (props) => {
       }
     }
 
-    // console.table(
-    //   "OBRAS EN EL COMPONENTE IMAGE_GROUP",
-    //   localBuildingWorks.buildingWorks
-    // );
-    // console.log(localBuildingWorks.count);
   }, [localBuildingWorks]);
 
   return (

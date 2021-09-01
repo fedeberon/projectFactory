@@ -86,7 +86,6 @@ const FormTag = ({ toggle, image }) => {
       typeTag,
       session.accessToken
     );
-    console.log("newSuggestions", newSuggestions);
     return inputLength === 0 ? [] : newSuggestions;
   };
 
@@ -120,7 +119,6 @@ const FormTag = ({ toggle, image }) => {
   ) => {
     const newTags = Array.from(tags);
     newTags.push(suggestion);
-    console.log("onSuggestionSelected", suggestion);
     if (!isEqual(suggestion)) {
       setTags(newTags);
     } else {
@@ -139,11 +137,8 @@ const FormTag = ({ toggle, image }) => {
   };
 
   const onAddTag = async () => {
-    // console.log(refInput.current.input.value);
     const array = new Array();
     array.push({ name: refInput.current.input.value });
-    // console.log(array);
-    // console.log("suggestions despues de array", suggestions);
     // setSuggestions(array);
 
     // const tag = {
@@ -175,16 +170,6 @@ const FormTag = ({ toggle, image }) => {
       );
     }
   };
-
-  // useEffect(() => {
-  //   console.log("suggestions", suggestions);
-  //   console.log("suggestions typeof", typeof suggestions);
-  // }, [suggestions]);
-
-  // useEffect(() => {
-  //   console.log("tags", tags);
-  //   console.log("tags typeof", typeof tags);
-  // }, [tags]);
 
   return (
     <Container fluid="sm">

@@ -34,10 +34,6 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   });
   const [buildingWorkId, setBuildingWorkId] = useState(null);
 
-  // useEffect(() => {
-  //   console.log(localBuildingWorks);
-  // }, [localBuildingWorks]);
-
   const [buildingWorkData, setBuildingWorkData] = useState({
     defaultValues: {
       name: "",
@@ -82,30 +78,11 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
           //     !localBuildingWorks.some((local) => local.id === buildingWork.id)
           // );
 
-          // console.log("las que tengo", localBuildingWorks);
-          // console.log("las nuevas", buildingWorks);
-          // console.log("filtradas sin repetir", [
-          //   ...newBuildingWorks,
-          //   ...localBuildingWorks,
-          // ]);
-
           const count = await getTotalBuildingWorksByProfessional();
-          // console.log("TOTAL:", count.count);
-
-          // console.log({
-          //   ...localBuildingWorks,
-          //   buildingWorks: [
-          //     ...localBuildingWorks.buildingWorks,
-          //     // ...buildingWorks.buildingWorks,
-          //     newBuildingWorks[newBuildingWorks.length - 1],
-          //   ],
-          //   count: count,
-          // });
-          // console.log("COPY-------");
-
-          // console.log("COPY_ALL_NEWs", newBuildingWorks);
-          // console.log("COPY_END", newBuildingWorks[newBuildingWorks.length - 1]);
           const endArray = newBuildingWorks[newBuildingWorks.length - 1];
+          const buildingWorks = {
+            buildingWorks: endArray
+          }
 
           if (count.count) {
             setLocalBuildingWorks({
@@ -113,7 +90,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
               buildingWorks: [
                 ...localBuildingWorks.buildingWorks,
                 // ...buildingWorks.buildingWorks,
-                ...[endArray],
+                ...buildingWorks.buildingWorks,
               ],
               count: count.count,
             });
@@ -134,7 +111,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
           setLoading(false);
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
         setLoading(false);
       }
     }
@@ -244,7 +221,6 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
           },
           session.accessToken
         );
-        // console.log("new---------", folder);
         if (folder) {
           let preview = await onAddPreviewImageToBuildingWork(
             folder,
@@ -253,8 +229,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
           if (data.images.length > 0) {
             let images = await onAddImagesToBuildingWork(folder, data.images);
           }
-          // const newBuildingWork = await buildingWorkService.getById(folder.id);
-          // console.log("newBuildingWork", newBuildingWork);
+          // const newBuildingWork = await buildingWorkService.getById(folder.id);F
           updateCardsBuildingWorks();
           return true;
         }
@@ -351,6 +326,10 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   //   }
   // }, [buildingWorks]);
 
+  useEffect(() => {
+    console.log(localBuildingWorks);
+  }, [localBuildingWorks])
+
   const onGetByProfessionalId = async () => {
     // setLoading(true);
     try {
@@ -372,10 +351,10 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   };
 
   useEffect(async () => {
-    const images = await onGetByProfessionalId();
-    const buildingWorks = {
-      buildingWorks: images,
-    };
+    const buildingWorks = await onGetByProfessionalId();
+    // const buildingWorks = {
+    //   buildingWorks: images,
+    // };
     if (images) {
       // setLocalBuildingWorks([...localBuildingWorks, ...images]);
       setLocalBuildingWorks({
@@ -530,9 +509,9 @@ export async function getServerSideProps({ params, req, res, locale }) {
           3,
           token
         );
-        count = await buildingWorkService.getCountByProfessional(
-          professionalId
-        );
+        // count = await buildingWorkService.getCountByProfessional(
+        //   professionalId
+        // );
       }
     }
   } catch (e) {
@@ -548,10 +527,12 @@ export async function getServerSideProps({ params, req, res, locale }) {
   return {
     props: {
       professional,
-      buildingWorks: {
-        buildingWorks: buildingWorks,
-        count: count.count,
-      },
+      buildingWorks,
+
+      // buildingWorks: {
+      //   buildingWorks: buildingWorks,
+      //   count: count.count,
+      // },
       session,
     },
   };

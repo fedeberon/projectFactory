@@ -14,7 +14,9 @@ export const getByProfessionalId = async (
   size,
   token
 ) => {
-  API.defaults.headers.common["Authorization"] = token;
+  if (token) {
+    API.defaults.headers.common["Authorization"] = token;
+  }
   return await API.get(
     `/building-works/professionals/${professionalId}?page=${page}&size=${size}`
   );

@@ -8,7 +8,7 @@ export const findAll = async (page, size) => {
 };
 
 export const getById = async (id, token) => {
-  API.defaults.headers.common["Authorization"] = token;
+  // API.defaults.headers.common["Authorization"] = token;
   return await API.get(`/professionals/${id}`);
 };
 
@@ -133,4 +133,8 @@ export const generatePreferenceForToken = async (plan, token) => {
     pending: window.location.href,
   };
   return await API.post(`/mercadopago/plan/${plan}/create-preference`, backUrl);
+};
+
+export const getCount = async (status) => {
+  return await API.get(`/professionals/status/${status}/count`);
 };

@@ -85,7 +85,7 @@ const index = ({ session, filtersTags, buildingWorks }) => {
   // el 2do llamada es este otro
   useEffect(async () => {
     const status = "APPROVED";
-    const buildingWorks = await onGetAllByCategoryAndStatus("APPROVED");
+    const buildingWorks = await onGetAllByCategoryAndStatus(status);
     if (buildingWorks) {
       setLocalBuildingWorks({
         ...localBuildingWorks,

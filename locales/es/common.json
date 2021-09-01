@@ -63,7 +63,7 @@
   "form-project": "Formulario Proyecto",
   "loading": "Cargando",
   "name": "Nombre",
-  "type-category" : "Tipo de categoria",
+  "type-category": "Tipo de categoria",
   "description": "Descripcion",
   "total-area": "Área total",
   "year": "Año",
@@ -138,7 +138,6 @@
   },
 
   "form-category": {
-    "category": "Categoría",
     "insert-category": "Ingrese la categoría aquí por favor",
     "write-complete-category": "Escriba el nombre completo de la categoría"
   },
@@ -309,5 +308,9 @@
   "all": "Todas",
   "categories": "Categorias",
 
-  "yay-You-have-seen-it-all": "¡Sí! Lo has visto todo"
+  "yay-You-have-seen-it-all": "¡Sí! Lo has visto todo",
+  "category": "Categoría",
+  "buildingWorks": "Obras",
+  "register-as-a-professional": "Registrate como profesional",
+  "present-your-work-to-thousands-of-potential-clients": "Presentá tu trabajo a miles de potenciales clientes."
 }
