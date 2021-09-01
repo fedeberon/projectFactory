@@ -11,7 +11,6 @@ export const getStartsWithTypeTag = async (tag, typeTag, token) => {
 };
 
 export const getTags = (tags) => {
-  // console.log("getTags---", tags);
   const rawTags = [];
   tags.forEach((tag) => {
     rawTags.push(tag.name);

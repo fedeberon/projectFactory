@@ -63,7 +63,7 @@
   "form-project": "Form Project",
   "loading": "Loading",
   "name": "Name",
-  "type-category" : "Type of category",
+  "type-category": "Type of category",
   "description": "Description",
   "total-area": "Total Area",
   "year": "Year",
@@ -138,7 +138,6 @@
   },
 
   "form-category": {
-    "category": "Category",
     "insert-category": "Insert category here please",
     "write-complete-category": "Write the complete category name"
   },
@@ -285,7 +284,7 @@
   "other-projects-of": "Other projects of",
   "facades": "Facades",
   "other-building-works-of": "Other building works of ",
-  "of" : "of",
+  "of": "of",
   "title": "Title",
   "author": "Author",
   "month-01": "January",
@@ -309,5 +308,9 @@
   "all": "All",
   "categories": "Categories",
 
-  "yay-You-have-seen-it-all": "Yay! You have seen it all"
+  "yay-You-have-seen-it-all": "Yay! You have seen it all",
+  "category": "Category",
+  "buildingWorks": "BuildingWorks",
+  "register-as-a-professional": "Register as a professional",
+  "present-your-work-to-thousands-of-potential-clients": "Present your work to thousands of potential clients."
 }

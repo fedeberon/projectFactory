@@ -27,10 +27,6 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
   const refLikes = useRef([]);
   const [hasMore, setHasMore] = useState(true);
 
-  // useEffect(() => {
-  //   console.log("images", images.length);
-  // }, [images]);
-
   refLikes.current = [];
 
   const addLikes = (div, image) => {

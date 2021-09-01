@@ -27,3 +27,166 @@
   filter: opacity(0.1);
   padding: 10px;
 }
+
+.logo {
+  width: 150px;
+  height: 150px;
+  margin: 8px;
+  object-fit: contain;
+}
+
+.logoContainer {
+  bottom: -75px;
+  left: 35px;
+  position: absolute;
+  width: 166px;
+  height: 166px;
+  background-color: white;
+  border: 1px solid #d9d9d9;
+}
+
+.backgroundImage {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  height: 140px;
+  object-fit: cover;
+}
+
+.location {
+  color: #4f4f4f;
+}
+
+.locationIcon {
+  color: #4f4f4f;
+  margin-right: 5px;
+}
+
+.companyName {
+  margin: 1% 0 0 19%;
+}
+
+.aside {
+  width: 20%;
+  background-color: #f8f8f8;
+  padding: 10px;
+  float: left;
+}
+
+.asideTitle {
+  display: block;
+  font-weight: bold;
+}
+
+.section {
+  margin-top: 4%;
+}
+
+.tabs h5 {
+  font-size: 15px;
+  margin: 0;
+}
+
+.tabContent {
+  padding-top: 30px;
+}
+
+@media (max-width: 1200px) {
+  .logoContainer {
+    left: 0;
+  }
+}
+
+@media (max-width: 990px) {
+  .companyName {
+    margin: 1% 0 0 27%;
+  }
+}
+
+@media (max-width: 990px) {
+  .companyName {
+    margin: 1% 0 0 38%;
+  }
+}
+
+@media (max-width: 490px) {
+  .logoContainer {
+    bottom: -38px;
+    width: 78px;
+    height: 78px;
+  }
+
+  .logo {
+    width: 72px;
+    height: 72px;
+    margin: 2px;
+  }
+
+  .companyName {
+    margin: 1% 0 0 18%;
+  }
+}
+
+@media (max-width: 450px) {
+  .companyName {
+    margin: 1% 0 0 28%;
+  }
+}
+
+.pLine{
+  white-space: pre;
+}
+
+.center {
+  vertical-align: center;
+  margin-left: 2px;
+}
+
+.signInBtn {
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  color: #212529;
+  line-height: 1.5;
+  border-radius: .3rem;
+  font-weight: 500;
+  font-size: .8rem;
+  padding: .5rem 1.5rem;
+  background-color: #FFCA05;
+  border-color: #FFCA05;
+  margin-left: 7px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  color: #212529;
+  background-color: #e2e6ea;
+  border-color: #dae0e5;
+}
+
+.btn:focus {
+  color: #212529;
+  background-color: #e2e6ea;
+  border-color: #dae0e5;
+}
+
+.btnLogin {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  color: #212529;
+  line-height: 1.5;
+  border-radius: .3rem;
+  background-color: transparent;
+  border-color: #000000;
+  font-weight: 500;
+  font-size: .8rem;
+  padding: .5rem 1.5rem;
+  cursor: pointer;
+}

@@ -6,6 +6,7 @@ import { Alert, Button, Card, Col, Row } from "react-bootstrap";
 // import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Link from "next/link";
 
 // Components
 import Layout from "../../components/Layout/Layout";
@@ -59,7 +60,6 @@ const Professional = ({ data }) => {
       : window.btoa(str);
 
   useEffect(() => {
-    // console.log(width);
     if (width >= 1400) {
       setSizeIco(248);
     } else if (width >= 1200) {
@@ -126,8 +126,6 @@ const Professional = ({ data }) => {
   useEffect(async () => {
     if (professionals.length > 0) {
       const total = await getTotalProfessionals();
-      console.log("professionals.length", professionals.length);
-      console.log("total", total);
       if (professionals.length == total.count) {
         setHasMore(false);
       } else {
@@ -137,8 +135,7 @@ const Professional = ({ data }) => {
   }, [professionals]);
 
   // useEffect(() => {
-  //   console.log("data", data);
-  //   // dispatch(professionalActions.store(data));
+    // dispatch(professionalActions.store(data));
   // }, [data]);
 
   return (
@@ -169,26 +166,36 @@ const Professional = ({ data }) => {
                   <Card.Body className={`p-0`}>
                     <Row className={`row-cols-1 w-100 m-0`}>
                       <Col xs={12} className={`p-0 text-center`}>
-                        {professional.previewImage ? (
-                          <Image
-                            layout="responsive"
-                            width={350}
-                            height={210}
-                            quality={50}
-                            className={` cursor-pointer ${styles.img}`}
-                            src={professional.previewImage}
-                            alt="Professional preview"
-                            placeholder="blur"
-                            blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                              shimmer(350, 210)
-                            )}`}
-                          />
-                        ) : (
-                          <PersonCircle
-                            size={sizeIco}
-                            className={`${styles.ico}`}
-                          />
-                        )}
+                        <Link
+                          href={`/professional/[id]`}
+                          as={`/professional/${professional?.contact.replace(
+                            /\s+/g,
+                            "-"
+                          )}-${professional?.id}`}
+                        >
+                          <a>
+                            {professional.previewImage ? (
+                              <Image
+                                layout="responsive"
+                                width={350}
+                                height={210}
+                                quality={50}
+                                className={` cursor-pointer ${styles.img}`}
+                                src={professional.previewImage}
+                                alt="Professional preview"
+                                placeholder="blur"
+                                blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                                  shimmer(350, 210)
+                                )}`}
+                              />
+                            ) : (
+                              <PersonCircle
+                                size={sizeIco}
+                                className={`${styles.ico}`}
+                              />
+                            )}
+                          </a>
+                        </Link>
                       </Col>
                       <Col className={`p-2`}>
                         <Card.Text>

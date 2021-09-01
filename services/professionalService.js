@@ -8,7 +8,7 @@ export const findAll = async (page, size) => {
 };
 
 export const getById = async (id, token) => {
-  API.defaults.headers.common["Authorization"] = token;
+  // API.defaults.headers.common["Authorization"] = token;
   return await API.get(`/professionals/${id}`);
 };
 
