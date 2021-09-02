@@ -29,6 +29,12 @@ class MyDocument extends Document {
           <meta name="apple-mobile-web-app-capable" content="yes"/>
           <meta name="apple-touch-fullscreen" content="yes"/>
           <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+
+          {/* pedido por fede */}
+          <link rel="preconnect" href="https://fonts.googleapis.com"/>
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+          <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@200;300;400;600;700;800;900&display=swap" rel="stylesheet"/>
         </Head>
         <body>
           <Main />
