@@ -236,7 +236,7 @@ const CompanyCreator = () => {
                       })}
                       {...register("website", {
                         required: {
-                          value: true,
+                          value: false,
                           message: `${t("is-required", {
                             nameRequired: t("common:formulary.the-web-page"),
                           })}`,
