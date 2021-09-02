@@ -61,7 +61,7 @@ const FilterList = ({
           {filter}
         </ListGroupItem>
       ))}
-      <TagCreator tags={tags} setTags={setTags} />
+      {/* <TagCreator tags={tags} setTags={setTags} /> */}
     </ListGroup>
   );
 };

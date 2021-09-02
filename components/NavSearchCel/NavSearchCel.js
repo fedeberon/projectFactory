@@ -1,12 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Nav,
-  Navbar,
-  NavDropdown,
-  Row,
-  Col,
-  Dropdown,
-} from "react-bootstrap";
+import { Nav, Navbar, NavDropdown, Row, Col, Dropdown } from "react-bootstrap";
 import { useRouter } from "next/dist/client/router";
 import useTranslation from "next-translate/useTranslation";
 import { signOut, useSession } from "next-auth/client";
@@ -17,13 +10,18 @@ import Image from "next/image";
 import { PersonCircle } from "react-bootstrap-icons";
 import RolProfile from "../RolProfile";
 import * as userService from "../../services/userService";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import * as categoryService from "../../services/categoryService";
 
 export default function NavSearchCel() {
   const [session] = useSession();
-  const categoriesInitializated = useSelector(state => state.categories.initializated);
-  const productCategories = useSelector(state => state.categories.products);
+  const categoriesInitializated = useSelector(
+    (state) => state.categories.initializated
+  );
+  const productCategories = useSelector((state) => state.categories.products);
+  const buildingWorkCategories = useSelector(
+    (state) => state.categories.buildingWorks
+  );
   const dispatch = useDispatch();
 
   const { t } = useTranslation("common");
@@ -60,18 +58,49 @@ export default function NavSearchCel() {
                 className="navLink"
                 title={<span className={styles.navLink}> {t("photos")}</span>}
               >
-                {productCategories.map((category, index) => (
-                  <Link key={index} href={`/ideas?categories=${category.name}`} passHref>
+                <Link href={`/ideas`} passHref>
+                  <NavDropdown.Item>{t("all")}</NavDropdown.Item>
+                </Link>
+                {buildingWorkCategories.map((category, index) => (
+                  <Link
+                    key={index}
+                    href={`/ideas?categories=${category.name}`}
+                    passHref
+                  >
                     <NavDropdown.Item>{category.name}</NavDropdown.Item>
                   </Link>
                 ))}
               </NavDropdown>
 
-              <Link href="/product" passHref>
+              <Link href="/professional" passHref>
+                <Nav.Link>
+                  <span className={styles.navLink}> {t("professionals")}</span>
+                </Nav.Link>
+              </Link>
+
+              {/* <Link href="/product" passHref>
                 <Nav.Link>
                   <span className={styles.navLink}>{t("products")}</span>
                 </Nav.Link>
-              </Link>
+              </Link> */}
+
+              <NavDropdown
+                className="navLink"
+                title={<span className={styles.navLink}> {t("products")}</span>}
+              >
+                <Link href={`/product`} passHref>
+                  <NavDropdown.Item>{t("all")}</NavDropdown.Item>
+                </Link>
+                {productCategories.map((category, index) => (
+                  <Link
+                    key={index}
+                    href={`/product?category=${category.name}`}
+                    passHref
+                  >
+                    <NavDropdown.Item>{category.name}</NavDropdown.Item>
+                  </Link>
+                ))}
+              </NavDropdown>
 
               <Link href="/companies" passHref>
                 <Nav.Link>
@@ -138,6 +167,10 @@ export default function NavSearchCel() {
 
                   <Link href="/admin/building" passHref>
                     <NavDropdown.Item>{t("buildings")}</NavDropdown.Item>
+                  </Link>
+
+                  <Link href="/admin/categories" passHref>
+                    <NavDropdown.Item>{t("categories")}</NavDropdown.Item>
                   </Link>
                 </NavDropdown>
               )}
