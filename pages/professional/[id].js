@@ -101,6 +101,11 @@ const ProfessionalDetail = (props) => {
     }
   }, [width]);
 
+  useEffect(() => {
+    if (initialBuildingWorks) {
+      setBuildingWorks(initialBuildingWorks);
+    }
+  }, [initialBuildingWorks]);
   return (
     <Layout>
       <section className="container content">
@@ -222,7 +227,7 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
   let { id } = params;
   const split = id.split("-");
   const professionalId = split[split.length - 1];
-  const professional = await professionalService.getById(professionalId);
+  const professional = await professionalService.getById(professionalId);;
   let buildingWorks = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
