@@ -326,10 +326,6 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   //   }
   // }, [buildingWorks]);
 
-  useEffect(() => {
-    console.log(localBuildingWorks);
-  }, [localBuildingWorks])
-
   const onGetByProfessionalId = async () => {
     // setLoading(true);
     try {

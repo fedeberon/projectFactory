@@ -335,12 +335,15 @@ export default function NavSearch({ filters }) {
                       <Row className="py-2">
                         <Col className="col-auto">
                           <h5>{t("categories")}</h5>
-                          <Link href="/product">
-                            <li>
-                              <a className={styles.link}>{t("products")}</a>
-                            </li>
-                          </Link>
-                          {productCategories.map((category, index) => (
+                          <Row className={`row-cols-4`}>
+                            <Col className="col-auto">
+                              <Link href="/product">
+                                <li>
+                                  <a className={styles.link}>{t("all")}</a>
+                                </li>
+                              </Link>
+                            </Col>
+                            {/* {productCategories.map((category, index) => (
                             <Link
                               key={index}
                               href={`/product?category=${category.name}`}
@@ -349,7 +352,25 @@ export default function NavSearch({ filters }) {
                                 <a className={styles.link}>{category.name}</a>
                               </li>
                             </Link>
-                          ))}
+                          ))} */}
+                            {chunk(productCategories, 5).map((col, index) => (
+                              <Col key={index} className="col-auto">
+                                {col.map((category, index) => (
+                                  <Link
+                                    key={index}
+                                    href={`/product?category=${category.name}`}
+                                    passHref
+                                  >
+                                    <li>
+                                      <a className={styles.link}>
+                                        {category.name}
+                                      </a>
+                                    </li>
+                                  </Link>
+                                ))}
+                              </Col>
+                            ))}
+                          </Row>
                         </Col>
                       </Row>
                     </div>
