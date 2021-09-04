@@ -30,6 +30,7 @@ export const getProjectsImagesFiltered = async (token, page, size) => {
 
 export const addCaroucelImages = async (images, token) => {
   API.defaults.headers.common["Authorization"] = token;
+
   await Promise.all(
     images.map(async (image) => {
       const imageData = new FormData();

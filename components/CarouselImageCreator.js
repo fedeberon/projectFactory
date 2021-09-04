@@ -80,9 +80,7 @@ const CarouselImageCreator = ({ onAddCarouselImages }) => {
               alt="image-selected"
             ></img>
             <Form.Group>
-              <Form.Label htmlFor="input-title">
-                {t("title")}
-              </Form.Label>
+              <Form.Label htmlFor="input-title">{t("title")}</Form.Label>
               <br></br>
               <Form.Control id="input-title" />
               <br></br>

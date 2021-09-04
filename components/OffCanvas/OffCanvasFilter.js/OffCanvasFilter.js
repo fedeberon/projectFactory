@@ -8,7 +8,7 @@ import PrimaryButton from "../../Buttons/PrimaryButton/PrimaryButton";
 import { useSelector } from "react-redux";
 
 const OffCanvasFilter = (props) => {
-  const { filters, appliedFilters, setAppliedFilters, resetPage } = props;
+  const { filters, appliedFilters, setAppliedFilters, resetPage, classNameButton } = props;
   const [show, setShow] = useState(false);
   let { t } = useTranslation("common");
 
@@ -26,7 +26,7 @@ const OffCanvasFilter = (props) => {
 
   return (
     <>
-      <PrimaryButton onClick={handleToggle}>
+      <PrimaryButton onClick={handleToggle} className={classNameButton}>
         <Funnel size={15} /> {t("filter")}
       </PrimaryButton>
 

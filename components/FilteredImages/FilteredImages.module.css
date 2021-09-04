@@ -21,8 +21,10 @@
   height: 135px;
   z-index: 2;
   background: linear-gradient(
-    0deg
-    , rgba(0,0,0,0.9009978991596639) 0%, rgba(0,0,0,0) 100%);
+    0deg,
+    rgba(0, 0, 0, 0.9009978991596639) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
   justify-content: space-between;
   align-items: center;
   opacity: 0;
@@ -98,4 +100,8 @@
   100% {
     transform: scale(1);
   }
+}
+
+.alertInfo {
+  background: #eaeaea;
 }

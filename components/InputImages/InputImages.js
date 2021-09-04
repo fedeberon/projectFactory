@@ -59,6 +59,9 @@ function InputImages(props) {
           preview: URL.createObjectURL(file),
           added: false,
           remove: false,
+          title: "",
+          subTitle: "",
+          link: "",
         });
 
         if (withTags) {

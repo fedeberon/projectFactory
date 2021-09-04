@@ -1,9 +1,9 @@
 // Frameworks
 import React, { useEffect, useState } from "react";
-import { getSession, useSession } from "next-auth/client";
+import { getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
-import { Col, Row, Button } from "react-bootstrap";
-import { PlusSquareDotted, PersonCircle } from "react-bootstrap-icons";
+import { Col, Row } from "react-bootstrap";
+import { PersonCircle, PlusCircleDotted } from "react-bootstrap-icons";
 
 // Components
 import ModalForm from "../../components/ModalForm";
@@ -18,16 +18,19 @@ import * as buildingWorkService from "../../services/buildingWorkService";
 import * as imageService from "../../services/imageService";
 
 // Styles
-import indexStyles from "./index.module.css";
-import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
+import styles from "./index.module.css";
+import ButtonFixed from "../../components/Buttons/ButtonFixed/ButtonFixed";
 
 const Portfolio = ({ professional, buildingWorks, session }) => {
-  // const [session] = useSession();
   const { t } = useTranslation("common");
   const [previewImage, setPreviewImage] = useState([]);
   const [images, setImages] = useState([]);
   const [localBuildingWorks, setLocalBuildingWorks] = useState(buildingWorks);
-  const [pageSize, setPageSize] = useState({ page: 1, size: 3 });
+  const [pageSize, setPageSize] = useState({
+    page: 0,
+    size: process.env.NEXT_PUBLIC_SIZE_PER_PAGE,
+  });
+
   const [paginationMultipleImage, setPaginationMultipleImage] = useState({
     page: 0,
     size: 100,
@@ -47,6 +50,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
     post: false,
     put: false,
   });
+  const [enterOne, setEnterOne] = useState(false);
 
   const toggleModal = () => setModalOpen(!modalOpen);
 
@@ -65,7 +69,6 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
           token
         );
         if (professional) {
-          // resetPage();
           newBuildingWorks = await buildingWorkService.getByProfessionalId(
             professional.id,
             pageSize.page,
@@ -73,40 +76,38 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
             token
           );
 
-          // const newBuildingWorks = buildingWorks.filter(
-          //   (buildingWork) =>
-          //     !localBuildingWorks.some((local) => local.id === buildingWork.id)
-          // );
-
           const count = await getTotalBuildingWorksByProfessional();
-          const endArray = newBuildingWorks[newBuildingWorks.length - 1];
+          const endArray = [
+            newBuildingWorks.buildingWorks[
+              newBuildingWorks.buildingWorks.length - 1
+            ],
+          ];
+          // console.log(
+          //   "newBuildingWorks.length - 1",
+          //   newBuildingWorks.buildingWorks.length - 1
+          // );
+          // console.log("endArray", endArray);
+
           const buildingWorks = {
-            buildingWorks: endArray
-          }
+            buildingWorks: endArray ? endArray : [],
+          };
 
           if (count.count) {
+            // TODO corregir que no se carga la ultima obra
+            //  cuando supera el limite maximo de paginacion
+
+            // console.log("localBuildingWorks", localBuildingWorks);
+            // console.log("buildingWorks", buildingWorks);
+            // console.log("count", count);
             setLocalBuildingWorks({
               ...localBuildingWorks,
               buildingWorks: [
                 ...localBuildingWorks.buildingWorks,
-                // ...buildingWorks.buildingWorks,
                 ...buildingWorks.buildingWorks,
               ],
               count: count.count,
             });
           }
-          // setLocalBuildingWorks({
-          //   buildingWorks: buildingWorks,
-          //   count,
-          // });
-
-          // setLocalBuildingWorks({
-          //   ...localBuildingWorks,
-          //   buildingWorks: [
-          //     ...localBuildingWorks.buildingWorks,
-          //     ...buildingWorks.buildingWorks,
-          //   ],
-          // });
 
           setLoading(false);
         }
@@ -347,19 +348,23 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   };
 
   useEffect(async () => {
-    const buildingWorks = await onGetByProfessionalId();
-    // const buildingWorks = {
-    //   buildingWorks: images,
-    // };
-    if (images) {
-      // setLocalBuildingWorks([...localBuildingWorks, ...images]);
-      setLocalBuildingWorks({
-        ...localBuildingWorks,
-        buildingWorks: [
-          ...localBuildingWorks.buildingWorks,
-          ...buildingWorks.buildingWorks,
-        ],
-      });
+    if (enterOne) {
+      const buildingWorks = await onGetByProfessionalId();
+      // const buildingWorks = {
+      //   buildingWorks: images,
+      // };
+      if (images) {
+        // setLocalBuildingWorks([...localBuildingWorks, ...images]);
+        setLocalBuildingWorks({
+          ...localBuildingWorks,
+          buildingWorks: [
+            ...localBuildingWorks.buildingWorks,
+            ...buildingWorks.buildingWorks,
+          ],
+        });
+      }
+    } else {
+      setEnterOne(true);
     }
   }, [pageSize]);
 
@@ -387,26 +392,26 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
                 width={"100%"}
                 height={"300px"}
                 src={`${professional.backgroundImage}`}
-                className={indexStyles.backgroundImg}
+                className={styles.backgroundImg}
               />
             ) : (
               <BackgroundDefault image={false} />
             )}
-            <div className={indexStyles.previewDiv}>
+            <div className={styles.previewDiv}>
               {professional.previewImage ? (
                 <img
                   src={professional.previewImage}
-                  className={indexStyles.previewImg}
+                  className={styles.previewImg}
                 ></img>
               ) : (
-                // <BackgroundDefault className={indexStyles.previewImg}/>
-                <div className={indexStyles.previewImg}>
+                // <BackgroundDefault className={styles.previewImg}/>
+                <div className={styles.previewImg}>
                   <PersonCircle size={"100%"} />
                 </div>
               )}
               {/* <img
                 src={professional.previewImage}
-                className={indexStyles.previewImg}
+                className={styles.previewImg}
               ></img> */}
             </div>
           </Col>
@@ -421,21 +426,22 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
         </Row>
         <Row className="row-cols-1 gap-4">
           <Col className="col-auto mx-auto mx-md-0">
-            <Button variant="outline-primary" onClick={openModalBuilderWork}>
+            {/* <Button variant="outline-primary" onClick={openModalBuilderWork}>
               <PlusSquareDotted size={100} />
-            </Button>
+            </Button> */}
+            <ButtonFixed onClick={openModalBuilderWork}>
+              <PlusCircleDotted size={50} />
+            </ButtonFixed>
           </Col>
           <Col className="col-12">
-            {localBuildingWorks.buildingWorks.length > 0 && (
-              <ImagesGroup
-                isLoading={isLoading}
-                localBuildingWorks={localBuildingWorks}
-                editBuildingWork={editBuildingWork}
-                fetchMoreData={fetchMoreData}
-                profileHidden={true}
-                getTotalBuildingWorks={getTotalBuildingWorksByProfessional}
-              />
-            )}
+            <ImagesGroup
+              isLoading={isLoading}
+              localBuildingWorks={localBuildingWorks}
+              editBuildingWork={editBuildingWork}
+              fetchMoreData={fetchMoreData}
+              profileHidden={true}
+              getTotalBuildingWorks={getTotalBuildingWorksByProfessional}
+            />
           </Col>
         </Row>
         <ModalForm
@@ -502,7 +508,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
         buildingWorks = await buildingWorkService.getByProfessionalId(
           professional.id,
           page,
-          3,
+          size,
           token
         );
         // count = await buildingWorkService.getCountByProfessional(

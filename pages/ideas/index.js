@@ -112,13 +112,16 @@ const index = ({ session, filtersTags, buildingWorks }) => {
             </h2>
           </Col>
           <Col>
-            <Row>
+            <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3">
               <Col>
                 <OffCanvasFilter
                   appliedFilters={appliedFilters}
                   setAppliedFilters={setAppliedFilters}
+                  classNameButton={`mx-auto`}
                 />
               </Col>
+              <Col></Col>
+              <Col></Col>
             </Row>
           </Col>
           <Col>
