@@ -132,7 +132,7 @@
   }
 }
 
-.pLine{
+.pLine {
   white-space: pre;
 }
 
@@ -147,15 +147,16 @@
   text-align: center;
   vertical-align: middle;
   border: 1px solid transparent;
-  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   color: #212529;
   line-height: 1.5;
-  border-radius: .3rem;
+  border-radius: 0.3rem;
   font-weight: 500;
-  font-size: .8rem;
-  padding: .5rem 1.5rem;
-  background-color: #FFCA05;
-  border-color: #FFCA05;
+  font-size: 0.8rem;
+  padding: 0.5rem 1.5rem;
+  background-color: #ffca05;
+  border-color: #ffca05;
   margin-left: 7px;
   margin-right: 15px;
   cursor: pointer;
@@ -179,14 +180,19 @@
   vertical-align: middle;
   user-select: none;
   border: 1px solid transparent;
-  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   color: #212529;
   line-height: 1.5;
-  border-radius: .3rem;
+  border-radius: 0.3rem;
   background-color: transparent;
   border-color: #000000;
   font-weight: 500;
-  font-size: .8rem;
-  padding: .5rem 1.5rem;
+  font-size: 0.8rem;
+  padding: 0.5rem 1.5rem;
   cursor: pointer;
+}
+
+.alertInfo {
+  background: #eaeaea;
 }

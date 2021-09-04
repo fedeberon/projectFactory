@@ -20,6 +20,7 @@ import Link from "next/link";
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton";
 import ImagesGroup from "../../components/ImagesGroup/ImagesGroup";
 import useSize from "../../hooks/window/useSize";
+import BackgroundDefault from "../../components/BackgroundDefault/BackgroundDefault";
 
 const ProfessionalDetail = (props) => {
   const {
@@ -109,10 +110,14 @@ const ProfessionalDetail = (props) => {
   return (
     <Layout>
       <section className="container content">
-        <img
-          src={professional.backgroundImage}
-          className={`w-100 ${styles.backgroundImage}`}
-        />
+        {professional.backgroundImage ? (
+          <img
+            src={professional.backgroundImage}
+            className={`w-100 ${styles.backgroundImage}`}
+          />
+        ) : (
+          <BackgroundDefault image={false} style={{ height: "140px" }} />
+        )}
 
         <div className={styles.header}>
           <div className="position-absolute">
@@ -227,7 +232,7 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
   let { id } = params;
   const split = id.split("-");
   const professionalId = split[split.length - 1];
-  const professional = await professionalService.getById(professionalId);;
+  const professional = await professionalService.getById(professionalId);
   let buildingWorks = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
