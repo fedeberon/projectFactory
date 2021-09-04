@@ -4,7 +4,7 @@ import useTranslation from "next-translate/useTranslation";
 import { useSession } from "next-auth/client";
 import Link from "next/link";
 import Image from "next/image";
-import { Alert, Card, Col, Row } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import {
   Heart,
   HeartFill,
@@ -21,6 +21,7 @@ import * as imageService from "../../services/imageService";
 
 //Components
 import SpinnerCustom from "../SpinnerCustom/SpinnerCustom";
+import AlertCustom from "../Alert/AlertCustom";
 
 const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
   const [session] = useSession();
@@ -89,13 +90,10 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
       <Col>
         {images.length === 0 ? (
           <Col xs={12}>
-            <Alert
-              variant="primary"
-              className="d-flex justify-content-center gap-2 "
-            >
+            <AlertCustom themeDark>
               <InfoCircleFill size={25} />
               {`${t("table-admin.there-are-not-more")} `}
-            </Alert>
+            </AlertCustom>
           </Col>
         ) : (
           <InfiniteScroll
@@ -107,13 +105,10 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
             endMessage={
               !limit && (
                 <Col xs={12}>
-                  <Alert
-                    variant="primary"
-                    className="d-flex justify-content-center gap-2 "
-                  >
+                  <AlertCustom themeDarkF>
                     <InfoCircleFill size={25} />
                     {`${t("yay-You-have-seen-it-all")}`}
-                  </Alert>
+                  </AlertCustom>
                 </Col>
               )
             }

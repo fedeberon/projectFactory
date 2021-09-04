@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { getSession, useSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
-import { Card, Col, Row, Button, Dropdown } from "react-bootstrap";
+import { Card, Col, Row, Dropdown } from "react-bootstrap";
 import {
-  PlusSquareDotted,
   ThreeDotsVertical,
   PencilSquare,
   XCircle,
   ExclamationCircle,
   Check2Circle,
+  PlusCircleDotted,
 } from "react-bootstrap-icons";
 import FormProduct from "../../components/FormProduct/FormProduct";
 
@@ -25,6 +25,7 @@ import * as productService from "../../services/productService";
 
 // Styles
 import indexStyles from "./index.module.css";
+import ButtonFixed from "../../components/Buttons/ButtonFixed/ButtonFixed";
 
 const CustomButtonTogle = ({ id, editProduct }) => {
   return (
@@ -290,9 +291,12 @@ const MyProducts = (props) => {
       <section className="container content">
         <Row className="row-cols-2 g-2">
           <Col className="col-auto">
-            <Button variant="outline-primary" onClick={openModalProduct}>
+            {/* <Button variant="outline-primary" onClick={openModalProduct}>
               <PlusSquareDotted size={100} />
-            </Button>
+            </Button> */}
+            <ButtonFixed onClick={openModalProduct}>
+              <PlusCircleDotted size={50} />
+            </ButtonFixed>
           </Col>
           <Col className="col-12">{imagesCard}</Col>
         </Row>

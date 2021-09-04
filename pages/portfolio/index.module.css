@@ -18,7 +18,7 @@
   height: 300px;
   top: -150px;
   z-index: 100;
-  background-color: #FFF;
+  background-color: #fff;
 }
 
 @media (max-width: 425px) {
@@ -27,4 +27,8 @@
     height: 150px;
     top: -50%;
   }
+}
+
+.buttonFixed {
+  background-color: red;
 }

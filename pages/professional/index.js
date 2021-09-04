@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
-import { Alert, Button, Card, Col, Row } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 // import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -22,6 +22,7 @@ import * as professionalService from "../../services/professionalService";
 import styles from "./index.module.css";
 import { InfoCircleFill, PersonCircle } from "react-bootstrap-icons";
 import useSize from "../../hooks/window/useSize";
+import AlertCustom from "../../components/Alert/AlertCustom";
 
 const Professional = ({ data }) => {
   const { width, height } = useSize();
@@ -135,7 +136,7 @@ const Professional = ({ data }) => {
   }, [professionals]);
 
   // useEffect(() => {
-    // dispatch(professionalActions.store(data));
+  // dispatch(professionalActions.store(data));
   // }, [data]);
 
   return (
@@ -150,13 +151,10 @@ const Professional = ({ data }) => {
             loader={<SpinnerCustom className="w-100 m-0 my-2" />}
             endMessage={
               <Col xs={12}>
-                <Alert
-                  variant="primary"
-                  className="d-flex justify-content-center gap-2 "
-                >
+                <AlertCustom themeDark>
                   <InfoCircleFill size={25} />
                   {`${t("common:yay-You-have-seen-it-all")}`}
-                </Alert>
+                </AlertCustom>
               </Col>
             }
           >

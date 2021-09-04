@@ -46,7 +46,7 @@ const SwiperCarouselHome = (props) => {
             <div className={styles.text}>
               <h3 className={`${styles.tit}`}>{image.title}</h3>
               <p className={`${styles.description} `}>{image.subTitle}</p>
-              <Link href={image.link}>
+              <Link href={`${image.link}`}>
                 <PrimaryButton outline>{t("view-more")}</PrimaryButton>
               </Link>
             </div>

@@ -1,7 +1,7 @@
 // Frameworks
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Alert, Card, Col, Row } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import { useSession } from "next-auth/client";
 import Image from "next/image";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -17,7 +17,8 @@ import filteredImagesStyles from "../FilteredImages/FilteredImages.module.css";
 import styles from "./ImagesGroup.module.css";
 
 // Services
-import * as buildingWorkService from "../../services/buildingWorkService";
+// import * as buildingWorkService from "../../services/buildingWorkService";
+import AlertCustom from "../Alert/AlertCustom";
 
 const ImagesGroup = (props) => {
   const {
@@ -90,7 +91,6 @@ const ImagesGroup = (props) => {
       : window.btoa(str);
 
   useEffect(() => {
-    
     if (localBuildingWorks.buildingWorks.length > 0) {
       if (localBuildingWorks.buildingWorks.length == localBuildingWorks.count) {
         setHasMore(false);
@@ -98,7 +98,6 @@ const ImagesGroup = (props) => {
         setHasMore(true);
       }
     }
-
   }, [localBuildingWorks]);
 
   return (
@@ -106,37 +105,31 @@ const ImagesGroup = (props) => {
       <Col>
         {localBuildingWorks.buildingWorks.length === 0 ? (
           <Col xs={12}>
-            <Alert
-              variant="primary"
-              className="d-flex justify-content-center gap-2 "
-            >
+            <AlertCustom themeDark>
               <InfoCircleFill size={25} />
               {`${t("table-admin.there-are-not-more")} `}
-            </Alert>
+            </AlertCustom>
           </Col>
         ) : (
           <InfiniteScroll
-            className="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4 "
+            className="row row-cols-1 row-cols-lg-2 row-cols-xl-3 "
             dataLength={localBuildingWorks.buildingWorks.length}
             next={fetchMoreData}
             hasMore={hasMore}
             loader={!limit && <SpinnerCustom className="w-100 m-0 my-2" />}
             endMessage={
               !limit && (
-                <Col xs={12}>
-                  <Alert
-                    variant="primary"
-                    className="d-flex justify-content-center gap-2 "
-                  >
+                <Col xs={12} className="mt-4">
+                  <AlertCustom themeDark>
                     <InfoCircleFill size={25} />
                     {`${t("yay-You-have-seen-it-all")}`}
-                  </Alert>
+                  </AlertCustom>
                 </Col>
               )
             }
           >
             {localBuildingWorks.buildingWorks.map((buildingWork, index) => (
-              <Col key={index}>
+              <Col key={index} className="mb-4">
                 <Card className={`${filteredImagesStyles.colCard}`}>
                   <Card.Body
                     className={`${filteredImagesStyles.cardImage} p-0 `}
