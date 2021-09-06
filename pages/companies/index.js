@@ -38,7 +38,7 @@ const Companies = (props) => {
     <Layout>
       <section className="container content">
         <Row>
-          <Sidebar>
+          {/* <Sidebar>
             <h3>{t("professionals")}</h3>
             <ul>
               <li>
@@ -52,18 +52,18 @@ const Companies = (props) => {
                 </Link>
               </li>
             </ul>
-          </Sidebar>
-
+          </Sidebar> */}
+          <Col sm={12} md={4} lg={3}></Col>
           <Col sm={12} md={8} lg={9}>
             <ContentHeader title={t("companies")} />
 
             <Row className="row-cols-1 gap-2">
-              <Col>
+              {/* <Col>
                 <FormFilterCompany
                   onGetFilterCompanies={onGetFilterCompanies}
                   setCompanies={setCompanies}
                 />
-              </Col>
+              </Col> */}
               <Col>
                 {isLoading ? (
                   <SpinnerCustom />
