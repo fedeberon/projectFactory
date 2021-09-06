@@ -13,10 +13,13 @@ const PrimaryButton = forwardRef((props, ref) => {
     yellow,
     style,
     type,
+    blank,
+    as,
   } = props;
 
   return (
     <Button
+      as={as}
       href={href}
       onClick={onClick}
       ref={ref}
@@ -31,6 +34,7 @@ const PrimaryButton = forwardRef((props, ref) => {
       `}
       style={style}
       type={type}
+      target={blank ? `_blank` : ``}
     >
       {children}
     </Button>
