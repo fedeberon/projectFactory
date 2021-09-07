@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { CaretDownFill } from "react-bootstrap-icons";
 
@@ -80,14 +80,21 @@ import * as categoryService from "../../services/categoryService";
 
 export default function NavSearch({ filters }) {
   const [session, loading] = useSession();
+  const [maxRows, setMaxRows] = useState(6)
   const { t } = useTranslation("common");
+
   const dispatch = useDispatch();
   const categoriesInitializated = useSelector(
     (state) => state.categories.initializated
   );
   const productCategories = useSelector((state) => state.categories.products);
+
   const buildingWorkCategories = useSelector(
     (state) => state.categories.buildingWorks
+  );
+
+  const productProfessionals = useSelector(
+    (state) => state.categories.professionals
   );
 
   const dropdowns = useRef([]);
@@ -143,7 +150,7 @@ export default function NavSearch({ filters }) {
     };
     divGrisParam.style.top = bodyHeight.ol + bodyHeight.li + "px";
     element.childNodes[1].classList.toggle(styles.overImportant);
-    document.querySelector("body").classList.toggle(styles.overFlowHidden);
+    document.querySelector("body").classList.add(styles.overFlowHidden);
 
     if (element != null) {
       if (!element.children[1].classList.contains(styles.showDesplegable)) {
@@ -220,13 +227,16 @@ export default function NavSearch({ filters }) {
                                 </li>
                               </Link>
                             </Col>
-                            {chunk(buildingWorkCategories, 5).map(
+                            {chunk(buildingWorkCategories, maxRows).map(
                               (col, index) => (
                                 <Col key={index} className="col-auto">
                                   {col.map((category, index) => (
                                     <Link
                                       key={index}
-                                      href={`/ideas?categories=${category.name}`}
+                                      href={`/ideas?categories=${category.name.replace(
+                                        /\s+/g,
+                                        "-"
+                                      )}`}
                                       passHref
                                     >
                                       <li>
@@ -252,12 +262,12 @@ export default function NavSearch({ filters }) {
                   onClick={(e) => toggle(divGris.current[0])}
                   className={styles.outSide}
                 ></div>
-                <Link href="/professional" passHref>
+                {/* <Link href="/professional" passHref>
                   <li className={styles.liNav}>
                     <a className="text-decoration-none">{t("professionals")}</a>
                   </li>
-                </Link>
-                {/* 
+                </Link> */}
+
                 <li
                   ref={(li) => {
                     addDesplegable(li);
@@ -284,18 +294,46 @@ export default function NavSearch({ filters }) {
                       <Row className="py-2">
                         <Col className="col-auto">
                           <h5>{t("categories")}</h5>
-                          <Link href="/professional" passHref>
-                            <li>
-                              <a className={styles.link}>
-                                {t("professionals")}
-                              </a>
-                            </li>
-                          </Link>
-                          <Link href="/companies" passHref>
+                          <Row className={`row-cols-4`}>
+                            <Col className="col-auto">
+                              <Link href="/professional" passHref>
+                                <li>
+                                  <a className={styles.link}>{t("all")}</a>
+                                </li>
+                              </Link>
+                            </Col>
+                            {console.log(
+                              "productProfessionals",
+                              productProfessionals
+                            )}
+                            {/* <Link href="/companies" passHref>
                             <li>
                               <a className={styles.link}>{t("companies")}</a>
                             </li>
-                          </Link>
+                          </Link> */}
+                            {chunk(productProfessionals, maxRows).map(
+                              (col, index) => (
+                                <Col key={index} className="col-auto">
+                                  {col.map((category, index) => (
+                                    <Link
+                                      key={index}
+                                      href={`/professionals?category=${category.name.replace(
+                                        /\s+/g,
+                                        "-"
+                                      )}`}
+                                      passHref
+                                    >
+                                      <li>
+                                        <a className={styles.link}>
+                                          {category.name}
+                                        </a>
+                                      </li>
+                                    </Link>
+                                  ))}
+                                </Col>
+                              )
+                            )}
+                          </Row>
                         </Col>
                       </Row>
                     </div>
@@ -307,14 +345,14 @@ export default function NavSearch({ filters }) {
                   }}
                   onClick={(e) => toggle(divGris.current[1])}
                   className={styles.outSide}
-                ></div> */}
+                ></div>
 
                 <li
                   ref={(li) => {
                     addDesplegable(li);
                   }}
                   onClick={(e) =>
-                    desplegable(dropdowns.current[1], divGris.current[1])
+                    desplegable(dropdowns.current[2], divGris.current[2])
                   }
                   className={`${styles.liNav}`}
                 >
@@ -353,12 +391,15 @@ export default function NavSearch({ filters }) {
                               </li>
                             </Link>
                           ))} */}
-                            {chunk(productCategories, 5).map((col, index) => (
+                            {chunk(productCategories, maxRows).map((col, index) => (
                               <Col key={index} className="col-auto">
                                 {col.map((category, index) => (
                                   <Link
                                     key={index}
-                                    href={`/product?category=${category.name}`}
+                                    href={`/product?category=${category.name.replace(
+                                      /\s+/g,
+                                      "-"
+                                    )}`}
                                     passHref
                                   >
                                     <li>
@@ -380,7 +421,7 @@ export default function NavSearch({ filters }) {
                   ref={(div) => {
                     addDivGris(div);
                   }}
-                  onClick={(e) => toggle(divGris.current[1])}
+                  onClick={(e) => toggle(divGris.current[2])}
                   className={styles.outSide}
                 ></div>
 
@@ -459,7 +500,7 @@ export default function NavSearch({ filters }) {
                       addDesplegable(li);
                     }}
                     onClick={(e) =>
-                      desplegable(dropdowns.current[2], divGris.current[2])
+                      desplegable(dropdowns.current[3], divGris.current[3])
                     }
                     className={`${styles.liNav}`}
                   >
@@ -518,7 +559,7 @@ export default function NavSearch({ filters }) {
                     ref={(div) => {
                       addDivGris(div);
                     }}
-                    onClick={(e) => toggle(divGris.current[2])}
+                    onClick={(e) => toggle(divGris.current[3])}
                     className={styles.outSide}
                   ></div>
                 </>
