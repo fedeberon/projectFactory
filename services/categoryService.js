@@ -27,5 +27,7 @@ export const dispatchCategories = async (dispatch) => {
     dispatch(categoriesActions.setMagazines(magazineCategories));
     const companyCategories = await findAllByTypeCategory("COMPANY");
     dispatch(categoriesActions.setCompanies(companyCategories));
+    const companyProfessionals = await findAllByTypeCategory("PROFESSIONAL");
+    dispatch(categoriesActions.setProfessional(companyProfessionals));
     dispatch(categoriesActions.setInitializated(true));
 };

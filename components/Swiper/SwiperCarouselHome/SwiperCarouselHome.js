@@ -29,6 +29,32 @@ SwiperCore.use([Autoplay, Pagination, Navigation]);
 const SwiperCarouselHome = (props) => {
   const { images } = props;
   const { t } = useTranslation("common");
+
+  /**
+   * Generated URL-Link private or public when
+   * click in the view more button, and generate
+   * new window if it is a public URL, for example https://google.com
+   * @param {String} link needed for create linked
+   * @returns render component
+   */
+  const generateLink = (link) => {
+    return link.includes("www") &&
+      link.includes("https://") &&
+      link.length > 0 ? (
+      <Link href={`${link}`} passHref>
+        <PrimaryButton as={"a"} blank outline style={{ width: "96px" }}>
+          {t("view-more")}
+        </PrimaryButton>
+      </Link>
+    ) : (
+      link.length > 0 && (
+        <Link href={`${link}`}>
+          <PrimaryButton outline>{t("view-more")}</PrimaryButton>
+        </Link>
+      )
+    );
+  };
+
   return (
     <Swiper
       spaceBetween={0}
@@ -46,9 +72,12 @@ const SwiperCarouselHome = (props) => {
             <div className={styles.text}>
               <h3 className={`${styles.tit}`}>{image.title}</h3>
               <p className={`${styles.description} `}>{image.subTitle}</p>
-              <Link href={`${image.link}`}>
-                <PrimaryButton outline>{t("view-more")}</PrimaryButton>
-              </Link>
+              {/* {image.link && (
+                <Link href={`./${image.link}`} passHref>
+                  <PrimaryButton outline>{t("view-more")}</PrimaryButton>
+                </Link>
+              )} */}
+              {generateLink(image.link)}
             </div>
           </div>
           <img className={styles.img} src={image.path} alt={image.title} />

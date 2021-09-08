@@ -154,8 +154,10 @@ export async function getServerSideProps({ req }) {
   const arrayCategories = [];
   let buildingWorks = { buildingWorks: [], count: 0 };
   const status = "APPROVED";
+  let categoryReplace;
   if (categories != undefined) {
-    arrayCategories.push(categories);
+    categoryReplace = categories.replace(/-/g, " ");
+    arrayCategories.push(categoryReplace);
     buildingWorks = await buildingWorkService.getAllByCategoryAndStatus(
       status,
       arrayCategories,

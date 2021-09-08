@@ -23,12 +23,13 @@
   height: 56px;
   background: #fff;
 }
-.liNav a {
+.liNav {
   cursor: pointer;
 }
 
 .liNav:hover {
   border-bottom: 2px solid #ffca05 !important;
+  padding-bottom: 14px;
 }
 
 .nav ul li a {
@@ -47,10 +48,10 @@
   position: absolute;
   width: 100%;
 }
-.nav ul li:hover ol {
+.nav ul li:hover + div {
   display: block;
   left: 0;
-  top: 58px;
+  top: 56px;
   z-index: 9;
   background: #fff;
 }
@@ -61,17 +62,21 @@
 .showDesplegable {
   display: block !important;
   left: 0;
-  top: 58px;
+  top: 56px;
 }
 
 .borderActive {
   background: #f5f5f5;
   border-bottom: 2px solid #ffca05 !important;
+  padding-bottom: 14px !important;
 }
 .desplegable {
+  display: none;
+  width: 100%;
+  left: 0;
   background-color: #ffffff;
   list-style: none;
-  z-index: 10;
+  z-index: 15;
   position: absolute;
   border-bottom: 1px solid #ccc;
 }
@@ -84,7 +89,7 @@
   overflow: hidden;
   background: rgba(0, 0, 0, 0.5);
   width: 100%;
-  z-index: 10;
+  z-index: 15;
   position: absolute;
   left: 0;
   top: 186px;
@@ -103,6 +108,7 @@
 }
 .navLink:hover {
   border-bottom: 2px solid #ffca05 !important;
+  padding-bottom: 14px;
 }
 .containerDesplegable {
   /* height: 128px; */
@@ -111,7 +117,7 @@
 
 .containerDesplegable li {
   cursor: pointer;
-  padding: .1rem 1.5rem;
+  padding: 0.1rem 1.5rem;
 }
 
 .containerDesplegable li:hover {

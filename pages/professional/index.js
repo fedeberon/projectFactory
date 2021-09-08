@@ -24,15 +24,17 @@ import { InfoCircleFill, PersonCircle } from "react-bootstrap-icons";
 import useSize from "../../hooks/window/useSize";
 import AlertCustom from "../../components/Alert/AlertCustom";
 
-const Professional = ({ data }) => {
+const Professional = ({ data, filterCategories }) => {
   const { width, height } = useSize();
   const [sizeIco, setSizeIco] = useState(176);
   const [pageSize, setPageSize] = useState({
-    page: 1,
-    size: process.env.NEXT_PUBLIC_SIZE_PER_PAGE,
+    page: 0,
+    // size: process.env.NEXT_PUBLIC_SIZE_PER_PAGE,
+    size: 10,
   });
   const [hasMore, setHasMore] = useState(true);
-  const [professionals, setProfessionals] = useState(data);
+  const [localProfessionals, setlocalProfessionals] = useState(data);
+  const [countFirst, setCountFirst] = useState(false);
 
   // const dispatch = useDispatch();
   // const professionals = useSelector((state) =>
@@ -117,27 +119,69 @@ const Professional = ({ data }) => {
     }
   };
 
+  const onGetAllByCategoryAndStatus = async (status) => {
+    // setLoading(true);
+    try {
+      const professionalsFilter =
+        await professionalService.getAllByCategoryAndStatus(
+          status,
+          filterCategories,
+          pageSize.page,
+          pageSize.size
+        );
+      // setLoading(false);
+      return professionalsFilter;
+    } catch (error) {
+      console.error(error);
+      // setLoading(false);
+    }
+  };
+
   useEffect(async () => {
-    const newProfesionals = await onFindAll();
-    if (newProfesionals) {
-      setProfessionals([...professionals, ...newProfesionals]);
+    // const newProfesionals = await onFindAll();
+    // if (newProfesionals) {
+    //   setProfessionals([...professionals, ...newProfesionals]);
+    // }
+    // if (countFirst) {
+    const status = "APPROVED";
+    const newProfessionals = await onGetAllByCategoryAndStatus(status);
+    // console.log("pageSize_professionals", newProfessionals);
+    if (newProfessionals) {
+      // setlocalProfessionals({
+      //   ...localProfessionals,
+      //   professionals: [
+      //     ...localProfessionals.professionals,
+      //     ...newProfessionals.professionals,
+      //   ],
+      //   count: newProfessionals.count,
+      // });
+      // console.log("dentro del if", newProfessionals);
+      // } else {
+      //   setCountFirst(true);
+      //   console.log("cambia", countFirst);
+      // }
     }
   }, [pageSize]);
 
   useEffect(async () => {
-    if (professionals.length > 0) {
-      const total = await getTotalProfessionals();
-      if (professionals.length == total.count) {
+    // console.log("localProfessionals", localProfessionals);
+    if (localProfessionals.professionals.length > 0) {
+      // const total = await getTotalProfessionals();
+      if (localProfessionals.professionals.length == localProfessionals.count) {
+        // console.log("lo que tengo", localProfessionals.professionals.length);
+        // console.log("lo que viene como maximo", localProfessionals.count);
+        // console.log("maximo");
         setHasMore(false);
       } else {
         setHasMore(true);
       }
     }
-  }, [professionals]);
+  }, [localProfessionals]);
 
-  // useEffect(() => {
-  // dispatch(professionalActions.store(data));
-  // }, [data]);
+  useEffect(async () => {
+    // dispatch(professionalActions.store(data));
+    setlocalProfessionals(data);
+  }, [data]);
 
   return (
     <Layout title={`${t("common:professional")}`}>
@@ -145,7 +189,7 @@ const Professional = ({ data }) => {
         <Row className="w-100 m-0">
           <InfiniteScroll
             className="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4 "
-            dataLength={professionals.length}
+            dataLength={localProfessionals.professionals.length}
             next={fetchMoreData}
             hasMore={hasMore}
             loader={<SpinnerCustom className="w-100 m-0 my-2" />}
@@ -158,7 +202,7 @@ const Professional = ({ data }) => {
               </Col>
             }
           >
-            {professionals.map((professional, index) => (
+            {localProfessionals.professionals.map((professional, index) => (
               <Col key={index}>
                 <Card className={`${styles.card}`}>
                   <Card.Body className={`p-0`}>
@@ -224,8 +268,9 @@ export async function getServerSideProps({ params, req, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
 
-  let professionals = [];
-  let { page, size } = req.__NEXT_INIT_QUERY;
+  let professionals = { professionals: [], count: 0 };
+  let professionalsFilter = [];
+  let { page, size, categories } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
     page = 0;
@@ -233,12 +278,28 @@ export async function getServerSideProps({ params, req, res, locale }) {
   if (!size || size <= 0) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
-
-  professionals = await professionalService.findAll(page, size);
+  const arrayCategories = [];
+  let categoryReplace;
+  const status = "APPROVED";
+  if (categories != undefined) {
+    categoryReplace = categories.replace(/-/g, " ");
+    arrayCategories.push(categoryReplace);
+    professionals = await professionalService.getAllByCategoryAndStatus(
+      status,
+      arrayCategories,
+      page,
+      10
+    );
+  } else {
+    const newProfessionals = await professionalService.findAll(page, 10);
+    professionals.professionals = newProfessionals;
+    professionals.count = newProfessionals.length;
+  }
 
   return {
     props: {
       data: professionals,
+      filterCategories: arrayCategories,
     },
   };
 }

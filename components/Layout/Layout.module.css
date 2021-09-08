@@ -13,3 +13,6 @@
 .ancor:hover {
   text-decoration: underline;
 }
+.overFlowHidden {
+  overflow: hidden;
+}

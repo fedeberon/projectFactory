@@ -42,7 +42,7 @@ const getDataOfUserByPayload = async (payload, token) => {
   const authorities = payload["authorities"];
   const userId = payload["jti"];
   if (authorities.includes("ROLE_PROFESSIONAL")) {
-    const professional = await professionalService.getById(userId, token);
+    const professional = await professionalService.getById(userId);
     return {
       name: professional.contact,
       email: professional.email,

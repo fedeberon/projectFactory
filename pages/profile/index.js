@@ -83,13 +83,13 @@ const Profile = ({ data, status }) => {
 
   const onBecomeProfessional = async (data) => {
     const company = { id: data.company?.id };
-    const category = { id: data.category?.id };
+    const categoryCompany = { id: data.categoryCompany?.id };
     if (data.company.id != undefined) {
       data.company = company;
-      data.category = category;
+      data.categoryCompany = categoryCompany;
     } else {
       delete data.company;
-      delete data.category;
+      delete data.categoryCompany;
     }
     const previewImage = data.previewImage;
     const backgroundImage = data.backgroundImage;
@@ -97,7 +97,6 @@ const Profile = ({ data, status }) => {
     delete data.backgroundImage;
     delete data.images;
     const token = await saveProfessional(data);
-
     if (token != null) {
       if (previewImage) {
         await savePreviewImage(token, previewImage);

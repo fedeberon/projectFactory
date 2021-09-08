@@ -2,7 +2,7 @@
   "become-professional": "Convertirse en un profesional",
   "become-in-a-company": "Convertirse en una empresa",
   "link-account-to-mercadopago": "Vincular con MercadoPago",
-  "your-tokens" : "Tus fichas",
+  "your-tokens": "Tus fichas",
 
   "authority": "Autoridad",
   "without-session": "Sin sesión",
@@ -29,5 +29,7 @@
     "increased-visibility": "Visibilidad aumentada",
     "amount-tokens": "Cantidad de fichas",
     "price": "Precio"
-  }
+  },
+  "professional-category": "Categoria del profesional",
+  "the-professional-category-cannot-be-empty": "La categoria del profesional no puede estar vacia"
 }
