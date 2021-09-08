@@ -82,11 +82,6 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
               newBuildingWorks.buildingWorks.length - 1
             ],
           ];
-          // console.log(
-          //   "newBuildingWorks.length - 1",
-          //   newBuildingWorks.buildingWorks.length - 1
-          // );
-          // console.log("endArray", endArray);
 
           const buildingWorks = {
             buildingWorks: endArray ? endArray : [],

@@ -58,8 +58,16 @@ const Admin = ({
 };
 
 export async function getServerSideProps({ params, req, res, locale }) {
+  return {
+    redirect: {
+      destination: "/",
+      permanent: false,
+      fallback: false,
+    },
+  };
   // Get the user's session based on the request
   const session = await getSession({ req });
+
 
   if (
     !session ||

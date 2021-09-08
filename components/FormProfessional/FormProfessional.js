@@ -11,6 +11,9 @@ import Select from "react-select";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
+import CategoryList from "../List/CategoryList/CategoryList";
+import CategorySelector from "../CategorySelector/CategorySelector";
+import { useSelector } from "react-redux";
 
 const FormProfessional = ({
   onAddProfessional,
@@ -30,6 +33,22 @@ const FormProfessional = ({
   const [companySelected, setCompanySelected] = useState({});
   const [value, setValue] = useState();
   const [session] = useSession();
+  const selectedCategories = useSelector(
+    (state) => state.categories.selectedCategories
+  );
+  // const [error, setError] = useState("");
+
+  const [timeErrorLive, setTimeErrorLive] = useState(0);
+
+  const showErrorToLimitTime = (error) => {
+    setError(error);
+    clearTimeout(timeErrorLive);
+    setTimeErrorLive(
+      setTimeout(() => {
+        setError("");
+      }, 3000)
+    );
+  };
 
   const {
     control,
@@ -60,7 +79,8 @@ const FormProfessional = ({
     // You should handle login logic with firstName, lastName, email, preview and background images and form data
     let data = {
       company: companySelected,
-      category: companyCategory,
+      categoryCompany: companyCategory,
+      category: selectedCategories[0],
       contact,
       email,
       phoneNumber: telephone,
@@ -71,14 +91,19 @@ const FormProfessional = ({
       province,
       location,
     };
-    const professional = await onAddProfessional(data);
+    if (!selectedCategories.length == 0) {
 
-    if (professional != null) {
-      setPreviewImage([]);
-      setBackgroundImage([]);
-      event.target.reset();
-      toggle();
-      setError("");
+      const professional = await onAddProfessional(data);
+
+      if (professional != null) {
+        setPreviewImage([]);
+        setBackgroundImage([]);
+        event.target.reset();
+        toggle();
+        setError("");
+      }
+    } else {
+      showErrorToLimitTime(t("the-professional-category-cannot-be-empty"));
     }
   };
 
@@ -427,6 +452,18 @@ const FormProfessional = ({
                     </Form.Text>
                   )}
                 </Form.Group>
+                {/* <Col sm={12} md={6} lg={6}> */}
+                <Form.Group>
+                  <Form.Label htmlFor="category">
+                    {t("professional-category")}
+                  </Form.Label>
+                  {selectedCategories.length === 0 ? (
+                    <CategorySelector typeCategory="PROFESSIONAL" />
+                  ) : (
+                    <CategoryList />
+                  )}
+                </Form.Group>
+                {/* </Col> */}
               </Col>
               <Col>
                 <Form.Group className="text-center">
@@ -474,7 +511,13 @@ const FormProfessional = ({
         formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}
         modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
       />
-      {error && <Error error={error} />}
+      {error && (
+        <Row className="mt-2">
+          <Col>
+            <Error error={error} />
+          </Col>
+        </Row>
+      )}
     </div>
   );
 };

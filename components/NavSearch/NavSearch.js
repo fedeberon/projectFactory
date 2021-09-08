@@ -80,7 +80,7 @@ import * as categoryService from "../../services/categoryService";
 
 export default function NavSearch({ filters }) {
   const [session, loading] = useSession();
-  const [maxRows, setMaxRows] = useState(6)
+  const [maxRows, setMaxRows] = useState(6);
   const { t } = useTranslation("common");
 
   const dispatch = useDispatch();
@@ -302,10 +302,6 @@ export default function NavSearch({ filters }) {
                                 </li>
                               </Link>
                             </Col>
-                            {console.log(
-                              "productProfessionals",
-                              productProfessionals
-                            )}
                             {/* <Link href="/companies" passHref>
                             <li>
                               <a className={styles.link}>{t("companies")}</a>
@@ -317,7 +313,7 @@ export default function NavSearch({ filters }) {
                                   {col.map((category, index) => (
                                     <Link
                                       key={index}
-                                      href={`/professionals?category=${category.name.replace(
+                                      href={`/professional?categories=${category.name.replace(
                                         /\s+/g,
                                         "-"
                                       )}`}
@@ -391,26 +387,28 @@ export default function NavSearch({ filters }) {
                               </li>
                             </Link>
                           ))} */}
-                            {chunk(productCategories, maxRows).map((col, index) => (
-                              <Col key={index} className="col-auto">
-                                {col.map((category, index) => (
-                                  <Link
-                                    key={index}
-                                    href={`/product?category=${category.name.replace(
-                                      /\s+/g,
-                                      "-"
-                                    )}`}
-                                    passHref
-                                  >
-                                    <li>
-                                      <a className={styles.link}>
-                                        {category.name}
-                                      </a>
-                                    </li>
-                                  </Link>
-                                ))}
-                              </Col>
-                            ))}
+                            {chunk(productCategories, maxRows).map(
+                              (col, index) => (
+                                <Col key={index} className="col-auto">
+                                  {col.map((category, index) => (
+                                    <Link
+                                      key={index}
+                                      href={`/product?category=${category.name.replace(
+                                        /\s+/g,
+                                        "-"
+                                      )}`}
+                                      passHref
+                                    >
+                                      <li>
+                                        <a className={styles.link}>
+                                          {category.name}
+                                        </a>
+                                      </li>
+                                    </Link>
+                                  ))}
+                                </Col>
+                              )
+                            )}
                           </Row>
                         </Col>
                       </Row>

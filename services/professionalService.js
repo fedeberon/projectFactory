@@ -7,14 +7,13 @@ export const findAll = async (page, size) => {
   return await API.get(`/professionals?page=${page}&size=${size}`);
 };
 
-export const getById = async (id, token) => {
-  // API.defaults.headers.common["Authorization"] = token;
+export const getById = async (id) => {
   return await API.get(`/professionals/${id}`);
 };
 
 export const getByIdWithImages = async (id, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  const professional = await getById(id, token);
+  const professional = await getById(id);
   const images = await imageService.getProfessionalImages(
     id,
     page,
@@ -82,7 +81,7 @@ export const become = async (data, token) => {
 };
 
 export const updateToken = async (token, userId) => {
-  const professional = await getById(userId, token);
+  const professional = await getById(userId);
   signIn("credentials", {
     accessToken: token,
     name: professional.contact,
@@ -137,4 +136,22 @@ export const generatePreferenceForToken = async (plan, token) => {
 
 export const getCount = async (status) => {
   return await API.get(`/professionals/status/${status}/count`);
+};
+
+export const getAllByCategoryAndStatus = async (
+  status,
+  arrayCategories,
+  page,
+  size
+) => {
+  if (arrayCategories.length == 0) {
+    return findAll(page, size);
+  }
+  let categoriesSeparatedByCommas = "";
+  arrayCategories.map((category, index) => {
+    return (categoriesSeparatedByCommas += `,${category}`);
+  });
+  categoriesSeparatedByCommas = categoriesSeparatedByCommas.substring(1);
+  const encoded = encodeURI(`/professionals/status/${status}/category/${categoriesSeparatedByCommas}?page=${page}&size=${size}`);
+  return await API.get(encoded);
 };
