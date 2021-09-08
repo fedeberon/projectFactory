@@ -21,20 +21,24 @@ const Layout = ({ children, title, footer = true, header = true }) => {
   const { t } = useTranslation("common");
 
   useEffect(() => {
-    const handleRouteChange = (url) => {
+    const handleStart = (url) => {
       NProgress.start();
     };
+    const handleStop = () => {
+      NProgress.done();
+      document.querySelector("body").classList.remove("NavSearch_overFlowHidden__1Mups");
+    };
 
-    router.events.on("routeChangeStart", handleRouteChange);
-
-    router.events.on("routeChangeComplete", () => NProgress.done());
-
-    router.events.on("routeChangeError", () => nProgress.done());
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleStop);
+    router.events.on("routeChangeError", handleStop);
 
     return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleStop);
+      router.events.off("routeChangeError", handleStop);
     };
-  }, []);
+  }, [router]);
 
   return (
     <>

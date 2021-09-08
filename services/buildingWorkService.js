@@ -126,8 +126,7 @@ export const getAllByCategoryAndStatus = async (
   });
 
   categoriesSeparatedByCommas = categoriesSeparatedByCommas.substring(1);
-
-  return await API.get(
-    `/building-works/status/${status}/categories/${categoriesSeparatedByCommas}?page=${page}&size=${size}`
-  );
+  const encoded = encodeURI(`/building-works/status/${status}/categories/${categoriesSeparatedByCommas}?page=${page}&size=${size}`);
+  return await API.get(encoded);
+    // `/building-works/status/${status}/categories/${categoriesSeparatedByCommas}?page=${page}&size=${size}`
 };
