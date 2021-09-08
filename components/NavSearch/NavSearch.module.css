@@ -23,7 +23,7 @@
   height: 56px;
   background: #fff;
 }
-.liNav a {
+.liNav {
   cursor: pointer;
 }
 
@@ -48,7 +48,7 @@
   position: absolute;
   width: 100%;
 }
-.nav ul li:hover ol {
+.nav ul li:hover + div {
   display: block;
   left: 0;
   top: 56px;
@@ -71,9 +71,12 @@
   padding-bottom: 14px !important;
 }
 .desplegable {
+  display: none;
+  width: 100%;
+  left: 0;
   background-color: #ffffff;
   list-style: none;
-  z-index: 10;
+  z-index: 15;
   position: absolute;
   border-bottom: 1px solid #ccc;
 }
@@ -86,7 +89,7 @@
   overflow: hidden;
   background: rgba(0, 0, 0, 0.5);
   width: 100%;
-  z-index: 10;
+  z-index: 15;
   position: absolute;
   left: 0;
   top: 186px;
