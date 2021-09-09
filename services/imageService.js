@@ -199,6 +199,10 @@ export const uploadCompanyBackground = async (image, token) => {
 export const findCarouselImages = async () => {
   return await API.get(`/images/carousel`);
 };
+export const deleteCarouselImage = async (imageId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.delete(`/images/carousel/${imageId}`);
+};
 
 export const changeStateImagesByProfessionalId = async (
   professionalId,

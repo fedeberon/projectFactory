@@ -3,7 +3,7 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
-
+import { Trash } from "react-bootstrap-icons";
 // Styles
 import styles from "./SwiperCarouselHome.module.css";
 
@@ -27,7 +27,7 @@ SwiperCore.use([Autoplay, Pagination, Navigation]);
  */
 
 const SwiperCarouselHome = (props) => {
-  const { images } = props;
+  const { images, onDeleteCarouselImage } = props;
   const { t } = useTranslation("common");
 
   /**
@@ -72,15 +72,18 @@ const SwiperCarouselHome = (props) => {
             <div className={styles.text}>
               <h3 className={`${styles.tit}`}>{image.title}</h3>
               <p className={`${styles.description} `}>{image.subTitle}</p>
-              {/* {image.link && (
-                <Link href={`./${image.link}`} passHref>
-                  <PrimaryButton outline>{t("view-more")}</PrimaryButton>
-                </Link>
-              )} */}
               {generateLink(image.link)}
             </div>
           </div>
           <img className={styles.img} src={image.path} alt={image.title} />
+          <PrimaryButton
+            dark
+            className={`position-absolute bottom-0 end-0 m-2`}
+            type="button"
+            onClick={() => onDeleteCarouselImage(image.id)}
+          >
+            <Trash size={25} /> {t("delete")}
+          </PrimaryButton>
         </SwiperSlide>
       ))}
       <div className={`swiper-button-next ${styles.swiperButtonNext}`}></div>
