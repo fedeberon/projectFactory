@@ -314,5 +314,9 @@
   "buildingWorks": "Obras",
   "register-as-a-professional": "Registrate como profesional",
   "present-your-work-to-thousands-of-potential-clients": "Presentá tu trabajo a miles de potenciales clientes.",
-  "delete": "Eliminar"
+  "delete": "Eliminar",
+  "rows-per-page": "Filas por página",
+  "are-you-sure": "¿Estás seguro?",
+  "yes-i-want-to-eliminate": "Sí quiero eliminar",
+  "once-delete-you-will-not-be-able-to-recover-the-image": "Una vez borrado no podrá recuperar la imagen"
 }
