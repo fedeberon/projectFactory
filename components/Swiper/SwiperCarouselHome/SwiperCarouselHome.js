@@ -88,6 +88,14 @@ const SwiperCarouselHome = (props) => {
 
           {isRole("ROLE_ADMINISTRATOR") && (
             <ModalButton
+              buttonProps={{
+                dark: true,
+                children: (
+                  <>
+                    <Trash size={25} /> {t("delete")}
+                  </>
+                ),
+              }}
               modalTitle={t(`are-you-sure`)}
               modalBody={
                 <>

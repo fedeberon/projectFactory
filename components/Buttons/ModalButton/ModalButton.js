@@ -5,14 +5,10 @@ import useTranslation from "next-translate/useTranslation";
 import { Button, Col, Modal, Row } from "react-bootstrap";
 
 const ModalButton = (props) => {
-  const {
-    fullscreen,
-    scrollable,
-    size,
-    modalTitle,
-    modalBody,
-  } = props;
+  const { fullscreen, scrollable, size, modalTitle, modalBody, buttonProps } =
+    props;
   const [showModal, setShowModal] = useState(false);
+
   const { t } = useTranslation("common");
 
   const toggle = () => setShowModal(!showModal);
@@ -20,12 +16,16 @@ const ModalButton = (props) => {
   return (
     <>
       <PrimaryButton
-        dark
-        className={`position-absolute bottom-0 end-0 m-2`}
+        dark={buttonProps.dark}
+        className={
+          buttonProps.classNameButton
+            ? buttonProps.classNameButton
+            : `position-absolute bottom-0 end-0 m-2`
+        }
         type="button"
         onClick={toggle}
       >
-        <Trash size={25} /> {t("delete")}
+        {buttonProps.children}
       </PrimaryButton>
 
       <Modal
