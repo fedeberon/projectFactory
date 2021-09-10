@@ -52,7 +52,7 @@ const Home = ({
   //   }
   // }, [appliedFilters]);
 
-  const onAddCarouselImages = async () => {
+  const onGetCarouselImages = async () => {
     try {
       const carouselImages = await imageService.findCarouselImages();
       setImagesCarousel(carouselImages);
@@ -61,28 +61,20 @@ const Home = ({
     }
   };
 
+  const onDeleteCarouselImage = async (imageId) => {
+    try {
+      await imageService.deleteCarouselImage(imageId, session.accessToken);
+      await onGetCarouselImages();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(async () => {
     if (carouselImages) {
-      await onAddCarouselImages();
+      await onGetCarouselImages();
     }
   }, [carouselImages]);
-
-  // const getProfessionalsByTags = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const images = await imageService.getProfessionalImagesByTags(
-  //       appliedFilters,
-  //       0,
-  //       process.env.NEXT_PUBLIC_BUILDING_WORKS_PER_HOME,
-  //       session?.accessToken
-  //     );
-  //     setLoading(false);
-  //     return images;
-  //   } catch (error) {
-  //     console.error(error);
-  //     setLoading(false);
-  //   }
-  // };
 
   const getTotalBuildingWorks = async () => {
     const status = "APPROVED";
@@ -114,13 +106,16 @@ const Home = ({
   return (
     <Layout>
       <section className="content">
-        <SwiperCarouselHome images={imagesCarousel} />
+        <SwiperCarouselHome
+          images={imagesCarousel}
+          onDeleteCarouselImage={onDeleteCarouselImage}
+        />
         <section className="container py-5">
           <Row className="row-cols-1 gap-2">
             <Col>
               <ButtonGroup aria-label="Basic example" className="gap-1">
                 <CarouselImageCreator
-                  onAddCarouselImages={onAddCarouselImages}
+                  onGetCarouselImages={onGetCarouselImages}
                 />
                 <AdministratorCreator />
               </ButtonGroup>

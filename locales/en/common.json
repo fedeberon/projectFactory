@@ -313,5 +313,11 @@
   "category": "Category",
   "buildingWorks": "Building works",
   "register-as-a-professional": "Register as a professional",
-  "present-your-work-to-thousands-of-potential-clients": "Present your work to thousands of potential clients."
+  "present-your-work-to-thousands-of-potential-clients": "Present your work to thousands of potential clients.",
+  "delete": "Delete",
+  "rows-per-page": "Rows per page",
+  "are-you-sure": "Are you sure?",
+  "yes-i-want-to-eliminate": "Yes i want to eliminate",
+  "once-delete-you-will-not-be-able-to-recover-the-image": "Once delete you will not be able to recover the image",
+  "category-button": "Category button"
 }
