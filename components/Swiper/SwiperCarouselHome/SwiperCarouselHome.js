@@ -3,7 +3,8 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
-
+import { Check, Trash } from "react-bootstrap-icons";
+import { useSession } from "next-auth/client";
 // Styles
 import styles from "./SwiperCarouselHome.module.css";
 
@@ -19,6 +20,7 @@ import PrimaryButton from "../../Buttons/PrimaryButton/PrimaryButton";
 
 // Modules
 import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
+import ModalButton from "../../Buttons/ModalButton/ModalButton";
 SwiperCore.use([Autoplay, Pagination, Navigation]);
 
 /**
@@ -27,7 +29,8 @@ SwiperCore.use([Autoplay, Pagination, Navigation]);
  */
 
 const SwiperCarouselHome = (props) => {
-  const { images } = props;
+  const { images, onDeleteCarouselImage } = props;
+  const [session] = useSession();
   const { t } = useTranslation("common");
 
   /**
@@ -55,6 +58,12 @@ const SwiperCarouselHome = (props) => {
     );
   };
 
+  const isRole = (role) => {
+    if (session) {
+      return session.authorities.includes(role);
+    }
+  };
+
   return (
     <Swiper
       spaceBetween={0}
@@ -72,15 +81,38 @@ const SwiperCarouselHome = (props) => {
             <div className={styles.text}>
               <h3 className={`${styles.tit}`}>{image.title}</h3>
               <p className={`${styles.description} `}>{image.subTitle}</p>
-              {/* {image.link && (
-                <Link href={`./${image.link}`} passHref>
-                  <PrimaryButton outline>{t("view-more")}</PrimaryButton>
-                </Link>
-              )} */}
               {generateLink(image.link)}
             </div>
           </div>
           <img className={styles.img} src={image.path} alt={image.title} />
+
+          {isRole("ROLE_ADMINISTRATOR") && (
+            <ModalButton
+              buttonProps={{
+                dark: true,
+                children: (
+                  <>
+                    <Trash size={25} /> {t("delete")}
+                  </>
+                ),
+              }}
+              modalTitle={t(`are-you-sure`)}
+              modalBody={
+                <>
+                  <h5>
+                    {t("once-delete-you-will-not-be-able-to-recover-the-image")}
+                  </h5>
+                  <PrimaryButton
+                    className={`m-2`}
+                    type="button"
+                    onClick={() => onDeleteCarouselImage(image.id)}
+                  >
+                    <Check size={25} /> {t("yes-i-want-to-eliminate")}
+                  </PrimaryButton>
+                </>
+              }
+            />
+          )}
         </SwiperSlide>
       ))}
       <div className={`swiper-button-next ${styles.swiperButtonNext}`}></div>
