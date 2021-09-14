@@ -6,9 +6,6 @@
   border-style: solid;
   text-decoration: none;
   border-radius: 5px;
-  padding: 0.5rem 1.5rem;
-  font-weight: 500;
-  font-size: 0.8rem;
 }
 
 .btnLightOutline {
@@ -40,7 +37,8 @@
   box-shadow: 0 0 0 0.2rem rgb(100 100 100 / 50%);
 }
 
-.btnDark, .btnYellow {
+.btnDark,
+.btnYellow {
   background-color: #000000;
   border-color: #000000;
   color: #fff;
@@ -48,9 +46,6 @@
   border-style: solid;
   text-decoration: none;
   border-radius: 5px;
-  padding: 0.5rem 1.5rem;
-  font-weight: 500;
-  font-size: 0.8rem;
 }
 
 .btnDark:hover {
@@ -61,8 +56,8 @@
 
 .btnYellow:hover {
   color: #000;
-  background-color: #FFCA05;
-  border-color: #FFCA05;
+  background-color: #ffca05;
+  border-color: #ffca05;
 }
 
 .btnLg {

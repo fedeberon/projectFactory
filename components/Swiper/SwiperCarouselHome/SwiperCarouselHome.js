@@ -45,7 +45,7 @@ const SwiperCarouselHome = (props) => {
       link.includes("https://") &&
       link.length > 0 ? (
       <Link href={`${link}`} passHref>
-        <PrimaryButton as={"a"} blank outline style={{ width: "96px" }}>
+        <PrimaryButton as={"a"} blank outline style={{ width: "100px" }}>
           {t("view-more")}
         </PrimaryButton>
       </Link>

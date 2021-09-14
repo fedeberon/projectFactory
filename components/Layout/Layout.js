@@ -69,31 +69,33 @@ const Layout = ({ children, title, footer = true, header = true }) => {
                   className={`text-muted`}
                 />
               </Col>
-              <Col className="col-12 col-md-3 d-flex flex-column gap-2">
+              <Col
+                className={`col-12 col-md-3 d-flex flex-column gap-2 ${styles.menuFooter}`}
+              >
                 <Link href="/about">
                   <a
-                    className={`${styles.ancor} m-0 text-muted list-group-item border-0 p-0 bg-transparent`}
+                    className={`${styles.ancor} m-0 list-group-item border-0 p-0 bg-transparent`}
                   >
                     {t("who-we-are")}
                   </a>
                 </Link>
                 <Link href="/">
                   <a
-                    className={`${styles.ancor} m-0 text-muted list-group-item border-0 p-0 bg-transparent`}
+                    className={`${styles.ancor} m-0 list-group-item border-0 p-0 bg-transparent`}
                   >
                     {t("frequently-asked-questions")}
                   </a>
                 </Link>
                 <Link href="/policies">
                   <a
-                    className={`${styles.ancor} m-0 text-muted list-group-item border-0 p-0 bg-transparent`}
+                    className={`${styles.ancor} m-0 list-group-item border-0 p-0 bg-transparent`}
                   >
                     {t("site-policies")}
                   </a>
                 </Link>
                 <Link href="/contact">
                   <a
-                    className={`${styles.ancor} m-0 text-muted list-group-item border-0 p-0 bg-transparent`}
+                    className={`${styles.ancor} m-0 list-group-item border-0 p-0 bg-transparent`}
                   >
                     {t("contact")}
                   </a>

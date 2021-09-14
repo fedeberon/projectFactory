@@ -12,7 +12,8 @@ import OffCanvasFilter from "../../components/OffCanvas/OffCanvasFilter.js/OffCa
 import * as buildingWorkService from "../../services/buildingWorkService";
 
 // Styles
-import styles from "../../styles/Home.module.css";
+// import styles from "../../styles/Home.module.css";
+import styles from "./index.module.css";
 import ImagesGroup from "../../components/ImagesGroup/ImagesGroup";
 
 const index = ({ session, filtersTags, buildingWorks }) => {
@@ -105,24 +106,22 @@ const index = ({ session, filtersTags, buildingWorks }) => {
   return (
     <Layout>
       <section className="container content">
-        <Row className="row-cols-1 gap-2">
-          <Col className={styles.infoHead}>
-            <h2 className={styles.itemsTitle}>
+        <Row className="row-cols-1 gap-4">
+          <Col className={styles.headListPhotos}>
+            <h1>
               {appliedFilters.length === 0 ? t("buildings") : appliedFilters[0]}
-            </h2>
+            </h1>
           </Col>
-          <Col>
-            <Row className="row-cols-1 row-cols-lg-2 row-cols-xl-3">
-              <Col>
-                <OffCanvasFilter
-                  appliedFilters={appliedFilters}
-                  setAppliedFilters={setAppliedFilters}
-                  classNameButton={`mx-auto`}
-                />
-              </Col>
-              <Col></Col>
-              <Col></Col>
-            </Row>
+          <Col className={`col-auto px-4`}>
+            <OffCanvasFilter
+              classNameButton={`align-self-start justify-self-start`}
+              appliedFilters={appliedFilters}
+              setAppliedFilters={setAppliedFilters}
+              classNameButton={`mx-auto`}
+            />
+          </Col>
+          <Col className={`col-auto px-4 ms-auto ${styles.counter}`}>
+            <p>{`${localBuildingWorks.count} ${t("photos")}`}</p>
           </Col>
           <Col>
             <ImagesGroup

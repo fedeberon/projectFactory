@@ -5,7 +5,7 @@ import { Card, Col, Row } from "react-bootstrap";
 import { useSession } from "next-auth/client";
 import Image from "next/image";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Images, InfoCircleFill, PersonCircle } from "react-bootstrap-icons";
+import { Camera, InfoCircleFill, PersonCircle } from "react-bootstrap-icons";
 import useTranslation from "next-translate/useTranslation";
 
 // Components
@@ -180,18 +180,18 @@ const ImagesGroup = (props) => {
                           />
                         )}
                       </Col>
-                      <Col className={`col-auto`}>
-                        <Card.Text
+                      <Col className={`col-auto ${styles.name}`}>
+                        <h5
                           className={`${filteredImagesStyles.textShadowSm} ${styles.parrafoName} fw-bold`}
                         >
                           {buildingWork?.name}
-                        </Card.Text>
+                        </h5>
                         {!profileHidden && (
-                          <Card.Text
+                          <h5
                             className={`${filteredImagesStyles.textShadowSm} ${styles.parrafoName} fw-bold`}
                           >
                             {buildingWork?.professional.contact}
-                          </Card.Text>
+                          </h5>
                         )}
                       </Col>
                       <Col
@@ -206,13 +206,18 @@ const ImagesGroup = (props) => {
                             />
                           </div>
                         ) : (
-                          <div style={{ width: "51px", height: "51px" }}>
-                            <Images
+                          <div className={`${styles.photos}`}>
+                            {/* <Images
                               className={`${filteredImagesStyles.heart}`}
                               color={"white"}
                               size={25}
-                            />
-                            {` ${buildingWork?.countImages} Photos`}
+                            /> */}
+                            <Camera size={25} />
+                            <div>
+                              {`${buildingWork?.countImages} ${t(
+                                "photos"
+                              ).toLocaleLowerCase()}`}
+                            </div>
                           </div>
                         )}
                       </Col>

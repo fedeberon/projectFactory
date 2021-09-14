@@ -120,7 +120,7 @@ const Home = ({
           <Col>
             <Row className="row-cols-1 gap-2">
               <Col className={styles.infoHead}>
-                <h2 className={styles.itemsTitle}>
+                <h2 className={styles.tit}>
                   {t("buildings")}
                   <small className={styles.itemsSmallTitle}>
                     {t("design-objects-for-your-spaces")}
@@ -152,7 +152,7 @@ const Home = ({
       <section className="container-fluid py-5">
         <Col>
           <Row className="row-cols-1 gap-2">
-            <Col className={styles.infoHead}>
+            <Col className={`${styles.infoHead} ${styles.info}`}>
               <h2 className={styles.productsTitle}>
                 {t("common:products")}
                 <small className={styles.productsSmallTitle}>
@@ -175,7 +175,7 @@ const Home = ({
         <Col>
           <Row className="row-cols-1 gap-2">
             <Col className={styles.infoHead}>
-              <h2 className={styles.itemsTitle}>
+              <h2 className={styles.tit}>
                 {t("common:companies")}
                 <small className={styles.itemsSmallTitle}>
                   {t("new-design-and-construction-companies")}
@@ -196,7 +196,7 @@ const Home = ({
       <section className={`container-fluid py-5`}>
         <Col>
           <div className={styles.infoHead}>
-            <h2 className={styles.itemsTitle}>
+            <h2 className={styles.tit}>
               {t("common:magazine")}
               <small className={styles.itemsSmallTitle}>
                 {t("new-design-architecture-and-deco")}
