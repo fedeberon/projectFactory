@@ -195,7 +195,7 @@ export default function NavSearch({ filters }) {
     );
 
   return (
-    <Container fluid className="m-0 p-0">
+    <Container fluid className={`m-0 p-0 ${styles.band2}`}>
       <Row className="row-cols-1 w-100 m-0 justify-content-center bg-white">
         <Col className="position-relative p-0 d-flex col-12 ">
           <nav className={styles.nav}>
