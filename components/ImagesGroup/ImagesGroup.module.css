@@ -14,3 +14,15 @@
 .alertInfo {
   background: #eaeaea;
 }
+
+.photos {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 300;
+}
+
+.name h5 {
+  color: #fff;
+  font-size: 13px;
+  line-height: 18px;
+}

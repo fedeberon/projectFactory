@@ -1,3 +1,8 @@
-.backgroundGray{
-    background-color: #F5F5F5;
-  }
+.backgroundGray {
+  background-color: #f5f5f5;
+}
+
+.aboutHome .info {
+  margin: auto;
+  width: 80%;
+}

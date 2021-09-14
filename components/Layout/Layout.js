@@ -1,20 +1,18 @@
 // Framewroks
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import NProgress from "nprogress";
-import nProgress from "nprogress";
 import useTranslation from "next-translate/useTranslation";
 import { Container, Row, Col } from "react-bootstrap";
 import Image from "next/image";
-import { Instagram, Facebook } from "react-bootstrap-icons";
 import Link from "next/link";
 
 // Components
 import Header from "../Header/Header";
 
 // Styles
-import LayoutStyles from "./Layout.module.css";
+import styles from "./Layout.module.css";
 
 const Layout = ({ children, title, footer = true, header = true }) => {
   const router = useRouter();
@@ -26,7 +24,9 @@ const Layout = ({ children, title, footer = true, header = true }) => {
     };
     const handleStop = () => {
       NProgress.done();
-      document.querySelector("body").classList.remove("NavSearch_overFlowHidden__1Mups");
+      document
+        .querySelector("body")
+        .classList.remove("NavSearch_overFlowHidden__1Mups");
     };
 
     router.events.on("routeChangeStart", handleStart);
@@ -57,7 +57,7 @@ const Layout = ({ children, title, footer = true, header = true }) => {
       </main>
 
       {footer && (
-        <footer className={`text-dark ${LayoutStyles.backgroundGray}`}>
+        <footer className={`text-dark ${styles.footer}`}>
           <Container>
             <Row className="row-cols-1 row-cols-md-4 justify-content-between align-items-start w-100 gap-4 m-0 py-4">
               <Col className="col-12 col-md-3">
@@ -69,61 +69,128 @@ const Layout = ({ children, title, footer = true, header = true }) => {
                   className={`text-muted`}
                 />
               </Col>
-              <Col className="col-12 col-md-3 d-flex flex-column gap-2">
+              <Col
+                className={`col-12 col-md-3 d-flex flex-column gap-2 ${styles.menuFooter}`}
+              >
                 <Link href="/about">
                   <a
-                    className={`${LayoutStyles.ancor} m-0 text-muted list-group-item border-0 p-0 bg-transparent`}
+                    className={`${styles.ancor} m-0 list-group-item border-0 p-0 bg-transparent`}
                   >
                     {t("who-we-are")}
                   </a>
                 </Link>
                 <Link href="/">
                   <a
-                    className={`${LayoutStyles.ancor} m-0 text-muted list-group-item border-0 p-0 bg-transparent`}
+                    className={`${styles.ancor} m-0 list-group-item border-0 p-0 bg-transparent`}
                   >
                     {t("frequently-asked-questions")}
                   </a>
                 </Link>
                 <Link href="/policies">
                   <a
-                    className={`${LayoutStyles.ancor} m-0 text-muted list-group-item border-0 p-0 bg-transparent`}
+                    className={`${styles.ancor} m-0 list-group-item border-0 p-0 bg-transparent`}
                   >
                     {t("site-policies")}
                   </a>
                 </Link>
                 <Link href="/contact">
                   <a
-                    className={`${LayoutStyles.ancor} m-0 text-muted list-group-item border-0 p-0 bg-transparent`}
+                    className={`${styles.ancor} m-0 list-group-item border-0 p-0 bg-transparent`}
                   >
                     {t("contact")}
                   </a>
                 </Link>
               </Col>
               <Col className="col-12 col-md-3">
-                <p className="m-0 text-muted text-break">
-                  LaFabricaDeProyectosBolivar@gmail.com
-                </p>
-                <p className="m-0 text-muted">+54 9 11 4545 4545</p>
+                <ul
+                  className={`${styles.datos} ${styles.datosfooter} ${styles.ul} `}
+                >
+                  <li>
+                    <Image
+                      src={`/whatsapp.svg`}
+                      width={15}
+                      height={15}
+                      alt=""
+                      className={`text-muted`}
+                    />{" "}
+                    +54 9 11 4545 4545
+                  </li>
+                  <li className={`text-break`}>
+                    <Image
+                      src={`/email.svg`}
+                      width={15}
+                      height={15}
+                      alt=""
+                      className={`text-muted`}
+                    />{" "}
+                    hola@fabricadeproyectos.com
+                  </li>
+                </ul>
               </Col>
               <Col className="col-auto">
                 <Row className="justify-content-center">
                   <Col className="col-auto">
-                    <Instagram size={25} className="text-muted" />
+                    <Link href="/">
+                      <a>
+                        <Image
+                          src={`/facebook.svg`}
+                          width={15.75}
+                          height={18}
+                          alt=""
+                          className={`text-muted`}
+                        />{" "}
+                      </a>
+                    </Link>
                   </Col>
                   <Col className="col-auto">
-                    <Facebook size={25} className="text-muted" />
+                    <Link href="/">
+                      <a>
+                        <Image
+                          src={`/instagram.svg`}
+                          width={15.75}
+                          height={18}
+                          alt=""
+                          className={`text-muted`}
+                        />
+                      </a>
+                    </Link>
                   </Col>
                 </Row>
               </Col>
             </Row>
-            <Row className="mt-2 mt-md-0">
+            {/* <Row className="mt-2 mt-md-0">
               <Col>
                 <p className="text-muted">
                   &copy; Fabrica de Proyectos 2021 - {new Date().getFullYear()}{" "}
                   {t("all-rights-reserved")}.
                 </p>
               </Col>
-            </Row>
+            </Row> */}
+            <div className={`${styles.footerLegal}`}>
+              <div className={`container`}>
+                <div className={`row`}>
+                  <div className={`col-md ${styles.copyfooter}`}>
+                    Todos los derechos reservados.
+                  </div>
+                  <div
+                    className={`col-md text-md-right ${styles.contLogoZurbrand}`}
+                  >
+                    <a
+                      href="https://www.zurbrand.com/?utm_source=fabricadeproyectos&amp;utm_medium=firma_shop"
+                      className={`${styles.linkZurbrand}`}
+                      target="_blank"
+                    >
+                      <img
+                        src="https://www.zurbrand.com/firma/logo-zurbrand-v1-01.png"
+                        className={`${styles.logoZurbrand}`}
+                        alt="Zurbrand | Diseño y Marketing Digital"
+                        title="Zurbrand | Diseño y Marketing Digital"
+                      />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </Container>
         </footer>
       )}

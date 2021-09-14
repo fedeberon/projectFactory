@@ -132,6 +132,12 @@
   font-weight: 600;
 }
 
+.infoHead .tit {
+  margin: auto;
+  font-size: 15px;
+  font-weight: 600;
+}
+
 .itemsSmallTitle,
 .productsSmallTitle {
   font-size: 12px;
@@ -142,6 +148,7 @@
 
 .infoHead {
   text-align: center;
+  margin-bottom: 30px;
 }
 .backgroundGray {
   background-color: #f7f7f7;
