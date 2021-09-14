@@ -23,7 +23,7 @@ const PrimaryButton = forwardRef((props, ref) => {
       href={href}
       onClick={onClick}
       ref={ref}
-      className={`${
+      className={`${styles.btnLg} ${
         outline
           ? `${styles.btnLightOutline} ${styles.btnLight}`
           : styles.btnLight

@@ -63,9 +63,9 @@ import * as categoryService from "../../services/categoryService";
 //       <li ref={dropdown} onClick={desplegable} className={`${styles.liNav}`}>
 //         <div className="d-flex justify-content-center align-items-center gap-1">
 //           {children}
-//           <CaretDownFill size={12} className={`${styles.move}`}></CaretDownFill>
+//           <CaretDownFill size={12} className={`${styles.move} mb-1`}></CaretDownFill>
 //         </div>
-//         <ol className={styles.desplegable}>
+//         <ol className={`${styles.desplegable} ${styles.megaMenu}`}>
 //           <div className={`${styles.containerDesplegable} container`}>
 //             <Row className="py-2">
 //               <Col className="col-auto">{items}</Col>
@@ -80,7 +80,8 @@ import * as categoryService from "../../services/categoryService";
 
 export default function NavSearch({ filters }) {
   const [session, loading] = useSession();
-  const [maxRows, setMaxRows] = useState(6);
+  const [maxRows, setMaxRows] = useState(15);
+  const [caretSize, setCaretSize] = useState(9);
   const { t } = useTranslation("common");
 
   const dispatch = useDispatch();
@@ -149,7 +150,7 @@ export default function NavSearch({ filters }) {
       ),
     };
 
-    divGrey.style.top = bodyHeight.ol + 56 + "px";
+    divGrey.style.top = bodyHeight.ol + 116 + "px";
     // element.childNodes[1].classList.toggle(styles.overImportant);
     document.querySelector("body").classList.add(styles.overFlowHidden);
 
@@ -194,11 +195,11 @@ export default function NavSearch({ filters }) {
     );
 
   return (
-    <Container fluid className="m-0 p-0">
+    <Container fluid className={`m-0 p-0 ${styles.band2}`}>
       <Row className="row-cols-1 w-100 m-0 justify-content-center bg-white">
         <Col className="position-relative p-0 d-flex col-12 ">
           <nav className={styles.nav}>
-            <ul>
+            <ul className={`${styles.navbarNav}`}>
               <>
                 <li
                   ref={(li) => {
@@ -212,13 +213,13 @@ export default function NavSearch({ filters }) {
                   <a>
                     {t("photos")}{" "}
                     <CaretDownFill
-                      size={12}
-                      className={`${styles.move}`}
+                      size={caretSize}
+                      className={`${styles.move} mb-1`}
                     ></CaretDownFill>
                   </a>
                 </li>
                 <div
-                  className={styles.desplegable}
+                  className={`${styles.desplegable} ${styles.megaMenu}`}
                   ref={(div) => {
                     addOlElemnt(div);
                   }}
@@ -228,16 +229,23 @@ export default function NavSearch({ filters }) {
                       <Col className="col-auto">
                         <h5>{t("categories")}</h5>
                         <Row className={`row-cols-4`}>
-                          <Col className="col-auto">
+                          {/* <Col className="col-auto">
                             <Link href={`/ideas`} passHref>
                               <li>
-                                <a className={styles.link}>{t("all")} </a>
+                                <a className={styles.dropdownItem}>
+                                  {t("all")}{" "}
+                                </a>
                               </li>
                             </Link>
-                          </Col>
+                          </Col> */}
                           {chunk(buildingWorkCategories, maxRows).map(
                             (col, index) => (
                               <Col key={index} className="col-auto">
+                                <Link href={`/ideas`} passHref>
+                                  <a className={styles.dropdownItem}>
+                                    {t("all")}{" "}
+                                  </a>
+                                </Link>
                                 {col.map((category, index) => (
                                   <Link
                                     key={index}
@@ -247,11 +255,9 @@ export default function NavSearch({ filters }) {
                                     )}`}
                                     passHref
                                   >
-                                    <li>
-                                      <a className={styles.link}>
-                                        {category.name}
-                                      </a>
-                                    </li>
+                                    <a className={styles.dropdownItem}>
+                                      {category.name}
+                                    </a>
                                   </Link>
                                 ))}
                               </Col>
@@ -288,13 +294,13 @@ export default function NavSearch({ filters }) {
                   <a>
                     {`${t("professionals")} `}
                     <CaretDownFill
-                      size={12}
-                      className={`${styles.move}`}
+                      size={caretSize}
+                      className={`${styles.move} mb-1`}
                     ></CaretDownFill>
                   </a>
                 </li>
                 <div
-                  className={styles.desplegable}
+                  className={`${styles.desplegable} ${styles.megaMenu}`}
                   ref={(div) => {
                     addOlElemnt(div);
                   }}
@@ -304,21 +310,28 @@ export default function NavSearch({ filters }) {
                       <Col className="col-auto">
                         <h5>{t("categories")}</h5>
                         <Row className={`row-cols-4`}>
-                          <Col className="col-auto">
+                          {/* <Col className="col-auto">
                             <Link href="/professional" passHref>
                               <li>
-                                <a className={styles.link}>{t("all")}</a>
+                                <a className={styles.dropdownItem}>
+                                  {t("all")}
+                                </a>
                               </li>
                             </Link>
-                          </Col>
+                          </Col> */}
                           {/* <Link onClick={()=>myFunction()} href="/companies" passHref>
                             <li>
-                              <a className={styles.link}>{t("companies")}</a>
+                              <a className={styles.dropdownItem}>{t("companies")}</a>
                             </li>
                           </Link> */}
                           {chunk(productProfessionals, maxRows).map(
                             (col, index) => (
                               <Col key={index} className="col-auto">
+                                <Link href="/professional" passHref>
+                                  <a className={styles.dropdownItem}>
+                                    {t("all")}
+                                  </a>
+                                </Link>
                                 {col.map((category, index) => (
                                   <Link
                                     key={index}
@@ -328,11 +341,9 @@ export default function NavSearch({ filters }) {
                                     )}`}
                                     passHref
                                   >
-                                    <li>
-                                      <a className={styles.link}>
-                                        {category.name}
-                                      </a>
-                                    </li>
+                                    <a className={styles.dropdownItem}>
+                                      {category.name}
+                                    </a>
                                   </Link>
                                 ))}
                               </Col>
@@ -363,13 +374,13 @@ export default function NavSearch({ filters }) {
                   <a>
                     {`${t("products")} `}
                     <CaretDownFill
-                      size={12}
-                      className={`${styles.move}`}
+                      size={caretSize}
+                      className={`${styles.move} mb-1`}
                     ></CaretDownFill>
                   </a>
                 </li>
                 <div
-                  className={styles.desplegable}
+                  className={`${styles.desplegable} ${styles.megaMenu}`}
                   ref={(div) => {
                     addOlElemnt(div);
                   }}
@@ -379,26 +390,33 @@ export default function NavSearch({ filters }) {
                       <Col className="col-auto">
                         <h5>{t("categories")}</h5>
                         <Row className={`row-cols-4`}>
-                          <Col className="col-auto">
+                          {/* <Col className="col-auto">
                             <Link href="/product">
                               <li>
-                                <a className={styles.link}>{t("all")}</a>
+                                <a className={styles.dropdownItem}>
+                                  {t("all")}
+                                </a>
                               </li>
                             </Link>
-                          </Col>
+                          </Col> */}
                           {/* {productCategories.map((category, index) => (
                             <Link
                               key={index}
                               href={`/product?category=${category.name}`}
                             >
                               <li>
-                                <a className={styles.link}>{category.name}</a>
+                                <a className={styles.dropdownItem}>{category.name}</a>
                               </li>
                             </Link>
                           ))} */}
                           {chunk(productCategories, maxRows).map(
                             (col, index) => (
                               <Col key={index} className="col-auto">
+                                <Link href="/product">
+                                  <a className={styles.dropdownItem}>
+                                    {t("all")}
+                                  </a>
+                                </Link>
                                 {col.map((category, index) => (
                                   <Link
                                     key={index}
@@ -408,11 +426,9 @@ export default function NavSearch({ filters }) {
                                     )}`}
                                     passHref
                                   >
-                                    <li>
-                                      <a className={styles.link}>
-                                        {category.name}
-                                      </a>
-                                    </li>
+                                    <a className={styles.dropdownItem}>
+                                      {category.name}
+                                    </a>
                                   </Link>
                                 ))}
                               </Col>
@@ -444,12 +460,12 @@ export default function NavSearch({ filters }) {
                   <a>
                     {`${t("projects")} `}
                     <CaretDownFill
-                      size={12}
-                      className={`${styles.move}`}
+                      size={caretSize}
+                      className={`${styles.move} mb-1`}
                     ></CaretDownFill>
                   </a>
                   <ol
-                    className={styles.desplegable}
+                    className={`${styles.desplegable} ${styles.megaMenu}`}
                     ref={(ol) => {
                       addOlElemnt(ol);
                     }}
@@ -460,7 +476,7 @@ export default function NavSearch({ filters }) {
                           <h5>{t("categories")}</h5>
                           <Link onClick={()=>myFunction()} href="/project" passHref>
                             <li>
-                              <a className={styles.link}>{t("projects")}</a>
+                              <a className={styles.dropdownItem}>{t("projects")}</a>
                             </li>
                           </Link>
                         </Col>
@@ -515,13 +531,13 @@ export default function NavSearch({ filters }) {
                     <a>
                       {`${t("administrator")} `}
                       <CaretDownFill
-                        size={12}
-                        className={`${styles.move}`}
+                        size={caretSize}
+                        className={`${styles.move} mb-1`}
                       ></CaretDownFill>
                     </a>
                   </li>
                   <div
-                    className={styles.desplegable}
+                    className={`${styles.desplegable} ${styles.megaMenu}`}
                     ref={(div) => {
                       addOlElemnt(div);
                     }}
@@ -531,29 +547,29 @@ export default function NavSearch({ filters }) {
                         <Col className="col-auto">
                           <h5>{t("administrator")}</h5>
                           <Link href="/admin/company" passHref>
-                            <li>
-                              <a className={styles.link}>{t("company")}</a>
-                            </li>
+                            <a className={styles.dropdownItem}>
+                              {t("company")}
+                            </a>
                           </Link>
                           <Link href="/admin/professional" passHref>
-                            <li>
-                              <a className={styles.link}>{t("professional")}</a>
-                            </li>
+                            <a className={styles.dropdownItem}>
+                              {t("professional")}
+                            </a>
                           </Link>
                           <Link href="/admin/product" passHref>
-                            <li>
-                              <a className={styles.link}>{t("products")}</a>
-                            </li>
+                            <a className={styles.dropdownItem}>
+                              {t("products")}
+                            </a>
                           </Link>
                           <Link href="/admin/building" passHref>
-                            <li>
-                              <a className={styles.link}>{t("buildings")}</a>
-                            </li>
+                            <a className={styles.dropdownItem}>
+                              {t("buildings")}
+                            </a>
                           </Link>
                           <Link href="/admin/categories" passHref>
-                            <li>
-                              <a className={styles.link}>{t("categories")}</a>
-                            </li>
+                            <a className={styles.dropdownItem}>
+                              {t("categories")}
+                            </a>
                           </Link>
                         </Col>
                       </Row>
@@ -589,7 +605,7 @@ export default function NavSearch({ filters }) {
   //               passHref
   //             >
   //               <li>
-  //                 <a className={styles.link}>{category.tag} </a>
+  //                 <a className={styles.dropdownItem}>{category.tag} </a>
   //               </li>
   //             </Link>
   //           ))}
@@ -604,12 +620,12 @@ export default function NavSearch({ filters }) {
   //     <h5>{t("categories")}</h5>
   //     <Link onClick={()=>myFunction()} href="/professional" passHref>
   //       <li>
-  //         <a className={styles.link}>{t("professionals")}</a>
+  //         <a className={styles.dropdownItem}>{t("professionals")}</a>
   //       </li>
   //     </Link>
   //     <Link onClick={()=>myFunction()} href="/companies" passHref>
   //       <li>
-  //         <a className={styles.link}>{t("companies")}</a>
+  //         <a className={styles.dropdownItem}>{t("companies")}</a>
   //       </li>
   //     </Link>
   //   </>
@@ -620,22 +636,22 @@ export default function NavSearch({ filters }) {
   //     <h5>{t("administrator")}</h5>
   //     <Link onClick={()=>myFunction()} href="/admin/company" passHref>
   //       <li>
-  //         <a className={styles.link}>{t("company")}</a>
+  //         <a className={styles.dropdownItem}>{t("company")}</a>
   //       </li>
   //     </Link>
   //     <Link onClick={()=>myFunction()} href="/admin/professional" passHref>
   //       <li>
-  //         <a className={styles.link}>{t("professional")}</a>
+  //         <a className={styles.dropdownItem}>{t("professional")}</a>
   //       </li>
   //     </Link>
   //     <Link onClick={()=>myFunction()} href="/admin/product" passHref>
   //       <li>
-  //         <a className={styles.link}>{t("products")}</a>
+  //         <a className={styles.dropdownItem}>{t("products")}</a>
   //       </li>
   //     </Link>
   //     <Link onClick={()=>myFunction()} href="/admin/building" passHref>
   //       <li>
-  //         <a className={styles.link}>{t("buildings")}</a>
+  //         <a className={styles.dropdownItem}>{t("buildings")}</a>
   //       </li>
   //     </Link>
   //   </>
@@ -646,13 +662,13 @@ export default function NavSearch({ filters }) {
   //     <h5>{t("categories")}</h5>
   //     <Link onClick={()=>myFunction()} href="/product">
   //       <li>
-  //         <a className={styles.link}>{t("products")}</a>
+  //         <a className={styles.dropdownItem}>{t("products")}</a>
   //       </li>
   //     </Link>
   //     {productCategories.map((category, index) => (
   //       <Link key={index} href={`/product?category=${category.name}`}>
   //         <li>
-  //           <a className={styles.link}>{category.name}</a>
+  //           <a className={styles.dropdownItem}>{category.name}</a>
   //         </li>
   //       </Link>
   //     ))}

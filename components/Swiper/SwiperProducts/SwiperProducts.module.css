@@ -63,16 +63,17 @@
 
 .swiperButtonNext,
 .swiperButtonPrev {
-  color: #000;
+  color: #fff;
+  /* color: #000;
   background: rgba(255, 255, 255, 0.7);
   padding: 10px;
   width: auto;
   height: auto;
   border-radius: 10px;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px); */
 }
 
-.swiperButtonNext:active,
+/* .swiperButtonNext:active,
 .swiperButtonPrev:active {
   background: rgb(255, 255, 255);
 }
@@ -102,4 +103,4 @@
   100% {
     right: 10px;
   }
-}
+} */

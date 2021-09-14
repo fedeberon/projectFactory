@@ -213,8 +213,13 @@ export default function Header(props) {
                     onFocus={() => setSearchActive(true)}
                     onBlur={handleOnBlurInputSearch}
                   />
-                  <InputGroup.Text className={styles.buttonSearch}>
-                    <Search />
+                  <InputGroup.Text className={styles.searchTopIcon}>
+                    <Image
+                      src={`/search.svg`}
+                      width={17}
+                      height={17}
+                      alt={`search`}
+                    />
                   </InputGroup.Text>
                 </InputGroup>
               </InputGroup>

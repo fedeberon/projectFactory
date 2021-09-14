@@ -21,9 +21,18 @@
 .inputSearch {
   border-top-left-radius: 5px !important;
   border-bottom-left-radius: 5px !important;
+  border: 0;
 }
 
-.buttonSearch {
+/* .buttonSearch {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  height: 100%;
+} */
+
+.searchTopIcon {
+  background-color: #fff !important;
+  border: 0;
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
   height: 100%;
