@@ -87,10 +87,18 @@ export default NextAuth({
       session.accessToken = token.accessToken;
       const tokenWithoutPrefix = token.accessToken.split(PREFIX)[1];
       const payload = jwt_decode(tokenWithoutPrefix);
+      // console.log("session", payload);
       session.authorities = payload[AUTHORITIES];
       session.user.id = payload[ID];
       session.user.username = payload[USERNAME];
-      session.user.image = await whoIAm(session, token);
+      const userRole = await whoIAm(session, token);
+      session.user.image = userRole.previewImage;
+      session.user.category = userRole.category;
+      session.user.phoneNumber = userRole.phoneNumber;
+      session.user.categoryCompany = userRole.categoryCompany;
+      session.user.contactLoad = userRole.contactLoad;
+      session.user.website = userRole.website;
+      session.user.company = userRole.company;
       return session;
     },
   },
@@ -117,7 +125,7 @@ const whoIAm = async (session, token) => {
         session.user.id,
         token.accessToken
       );
-      return professional.previewImage;
+      return professional;
     } else if (isRole("ROLE_COMPANY")) {
       // TODO here change imageProfile is you need
     } else if (isRole("ROLE_USER")) {
