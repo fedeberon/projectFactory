@@ -17,10 +17,12 @@ import { useSelector } from "react-redux";
 
 const FormProfessional = ({
   onAddProfessional,
+  onSetProfessional,
   toggle,
   error,
   setError,
   data,
+  changeState,
 }) => {
   const { t } = useTranslation("profile");
   const [previewImage, setPreviewImage] = useState([]);
@@ -33,7 +35,7 @@ const FormProfessional = ({
     []
   );
   const [optionSelect, setOptionSelect] = useState(true);
-  const [companySelected, setCompanySelected] = useState({});
+  const [companySelected, setCompanySelected] = useState(null);
   const [value, setValue] = useState();
   const [session] = useSession();
   const selectedCategories = useSelector(
@@ -98,14 +100,32 @@ const FormProfessional = ({
     };
     // if (!selectedCategories.length == 0) {
     // console.log("onSubmit", data);
-    const professional = await onAddProfessional(data);
 
-    if (professional != null) {
-      setPreviewImage([]);
-      setBackgroundImage([]);
-      event.target.reset();
-      toggle();
-      setError("");
+    if (changeState.stateFormProfessional.post) {
+      const professional = await onAddProfessional(data);
+
+      if (professional != null) {
+        setPreviewImage([]);
+        setBackgroundImage([]);
+        event.target.reset();
+        toggle();
+        setError("");
+      }
+    }
+
+    if (changeState.stateFormProfessional.put) {
+      const professionalModify = await onSetProfessional(data);
+
+      if (professionalModify) {
+        // setPreviewImage([]);
+        event.target.reset();
+        toggle();
+        setError("");
+      } else {
+        showErrorToLimitTime(
+          `${t("common:email-is-already-exist-please-write-another-one")}`
+        );
+      }
     }
 
     // } else {
@@ -143,12 +163,17 @@ const FormProfessional = ({
           <Col>
             <Row>
               <Col className="col-12">
-                <h2>{t("common:formulary.professional-profile")}</h2>
+                {changeState.stateFormProfessional.post && (
+                  <h2>{t("common:formulary.professional-profile")}</h2>
+                )}
+                {changeState.stateFormProfessional.put && (
+                  <h2>{t("common:formulary.professional-profile-edit")}</h2>
+                )}
               </Col>
             </Row>
             <Row className="row-cols-1 row-cols-md-2 row-cols-xl-4 g-3">
               <Col>
-                <Form.Group>
+                <Form.Group className={`mb-2`}>
                   <Form.Label htmlFor="company">
                     {t("common:formulary.company")}
                   </Form.Label>
@@ -189,7 +214,7 @@ const FormProfessional = ({
                     </Form.Text>
                   )}
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className={`mb-2`}>
                   <Form.Label htmlFor="contact">
                     {t("common:formulary.contact")}
                   </Form.Label>
@@ -238,7 +263,7 @@ const FormProfessional = ({
                     </Form.Text>
                   )}
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className={`mb-2`}>
                   <Form.Label htmlFor="email">
                     {t("common:formulary.contact-email")}
                   </Form.Label>
@@ -287,7 +312,7 @@ const FormProfessional = ({
                     </Form.Text>
                   )}
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className={`mb-2`}>
                   <Form.Label htmlFor="telephone">
                     {t("common:formulary.telephone")}
                   </Form.Label>
@@ -335,7 +360,7 @@ const FormProfessional = ({
                 /> */}
               </Col>
               <Col>
-                <Form.Group>
+                <Form.Group className={`mb-2`}>
                   <Form.Label htmlFor="companyCategory">
                     {t("common:formulary.company-category")}
                   </Form.Label>
@@ -377,7 +402,7 @@ const FormProfessional = ({
                     </Form.Text>
                   )}
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className={`mb-2`}>
                   <Form.Label htmlFor="contactLoad">
                     {t("common:formulary.contact-charge")}
                   </Form.Label>
@@ -420,7 +445,7 @@ const FormProfessional = ({
                     </Form.Text>
                   )}
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className={`mb-2`}>
                   <Form.Label htmlFor="website">
                     {t("common:formulary.web-page")}
                   </Form.Label>
@@ -462,7 +487,7 @@ const FormProfessional = ({
                   )}
                 </Form.Group>
 
-                {/* <Form.Group>
+                {/* <Form.Group className={`mb-2`}>
                   <Form.Label htmlFor="category">
                     {t("professional-category")}
                   </Form.Label>
@@ -473,7 +498,7 @@ const FormProfessional = ({
                   )}
                 </Form.Group> */}
 
-                <Form.Group>
+                <Form.Group className={`mb-2`}>
                   <Form.Label htmlFor="professionalCategory">
                     {t("common:formulary.professional-category")}
                   </Form.Label>
@@ -548,9 +573,20 @@ const FormProfessional = ({
             </Row>
           </Col>
           <Col>
-            <PrimaryButton dark type="submit" variant="primary mt-1">
-              {t("common:send")}
-            </PrimaryButton>
+            {changeState.stateFormProfessional.post && (
+              <PrimaryButton dark type="submit" variant="primary mt-1">
+                {t("common:send")}
+              </PrimaryButton>
+            )}
+            {changeState.stateFormProfessional.put && (
+              <PrimaryButton
+                dark
+                type="submit"
+                // variant="warning mt-1"
+              >
+                {t("common:modify")}
+              </PrimaryButton>
+            )}
           </Col>
         </Row>
       </Form>

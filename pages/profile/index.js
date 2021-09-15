@@ -4,7 +4,7 @@ import useTranslation from "next-translate/useTranslation";
 import ProfileData from "../../components/ProfileData/ProfileData";
 import { getSession, useSession } from "next-auth/client";
 import Layout from "../../components/Layout/Layout";
-import { Col } from "react-bootstrap";
+import { Card, Col } from "react-bootstrap";
 
 // Services
 import * as professionalService from "../../services/professionalService";
@@ -52,7 +52,6 @@ const Profile = ({ data, status }) => {
   };
 
   const saveProfessional = async (data) => {
-
     try {
       const professionalToken = await professionalService.become(
         data,
@@ -64,6 +63,15 @@ const Profile = ({ data, status }) => {
       console.error(error);
       setError(`${t("email-is-already-exist-please-write-another-one")}`);
       return null;
+    }
+  };
+
+  const setProfessional = async (data, id) => {
+    try {
+      const profefessionalEdited = await professionalService.editById(id, data);
+      return profefessionalEdited;
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -86,7 +94,7 @@ const Profile = ({ data, status }) => {
   const onBecomeProfessional = async (data) => {
     const company = { id: data.company?.id };
     const categoryCompany = { id: data.categoryCompany?.id };
-    if (data.company.id != undefined) {
+    if (data.company?.id != undefined) {
       data.company = company;
       data.categoryCompany = categoryCompany;
     } else {
@@ -98,7 +106,6 @@ const Profile = ({ data, status }) => {
     delete data.previewImage;
     delete data.backgroundImage;
     delete data.images;
-    console.log("onBecomeProfessional", data);
     const token = await saveProfessional(data);
     if (token != null) {
       if (previewImage) {
@@ -110,6 +117,30 @@ const Profile = ({ data, status }) => {
     }
     await professionalService.updateToken(token, session.user.id);
     return token;
+  };
+
+  const onSetProfessional = async (data) => {
+    if (session) {
+      const { accessToken } = session;
+      const { id } = session.user;
+      try {
+        const professionalEdited = await setProfessional(data, id);
+        if (professionalEdited) {
+          if (data.previewImage) {
+            await savePreviewImage(accessToken, data.previewImage);
+          }
+          if (data.backgroundImage) {
+            await saveBackgroundImage(accessToken, data.backgroundImage);
+          }
+          await professionalService.updateToken(accessToken, id);
+          return true;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   const onBuyPlan = async (plan) => {
@@ -154,17 +185,26 @@ const Profile = ({ data, status }) => {
     // }
   }, [pageSize, session]);
 
+  // useEffect(() => {
+  //   console.log("data", data);
+  // }, [data]);
+
   return (
     <Layout title={`${t("header.profile")}`}>
       <section className="container py-2">
-        <ProfileData
-          onBecomeProfessional={onBecomeProfessional}
-          error={error}
-          setError={setError}
-          data={data}
-          onBuyPlan={onBuyPlan}
-          status={status}
-        />
+        <Card>
+          <Card.Body>
+            <ProfileData
+              onBecomeProfessional={onBecomeProfessional}
+              onSetProfessional={onSetProfessional}
+              error={error}
+              setError={setError}
+              data={data}
+              onBuyPlan={onBuyPlan}
+              status={status}
+            />
+          </Card.Body>
+        </Card>
         {/* <SeeImagesLiked imagesLiked={imagesLiked} /> */}
         <Col>
           <h1>{t("profile:images-i-liked")}</h1>

@@ -11,6 +11,10 @@ export const getById = async (id) => {
   return await API.get(`/professionals/${id}`);
 };
 
+export const editById = async (id, data) => {
+  return await API.put(`/professionals/${id}`, data);
+};
+
 export const getByIdWithImages = async (id, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const professional = await getById(id);

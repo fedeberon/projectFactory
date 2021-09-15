@@ -227,17 +227,18 @@
   "formulary": {
     "professional-form": "Formulario Profesional",
     "professional-profile": "Perfil profesional",
+    "professional-profile-edit": "Editar perfil profesional",
     "company": "Empresa",
     "the-company": "La empresa",
     "contact": "Contacto",
     "the-contact": "El contacto",
     "contact-email": "Email de contacto",
     "the-contact-email": "El email de contacto",
-    "contact-charge": "Cargo del conctacto",
-    "the-contact-charge": "El cargo del conctacto",
+    "contact-charge": "Cargo del contacto",
+    "the-contact-charge": "El cargo del contacto",
     "company-category": "Categoria de empresa",
     "the-company-category": "La categoria de empresa",
-    "professional-category": "Categoria profesional",
+    "professional-category": "Categoria del profesional",
     "the-professional-category": "La categoria del profesional",
     "web-page": "Página Web",
     "the-web-page": "La página web",
@@ -245,8 +246,8 @@
     "the-location-of-the-company": "La ubicacion de la empresa",
     "the-province": "La provincia",
     "the-location": "La localidad",
-    "telephone": "Telefono",
-    "the-telephone": "El telefono",
+    "telephone": "Teléfono",
+    "the-telephone": "El teléfono",
     "select-profile-picture": "Seleccione la imagen de perfil",
     "select-background-picture": "Seleccione la imagen de fondo"
   },
@@ -321,5 +322,6 @@
   "are-you-sure": "¿Estás seguro?",
   "yes-i-want-to-eliminate": "Sí quiero eliminar",
   "once-delete-you-will-not-be-able-to-recover-the-image": "Una vez borrado no podrá recuperar la imagen",
-  "category-button": "Botón categoría "
+  "category-button": "Botón categoría ",
+  "modify": "Modificar"
 }
