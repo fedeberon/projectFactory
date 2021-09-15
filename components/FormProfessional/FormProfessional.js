@@ -29,6 +29,9 @@ const FormProfessional = ({
   const [currentImageTag, setCurrentImageTag] = useState({});
   const [companyOptions, setCompanyOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
+  const [profesionalCategoryOptions, setProfesionalCategoryOptions] = useState(
+    []
+  );
   const [optionSelect, setOptionSelect] = useState(true);
   const [companySelected, setCompanySelected] = useState({});
   const [value, setValue] = useState();
@@ -69,6 +72,7 @@ const FormProfessional = ({
       email,
       telephone,
       companyCategory,
+      professionalCategory,
       contactLoad,
       website,
       province,
@@ -80,7 +84,8 @@ const FormProfessional = ({
     let data = {
       company: companySelected,
       categoryCompany: companyCategory,
-      category: selectedCategories[0],
+      // category: selectedCategories[0],
+      category: professionalCategory,
       contact,
       email,
       phoneNumber: telephone,
@@ -91,27 +96,31 @@ const FormProfessional = ({
       province,
       location,
     };
-    if (!selectedCategories.length == 0) {
+    // if (!selectedCategories.length == 0) {
+    // console.log("onSubmit", data);
+    const professional = await onAddProfessional(data);
 
-      const professional = await onAddProfessional(data);
-
-      if (professional != null) {
-        setPreviewImage([]);
-        setBackgroundImage([]);
-        event.target.reset();
-        toggle();
-        setError("");
-      }
-    } else {
-      showErrorToLimitTime(t("the-professional-category-cannot-be-empty"));
+    if (professional != null) {
+      setPreviewImage([]);
+      setBackgroundImage([]);
+      event.target.reset();
+      toggle();
+      setError("");
     }
+
+    // } else {
+    //   showErrorToLimitTime(t("the-professional-category-cannot-be-empty"));
+    // }
   };
 
   const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
 
   useEffect(() => {
-    if (data) {
-      setCompanyOptions(data);
+    if (data.companies) {
+      setCompanyOptions(data.companies);
+    }
+    if (data.professionalCategories) {
+      setProfesionalCategoryOptions(data.professionalCategories);
     }
   }, [data]);
 
@@ -452,8 +461,8 @@ const FormProfessional = ({
                     </Form.Text>
                   )}
                 </Form.Group>
-                {/* <Col sm={12} md={6} lg={6}> */}
-                <Form.Group>
+
+                {/* <Form.Group>
                   <Form.Label htmlFor="category">
                     {t("professional-category")}
                   </Form.Label>
@@ -462,8 +471,49 @@ const FormProfessional = ({
                   ) : (
                     <CategoryList />
                   )}
+                </Form.Group> */}
+
+                <Form.Group>
+                  <Form.Label htmlFor="professionalCategory">
+                    {t("common:formulary.professional-category")}
+                  </Form.Label>
+                  <Controller
+                    name="professionalCategory"
+                    control={control}
+                    rules={{
+                      required: {
+                        value: true,
+                        message: `${t("common:is-required", {
+                          nameRequired: t(
+                            "common:formulary.the-professional-category"
+                          ),
+                        })}`,
+                      },
+                    }}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        inputId={"professionalCategory"}
+                        options={profesionalCategoryOptions}
+                        getOptionLabel={(option) => `${option?.name}`}
+                        getOptionValue={(option) => `${option?.id}`}
+                        isClearable
+                        className={
+                          "form-field" +
+                          (errors.professionalCategory ? " has-error" : "")
+                        }
+                      />
+                    )}
+                  />
+                  {errors.professionalCategory && (
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
+                    >
+                      {errors.professionalCategory.message}
+                    </Form.Text>
+                  )}
                 </Form.Group>
-                {/* </Col> */}
               </Col>
               <Col>
                 <Form.Group className="text-center">

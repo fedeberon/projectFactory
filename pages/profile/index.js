@@ -10,6 +10,7 @@ import { Col } from "react-bootstrap";
 import * as professionalService from "../../services/professionalService";
 import * as companyService from "../../services/companyService";
 import * as imageService from "../../services/imageService";
+import * as categoryService from "../../services/categoryService";
 
 // Components
 // import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
@@ -51,6 +52,7 @@ const Profile = ({ data, status }) => {
   };
 
   const saveProfessional = async (data) => {
+
     try {
       const professionalToken = await professionalService.become(
         data,
@@ -96,6 +98,7 @@ const Profile = ({ data, status }) => {
     delete data.previewImage;
     delete data.backgroundImage;
     delete data.images;
+    console.log("onBecomeProfessional", data);
     const token = await saveProfessional(data);
     if (token != null) {
       if (previewImage) {
@@ -209,6 +212,7 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
 
   let token;
   let companies = [];
+  let professionalCategories = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -230,10 +234,14 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
       },
     };
   }
+  const typeCategory = "PROFESSIONAL";
+  professionalCategories = await categoryService.findAllByTypeCategory(
+    typeCategory
+  );
 
   return {
     props: {
-      data: companies,
+      data: { companies, professionalCategories },
       status: query.status ? query.status : "",
     },
   };

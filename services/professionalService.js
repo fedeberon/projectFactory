@@ -152,6 +152,8 @@ export const getAllByCategoryAndStatus = async (
     return (categoriesSeparatedByCommas += `,${category}`);
   });
   categoriesSeparatedByCommas = categoriesSeparatedByCommas.substring(1);
-  const encoded = encodeURI(`/professionals/status/${status}/category/${categoriesSeparatedByCommas}?page=${page}&size=${size}`);
+  const encoded = encodeURI(
+    `/professionals/status/${status}/category/${categoriesSeparatedByCommas}?page=${page}&size=${size}`
+  );
   return await API.get(encoded);
 };
