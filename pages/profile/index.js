@@ -4,12 +4,13 @@ import useTranslation from "next-translate/useTranslation";
 import ProfileData from "../../components/ProfileData/ProfileData";
 import { getSession, useSession } from "next-auth/client";
 import Layout from "../../components/Layout/Layout";
-import { Col } from "react-bootstrap";
+import { Card, Col } from "react-bootstrap";
 
 // Services
 import * as professionalService from "../../services/professionalService";
 import * as companyService from "../../services/companyService";
 import * as imageService from "../../services/imageService";
+import * as categoryService from "../../services/categoryService";
 
 // Components
 // import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
@@ -65,6 +66,15 @@ const Profile = ({ data, status }) => {
     }
   };
 
+  const setProfessional = async (data, id) => {
+    try {
+      const profefessionalEdited = await professionalService.editById(id, data);
+      return profefessionalEdited;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const savePreviewImage = async (token, previewImage) => {
     try {
       await professionalService.addPreviewImage(previewImage, token);
@@ -84,7 +94,7 @@ const Profile = ({ data, status }) => {
   const onBecomeProfessional = async (data) => {
     const company = { id: data.company?.id };
     const categoryCompany = { id: data.categoryCompany?.id };
-    if (data.company.id != undefined) {
+    if (data.company?.id != undefined) {
       data.company = company;
       data.categoryCompany = categoryCompany;
     } else {
@@ -107,6 +117,30 @@ const Profile = ({ data, status }) => {
     }
     await professionalService.updateToken(token, session.user.id);
     return token;
+  };
+
+  const onSetProfessional = async (data) => {
+    if (session) {
+      const { accessToken } = session;
+      const { id } = session.user;
+      try {
+        const professionalEdited = await setProfessional(data, id);
+        if (professionalEdited) {
+          if (data.previewImage) {
+            await savePreviewImage(accessToken, data.previewImage);
+          }
+          if (data.backgroundImage) {
+            await saveBackgroundImage(accessToken, data.backgroundImage);
+          }
+          await professionalService.updateToken(accessToken, id);
+          return true;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   const onBuyPlan = async (plan) => {
@@ -151,17 +185,26 @@ const Profile = ({ data, status }) => {
     // }
   }, [pageSize, session]);
 
+  // useEffect(() => {
+  //   console.log("data", data);
+  // }, [data]);
+
   return (
     <Layout title={`${t("header.profile")}`}>
       <section className="container py-2">
-        <ProfileData
-          onBecomeProfessional={onBecomeProfessional}
-          error={error}
-          setError={setError}
-          data={data}
-          onBuyPlan={onBuyPlan}
-          status={status}
-        />
+        <Card>
+          <Card.Body>
+            <ProfileData
+              onBecomeProfessional={onBecomeProfessional}
+              onSetProfessional={onSetProfessional}
+              error={error}
+              setError={setError}
+              data={data}
+              onBuyPlan={onBuyPlan}
+              status={status}
+            />
+          </Card.Body>
+        </Card>
         {/* <SeeImagesLiked imagesLiked={imagesLiked} /> */}
         <Col>
           <h1>{t("profile:images-i-liked")}</h1>
@@ -209,6 +252,7 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
 
   let token;
   let companies = [];
+  let professionalCategories = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -230,10 +274,14 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
       },
     };
   }
+  const typeCategory = "PROFESSIONAL";
+  professionalCategories = await categoryService.findAllByTypeCategory(
+    typeCategory
+  );
 
   return {
     props: {
-      data: companies,
+      data: { companies, professionalCategories },
       status: query.status ? query.status : "",
     },
   };

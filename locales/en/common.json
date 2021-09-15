@@ -227,6 +227,7 @@
   "formulary": {
     "professional-form": "Form Professional",
     "professional-profile": "Professional profile",
+    "professional-profile-edit": "Professional profile edit",
     "company": "Company",
     "the-company": "The company",
     "contact": "Contact",
@@ -237,6 +238,8 @@
     "the-contact-charge": "The contact charge",
     "company-category": "Company category",
     "the-company-category": "The company category",
+    "professional-category": "Professional category",
+    "the-professional-category": "The professional category",
     "web-page": "Web page",
     "the-web-page": "The web page",
     "location-of-the-company": "Location of the company",
@@ -319,5 +322,6 @@
   "are-you-sure": "Are you sure?",
   "yes-i-want-to-eliminate": "Yes i want to eliminate",
   "once-delete-you-will-not-be-able-to-recover-the-image": "Once delete you will not be able to recover the image",
-  "category-button": "Category button"
+  "category-button": "Category button",
+  "modify": "Modify"
 }

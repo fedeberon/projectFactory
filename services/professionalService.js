@@ -11,6 +11,10 @@ export const getById = async (id) => {
   return await API.get(`/professionals/${id}`);
 };
 
+export const editById = async (id, data) => {
+  return await API.put(`/professionals/${id}`, data);
+};
+
 export const getByIdWithImages = async (id, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const professional = await getById(id);
@@ -152,6 +156,8 @@ export const getAllByCategoryAndStatus = async (
     return (categoriesSeparatedByCommas += `,${category}`);
   });
   categoriesSeparatedByCommas = categoriesSeparatedByCommas.substring(1);
-  const encoded = encodeURI(`/professionals/status/${status}/category/${categoriesSeparatedByCommas}?page=${page}&size=${size}`);
+  const encoded = encodeURI(
+    `/professionals/status/${status}/category/${categoriesSeparatedByCommas}?page=${page}&size=${size}`
+  );
   return await API.get(encoded);
 };
