@@ -20,6 +20,7 @@ import * as imageService from "../services/imageService";
 import * as productService from "../services/productService";
 import * as companyService from "../services/companyService";
 import * as buildingWorkService from "../services/buildingWorkService";
+import * as magazineService from "../services/magazineService";
 
 // Styles
 import styles from "../styles/Home.module.css";
@@ -28,6 +29,7 @@ import AdministratorCreator from "../components/AdministratorCreator";
 import OffCanvasFilter from "../components/OffCanvas/OffCanvasFilter.js/OffCanvasFilter";
 import PrimaryButton from "../components/Buttons/PrimaryButton/PrimaryButton";
 import ImagesGroup from "../components/ImagesGroup/ImagesGroup";
+import SwiperMagazine from "../components/Swiper/SwiperMagazine/SwiperMagazine";
 
 const Home = ({
   buildingWorks,
@@ -35,6 +37,7 @@ const Home = ({
   session,
   products,
   companies,
+  magazines,
 }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   // const [appliedFilters, setAppliedFilters] = useState([]);
@@ -102,6 +105,10 @@ const Home = ({
       setLocalBuildingWorks(buildingWorks);
     }
   }, [buildingWorks]);
+
+  useEffect(() => {
+    console.log("magazines", magazines);
+  }, [magazines]);
 
   return (
     <Layout>
@@ -204,6 +211,14 @@ const Home = ({
             </h2>
           </div>
         </Col>
+        <Col>
+          <SwiperMagazine
+            items={magazines}
+            slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
+            slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
+            slidesPerViewDesktop={{ dimensionLimit: 992, slides: 3 }}
+          />
+        </Col>
       </section>
     </Layout>
   );
@@ -227,6 +242,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   const carouselImages = await imageService.findCarouselImages();
   const products = await productService.findAllByStatus(page, size, status);
   const companies = await companyService.findAll(status, page, size);
+  const magazines = await magazineService.findAll(status, page, size);
   const buildingWorks = await buildingWorkService.getAllByCategoryAndStatus(
     status,
     [],
@@ -241,6 +257,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
       session,
       companies,
       products,
+      magazines,
     },
   };
 }
