@@ -104,7 +104,7 @@ const MagazineDetail = (props) => {
                 <Row className="g-4">
                   {relationatedMagazines.map(magazine => 
                     <Col sm={12} md={6} lg={6} key={magazine.id}>
-                      <Magazine magazine={magazine}/>
+                      <Magazine magazine={magazine} description/>
                     </Col>
                   )}
                 </Row>
