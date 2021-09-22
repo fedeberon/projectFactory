@@ -4,6 +4,8 @@ import { getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 import { Col, Row } from "react-bootstrap";
 import { PersonCircle, PlusCircleDotted } from "react-bootstrap-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { categoriesActions } from "../../store";
 
 // Components
 import ModalForm from "../../components/ModalForm";
@@ -41,8 +43,10 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
     defaultValues: {
       name: "",
       description: "",
+      categories: [],
     },
   });
+  const dispatch = useDispatch();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -52,7 +56,9 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   });
   const [enterOne, setEnterOne] = useState(false);
 
-  const toggleModal = () => setModalOpen(!modalOpen);
+  const toggleModal = () => {
+    setModalOpen(!modalOpen);
+  };
 
   const updateCardsBuildingWorks = async () => {
     let newBuildingWorks = {
@@ -165,17 +171,23 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   const onSetbuildingWork = async (data, buildingWorkId) => {
     if (session) {
       try {
-        const data2 = { name: data.name, description: data.description };
+        const data2 = {
+          name: data.name,
+          description: data.description,
+          categories: data.categories,
+        };
         await buildingWorkService.setFolder(
           buildingWorkId,
           data2,
           session.accessToken
         );
         data.id = buildingWorkId;
-        await imageService.addPreviewImageToBuildingWork(
-          data,
-          session.accessToken
-        );
+        if (previewImage[0].name !== "IMAGEN_NO_CARGADA") {
+          await imageService.addPreviewImageToBuildingWork(
+            data,
+            session.accessToken
+          );
+        }
         await buildingWorkService.removeAndAddImages(
           data.images,
           buildingWorkId,
@@ -244,6 +256,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
       defaultValues: {
         name: "",
         description: "",
+        categories: [],
       },
     };
     setBuildingWorkData(defaultValues);
@@ -263,6 +276,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
     let copyBuildingWorkData = Object.assign({}, buildingWorkData);
     copyBuildingWorkData.defaultValues.name = buildingWork.name;
     copyBuildingWorkData.defaultValues.description = buildingWork.description;
+    copyBuildingWorkData.defaultValues.categories = [buildingWork.category];
 
     setBuildingWorkData(copyBuildingWorkData);
 
@@ -289,7 +303,9 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
 
     const imagen = await fetch(buildingWork.previewImage);
     let blob = await imagen.blob();
-    let file = new File([blob], `${buildingWork.previewImage}`, {
+    // console.log("blob_stream", await blob.stream().tee());
+
+    let file = new File([blob], `IMAGEN_NO_CARGADA`, {
       type: "image/jpg",
     });
 
@@ -317,9 +333,10 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   };
 
   // useEffect(async () => {
-  //   if (buildingWorks) {
-  //     setLocalBuildingWorks(buildingWorks);
-  //   }
+  //   // if (buildingWorks) {
+  //   //   setLocalBuildingWorks(buildingWorks);
+  //   // }
+  //   console.log("GetServerSideProps", buildingWorks);
   // }, [buildingWorks]);
 
   const onGetByProfessionalId = async () => {
@@ -376,6 +393,14 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   const fetchMoreData = () => {
     changePage();
   };
+
+  useEffect(() => {
+    if (buildingWorkData) {
+      console.log("buildingWorkData", buildingWorkData);
+      const categories = buildingWorkData.defaultValues.categories;
+      dispatch(categoriesActions.setSelectedCategories(categories));
+    }
+  }, [toggleModal]);
 
   return (
     <Layout>

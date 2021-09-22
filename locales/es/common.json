@@ -106,6 +106,7 @@
     "select-logo": "Seleccione el logo por favor",
     "select-background-image": "Seleccione una imagen de fondo por favor",
     "select-categories-please": "Seleccione las categorias",
+    "select-category-please": "Seleccione la categoria",
     "the-category": "La categoria",
     "the-categories": "Las categorias",
     "add-category": "Agregar categoria",
@@ -240,6 +241,8 @@
     "the-company-category": "La categoria de empresa",
     "professional-category": "Categoria del profesional",
     "the-professional-category": "La categoria del profesional",
+    "the-product-category": "La categoria del producto",
+    "the-buildingWork-category": "La categoria de la obra",
     "web-page": "Página Web",
     "the-web-page": "La página web",
     "location-of-the-company": "Ubicacion de la empresa",
@@ -324,5 +327,6 @@
   "once-delete-you-will-not-be-able-to-recover-the-image": "Una vez borrado no podrá recuperar la imagen",
   "category-button": "Botón categoría ",
   "modify": "Modificar",
-  "read": "Leer"
+  "read": "Leer",
+  "the-images-buldingWork-is-not-approved": "Las imágenes de obra no están aprobadas"
 }
