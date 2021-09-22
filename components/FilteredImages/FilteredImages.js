@@ -105,7 +105,7 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
             endMessage={
               !limit && (
                 <Col xs={12}>
-                  <AlertCustom themeDarkF>
+                  <AlertCustom themeDark>
                     <InfoCircleFill size={25} />
                     {`${t("yay-You-have-seen-it-all")}`}
                   </AlertCustom>

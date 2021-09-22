@@ -91,7 +91,7 @@ const ProductDetail = (props) => {
                 </h2>
                 <Col>
                   <p>{data.product.description}</p>
-                  <p>{`${t("price")}: $${data.product.price}`}</p>
+                  {/* <p>{`${t("price")}: $${data.product.price}`}</p> */}
                   <p>
                     {t("width")}: {data.product.width} cm / {t("height")}:{" "}
                     {data.product.height} cm / {t("depth")}{" "}:{data.product.depth}{" "}
@@ -103,7 +103,7 @@ const ProductDetail = (props) => {
                     <PrimaryButton dark style={{ width: "200px" }}>
                       <Envelope size={20} /> {t("consult")}
                     </PrimaryButton>
-                    {session ? (
+                    {/* {session ? (
                       <PrimaryButton
                         onClick={() => buyProduct(data.product.id)}
                         style={{ width: "200px" }}
@@ -111,12 +111,14 @@ const ProductDetail = (props) => {
                         {t("buy-online")}
                       </PrimaryButton>
                     ) : (
+                      <>
                       <Link href="/logIn">
                         <PrimaryButton style={{ width: "200px" }}>
                           {t("buy-online")}
                         </PrimaryButton>
                       </Link>
-                    )}
+                      </>
+                    )} */}
                     {status == "approved" && (
                       <div className="alert alert-success" role="alert">
                         {`${t("product-purchased")}`}

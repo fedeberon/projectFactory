@@ -35,7 +35,6 @@ export const addProduct = async (product, token) => {
   const previewImage = product.previewImage;
   delete product.images;
   delete product.previewImage;
-
   const response = await API.post(`/products`, product);
 
   if (previewImage != undefined || previewImage != null)

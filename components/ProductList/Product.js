@@ -24,11 +24,20 @@ const Product = (props) => {
 
   return (
     <Card>
-      <Card.Img
-        className={`img-fluid ${styles.img}`}
-        src={product.previewImage}
-        alt={product.name}
-      />
+      <Link
+        href={`/product/${product.name.replace(/\s+/g, "-").toLowerCase()}-${
+          product.id
+        }`}
+        passHref
+      >
+        <a>
+          <Card.Img
+            className={`img-fluid ${styles.img}`}
+            src={product.previewImage}
+            alt={product.name}
+          />
+        </a>
+      </Link>
       <Card.Body>
         {isNew(product) && (
           <Card.Text
