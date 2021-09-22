@@ -59,6 +59,7 @@ export const removeAndAddImages = async (images, id, token) => {
     let img = images[i];
     if (img.added && img.remove) {
       //es para que la imagen ya esta en la BD y la quiere borrar
+      URL.revokeObjectURL(img.preview);
       await API.delete(`/images/${img.id}/building-works/${id}`);
     } else if (!img.added) {
       //una nueva imagen no esta en la BD
@@ -126,7 +127,9 @@ export const getAllByCategoryAndStatus = async (
   });
 
   categoriesSeparatedByCommas = categoriesSeparatedByCommas.substring(1);
-  const encoded = encodeURI(`/building-works/status/${status}/categories/${categoriesSeparatedByCommas}?page=${page}&size=${size}`);
+  const encoded = encodeURI(
+    `/building-works/status/${status}/categories/${categoriesSeparatedByCommas}?page=${page}&size=${size}`
+  );
   return await API.get(encoded);
-    // `/building-works/status/${status}/categories/${categoriesSeparatedByCommas}?page=${page}&size=${size}`
+  // `/building-works/status/${status}/categories/${categoriesSeparatedByCommas}?page=${page}&size=${size}`
 };

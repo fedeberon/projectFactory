@@ -4,6 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
 import ModalForm from "../ModalForm";
 import FormTag from "../FormTag/FormTag";
+import Select from "react-select";
 
 //Components
 import InputImages from "../../components/InputImages/InputImages";
@@ -35,6 +36,9 @@ const FormObra = ({
   const [error, setError] = useState("");
   const [timeErrorLive, setTimeErrorLive] = useState(0);
   const selectedCategories = useSelector(
+    (state) => state.categories.buildingWorks
+  );
+  const selectedCategoriesDefault = useSelector(
     (state) => state.categories.selectedCategories
   );
 
@@ -52,13 +56,13 @@ const FormObra = ({
 
   const imagesHasTags = (statePut) => {
     if (images.length > 0) {
-      if (statePut) {
-        images.map(img=>{
-          if(img.tags.length == 0) {
-            img.tags.push("delete");
-          }
-        })
-      }
+      // if (statePut) {
+      //   images.map((img) => {
+      //     if (img.tags.length == 0) {
+      //       img.tags.push("delete");
+      //     }
+      //   });
+      // }
       const imagesWithoutTags = images.filter((img) => img.tags.length == 0);
       return imagesWithoutTags.length == 0;
     } else {
@@ -80,6 +84,12 @@ const FormObra = ({
   const hasPreviewImage = () => previewImage.length > 0;
 
   const hasAnyCategory = () => selectedCategories.length > 0;
+
+  const hasAnyImages = () => {
+    if (images.length > 0) {
+      return images.some((img) => (!img.remove && img.added) || !img.added);
+    }
+  };
 
   const hasAnyError = (statePut) => {
     if (!imagesHasTags(statePut)) {
@@ -109,16 +119,29 @@ const FormObra = ({
       return true;
     }
 
+    if (!hasAnyImages()) {
+      showErrorToLimitTime(
+        t("is-required", {
+          nameRequired: t("carousel-image-creator.images"),
+        })
+      );
+      return true;
+    }
+
     return false;
   };
 
-  const onSubmit = async ({ name, description }, event) => {
+  const onSubmit = async (
+    { name, description, buildingWorkCategory },
+    event
+  ) => {
     const error = hasAnyError(changeState.stateFormObra.put);
 
     if (!error) {
       let data = {
         previewImage: previewImage[0],
-        categories: selectedCategories,
+        // categories: selectedCategories,
+        categories: [buildingWorkCategory],
         images,
         name,
         description,
@@ -260,12 +283,54 @@ const FormObra = ({
                     </Form.Text>
                   )}
                 </Form.Group>
-                <div className="mt-4">
+                {/* <div className="mt-4">
                   <CategorySelector typeCategory="BUILDING_WORK" />
                 </div>
                 <div className="mt-4">
                   <CategoryList />
-                </div>
+                </div> */}
+                <Form.Group className={`mb-2`}>
+                  <Form.Label htmlFor="buildingWorkCategory">
+                    {t("company-creator.select-category-please")}
+                  </Form.Label>
+                  <Controller
+                    name="buildingWorkCategory"
+                    control={control}
+                    rules={{
+                      required: {
+                        value: true,
+                        message: `${t("common:is-required", {
+                          nameRequired: t(
+                            "common:formulary.the-buildingWork-category"
+                          ),
+                        })}`,
+                      },
+                    }}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        inputId={"buildingWorkCategory"}
+                        defaultValue={selectedCategoriesDefault}
+                        options={selectedCategories}
+                        getOptionLabel={(option) => `${option?.name}`}
+                        getOptionValue={(option) => `${option?.id}`}
+                        isClearable
+                        className={
+                          "form-field" +
+                          (errors.buildingWorkCategory ? " has-error" : "")
+                        }
+                      />
+                    )}
+                  />
+                  {errors.buildingWorkCategory && (
+                    <Form.Text
+                      variant="danger"
+                      className="invalid error-Form.Label text-danger"
+                    >
+                      {errors.buildingWorkCategory.message}
+                    </Form.Text>
+                  )}
+                </Form.Group>
               </Col>
               <Col>
                 <Form.Group>

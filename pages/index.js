@@ -106,9 +106,9 @@ const Home = ({
     }
   }, [buildingWorks]);
 
-  useEffect(() => {
-    console.log("magazines", magazines);
-  }, [magazines]);
+  // useEffect(() => {
+  //   console.log("magazines", magazines);
+  // }, [magazines]);
 
   return (
     <Layout>

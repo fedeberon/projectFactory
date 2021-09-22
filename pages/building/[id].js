@@ -24,7 +24,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   const [tagsAuxiliar, setTagsAuxiliar] = useState([]);
   const { t } = useTranslation("common");
 
-  const [imagenes, setImagenes] = useState([]);
+  const [imagenes, setImagenes] = useState(data.images);
 
   const resetCarousel = () => setReset(!reset);
 
@@ -90,7 +90,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   };
 
   useEffect(async () => {
-    if (data.images) {
+    if (data.images && imageClicked) {
       let newArray = await onLoadImage();
       newArray = orderImagesByImageClicked(newArray);
       const firstImage = newArray[0];
@@ -110,48 +110,65 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
     }
   }, [appliedFilters]);
 
+  // useEffect(() => {
+  //   console.log(data, data.buildingWork);
+  //   // console.log(JSON.stringify(data.buildingWork) != "{}");
+  //   console.log(Object.keys(data.buildingWork).length);
+
+  // }, [data.buildingWork])
+
   return (
     <Layout>
       <Container fluid className="p-0">
-        {isLoadingSwiper ? (
+        {/* {isLoadingSwiper ? (
           <SpinnerCustom center />
-        ) : (
+        ) : ( */}
+        {imageClicked ? (
           <SwiperCarouselProject
             setAppliedFilters={setAppliedFilters}
             setCurrentImageId={setCurrentImageId}
             images={imagenes}
             reset={reset}
           />
+        ) : (
+          <Row className={`m-4 justify-content-center text-center`}>
+            <Col xs={6}>
+              <h1>{t("the-images-buldingWork-is-not-approved")}</h1>
+            </Col>
+          </Row>
         )}
+        {/* )} */}
         <Row className="w-100 m-0 mt-4">
           <Col>
             <Container>
-              <Row className="w-100 gap-2 gap-lg-0 m-0 my-4">
-                <Col className="col-12 col-md-12 col-lg-9 order-lg-2">
-                  <Card className="border-0">
-                    <Card.Title
-                      tag="h5"
-                      className={`${buildingStyles.titObraDetail}`}
-                    >
-                      {data.buildingWork.name}
-                    </Card.Title>
-                    <Card.Text>{data.buildingWork.description}</Card.Text>
-                  </Card>
-                </Col>
-                <Col className="col-12 col-md-12 col-lg-3 order-lg-1">
-                  <Col
-                    className={`${buildingStyles.boxDeg} p-4 d-flex flex-column gap-2`}
-                  >
-                    <h3 className={`${buildingStyles.titName}`}>
-                      {data.buildingWork.professional.contact}
-                    </h3>
-                    <h3 className={`${buildingStyles.titProjects}`}>
-                      <span className="d-block">{t("email")}</span>
-                      <span>{data.buildingWork.professional.email}</span>
-                    </h3>
+              {Object.keys(data.buildingWork).length > 0 && (
+                <Row className="w-100 gap-2 gap-lg-0 m-0 my-4">
+                  <Col className="col-12 col-md-12 col-lg-9 order-lg-2">
+                    <Card className="border-0">
+                      <Card.Title
+                        tag="h5"
+                        className={`${buildingStyles.titObraDetail}`}
+                      >
+                        {data.buildingWork.name}
+                      </Card.Title>
+                      <Card.Text>{data.buildingWork.description}</Card.Text>
+                    </Card>
                   </Col>
-                </Col>
-              </Row>
+                  <Col className="col-12 col-md-12 col-lg-3 order-lg-1">
+                    <Col
+                      className={`${buildingStyles.boxDeg} p-4 d-flex flex-column gap-2`}
+                    >
+                      <h3 className={`${buildingStyles.titName}`}>
+                        {data.buildingWork.professional.contact}
+                      </h3>
+                      <h3 className={`${buildingStyles.titProjects}`}>
+                        <span className="d-block">{t("email")}</span>
+                        <span>{data.buildingWork.professional.email}</span>
+                      </h3>
+                    </Col>
+                  </Col>
+                </Row>
+              )}
             </Container>
           </Col>
         </Row>
@@ -202,19 +219,49 @@ export async function getServerSideProps({ params, req, query }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  images = await imageService.getImagesByBuildingWorksId(buildingWorkId, 0, 99);
 
-  if (imageClicked === undefined && images) {
-    imageClicked = images[0].id;
+  try {
+    images = await imageService.getImagesByBuildingWorksId(
+      buildingWorkId,
+      0,
+      99
+    );
+    if (imageClicked === undefined && images.length > 0) {
+      imageClicked = images[0].id;
+    } else {
+      // TODO: item not approved, then send message the error this item not approved.
+      // console.log(
+      //   "item not approved, then send message the error this item not approved.",
+      //   images
+      // );
+      // return {
+      //   redirect: {
+      //     destination: "/",
+      //     permanent: false,
+      //   },
+      // };
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
   }
 
-  buildingWork = await buildingWorkService.getById(buildingWorkId);
+  try {
+    buildingWork = await buildingWorkService.getById(buildingWorkId);
+  } catch (error) {
+    console.error(error);
+  }
 
   return {
     props: {
       data: { images, buildingWork },
       session,
-      imageClicked,
+      imageClicked: imageClicked ? imageClicked : null,
     },
   };
 }

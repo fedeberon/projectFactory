@@ -12,6 +12,8 @@ import {
   PlusCircleDotted,
 } from "react-bootstrap-icons";
 import FormProduct from "../../components/FormProduct/FormProduct";
+import { useDispatch, useSelector } from "react-redux";
+import { categoriesActions } from "../../store";
 
 //Components
 import ModalForm from "../../components/ModalForm";
@@ -79,6 +81,7 @@ const MyProducts = (props) => {
       categories: [],
     },
   });
+  const dispatch = useDispatch();
 
   useEffect(async () => {
     if (products) {
@@ -139,6 +142,13 @@ const MyProducts = (props) => {
     toggleModalProducts();
   };
 
+  useEffect(() => {
+    if (productData) {
+      const categories = productData.defaultValues.categories;
+      dispatch(categoriesActions.setSelectedCategories(categories));
+    }
+  }, [toggleModalProducts]);
+
   const onEditGetProducts = async (id) => {
     try {
       let dataImages = await imageService.getImagesByProductId(
@@ -169,6 +179,7 @@ const MyProducts = (props) => {
         categories: [],
       },
     };
+    dispatch(categoriesActions.setSelectedCategories([]));
     setProductData(defaultValues);
     setImages([]);
     setPreviewImage([]);
@@ -182,7 +193,6 @@ const MyProducts = (props) => {
           data,
           session.accessToken
         );
-
         const productReload = await productService.findMyProducts(
           pageSize.page,
           pageSize.size,
@@ -223,6 +233,10 @@ const MyProducts = (props) => {
       </>
     );
   };
+
+  // useEffect(() => {
+  //   console.log(data);
+  // }, [data]);
 
   const imagesCard = (
     <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
