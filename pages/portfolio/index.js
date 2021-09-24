@@ -169,7 +169,6 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
 
   //subir imagen y cambiar los datos del nombre y la description
   const onSetbuildingWork = async (data, buildingWorkId) => {
-    debugger;
     if (session) {
       try {
         const data2 = {
@@ -197,11 +196,9 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
         const buildingWorks = await onGetByProfessionalId();
         if (buildingWorks) {
           // setLocalBuildingWorks([...localBuildingWorks, ...images]);
-          
+
           setLocalBuildingWorks(buildingWorks);
         }
-        console.log("onSetbuildingWork", buildingWorks);
-        debugger;
         return true;
       } catch (error) {
         console.error(error);
@@ -228,7 +225,6 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   };
 
   const onAddbuildingWork = async (data) => {
-    debugger;
     if (session) {
       try {
         let folder = await buildingWorkService.addFolder(

@@ -136,7 +136,6 @@ const FormObra = ({
 
   const onSubmit = async ({ name, description, categories }, event) => {
     const error = hasAnyError(changeState.stateFormObra.put);
-    debugger;
     if (!error) {
       let data = {
         previewImage: previewImage[0],
@@ -175,9 +174,9 @@ const FormObra = ({
     }
   };
 
-  useEffect(() => {
-    console.log("buildingWorkData", buildingWorkData);
-  }, [buildingWorkData]);
+  // useEffect(() => {
+  //   console.log("buildingWorkData", buildingWorkData);
+  // }, [buildingWorkData]);
 
   return (
     <div>
