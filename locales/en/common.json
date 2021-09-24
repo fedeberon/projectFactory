@@ -28,6 +28,7 @@
   "email": "Email",
   "company": "Company",
   "companies": "Companies",
+  "tags": "Tags",
   "add-tags": "Add tags",
   "save-tags": "Save tags",
   "add-title": "Add title",
@@ -331,5 +332,6 @@
   "read": "Read",
   "the-images-buldingWork-is-not-approved": "The images buldingWork is not approved",
   "select-some-tag-here-please": "Select some tag here please",
-  "no-options": "No options"
+  "no-options": "No options",
+  "type-tag": "Type tag"
 }

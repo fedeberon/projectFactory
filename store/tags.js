@@ -5,7 +5,8 @@ const { reducer, actions } = createSlice({
   initialState: {
     initializated: false,
     buildingWorks: [],
-    selectedTags: []
+    selectedTags: [],
+    typeTags: [],
   },
   reducers: {
     setInitializated(state, action) {
@@ -16,7 +17,10 @@ const { reducer, actions } = createSlice({
     },
     setSelectedTags(state, action) {
       state.selectedTags = action.payload;
-  },
+    },
+    setSelectedTypeTags(state, action) {
+      state.typeTags = action.payload;
+    },
   }
 });
 

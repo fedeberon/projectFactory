@@ -25,11 +25,12 @@
   "about-us": "Sobre Nosotros",
   "contact": "Contacto",
   "administrator": "Administrador",
+  "email": "Correo",
   "company": "Empresa",
   "companies": "Empresas",
-  "email": "Correo",
-  "add-tags": "Agregar Tags",
-  "save-tags": "Guardar tags",
+  "tags": "Etiquetas",
+  "add-tags": "Agregar etiquetas",
+  "save-tags": "Guardar etiquetas",
   "add-title": "Agregar titulo",
   "province": "Provincia",
   "location": "Localidad",
@@ -120,7 +121,7 @@
 
   "tag-creator": {
     "add-tag": "Agregar tag",
-    "please-select-tag": "Ingrese el nombre el nombre de un tag para agregarlo a la lista de tags"
+    "please-select-tag": "Ingrese el nombre el nombre de un tag para agregarlo a la lista de etiquetas"
   },
 
   "table-admin": {
@@ -331,5 +332,6 @@
   "read": "Leer",
   "the-images-buldingWork-is-not-approved": "Las imágenes de obra no están aprobadas",
   "select-some-tag-here-please": "Seleccione alguna etiqueta aquí, por favor",
-  "no-options": "Sin opciones"
+  "no-options": "Sin opciones",
+  "type-tag": "Tipo de Etiqueta"
 }

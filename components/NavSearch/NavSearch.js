@@ -581,6 +581,11 @@ export default function NavSearch({ filters }) {
                               {t("categories")}
                             </a>
                           </Link>
+                          <Link href="/admin/tags" passHref>
+                            <a className={styles.dropdownItem}>
+                              {t("tags")}
+                            </a>
+                          </Link>
                         </Col>
                       </Row>
                     </div>
