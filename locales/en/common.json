@@ -243,6 +243,7 @@
     "the-professional-category": "The professional category",
     "the-product-category": "The product category",
     "the-buildingWork-category": "The buildingWork category",
+    "the-buildingWork-tag": "The buildingWork tag",
     "web-page": "Web page",
     "the-web-page": "The web page",
     "location-of-the-company": "Location of the company",
@@ -328,5 +329,7 @@
   "category-button": "Category button",
   "modify": "Modify",
   "read": "Read",
-  "the-images-buldingWork-is-not-approved": "The images buldingWork is not approved"
+  "the-images-buldingWork-is-not-approved": "The images buldingWork is not approved",
+  "select-some-tag-here-please": "Select some tag here please",
+  "no-options": "No options"
 }

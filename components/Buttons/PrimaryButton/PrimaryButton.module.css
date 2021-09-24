@@ -70,3 +70,10 @@
   color: #fff;
   border: 1px solid #fff;
 }
+
+.btnDarkDisabled:disabled,
+.btnDarkDisabled.disabled {
+  color: #000000 !important;
+  background-color: transparent !important;
+  border-color: #000000 !important;
+}

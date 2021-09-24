@@ -1,15 +1,18 @@
+// Frameworks
 import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { CaretDownFill } from "react-bootstrap-icons";
-
 import useTranslation from "next-translate/useTranslation";
 import { useSession } from "next-auth/client";
 import Link from "next/link";
-import styles from "./NavSearch.module.css";
 import { useDispatch, useSelector } from "react-redux";
+
+// Styles
+import styles from "./NavSearch.module.css";
 
 // Services
 import * as categoryService from "../../services/categoryService";
+import * as tagService from "../../services/tagService";
 
 // terminar componente tiene una pequeña falla
 // const CustomDropdown = ({ children, items }) => {
@@ -88,6 +91,7 @@ export default function NavSearch({ filters }) {
   const categoriesInitializated = useSelector(
     (state) => state.categories.initializated
   );
+  const tagsInitializated = useSelector((state) => state.tags.initializated);
   const productCategories = useSelector((state) => state.categories.products);
 
   const buildingWorkCategories = useSelector(
@@ -125,6 +129,12 @@ export default function NavSearch({ filters }) {
   useEffect(async () => {
     if (!categoriesInitializated) {
       categoryService.dispatchCategories(dispatch);
+    }
+  }, []);
+
+  useEffect(async () => {
+    if (!tagsInitializated) {
+      tagService.dispatchTags(dispatch);
     }
   }, []);
 

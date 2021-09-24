@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Row, Button, Form } from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
 import ModalForm from "../ModalForm";
 import FormTag from "../FormTag/FormTag";
 import Select from "react-select";
+import { useDispatch, useSelector } from "react-redux";
 
 //Components
 import InputImages from "../../components/InputImages/InputImages";
@@ -13,9 +14,11 @@ import Dropzone from "../Dropzone/Dropzone";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 import CategorySelector from "../CategorySelector/CategorySelector";
 import CategoryList from "../List/CategoryList/CategoryList";
-import { useDispatch, useSelector } from "react-redux";
 import { categoriesActions } from "../../store";
 import image from "next/image";
+
+// Styles
+import styles from "./FormObra.module.css";
 
 const FormObra = ({
   toggle,
@@ -131,17 +134,14 @@ const FormObra = ({
     return false;
   };
 
-  const onSubmit = async (
-    { name, description, buildingWorkCategory },
-    event
-  ) => {
+  const onSubmit = async ({ name, description, categories }, event) => {
     const error = hasAnyError(changeState.stateFormObra.put);
-
+    debugger;
     if (!error) {
       let data = {
         previewImage: previewImage[0],
         // categories: selectedCategories,
-        categories: [buildingWorkCategory],
+        categories: [categories],
         images,
         name,
         description,
@@ -174,6 +174,10 @@ const FormObra = ({
       dispatch(categoriesActions.setSelectedCategories([]));
     }
   };
+
+  useEffect(() => {
+    console.log("buildingWorkData", buildingWorkData);
+  }, [buildingWorkData]);
 
   return (
     <div>
@@ -290,11 +294,11 @@ const FormObra = ({
                   <CategoryList />
                 </div> */}
                 <Form.Group className={`mb-2`}>
-                  <Form.Label htmlFor="buildingWorkCategory">
+                  <Form.Label htmlFor="categories">
                     {t("company-creator.select-category-please")}
                   </Form.Label>
                   <Controller
-                    name="buildingWorkCategory"
+                    name="categories"
                     control={control}
                     rules={{
                       required: {
@@ -309,25 +313,24 @@ const FormObra = ({
                     render={({ field }) => (
                       <Select
                         {...field}
-                        inputId={"buildingWorkCategory"}
+                        inputId={"categories"}
                         defaultValue={selectedCategoriesDefault}
                         options={selectedCategories}
                         getOptionLabel={(option) => `${option?.name}`}
                         getOptionValue={(option) => `${option?.id}`}
                         isClearable
                         className={
-                          "form-field" +
-                          (errors.buildingWorkCategory ? " has-error" : "")
+                          "form-field" + (errors.categories ? " has-error" : "")
                         }
                       />
                     )}
                   />
-                  {errors.buildingWorkCategory && (
+                  {errors.categories && (
                     <Form.Text
                       variant="danger"
                       className="invalid error-Form.Label text-danger"
                     >
-                      {errors.buildingWorkCategory.message}
+                      {errors.categories.message}
                     </Form.Text>
                   )}
                 </Form.Group>
@@ -389,7 +392,7 @@ const FormObra = ({
       <ModalForm
         size={"lg"}
         fullscreen={"lg-down"}
-        className={"Button"}
+        className={`Button ${styles.bgModal}`}
         modalTitle={t("common:add-tags")}
         formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}
         modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
