@@ -1,23 +1,32 @@
+// Frameworks
 import React, { useEffect } from "react";
 import { Nav, Navbar, NavDropdown, Row, Col, Dropdown } from "react-bootstrap";
 import { useRouter } from "next/dist/client/router";
 import useTranslation from "next-translate/useTranslation";
 import { signOut, useSession } from "next-auth/client";
 import Link from "next/link";
-import styles from "./NavSearchCel.module.css";
-import Authentication from "../Authentication/Authentication";
 import Image from "next/image";
 import { PersonCircle } from "react-bootstrap-icons";
-import RolProfile from "../RolProfile";
-import * as userService from "../../services/userService";
 import { useDispatch, useSelector } from "react-redux";
+
+// Styles
+import styles from "./NavSearchCel.module.css";
+
+// Components
+import Authentication from "../Authentication/Authentication";
+import RolProfile from "../RolProfile";
+
+// Services
+import * as userService from "../../services/userService";
 import * as categoryService from "../../services/categoryService";
+import * as tagService from "../../services/tagService";
 
 export default function NavSearchCel() {
   const [session] = useSession();
   const categoriesInitializated = useSelector(
     (state) => state.categories.initializated
   );
+  const tagsInitializated = useSelector((state) => state.tags.initializated);
   const productCategories = useSelector((state) => state.categories.products);
   const buildingWorkCategories = useSelector(
     (state) => state.categories.buildingWorks
@@ -42,6 +51,12 @@ export default function NavSearchCel() {
   useEffect(async () => {
     if (!categoriesInitializated) {
       categoryService.dispatchCategories(dispatch);
+    }
+  }, []);
+
+  useEffect(async () => {
+    if (!tagsInitializated) {
+      tagService.dispatchTags(dispatch);
     }
   }, []);
 

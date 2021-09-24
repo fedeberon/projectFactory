@@ -1,4 +1,5 @@
 import API from "./api";
+import { tagsActions } from "../store";
 
 export const getStartsWith = async (tag, token) => {
   API.defaults.headers.common["Authorization"] = token;
@@ -27,3 +28,9 @@ export const addTag = async (tag, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.post(`/tags`, tag);
 };
+
+export const dispatchTags = async (dispatch) => {
+  const tags = await findAll();
+  dispatch(tagsActions.setBuildingWorks(tags));
+  dispatch(tagsActions.setInitializated(true));
+}

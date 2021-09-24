@@ -15,6 +15,7 @@ const PrimaryButton = forwardRef((props, ref) => {
     type,
     blank,
     as,
+    disabled,
   } = props;
 
   return (
@@ -31,10 +32,12 @@ const PrimaryButton = forwardRef((props, ref) => {
       ${dark ? styles.btnDark : yellow ? styles.btnYellow : ""} 
       d-flex align-items-center justify-content-center gap-1
       ${className ? className : ""}
+      ${disabled ? styles.btnDarkDisabled : ""}
       `}
       style={style}
       type={type}
       target={blank ? `_blank` : ``}
+      disabled={disabled}
     >
       {children}
     </Button>

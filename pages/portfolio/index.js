@@ -43,7 +43,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
     defaultValues: {
       name: "",
       description: "",
-      categories: [],
+      categories: {},
     },
   });
   const dispatch = useDispatch();
@@ -169,6 +169,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
 
   //subir imagen y cambiar los datos del nombre y la description
   const onSetbuildingWork = async (data, buildingWorkId) => {
+    debugger;
     if (session) {
       try {
         const data2 = {
@@ -193,6 +194,14 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
           buildingWorkId,
           session.accessToken
         );
+        const buildingWorks = await onGetByProfessionalId();
+        if (buildingWorks) {
+          // setLocalBuildingWorks([...localBuildingWorks, ...images]);
+          
+          setLocalBuildingWorks(buildingWorks);
+        }
+        console.log("onSetbuildingWork", buildingWorks);
+        debugger;
         return true;
       } catch (error) {
         console.error(error);
@@ -219,6 +228,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   };
 
   const onAddbuildingWork = async (data) => {
+    debugger;
     if (session) {
       try {
         let folder = await buildingWorkService.addFolder(
@@ -276,7 +286,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
     let copyBuildingWorkData = Object.assign({}, buildingWorkData);
     copyBuildingWorkData.defaultValues.name = buildingWork.name;
     copyBuildingWorkData.defaultValues.description = buildingWork.description;
-    copyBuildingWorkData.defaultValues.categories = [buildingWork.category];
+    copyBuildingWorkData.defaultValues.categories = buildingWork.category;
 
     setBuildingWorkData(copyBuildingWorkData);
 
@@ -396,7 +406,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
 
   useEffect(() => {
     if (buildingWorkData) {
-      console.log("buildingWorkData", buildingWorkData);
+      // console.log("buildingWorkData", buildingWorkData);
       const categories = buildingWorkData.defaultValues.categories;
       dispatch(categoriesActions.setSelectedCategories(categories));
     }
