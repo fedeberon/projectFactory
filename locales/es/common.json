@@ -243,6 +243,7 @@
     "the-professional-category": "La categoria del profesional",
     "the-product-category": "La categoria del producto",
     "the-buildingWork-category": "La categoria de la obra",
+    "the-buildingWork-tag": "El tag de la obra",
     "web-page": "Página Web",
     "the-web-page": "La página web",
     "location-of-the-company": "Ubicacion de la empresa",
@@ -328,5 +329,7 @@
   "category-button": "Botón categoría ",
   "modify": "Modificar",
   "read": "Leer",
-  "the-images-buldingWork-is-not-approved": "Las imágenes de obra no están aprobadas"
+  "the-images-buldingWork-is-not-approved": "Las imágenes de obra no están aprobadas",
+  "select-some-tag-here-please": "Seleccione alguna etiqueta aquí, por favor",
+  "no-options": "Sin opciones"
 }

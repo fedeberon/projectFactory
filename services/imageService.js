@@ -257,6 +257,7 @@ export const getLikePhotos = async (page, size, token) => {
 
 export const addPreviewImageToBuildingWork = async (data, token) => {
   API.defaults.headers.common["Authorization"] = token;
+  URL.revokeObjectURL(data.previewImage);
   const imageData = new FormData();
   imageData.append("image", data.previewImage);
   return await API.post(`/images/building-works/${data.id}/preview`, imageData);
