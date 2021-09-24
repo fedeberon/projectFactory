@@ -24,6 +24,10 @@ export const findAll = async () => {
   return await API.get(`/tags`);
 };
 
+export const findAllTypeTags = async () => {
+  return await API.get(`/tags/typeTags`);
+};
+
 export const addTag = async (tag, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.post(`/tags`, tag);
@@ -31,6 +35,22 @@ export const addTag = async (tag, token) => {
 
 export const dispatchTags = async (dispatch) => {
   const tags = await findAll();
+  // const typeTags = await findAllTypeTags();
+
+  // const tagsTypeObject = typeTags.map((tag, index) => ({
+  //   id: index,
+  //   name: tag,
+  // }));
+  
+  // TODO: cuando se actualize el back cambiar esto
+  const tagsTypeObject = [
+    {
+      id: 0,
+      name: "BUILDING_WORK",
+    },
+  ];
+
   dispatch(tagsActions.setBuildingWorks(tags));
+  dispatch(tagsActions.setSelectedTypeTags(tagsTypeObject));
   dispatch(tagsActions.setInitializated(true));
-}
+};
