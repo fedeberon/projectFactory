@@ -147,9 +147,6 @@ const TagAdmin = (props) => {
     setIsLoadingButton(true);
     try {
       const newCategory = await tagService.addTag(data, session.accessToken);
-      debugger;
-      console.log("tags", tags);
-      console.log("newCategory", newCategory);
       if (newCategory) {
         setTags([...tags, newCategory]);
         event.target.reset();
@@ -213,7 +210,6 @@ const TagAdmin = (props) => {
 
   useEffect(async () => {
     const tags = await tagService.findAll();
-    console.log("useEffect", tags);
     setTags(tags);
     setIsLoading(false);
   }, []);
