@@ -333,5 +333,6 @@
   "the-images-buldingWork-is-not-approved": "Las imágenes de obra no están aprobadas",
   "select-some-tag-here-please": "Seleccione alguna etiqueta aquí, por favor",
   "no-options": "Sin opciones",
-  "type-tag": "Tipo de Etiqueta"
+  "type-tag": "Tipo de etiqueta",
+  "tag-button": "Botón etiqueta"
 }

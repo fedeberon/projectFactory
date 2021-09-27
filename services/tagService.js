@@ -54,3 +54,8 @@ export const dispatchTags = async (dispatch) => {
   dispatch(tagsActions.setSelectedTypeTags(tagsTypeObject));
   dispatch(tagsActions.setInitializated(true));
 };
+
+export const editById = async (id, data, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return API.put(`/tags/${id}`, data);
+};
