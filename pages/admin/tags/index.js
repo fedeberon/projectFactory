@@ -139,14 +139,17 @@ const TagAdmin = (props) => {
     watch,
   } = useForm();
 
-  const handleSubmitCategory = async ({ name, tags }, event) => {
+  const handleSubmitCategory = async ({ name, tag }, event) => {
     const data = {
       name,
-      typeTag: tags.name,
+      typeTag: tag.name,
     };
     setIsLoadingButton(true);
     try {
       const newCategory = await tagService.addTag(data, session.accessToken);
+      debugger;
+      console.log("tags", tags);
+      console.log("newCategory", newCategory);
       if (newCategory) {
         setTags([...tags, newCategory]);
         event.target.reset();
@@ -210,6 +213,7 @@ const TagAdmin = (props) => {
 
   useEffect(async () => {
     const tags = await tagService.findAll();
+    console.log("useEffect", tags);
     setTags(tags);
     setIsLoading(false);
   }, []);
@@ -226,7 +230,6 @@ const TagAdmin = (props) => {
           return tagEdited;
         }
       });
-
       setTags(tagsEdited);
       setIsLoadingButton(false);
       return tagEdited;
@@ -283,36 +286,12 @@ const TagAdmin = (props) => {
                   </Form.Group>
                 </Col>
                 <Col sm={12} md={5} lg={3}>
-                  {/* <Form.Group className="mb-3">
-                    <Form.Label>
-                      {t("administrator-categories.category-type-label")}
-                    </Form.Label>
-                    <Form.Select
-                      {...register("typeCategory", {
-                        required: { value: true, message: "as" },
-                      })}
-                    >
-                      <option value="BUILDING_WORK">
-                        {t(
-                          "administrator-categories.category-type-building-work"
-                        )}
-                      </option>
-                    </Form.Select>
-                    {errors.typeCategory && (
-                      <Form.Text
-                        variant="danger"
-                        className="invalid error-Form.Label text-danger"
-                      >
-                        {t("administrator-categories.category-type-required")}
-                      </Form.Text>
-                    )}
-                  </Form.Group> */}
                   <Form.Group className={`mb-2`}>
-                    <Form.Label htmlFor="tags">
+                    <Form.Label htmlFor="tag">
                       {t("tag-type-label")}
                     </Form.Label>
                     <Controller
-                      name="tags"
+                      name="tag"
                       control={control}
                       rules={{
                         required: {
@@ -327,7 +306,7 @@ const TagAdmin = (props) => {
                       render={({ field }) => (
                         <Select
                           {...field}
-                          inputId={"tags"}
+                          inputId={"tag"}
                           defaultValue={selectedCategoriesDefault}
                           options={selectedCategories}
                           getOptionLabel={(option) =>
@@ -336,17 +315,17 @@ const TagAdmin = (props) => {
                           getOptionValue={(option) => `${option.id}`}
                           isClearable
                           className={
-                            "form-field" + (errors.tags ? " has-error" : "")
+                            "form-field" + (errors.tag ? " has-error" : "")
                           }
                         />
                       )}
                     />
-                    {errors.tags && (
+                    {errors.tag && (
                       <Form.Text
                         variant="danger"
                         className="invalid error-Form.Label text-danger"
                       >
-                        {errors.tags.message}
+                        {errors.tag.message}
                       </Form.Text>
                     )}
                   </Form.Group>
