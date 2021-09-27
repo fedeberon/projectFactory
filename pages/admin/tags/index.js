@@ -6,13 +6,115 @@ import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
+import { PencilSquare } from "react-bootstrap-icons";
 
 // Components
 import Layout from "../../../components/Layout/Layout";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton/PrimaryButton";
 import SpinnerCustom from "../../../components/SpinnerCustom/SpinnerCustom";
+import ModalButton from "../../../components/Buttons/ModalButton/ModalButton";
+
 // Services
 import * as tagService from "../../../services/tagService";
+
+const FormEdit = (props) => {
+  const { tag, onEditTag, isLoadingButton } = props;
+  const [session] = useSession();
+
+  const { t } = useTranslation("administrator");
+
+  const [defaultValue, setDefaultValue] = useState(tag.name);
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+
+  const onSubmitEdit = async ({ nameEdit }, event) => {
+    nameEdit = nameEdit.trim();
+    let data = {
+      name: nameEdit,
+    };
+    if (nameEdit !== "") {
+      const tagEdited = await onEditTag(tag.id, data, session.accessToken);
+
+      setDefaultValue(tagEdited.name);
+      event.target.reset();
+    }
+  };
+
+  return (
+    <Form onSubmit={handleSubmit(onSubmitEdit)}>
+      <Row className="row-cols-1 g-4">
+        <Col>
+          <Row>
+            <Col className="col-12">
+              <h3 className={`text-break`}>
+                {tag.name} - {t(`${tag.typeCategory.toLowerCase()}`)}
+              </h3>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Form.Group>
+            <Form.Label htmlFor="nameEdit">{t("common:name")}</Form.Label>
+            <Form.Control
+              type="text"
+              id="nameEdit"
+              defaultValue={defaultValue}
+              className={"form-field" + (errors.name ? " has-error" : "")}
+              style={{ resize: "none" }}
+              {...register("nameEdit", {
+                required: {
+                  value: true,
+                  message: `${t("common:is-required", {
+                    nameRequired: t("common:the-name"),
+                  })}`,
+                },
+                minLength: {
+                  value: 3,
+                  message: `${t("common:cannot-be-less-than-character", {
+                    nameInput: t("common:the-name"),
+                    numberCharacters: 3,
+                  })}`,
+                },
+                maxLength: {
+                  value: 255,
+                  message: `${t("common:cannot-be-more-than-character", {
+                    nameInput: t("common:name").toLowerCase(),
+                    numberCharacters: 255,
+                  })}`,
+                },
+              })}
+            />
+            {errors.nameEdit && (
+              <Form.Text
+                variant="danger"
+                className="invalid error-label text-danger"
+              >
+                {errors.nameEdit.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row>
+        <Col className="mt-2">
+          {isLoadingButton ? (
+            <SpinnerCustom />
+          ) : (
+            <PrimaryButton dark type="submit" variant="primary mt-1">
+              {t("common:edit")}
+            </PrimaryButton>
+          )}
+        </Col>
+      </Row>
+    </Form>
+  );
+};
 
 const TagAdmin = (props) => {
   // const { tags } = props;
@@ -37,10 +139,10 @@ const TagAdmin = (props) => {
     watch,
   } = useForm();
 
-  const handleSubmitCategory = async ({ name, categories }, event) => {
+  const handleSubmitCategory = async ({ name, tags }, event) => {
     const data = {
       name,
-      typeTag: categories.name,
+      typeTag: tags.name,
     };
     setIsLoadingButton(true);
     try {
@@ -68,31 +170,35 @@ const TagAdmin = (props) => {
       selector: (row) => t(`${row.typeCategory.toLowerCase()}`),
       sortable: true,
     },
-    // {
-    //   name: t("common:category-button"),
-    //   button: true,
-    //   right: true,
-    //   cell: (row) => (
-    //     <>
-    //       <ModalButton
-    //         buttonProps={{
-    //           classNameButton: `text-nowrap px-3`,
-    //           children: (
-    //             <>
-    //               <PencilSquare size={20} />
-    //               {t("common:edit")}
-    //             </>
-    //           ),
-    //         }}
-    //         nameDefaultValue={row.name}
-    //         modalTitle={t(`common:edit`)}
-    //         modalBody={
-    //           <FormEdit category={row} onEditCategory={onEditCategory} />
-    //         }
-    //       />
-    //     </>
-    //   ),
-    // },
+    {
+      name: t("common:tag-button"),
+      button: true,
+      right: true,
+      cell: (row) => (
+        <>
+          <ModalButton
+            buttonProps={{
+              classNameButton: `text-nowrap px-3`,
+              children: (
+                <>
+                  <PencilSquare size={20} />
+                  {t("common:edit")}
+                </>
+              ),
+            }}
+            nameDefaultValue={row.name}
+            modalTitle={t(`common:edit`)}
+            modalBody={
+              <FormEdit
+                tag={row}
+                onEditTag={onEditTag}
+                isLoadingButton={isLoadingButton}
+              />
+            }
+          />
+        </>
+      ),
+    },
   ]);
 
   const paginationOptions = {
@@ -108,6 +214,28 @@ const TagAdmin = (props) => {
     setIsLoading(false);
   }, []);
 
+  const onEditTag = async (id, data, token) => {
+    setIsLoadingButton(true);
+    try {
+      const tagEdited = await tagService.editById(id, data, token);
+
+      const tagsEdited = tags.map((tag) => {
+        if (tag.id !== tagEdited.id) {
+          return tag;
+        } else {
+          return tagEdited;
+        }
+      });
+
+      setTags(tagsEdited);
+      setIsLoadingButton(false);
+      return tagEdited;
+    } catch (error) {
+      console.error(error);
+      setIsLoadingButton(false);
+    }
+  };
+
   return (
     <Layout title={t("managing-tags")}>
       <section className="container py-2">
@@ -117,15 +245,11 @@ const TagAdmin = (props) => {
               <Row>
                 <Col sm={12} md={7} lg={9}>
                   <Form.Group className="mb-3">
-                    <Form.Label>
-                      {t("administrator-categories.category-name-label")}
-                    </Form.Label>
+                    <Form.Label>{t("tag-name-label")}</Form.Label>
                     <Form.Control
                       type="text"
                       id="name"
-                      placeholder={t(
-                        "administrator-categories.category-name-placeholder"
-                      )}
+                      placeholder={t("tag-name-placeholder")}
                       {...register("name", {
                         required: {
                           value: true,
@@ -184,11 +308,11 @@ const TagAdmin = (props) => {
                     )}
                   </Form.Group> */}
                   <Form.Group className={`mb-2`}>
-                    <Form.Label htmlFor="categories">
-                      {t("administrator-categories.category-type-label")}
+                    <Form.Label htmlFor="tags">
+                      {t("tag-type-label")}
                     </Form.Label>
                     <Controller
-                      name="categories"
+                      name="tags"
                       control={control}
                       rules={{
                         required: {
@@ -203,7 +327,7 @@ const TagAdmin = (props) => {
                       render={({ field }) => (
                         <Select
                           {...field}
-                          inputId={"categories"}
+                          inputId={"tags"}
                           defaultValue={selectedCategoriesDefault}
                           options={selectedCategories}
                           getOptionLabel={(option) =>
@@ -212,38 +336,34 @@ const TagAdmin = (props) => {
                           getOptionValue={(option) => `${option.id}`}
                           isClearable
                           className={
-                            "form-field" +
-                            (errors.categories ? " has-error" : "")
+                            "form-field" + (errors.tags ? " has-error" : "")
                           }
                         />
                       )}
                     />
-                    {errors.categories && (
+                    {errors.tags && (
                       <Form.Text
                         variant="danger"
                         className="invalid error-Form.Label text-danger"
                       >
-                        {errors.categories.message}
+                        {errors.tags.message}
                       </Form.Text>
                     )}
                   </Form.Group>
                 </Col>
               </Row>
               {isLoadingButton ? (
-                // <>cargando</>
                 <SpinnerCustom />
               ) : (
                 <>
                   <PrimaryButton variant="primary" type="submit">
-                    {t("administrator-categories.add-category")}
+                    {t("add-tag")}
                   </PrimaryButton>
                 </>
               )}
             </Form>
 
-            <Form.Label className="mt-4">
-              {t("administrator-categories.categories-table-label")}
-            </Form.Label>
+            <Form.Label className="mt-4">{t("tag-table-label")}</Form.Label>
             <DataTable
               columns={columns}
               data={tags}

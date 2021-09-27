@@ -33,5 +33,13 @@
   },
   "building_work": "Obra",
   "product": "Producto",
-  "project": "Proyecto"
+  "project": "Proyecto",
+  "magazine": "Magazine",
+  "company": "Empresa",
+  "professional": "Profesional",
+  "tag-name-label": "Escriba el nombre de la Etiqueta",
+  "tag-name-placeholder": "Escriba el nombre",
+  "tag-table-label": "Etiquetas actuales",
+  "add-tag": "Agregar etiqueta",
+  "tag-type-label": "Seleccione el tipo de la etiqueta"
 }
