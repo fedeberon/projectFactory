@@ -14,9 +14,10 @@ import ModalButton from "../../../components/Buttons/ModalButton/ModalButton";
 
 // Services
 import * as categoryService from "../../../services/categoryService";
+import SpinnerCustom from "../../../components/SpinnerCustom/SpinnerCustom";
 
 const FormEdit = (props) => {
-  const { category, onEditCategory } = props;
+  const { category, onEditCategory, isLoadingButton } = props;
   const [session] = useSession();
 
   const { t } = useTranslation("administrator");
@@ -55,7 +56,7 @@ const FormEdit = (props) => {
           <Row>
             <Col className="col-12">
               <h3 className={`text-break`}>
-                {category.name} - {category.typeCategory}
+                {category.name} - {t(`${category.typeCategory.toLowerCase()}`)}
               </h3>
             </Col>
           </Row>
@@ -94,12 +95,12 @@ const FormEdit = (props) => {
                 },
               })}
             />
-            {errors.name && (
+            {errors.nameEdit && (
               <Form.Text
                 variant="danger"
                 className="invalid error-label text-danger"
               >
-                {errors.name.message}
+                {errors.nameEdit.message}
               </Form.Text>
             )}
           </Form.Group>
@@ -107,9 +108,13 @@ const FormEdit = (props) => {
       </Row>
       <Row>
         <Col className="mt-2">
-          <PrimaryButton dark type="submit" variant="primary mt-1">
-            {t("common:edit")}
-          </PrimaryButton>
+          {isLoadingButton ? (
+            <SpinnerCustom />
+          ) : (
+            <PrimaryButton dark type="submit" variant="primary mt-1">
+              {t("common:edit")}
+            </PrimaryButton>
+          )}
         </Col>
       </Row>
     </Form>
@@ -120,6 +125,7 @@ const AdminCategories = () => {
   const { t } = useTranslation("administrator");
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingButton, setIsLoadingButton] = useState(false);
   // const [errorCustom, setErrorCustom] = useState("");
   const [nameDefaultValue, setNameDefaultValue] = useState("as");
   const [session] = useSession();
@@ -165,12 +171,13 @@ const AdminCategories = () => {
 
   useEffect(async () => {
     const categories = await categoryService.getCategories();
-    addPrettyTypeCategory(categories);
+    // addPrettyTypeCategory(categories);
     setCategories(categories);
     setIsLoading(false);
   }, []);
 
   const onEditCategory = async (id, data, token) => {
+    setIsLoadingButton(true);
     try {
       const categoryEdited = await categoryService.editById(id, data, token);
 
@@ -183,9 +190,11 @@ const AdminCategories = () => {
       });
 
       setCategories(categoriesEdited);
+      setIsLoadingButton(false);
       return categoryEdited;
     } catch (error) {
       console.error(error);
+      setIsLoadingButton(false);
     }
   };
   // useEffect(() => {
@@ -207,7 +216,7 @@ const AdminCategories = () => {
     },
     {
       name: t("common:type-category"),
-      selector: (row) => row.typeCategory,
+      selector: (row) => t(`${row.typeCategory.toLowerCase()}`),
       sortable: true,
     },
     {
@@ -229,7 +238,11 @@ const AdminCategories = () => {
             nameDefaultValue={row.name}
             modalTitle={t(`common:edit`)}
             modalBody={
-              <FormEdit category={row} onEditCategory={onEditCategory} />
+              <FormEdit
+                category={row}
+                onEditCategory={onEditCategory}
+                isLoadingButton={isLoadingButton}
+              />
             }
           />
         </>
@@ -246,14 +259,21 @@ const AdminCategories = () => {
 
   const handleSubmitCategory = async ({ name, typeCategory }) => {
     if (typeCategory !== "placeholder") {
-      const category = { name, typeCategory };
-      const categoryCreated = await categoryService.create(
-        category,
-        session.accessToken
-      );
-      const newCategories = [...categories, categoryCreated];
-      addPrettyTypeCategory(newCategories);
-      setCategories(newCategories);
+      setIsLoadingButton(true);
+      try {
+        const category = { name, typeCategory };
+        const categoryCreated = await categoryService.create(
+          category,
+          session.accessToken
+        );
+        const newCategories = [...categories, categoryCreated];
+        // addPrettyTypeCategory(newCategories);
+        setCategories(newCategories);
+        setIsLoadingButton(false);
+      } catch (error) {
+        console.error(error);
+        setIsLoadingButton(false);
+      }
     } else {
       setError("typeCategory");
     }
@@ -325,9 +345,13 @@ const AdminCategories = () => {
                   </Form.Group>
                 </Col>
               </Row>
-              <PrimaryButton variant="primary" type="submit">
-                {t("administrator-categories.add-category")}
-              </PrimaryButton>
+              {isLoadingButton ? (
+                <SpinnerCustom />
+              ) : (
+                <PrimaryButton variant="primary" type="submit">
+                  {t("administrator-categories.add-category")}
+                </PrimaryButton>
+              )}
             </Form>
 
             <Form.Label className="mt-4">

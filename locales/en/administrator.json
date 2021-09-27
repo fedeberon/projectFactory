@@ -33,5 +33,13 @@
   },
   "building_work": "BuildingWork",
   "product": "Product",
-  "project": "Project"
+  "project": "Project",
+  "magazine": "Magazine",
+  "company": "Company",
+  "professional": "Professional",
+  "tag-name-label": "Write the name of the tag",
+  "tag-name-placeholder": "Write the name",
+  "tag-table-label": "Current tags",
+  "add-tag": "Add tag",
+  "tag-type-label": "Select the type of the tag"
 }
