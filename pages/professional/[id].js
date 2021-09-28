@@ -107,6 +107,7 @@ const ProfessionalDetail = (props) => {
       setBuildingWorks(initialBuildingWorks);
     }
   }, [initialBuildingWorks]);
+
   return (
     <Layout>
       <section className="container content">
@@ -205,7 +206,6 @@ const ProfessionalDetail = (props) => {
                   }
                 >
                   <div className={styles.tabContent}>
-                    {/* {buildingWorkList} */}
                     <ImagesGroup
                       isLoading={isLoading}
                       localBuildingWorks={buildingWorks}
@@ -255,6 +255,7 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
     console.error(error);
   }
 
+  // console.log("buildingWorks", buildingWorks);
   return {
     props: {
       professional,
