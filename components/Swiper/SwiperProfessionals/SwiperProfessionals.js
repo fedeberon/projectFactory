@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Col, Row } from "react-bootstrap";
 
 //Styles
-import styles from "./SwiperEmpresas.module.css";
+import styles from "./SwiperProfessionals.module.css";
 
 // swiper bundle styles
 import "swiper/css/bundle";
@@ -23,6 +23,7 @@ import PrimaryButton from "../../Buttons/PrimaryButton/PrimaryButton";
 
 // Modules
 import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
+import { PersonCircle } from "react-bootstrap-icons";
 SwiperCore.use([Autoplay, Pagination, Navigation]);
 
 /**
@@ -30,9 +31,8 @@ SwiperCore.use([Autoplay, Pagination, Navigation]);
  * https://swiperjs.com/react
  */
 
-const SwiperEmpresas = (props) => {
+const SwiperProfessionals = (props) => {
   const { t } = useTranslation("common");
-
   const {
     items,
     slidesPerViewMobile,
@@ -41,6 +41,7 @@ const SwiperEmpresas = (props) => {
   } = props;
   const { width } = useSize();
   const [slidesPerViewLocal, setSlidesPerViewLocal] = useState(0);
+  // const [showPoints, setShowPoints] = useState(false);
 
   useEffect(() => {
     if (slidesPerViewMobile.dimensionLimit <= width) {
@@ -52,6 +53,9 @@ const SwiperEmpresas = (props) => {
     if (slidesPerViewDesktop.dimensionLimit <= width) {
       setSlidesPerViewLocal(slidesPerViewDesktop.slides);
     }
+    // if (width <= 1024) {
+    //   setShowPoints(true);
+    // }
   }, [width]);
 
   return (
@@ -66,16 +70,16 @@ const SwiperEmpresas = (props) => {
           prevEl: ".swiper-button-prev",
         }}
       >
-        {items.map((company, index) => (
+        {items.map((professional, index) => (
           <SwiperSlide key={index}>
             <div className="swiper-slide">
               <div className={styles.itemList}>
                 <Row className="row-cols-1">
                   <Col>
                     <Link
-                      href={`/companies/${company.name
+                      href={`/professional/${professional.contact
                         .replace(/\s+/g, "-")
-                        .toLowerCase()}-${company.id}`}
+                        .toLowerCase()}-${professional.id}`}
                       passHref
                     >
                       <a className={styles.ancor}>
@@ -84,44 +88,57 @@ const SwiperEmpresas = (props) => {
                             <img
                               width={350}
                               height={160}
-                              src={company.backgroundImage}
+                              src={professional.backgroundImage}
                               className={styles.photo}
                             />
                           </figure>
                           <div className={styles.logo}>
-                            <img
-                              src={company.previewImage}
+                            {professional.previewImage ? (
+                              <img
+                                src={professional.previewImage}
+                                className={styles.photoPreview}
+                              />
+                            ) : (
+                              <PersonCircle
+                                size={46}
+                                className={`${styles.ico}`}
+                              />
+                            )}
+                            {/* <img
+                              src={professional.previewImage}
                               className={styles.photoPreview}
-                            />
+                            /> */}
                           </div>
                         </Col>
                       </a>
                     </Link>
                   </Col>
-                  {/* <Col className={"d-flex justify-content-between "}> */}
+                  {/* <Col className={"d-flex justify-content-between"}> */}
                   <Col>
                     <Row className={`justify-content-between ${styles.info}`}>
+                      {/* <Col className={"col-6"}> */}
                       <Col
                         className={`col-5 col-sm-6 col-md-7 col-lg-6 col-xl-8`}
                       >
                         <strong
                           className={`${styles.blockAndWeight} ${styles.strong} ${styles.maxTextLength} fw-bold`}
                         >
-                          {company.contact}
+                          {professional.contact}
                         </strong>
                         <div
                           className={`${styles.name} ${styles.maxTextLength}`}
                         >
-                          {company.categories[0].name}
+                          {professional.category.name}
                         </div>
                       </Col>
+                      {/* <Col className={"col-auto"}> */}
                       <Col
                         className={`col-7 col-sm-6 col-md-5 col-lg-6 col-xl-4`}
                       >
                         <Link
-                          href={`/companies/${company.name
+                          href={`/professional/${professional.contact
                             .replace(/\s+/g, "-")
-                            .toLowerCase()}-${company.id}`}
+                            .toLowerCase()}-${professional.id}`}
                           passHref
                         >
                           <PrimaryButton
@@ -147,4 +164,4 @@ const SwiperEmpresas = (props) => {
     </div>
   );
 };
-export default SwiperEmpresas;
+export default SwiperProfessionals;
