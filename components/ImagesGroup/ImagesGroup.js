@@ -33,6 +33,7 @@ const ImagesGroup = (props) => {
   const [session] = useSession();
   const [hasMore, setHasMore] = useState(true);
 
+  // console.log(localBuildingWorks);
   const { t } = useTranslation("common");
 
   // const getTotalBuildingWorksByProfessional = async () => {

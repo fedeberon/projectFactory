@@ -21,6 +21,7 @@ import * as productService from "../services/productService";
 import * as companyService from "../services/companyService";
 import * as buildingWorkService from "../services/buildingWorkService";
 import * as magazineService from "../services/magazineService";
+import * as professionalService from "../services/professionalService";
 
 // Styles
 import styles from "../styles/Home.module.css";
@@ -30,6 +31,7 @@ import OffCanvasFilter from "../components/OffCanvas/OffCanvasFilter.js/OffCanva
 import PrimaryButton from "../components/Buttons/PrimaryButton/PrimaryButton";
 import ImagesGroup from "../components/ImagesGroup/ImagesGroup";
 import SwiperMagazine from "../components/Swiper/SwiperMagazine/SwiperMagazine";
+import SwiperProfessionals from "../components/Swiper/SwiperProfessionals/SwiperProfessionals";
 
 const Home = ({
   buildingWorks,
@@ -38,6 +40,7 @@ const Home = ({
   products,
   companies,
   magazines,
+  professionals,
 }) => {
   const [filteredImages, setFilteredImages] = useState([]);
   // const [appliedFilters, setAppliedFilters] = useState([]);
@@ -107,8 +110,8 @@ const Home = ({
   }, [buildingWorks]);
 
   // useEffect(() => {
-  //   console.log("magazines", magazines);
-  // }, [magazines]);
+  //   console.log("professionals", professionals);
+  // }, [professionals]);
 
   return (
     <Layout>
@@ -220,6 +223,29 @@ const Home = ({
           />
         </Col>
       </section>
+      <section className={`container-fluid py-5 ${styles.backgroundGray}`}>
+        <Col>
+          <div className={styles.infoHead}>
+            <h2 className={styles.tit}>
+              {t("common:professionals")}
+              <small className={styles.itemsSmallTitle}>
+                {t("new-design-and-construction-professionals")}
+              </small>
+            </h2>
+          </div>
+        </Col>
+        <Col>
+          <SwiperProfessionals
+            items={professionals.professionals}
+            slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
+            slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
+            slidesPerViewDesktop={{ dimensionLimit: 992, slides: 3 }}
+          />
+        </Col>
+      </section>
+      <section className={`container-fluid py-5`}>
+       
+      </section>
     </Layout>
   );
 };
@@ -243,6 +269,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
   const products = await productService.findAllByStatus(page, size, status);
   const companies = await companyService.findAll(status, page, size);
   const magazines = await magazineService.findAll(status, page, size);
+  const professionals = await professionalService.findAll(page, size);
   const buildingWorks = await buildingWorkService.getAllByCategoryAndStatus(
     status,
     [],
@@ -258,6 +285,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
       companies,
       products,
       magazines,
+      professionals,
     },
   };
 }

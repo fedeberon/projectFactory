@@ -32,7 +32,7 @@
   width: 150px;
   height: 150px;
   margin: 8px;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .logoContainer {
@@ -195,4 +195,11 @@
 
 .alertInfo {
   background: #eaeaea;
+}
+
+.headListProfessional h1 {
+  text-align: center;
+  margin: auto;
+  font-size: 21px;
+  font-weight: 500;
 }
