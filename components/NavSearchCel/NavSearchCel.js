@@ -28,6 +28,9 @@ export default function NavSearchCel() {
   );
   const tagsInitializated = useSelector((state) => state.tags.initializated);
   const productCategories = useSelector((state) => state.categories.products);
+  const professionalCategories = useSelector(
+    (state) => state.categories.professionals
+  );
   const buildingWorkCategories = useSelector(
     (state) => state.categories.buildingWorks
   );
@@ -87,11 +90,32 @@ export default function NavSearchCel() {
                 ))}
               </NavDropdown>
 
-              <Link href="/professional" passHref>
+              {/* //TODO: Aqui cambiar a elementos multiples */}
+              <NavDropdown
+                className="navLink"
+                title={
+                  <span className={styles.navLink}> {t("professionals")}</span>
+                }
+              >
+                <Link href={`/professional`} passHref>
+                  <NavDropdown.Item>{t("all")}</NavDropdown.Item>
+                </Link>
+                {professionalCategories.map((category, index) => (
+                  <Link
+                    key={index}
+                    href={`/professional?categories=${category.name}`}
+                    passHref
+                  >
+                    <NavDropdown.Item>{category.name}</NavDropdown.Item>
+                  </Link>
+                ))}
+              </NavDropdown>
+
+              {/* <Link href="/professional" passHref>
                 <Nav.Link>
                   <span className={styles.navLink}> {t("professionals")}</span>
                 </Nav.Link>
-              </Link>
+              </Link> */}
 
               {/* <Link href="/product" passHref>
                 <Nav.Link>

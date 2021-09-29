@@ -44,6 +44,7 @@ const FormObra = ({
   const selectedCategoriesDefault = useSelector(
     (state) => state.categories.selectedCategories
   );
+  const tags = useSelector((state) => state.tags.buildingWorks);
 
   const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
 
@@ -393,7 +394,13 @@ const FormObra = ({
         fullscreen={"lg-down"}
         className={`Button ${styles.bgModal}`}
         modalTitle={t("common:add-tags")}
-        formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}
+        formBody={
+          <FormTag
+            image={currentImageTag}
+            toggle={toggleTagModal}
+            tags={tags}
+          />
+        }
         modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
       />
     </div>

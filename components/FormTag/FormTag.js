@@ -78,10 +78,10 @@ const colourStyles = {
   },
 };
 
-const FormTag = ({ toggle, image }) => {
+const FormTag = ({ toggle, image, tags }) => {
   const [timeErrorLive, setTimeErrorLive] = useState(0);
   const dispatch = useDispatch();
-  const tags = useSelector((state) => state.tags.buildingWorks);
+  // const tags = useSelector((state) => state.tags.products);
   const selectedTagsDefault = useSelector((state) => state.tags.selectedTags);
 
   const { t } = useTranslation("common");
