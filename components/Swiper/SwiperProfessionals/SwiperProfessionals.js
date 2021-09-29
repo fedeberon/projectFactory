@@ -133,7 +133,7 @@ const SwiperProfessionals = (props) => {
                       </Col>
                       {/* <Col className={"col-auto"}> */}
                       <Col
-                        className={`col-7 col-sm-6 col-md-5 col-lg-6 col-xl-4`}
+                        className={`col-auto col-sm-auto col-md-5 col-lg-6 col-xl-4`}
                       >
                         <Link
                           href={`/professional/${professional.contact
@@ -141,14 +141,7 @@ const SwiperProfessionals = (props) => {
                             .toLowerCase()}-${professional.id}`}
                           passHref
                         >
-                          <PrimaryButton
-                            style={{
-                              "max-width": "100px",
-                              "margin-left": "auto",
-                            }}
-                          >
-                            {t("common:view-more")}
-                          </PrimaryButton>
+                          <PrimaryButton>{t("common:view-more")}</PrimaryButton>
                         </Link>
                       </Col>
                     </Row>

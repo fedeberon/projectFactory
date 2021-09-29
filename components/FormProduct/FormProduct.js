@@ -41,7 +41,8 @@ const FormProduct = ({
   );
   const [modalTagOpen, setModalTagOpen] = useState(false);
   const [currentImageTag, setCurrentImageTag] = useState({});
-
+  const tags = useSelector((state) => state.tags.products);
+  
   const handleToggleTagModal = () =>
     setModalTagOpen((modalTagOpen) => !modalTagOpen);
 
@@ -569,7 +570,11 @@ const FormProduct = ({
         className={"Button"}
         modalTitle={t("add-tags")}
         formBody={
-          <FormTag image={currentImageTag} toggle={handleToggleTagModal} />
+          <FormTag
+            image={currentImageTag}
+            toggle={handleToggleTagModal}
+            tags={tags}
+          />
         }
         modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
       />
