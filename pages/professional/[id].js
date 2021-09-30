@@ -21,6 +21,7 @@ import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton"
 import ImagesGroup from "../../components/ImagesGroup/ImagesGroup";
 import useSize from "../../hooks/window/useSize";
 import BackgroundDefault from "../../components/BackgroundDefault/BackgroundDefault";
+import BuildingWorkList from "../../components/BuildingWork/BuildingWorkList/BuildingWorkList";
 
 const ProfessionalDetail = (props) => {
   const {
@@ -206,12 +207,13 @@ const ProfessionalDetail = (props) => {
                   }
                 >
                   <div className={styles.tabContent}>
-                    <ImagesGroup
+                    {/* <ImagesGroup
                       isLoading={isLoading}
                       localBuildingWorks={buildingWorks}
                       fetchMoreData={fetchMoreData}
                       profileHidden={true}
-                    />
+                    /> */}
+                    <BuildingWorkList data={buildingWorks} profileHidden />
                   </div>
                 </Tab>
 
@@ -255,7 +257,6 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
     console.error(error);
   }
 
-  // console.log("buildingWorks", buildingWorks);
   return {
     props: {
       professional,

@@ -1,15 +1,23 @@
+// Frameworks
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import Layout from "../../components/Layout/Layout";
-import SwiperCarouselProject from "../../components/Swiper/SwiperCarouselProject/SwiperCarouselProject";
 import { getSession } from "next-auth/client";
+import { Row, Col, Card, Container } from "react-bootstrap";
+import Link from "next/link";
+
+// Services
 import * as imageService from "../../services/imageService";
 import * as buildingWorkService from "../../services/buildingWorkService";
-import { Row, Col, Card, Container } from "react-bootstrap";
-import buildingStyles from "./building.module.css";
+
+// Components
+import Layout from "../../components/Layout/Layout";
+import SwiperCarouselProject from "../../components/Swiper/SwiperCarouselProject/SwiperCarouselProject";
 import FilteredImages from "../../components/FilteredImages/FilteredImages";
 import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
+
+// Styles
+import styles from "./building.module.css";
 
 const BuildingDetail = ({ data, session, imageClicked }) => {
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
@@ -110,13 +118,6 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
     }
   }, [appliedFilters]);
 
-  // useEffect(() => {
-  //   console.log(data, data.buildingWork);
-  //   // console.log(JSON.stringify(data.buildingWork) != "{}");
-  //   console.log(Object.keys(data.buildingWork).length);
-
-  // }, [data.buildingWork])
-
   return (
     <Layout>
       <Container fluid className="p-0">
@@ -137,6 +138,32 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
             </Col>
           </Row>
         )}
+        <Row>
+          <Col>
+            <div className={`${styles.contPhotoInfo}`}>
+              <div className="container-fluid clearfix">
+                <h1 className={`${styles.titName}`}>Foto: {currentTag}</h1>
+                <h2 className={`${styles.titProjects}`}>
+                  <a href="">Proyecto: {data.buildingWork.name}</a>
+                </h2>
+                <Link
+                  href={`/professional/[id]`}
+                  as={`/professional/${data.buildingWork.professional.contact.replace(
+                    /\s+/g,
+                    "-"
+                  )}-${data.buildingWork.professional.id}`}
+                >
+                  {/* <a>{category.name}</a> */}
+                  <a className={`${styles.verMas}`}>
+                    {/* Mesopotamian BA. */}
+                    {data.buildingWork.professional.contact}
+                    {/* {data.buildingWork.professional.id} */}
+                  </a>
+                </Link>
+              </div>
+            </div>
+          </Col>
+        </Row>
         {/* )} */}
         <Row className="w-100 m-0 mt-4">
           <Col>
@@ -147,7 +174,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
                     <Card className="border-0">
                       <Card.Title
                         tag="h5"
-                        className={`${buildingStyles.titObraDetail}`}
+                        className={`${styles.titObraDetail}`}
                       >
                         {data.buildingWork.name}
                       </Card.Title>
@@ -156,12 +183,12 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
                   </Col>
                   <Col className="col-12 col-md-12 col-lg-3 order-lg-1">
                     <Col
-                      className={`${buildingStyles.boxDeg} p-4 d-flex flex-column gap-2`}
+                      className={`${styles.boxDeg} p-4 d-flex flex-column gap-2`}
                     >
-                      <h3 className={`${buildingStyles.titName}`}>
+                      <h3 className={`${styles.titName}`}>
                         {data.buildingWork.professional.contact}
                       </h3>
-                      <h3 className={`${buildingStyles.titProjects}`}>
+                      <h3 className={`${styles.titProjects}`}>
                         <span className="d-block">{t("email")}</span>
                         <span>{data.buildingWork.professional.email}</span>
                       </h3>
@@ -175,9 +202,9 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
         <section className="container py-2">
           <Row>
             <Col>
-              <div className={`${buildingStyles.related} row`}>
+              <div className={`${styles.related} row`}>
                 <div className="col">
-                  <h2 className={`${buildingStyles.tit}`}>
+                  <h2 className={`${styles.tit}`}>
                     {t("other-building-works-of")}
                     {currentTag}
                   </h2>
@@ -219,7 +246,6 @@ export async function getServerSideProps({ params, req, query }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-
   try {
     images = await imageService.getImagesByBuildingWorksId(
       buildingWorkId,
@@ -230,10 +256,6 @@ export async function getServerSideProps({ params, req, query }) {
       imageClicked = images[0].id;
     } else {
       // TODO: item not approved, then send message the error this item not approved.
-      // console.log(
-      //   "item not approved, then send message the error this item not approved.",
-      //   images
-      // );
       // return {
       //   redirect: {
       //     destination: "/",

@@ -15,6 +15,7 @@ import * as buildingWorkService from "../../services/buildingWorkService";
 // import styles from "../../styles/Home.module.css";
 import styles from "./index.module.css";
 import ImagesGroup from "../../components/ImagesGroup/ImagesGroup";
+import BuildingWorkList from "../../components/BuildingWork/BuildingWorkList/BuildingWorkList";
 
 const index = ({ session, filtersTags, buildingWorks }) => {
   const [appliedFilters, setAppliedFilters] = useState(filtersTags);
@@ -34,10 +35,10 @@ const index = ({ session, filtersTags, buildingWorks }) => {
     setPageSize({ ...pageSize, page });
   };
 
-  const resetPage = () => {
-    const { page } = { page: 0 };
-    setPageSize({ ...pageSize, page });
-  };
+  // const resetPage = () => {
+  //   const { page } = { page: 0 };
+  //   setPageSize({ ...pageSize, page });
+  // };
 
   const onGetAllByCategoryAndStatus = async (status) => {
     // setLoading(true);
@@ -60,15 +61,15 @@ const index = ({ session, filtersTags, buildingWorks }) => {
     changePage();
   };
 
-  const getTotalBuildingWorks = async () => {
-    const status = "APPROVED";
-    try {
-      const total = await buildingWorkService.getCount(status);
-      return total;
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const getTotalBuildingWorks = async () => {
+  //   const status = "APPROVED";
+  //   try {
+  //     const total = await buildingWorkService.getCount(status);
+  //     return total;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   // 1 llamada es este
   useEffect(async () => {
@@ -124,11 +125,13 @@ const index = ({ session, filtersTags, buildingWorks }) => {
             <p>{`${localBuildingWorks.count} ${t("photos")}`}</p>
           </Col>
           <Col>
-            <ImagesGroup
-              isLoading={isLoading}
+            {/* <ImagesGroup
               localBuildingWorks={localBuildingWorks}
               fetchMoreData={fetchMoreData}
-              getTotalBuildingWorks={getTotalBuildingWorks}
+            /> */}
+            <BuildingWorkList
+              data={localBuildingWorks}
+              fetchMoreData={fetchMoreData}
             />
           </Col>
         </Row>

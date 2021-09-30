@@ -87,7 +87,6 @@ export default NextAuth({
       session.accessToken = token.accessToken;
       const tokenWithoutPrefix = token.accessToken.split(PREFIX)[1];
       const payload = jwt_decode(tokenWithoutPrefix);
-      // console.log("session", payload);
       session.authorities = payload[AUTHORITIES];
       session.user.id = payload[ID];
       session.user.username = payload[USERNAME];

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Images, PencilSquare, ThreeDotsVertical } from "react-bootstrap-icons";
+import Image from "next/image";
 
 // Styles
 import filteredImagesStyles from "../../FilteredImages/FilteredImages.module.css";
@@ -16,15 +17,24 @@ const CustomButtonToggle = ({ id, editBuildingWork, imageSize }) => {
           id="dropdown-autoclose-true"
           className={styles.afterLess}
         >
-          <ThreeDotsVertical color={"dark"} size={25} />
+          <ThreeDotsVertical 
+          // color={"dark"} 
+          size={25} />
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Header>
-            <Images
+            {/* <Images
               className={`${filteredImagesStyles.heart}`}
               color={"white"}
               size={25}
-            />
+            /> */}
+            <Image
+              src={`/icon-camera.svg`}
+              width={17}
+              height={15}
+              alt=""
+              // className={`${styles.svg}`}
+            />{" "}
             {` ${imageSize} Photos`}
           </Dropdown.Header>
           <Dropdown.Divider />
