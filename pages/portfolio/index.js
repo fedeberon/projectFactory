@@ -22,6 +22,7 @@ import * as imageService from "../../services/imageService";
 // Styles
 import styles from "./index.module.css";
 import ButtonFixed from "../../components/Buttons/ButtonFixed/ButtonFixed";
+import BuildingWorkList from "../../components/BuildingWork/BuildingWorkList/BuildingWorkList";
 
 const Portfolio = ({ professional, buildingWorks, session }) => {
   const { t } = useTranslation("common");
@@ -97,9 +98,6 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
             // TODO corregir que no se carga la ultima obra
             //  cuando supera el limite maximo de paginacion
 
-            // console.log("localBuildingWorks", localBuildingWorks);
-            // console.log("buildingWorks", buildingWorks);
-            // console.log("count", count);
             setLocalBuildingWorks({
               ...localBuildingWorks,
               buildingWorks: [
@@ -309,7 +307,6 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
 
     const imagen = await fetch(buildingWork.previewImage);
     let blob = await imagen.blob();
-    // console.log("blob_stream", await blob.stream().tee());
 
     let file = new File([blob], `IMAGEN_NO_CARGADA`, {
       type: "image/jpg",
@@ -339,10 +336,9 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   };
 
   // useEffect(async () => {
-  //   // if (buildingWorks) {
-  //   //   setLocalBuildingWorks(buildingWorks);
-  //   // }
-  //   console.log("GetServerSideProps", buildingWorks);
+    // if (buildingWorks) {
+    //   setLocalBuildingWorks(buildingWorks);
+    // }
   // }, [buildingWorks]);
 
   const onGetByProfessionalId = async () => {
@@ -402,7 +398,6 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
 
   useEffect(() => {
     if (buildingWorkData) {
-      // console.log("buildingWorkData", buildingWorkData);
       const categories = buildingWorkData.defaultValues.categories;
       dispatch(categoriesActions.setSelectedCategories(categories));
     }
@@ -460,13 +455,19 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
             </ButtonFixed>
           </Col>
           <Col className="col-12">
-            <ImagesGroup
+            {/* <ImagesGroup
               isLoading={isLoading}
               localBuildingWorks={localBuildingWorks}
               editBuildingWork={editBuildingWork}
               fetchMoreData={fetchMoreData}
               profileHidden={true}
               getTotalBuildingWorks={getTotalBuildingWorksByProfessional}
+            /> */}
+            <BuildingWorkList
+              data={localBuildingWorks}
+              editBuildingWork={editBuildingWork}
+              fetchMoreData={fetchMoreData}
+              profileHidden
             />
           </Col>
         </Row>

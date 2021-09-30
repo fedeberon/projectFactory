@@ -1,19 +1,24 @@
 .cardImage {
-  height: 350px;
-  object-fit: cover;
+  height: 250px;
+  /* object-fit: cover; */
   width: 100%;
 }
 
-.img {
-  width: 200px;
-  height: 200px;
+.colCard:hover .cardText {
+  /* animation: fadeIn 0.2s linear normal;
+  animation-fill-mode: forwards; */
 }
-.imgProfile {
-  object-fit: cover;
-  width: 50px;
-  height: 50px;
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
-.cardText {
+
+/* .cardText {
   bottom: 0;
   display: flex;
   position: absolute;
@@ -30,20 +35,18 @@
   opacity: 0;
   color: white;
   padding: 70px 20px 20px 20px;
+} */
+
+.imgProfile {
+  object-fit: cover;
+  width: 45px;
+  height: 45px;
 }
 
-.colCard:hover .cardText {
-  animation: fadeIn 0.2s linear normal;
-  animation-fill-mode: forwards;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+.name h5 {
+  /* color: #fff; */
+  font-size: 13px;
+  line-height: 18px;
 }
 
 .textShadow {
@@ -54,6 +57,14 @@
 .textShadowSm {
   text-shadow: 0px 0px 0.8px black, 0px 0px 0.8px black, 0px 0px 0.8px black,
     0px 0px 0.8px black, 0 0 0.8px black;
+}
+
+.parrafoName {
+  /* width: 150px; */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: start;
 }
 
 .containerHeart:hover .heart {
@@ -102,14 +113,34 @@
   }
 }
 
-.alertInfo {
-  background: #eaeaea;
+.photos {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 300;
 }
 
-.parrafoName {
-  /* width: 150px; */
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  text-align: start;
+.info {
+  border: 1px solid #e2e2e2;
+  margin-top: -1px !important;
+  padding: 15px 15px;
+}
+
+.svg {
+  margin-bottom: 5px;
+  margin-top: 3px;
+}
+
+.nameBuildingWork {
+  margin: 0;
+  font-weight: 600;
+  /* font-size: 14px; */
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.nameProfessional {
+  margin: 0;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 20px;
 }

@@ -185,9 +185,6 @@ const Profile = ({ data, status }) => {
     // }
   }, [pageSize, session]);
 
-  // useEffect(() => {
-  //   console.log("data", data);
-  // }, [data]);
 
   return (
     <Layout title={`${t("header.profile")}`}>
