@@ -98,8 +98,6 @@ const FormProfessional = ({
       province,
       location,
     };
-    // if (!selectedCategories.length == 0) {
-    // console.log("onSubmit", data);
 
     if (changeState.stateFormProfessional.post) {
       const professional = await onAddProfessional(data);

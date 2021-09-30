@@ -97,7 +97,7 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
           </Col>
         ) : (
           <InfiniteScroll
-            className="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4 w-100 m-0"
+            className="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 w-100 m-0"
             dataLength={images.length}
             next={fetchMoreData}
             hasMore={hasMore}
@@ -157,9 +157,9 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
                           <PersonCircle size={50} />
                         )}
                       </Col>
-                      <Col className={`col-auto`}>
+                      <Col className={`col-7 col-md-9 col-lg-8`}>
                         <Card.Text
-                          className={`${filteredImagesStyles.textShadowSm} fw-bold`}
+                          className={`${filteredImagesStyles.textShadowSm} ${filteredImagesStyles.parrafoName} fw-bold`}
                         >
                           {`${image.professional?.contact}`}
                         </Card.Text>

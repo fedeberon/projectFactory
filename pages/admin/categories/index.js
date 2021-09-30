@@ -198,7 +198,6 @@ const AdminCategories = () => {
     }
   };
   // useEffect(() => {
-  //   console.log("nameDefaultValue", nameDefaultValue);
   //   setNameDefaultValue(nameDefaultValue);
   // }, [nameDefaultValue]);
 

@@ -174,11 +174,7 @@ const FormObra = ({
       dispatch(categoriesActions.setSelectedCategories([]));
     }
   };
-
-  // useEffect(() => {
-  //   console.log("buildingWorkData", buildingWorkData);
-  // }, [buildingWorkData]);
-
+  
   return (
     <div>
       <Form onSubmit={handleSubmit(onSubmit)}>

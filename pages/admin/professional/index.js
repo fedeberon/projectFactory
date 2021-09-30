@@ -294,7 +294,6 @@ const ProfessionalAdmin = ({
    * with the list of pending proffesional.
    */
   useEffect(async () => {
-    console.log("professionalNotApproved", professionalNotApproved);
     if (professionalNotApproved) {
       const professionalList = getList(professionalNotApproved, [
         (professionalId) => buttonAccept(professionalId),

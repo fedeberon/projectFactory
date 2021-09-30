@@ -32,6 +32,7 @@ import PrimaryButton from "../components/Buttons/PrimaryButton/PrimaryButton";
 import ImagesGroup from "../components/ImagesGroup/ImagesGroup";
 import SwiperMagazine from "../components/Swiper/SwiperMagazine/SwiperMagazine";
 import SwiperProfessionals from "../components/Swiper/SwiperProfessionals/SwiperProfessionals";
+import BuildingWorkList from "../components/BuildingWork/BuildingWorkList/BuildingWorkList";
 
 const Home = ({
   buildingWorks,
@@ -109,10 +110,6 @@ const Home = ({
     }
   }, [buildingWorks]);
 
-  // useEffect(() => {
-  //   console.log("professionals", professionals);
-  // }, [professionals]);
-
   return (
     <Layout>
       <SwiperCarouselHome
@@ -139,13 +136,14 @@ const Home = ({
               </Col>
               <Col>
                 {/* <FilteredImages images={filteredImages} limit={true} /> */}
-                <ImagesGroup
+                {/* <ImagesGroup
                   isLoading={isLoading}
                   localBuildingWorks={localBuildingWorks}
                   fetchMoreData={fetchMoreData}
                   getTotalBuildingWorks={getTotalBuildingWorks}
                   limit={true}
-                />
+                /> */}
+                <BuildingWorkList data={buildingWorks} limit />
               </Col>
               <div className="w-100">
                 <Link href="/ideas">
@@ -243,9 +241,7 @@ const Home = ({
           />
         </Col>
       </section>
-      <section className={`container-fluid py-5`}>
-       
-      </section>
+      <section className={`container-fluid py-5`}></section>
     </Layout>
   );
 };

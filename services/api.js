@@ -15,7 +15,6 @@ axiosInstance.interceptors.request.use(
   },
   function (error) {
     // Do something with request error
-    // console.log("axiosInstance.interceptors.REQUEST.use", error);
     return Promise.reject(error);
   }
 );
@@ -30,11 +29,6 @@ axiosInstance.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    // console.log("axiosInstance.interceptors.response.use", error);
-    // console.log(
-    //   "axiosInstance.interceptors.response.use STATUS:",
-    //   error.response.status
-    // );
     // if (error.response.status === 403) {
     //   window.location.href = "/logIn?expired";
     // }

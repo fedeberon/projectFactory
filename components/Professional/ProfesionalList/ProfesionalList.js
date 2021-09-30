@@ -19,7 +19,6 @@ const ProfesionalList = (props) => {
   const { data, filterCategories } = props;
   const { t } = useTranslation("common");
   const [localProfessionals, setLocalProfessionals] = useState(data);
-  // console.log(localProfessionals);
   const [isLoading, setLoading] = useState(false);
   const [pageSize, setPageSize] = useState({
     page: 0,
@@ -111,8 +110,6 @@ const ProfesionalList = (props) => {
     // if (countFirst) {
     const status = "APPROVED";
     const newProfessionals = await onGetAllByCategoryAndStatus(status);
-    // console.log("newProfessionals", newProfessionals);
-    // console.log("pageSize_professionals", newProfessionals);
     if (newProfessionals) {
       // setLocalProfessionals({
       //   ...localProfessionals,
@@ -122,22 +119,16 @@ const ProfesionalList = (props) => {
       //   ],
       //   count: newProfessionals.count,
       // });
-      // console.log("dentro del if", newProfessionals);
       // } else {
       //   setCountFirst(true);
-      //   console.log("cambia", countFirst);
       // }
     }
   }, [pageSize]);
 
   useEffect(async () => {
-    // console.log("localProfessionals", localProfessionals);
     if (localProfessionals.professionals.length > 0) {
       // const total = await getTotalProfessionals();
       if (localProfessionals.professionals.length == localProfessionals.count) {
-        // console.log("lo que tengo", localProfessionals.professionals.length);
-        // console.log("lo que viene como maximo", localProfessionals.count);
-        // console.log("maximo");
         setHasMore(false);
       } else {
         setHasMore(true);
