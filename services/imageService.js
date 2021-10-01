@@ -30,6 +30,7 @@ export const getProjectsImagesFiltered = async (token, page, size) => {
 
 export const addCaroucelImages = async (images, token) => {
   API.defaults.headers.common["Authorization"] = token;
+
   await Promise.all(
     images.map(async (image) => {
       const imageData = new FormData();
@@ -46,7 +47,7 @@ export const getProfessionalImagesByTags = async (tags, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
   let concatenatedTags = "";
   tags.forEach((tag) => {
-    concatenatedTags = `${concatenatedTags}tags=${tag.tag}&`;
+    concatenatedTags = `${concatenatedTags}tags=${tag.name}&`;
   });
   concatenatedTags = concatenatedTags.substring(0, concatenatedTags.length - 1);
 
@@ -86,7 +87,10 @@ export const getProfessionalImagesByTagsLessFuntions = async (
   return images;
 };
 
-export const getImagesByBuildingWorksId = async (id, page, size) => {
+export const getImagesByBuildingWorksId = async (id, page, size, token) => {
+  if (token) {
+    API.defaults.headers.common["Authorization"] = token;
+  }
   const images = await API.get(
     `/images/building-works/${id}?page=${page}&size=${size}`
   );
@@ -195,6 +199,10 @@ export const uploadCompanyBackground = async (image, token) => {
 export const findCarouselImages = async () => {
   return await API.get(`/images/carousel`);
 };
+export const deleteCarouselImage = async (imageId, token) => {
+  API.defaults.headers.common["Authorization"] = token;
+  return await API.delete(`/images/carousel/${imageId}`);
+};
 
 export const changeStateImagesByProfessionalId = async (
   professionalId,
@@ -249,6 +257,7 @@ export const getLikePhotos = async (page, size, token) => {
 
 export const addPreviewImageToBuildingWork = async (data, token) => {
   API.defaults.headers.common["Authorization"] = token;
+  URL.revokeObjectURL(data.previewImage);
   const imageData = new FormData();
   imageData.append("image", data.previewImage);
   return await API.post(`/images/building-works/${data.id}/preview`, imageData);

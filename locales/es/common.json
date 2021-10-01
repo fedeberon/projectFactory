@@ -6,7 +6,8 @@
     "signed-in-as": "Ingresado como",
     "profile": "Perfil",
     "portfolio": "Mi portafolio",
-    "search-placeholder": "Buscar ideas/ profesionales",
+    "search-placeholder": "Buscar fotos / profesionales",
+    "search-by": "Buscar por",
     "search-by-ideas": "Buscar por ideas",
     "search-by-professionals": "Buscar por profesionales",
     "my-products": "Mis productos",
@@ -24,10 +25,12 @@
   "about-us": "Sobre Nosotros",
   "contact": "Contacto",
   "administrator": "Administrador",
+  "email": "Correo",
   "company": "Empresa",
   "companies": "Empresas",
-  "email": "Correo",
-  "add-tags": "Agregar Tags",
+  "tags": "Etiquetas",
+  "add-tags": "Agregar etiquetas",
+  "save-tags": "Guardar etiquetas",
   "add-title": "Agregar titulo",
   "province": "Provincia",
   "location": "Localidad",
@@ -62,7 +65,7 @@
   "form-project": "Formulario Proyecto",
   "loading": "Cargando",
   "name": "Nombre",
-  "type-category" : "Tipo de categoria",
+  "type-category": "Tipo de categoria",
   "description": "Descripcion",
   "total-area": "Área total",
   "year": "Año",
@@ -104,6 +107,7 @@
     "select-logo": "Seleccione el logo por favor",
     "select-background-image": "Seleccione una imagen de fondo por favor",
     "select-categories-please": "Seleccione las categorias",
+    "select-category-please": "Seleccione la categoria",
     "the-category": "La categoria",
     "the-categories": "Las categorias",
     "add-category": "Agregar categoria",
@@ -117,7 +121,7 @@
 
   "tag-creator": {
     "add-tag": "Agregar tag",
-    "please-select-tag": "Ingrese el nombre el nombre de un tag para agregarlo a la lista de tags"
+    "please-select-tag": "Ingrese el nombre el nombre de un tag para agregarlo a la lista de etiquetas"
   },
 
   "table-admin": {
@@ -137,7 +141,6 @@
   },
 
   "form-category": {
-    "category": "Categoría",
     "insert-category": "Ingrese la categoría aquí por favor",
     "write-complete-category": "Escriba el nombre completo de la categoría"
   },
@@ -226,24 +229,30 @@
   "formulary": {
     "professional-form": "Formulario Profesional",
     "professional-profile": "Perfil profesional",
+    "professional-profile-edit": "Editar perfil profesional",
     "company": "Empresa",
     "the-company": "La empresa",
     "contact": "Contacto",
     "the-contact": "El contacto",
     "contact-email": "Email de contacto",
     "the-contact-email": "El email de contacto",
-    "contact-charge": "Cargo del conctacto",
-    "the-contact-charge": "El cargo del conctacto",
+    "contact-charge": "Cargo del contacto",
+    "the-contact-charge": "El cargo del contacto",
     "company-category": "Categoria de empresa",
     "the-company-category": "La categoria de empresa",
+    "professional-category": "Categoria del profesional",
+    "the-professional-category": "La categoria del profesional",
+    "the-product-category": "La categoria del producto",
+    "the-buildingWork-category": "La categoria de la obra",
+    "the-buildingWork-tag": "El tag de la obra",
     "web-page": "Página Web",
     "the-web-page": "La página web",
     "location-of-the-company": "Ubicacion de la empresa",
     "the-location-of-the-company": "La ubicacion de la empresa",
     "the-province": "La provincia",
     "the-location": "La localidad",
-    "telephone": "Telefono",
-    "the-telephone": "El telefono",
+    "telephone": "Teléfono",
+    "the-telephone": "El teléfono",
     "select-profile-picture": "Seleccione la imagen de perfil",
     "select-background-picture": "Seleccione la imagen de fondo"
   },
@@ -308,5 +317,22 @@
   "all": "Todas",
   "categories": "Categorias",
 
-  "yay-You-have-seen-it-all": "¡Sí! Lo has visto todo"
+  "yay-You-have-seen-it-all": "¡Sí! Lo has visto todo",
+  "category": "Categoría",
+  "buildingWorks": "Obras",
+  "register-as-a-professional": "Registrate como profesional",
+  "present-your-work-to-thousands-of-potential-clients": "Presentá tu trabajo a miles de potenciales clientes.",
+  "delete": "Eliminar",
+  "rows-per-page": "Filas por página",
+  "are-you-sure": "¿Estás seguro?",
+  "yes-i-want-to-eliminate": "Sí quiero eliminar",
+  "once-delete-you-will-not-be-able-to-recover-the-image": "Una vez borrado no podrá recuperar la imagen",
+  "category-button": "Botón categoría ",
+  "modify": "Modificar",
+  "read": "Leer",
+  "the-images-buldingWork-is-not-approved": "Las imágenes de obra no están aprobadas",
+  "select-some-tag-here-please": "Seleccione alguna etiqueta aquí, por favor",
+  "no-options": "Sin opciones",
+  "type-tag": "Tipo de etiqueta",
+  "tag-button": "Botón etiqueta"
 }

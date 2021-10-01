@@ -65,7 +65,7 @@ const MagazineDetails = (props) => {
                 <>
                   {magazines.map((magazine) => (
                     <Col sm={12} md={6} lg={5} key={magazine.id}>
-                      <Magazine magazine={magazine} />
+                      <Magazine magazine={magazine} description/>
                     </Col>
                   ))}
                 </>

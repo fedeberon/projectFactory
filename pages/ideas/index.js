@@ -6,105 +6,134 @@ import { Col, Row } from "react-bootstrap";
 
 // Components
 import Layout from "../../components/Layout/Layout";
-import FilteredImages from "../../components/FilteredImages/FilteredImages";
 import OffCanvasFilter from "../../components/OffCanvas/OffCanvasFilter.js/OffCanvasFilter";
 
 // Services
-import * as tagService from "../../services/tagService";
-import * as imageService from "../../services/imageService";
+import * as buildingWorkService from "../../services/buildingWorkService";
 
 // Styles
-import styles from "../../styles/Home.module.css";
-import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton";
+// import styles from "../../styles/Home.module.css";
+import styles from "./index.module.css";
+import ImagesGroup from "../../components/ImagesGroup/ImagesGroup";
+import BuildingWorkList from "../../components/BuildingWork/BuildingWorkList/BuildingWorkList";
 
-const index = ({ filters, session, filtersTags }) => {
-  const [filteredImages, setFilteredImages] = useState([]);
-  const [appliedFilters, setAppliedFilters] = useState([]);
-  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
+const index = ({ session, filtersTags, buildingWorks }) => {
+  const [appliedFilters, setAppliedFilters] = useState(filtersTags);
+  const [pageSize, setPageSize] = useState({
+    page: 1,
+    size: process.env.NEXT_PUBLIC_SIZE_PER_PAGE,
+  });
+  const [countFirst, setCountFirst] = useState(false);
+
   const [isLoading, setLoading] = useState(false);
+  const [localBuildingWorks, setLocalBuildingWorks] = useState(buildingWorks);
 
   let { t } = useTranslation("common");
 
-  const getProfessionalsByTags = async () => {
-    setLoading(true);
+  const changePage = () => {
+    const { page } = { page: pageSize.page + 1 };
+    setPageSize({ ...pageSize, page });
+  };
+
+  // const resetPage = () => {
+  //   const { page } = { page: 0 };
+  //   setPageSize({ ...pageSize, page });
+  // };
+
+  const onGetAllByCategoryAndStatus = async (status) => {
+    // setLoading(true);
     try {
-      const images = await imageService.getProfessionalImagesByTags(
+      const filterImages = await buildingWorkService.getAllByCategoryAndStatus(
+        status,
         appliedFilters,
         pageSize.page,
-        pageSize.size,
-        session?.accessToken
+        pageSize.size
       );
-      setLoading(false);
-      return images;
+      // setLoading(false);
+      return filterImages;
     } catch (error) {
       console.error(error);
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
-  const changePage = () => {
-    setPageSize({ page: pageSize.page + 1, size: 10 });
+  const fetchMoreData = () => {
+    changePage();
   };
 
+  // const getTotalBuildingWorks = async () => {
+  //   const status = "APPROVED";
+  //   try {
+  //     const total = await buildingWorkService.getCount(status);
+  //     return total;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // 1 llamada es este
   useEffect(async () => {
-    const images = await getProfessionalsByTags();
-    if (images) {
-      setFilteredImages(images);
+    if (countFirst) {
+      setLocalBuildingWorks({ buildingWorks: [], count: 0 });
+      setPageSize({
+        page: 0,
+        size: process.env.NEXT_PUBLIC_SIZE_PER_PAGE,
+      });
+    } else {
+      setCountFirst(true);
     }
   }, [appliedFilters]);
 
+  // el 2do llamada es este otro
   useEffect(async () => {
-    const images = await getProfessionalsByTags();
-    if (images) {
-      const newImages = filteredImages.concat(images);
-      setFilteredImages(
-        newImages.filter((v, i, a) => a.findIndex((t) => t.id === v.id) === i)
-      );
+    const status = "APPROVED";
+    const buildingWorks = await onGetAllByCategoryAndStatus(status);
+    if (buildingWorks) {
+      setLocalBuildingWorks({
+        ...localBuildingWorks,
+        buildingWorks: [
+          ...localBuildingWorks.buildingWorks,
+          ...buildingWorks.buildingWorks,
+        ],
+        count: buildingWorks.count,
+      });
     }
   }, [pageSize]);
 
   useEffect(() => {
-    if (filtersTags != "") {
-      filtersTags = [{ tag: filtersTags }];
-      setAppliedFilters(filtersTags);
-    }
+    setAppliedFilters(filtersTags);
   }, [filtersTags]);
-
-  const fetchMoreData = () => {
-    setTimeout(() => {
-      changePage();
-    }, 1500);
-  };
 
   return (
     <Layout>
       <section className="container content">
-        <Row className="row-cols-1 gap-2">
-          <Col className={styles.infoHead}>
-            <h2 className={styles.itemsTitle}>{t("facades")}</h2>
+        <Row className="row-cols-1 gap-4">
+          <Col className={styles.headListPhotos}>
+            <h1>
+              {appliedFilters.length === 0 ? t("buildings") : appliedFilters[0]}
+            </h1>
+          </Col>
+          <Col className={`col-auto px-4`}>
+            <OffCanvasFilter
+              classNameButton={`align-self-start justify-self-start`}
+              appliedFilters={appliedFilters}
+              setAppliedFilters={setAppliedFilters}
+              classNameButton={`mx-auto`}
+            />
+          </Col>
+          <Col className={`col-auto px-4 ms-auto ${styles.counter}`}>
+            <p>{`${localBuildingWorks.count} ${t("photos")}`}</p>
           </Col>
           <Col>
-            <Row>
-              <Col>
-                <OffCanvasFilter
-                  filters={filters}
-                  appliedFilters={appliedFilters}
-                  setAppliedFilters={setAppliedFilters}
-                />
-              </Col>
-            </Row>
-          </Col>
-          <Col>
-            <FilteredImages
-              images={filteredImages}
+            {/* <ImagesGroup
+              localBuildingWorks={localBuildingWorks}
+              fetchMoreData={fetchMoreData}
+            /> */}
+            <BuildingWorkList
+              data={localBuildingWorks}
               fetchMoreData={fetchMoreData}
             />
           </Col>
-          {/* <Col>
-            <PrimaryButton dark onClick={changePage}>
-              {t("view-more")}
-            </PrimaryButton>
-          </Col> */}
         </Row>
       </section>
     </Layout>
@@ -124,13 +153,27 @@ export async function getServerSideProps({ req }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  const imagesfilters = await tagService.findAll();
-
+  const arrayCategories = [];
+  let buildingWorks = { buildingWorks: [], count: 0 };
+  const status = "APPROVED";
+  let categoryReplace;
+  if (categories != undefined) {
+    categoryReplace = categories.replace(/-/g, " ");
+    arrayCategories.push(categoryReplace);
+    buildingWorks = await buildingWorkService.getAllByCategoryAndStatus(
+      status,
+      arrayCategories,
+      page,
+      size
+    );
+  } else {
+    buildingWorks = await buildingWorkService.findAll(status, page, size);
+  }
   return {
     props: {
-      filters: imagesfilters,
       session,
-      filtersTags: categories ? categories : "",
+      filtersTags: arrayCategories,
+      buildingWorks: buildingWorks,
     },
   };
 }

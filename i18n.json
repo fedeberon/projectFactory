@@ -14,6 +14,7 @@
     "/admin/product": ["administrator"],
     "/admin/building": ["administrator"],
     "/admin/categories": ["administrator"],
+    "/admin/tags": ["administrator"],
     "/admin": ["administrator"],
     "/policies":["policies"],
     "/magazine": ["magazine"],

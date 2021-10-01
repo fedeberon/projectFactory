@@ -13,14 +13,18 @@ const PrimaryButton = forwardRef((props, ref) => {
     yellow,
     style,
     type,
+    blank,
+    as,
+    disabled,
   } = props;
 
   return (
     <Button
+      as={as}
       href={href}
       onClick={onClick}
       ref={ref}
-      className={`${
+      className={`${styles.btnLg} ${
         outline
           ? `${styles.btnLightOutline} ${styles.btnLight}`
           : styles.btnLight
@@ -28,9 +32,12 @@ const PrimaryButton = forwardRef((props, ref) => {
       ${dark ? styles.btnDark : yellow ? styles.btnYellow : ""} 
       d-flex align-items-center justify-content-center gap-1
       ${className ? className : ""}
+      ${disabled ? styles.btnDarkDisabled : ""}
       `}
       style={style}
       type={type}
+      target={blank ? `_blank` : ``}
+      disabled={disabled}
     >
       {children}
     </Button>

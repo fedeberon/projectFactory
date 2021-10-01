@@ -3,7 +3,7 @@ import useSize from "../../hooks/window/useSize";
 import styles from "./BackgroundDefault.module.css";
 
 const BackgroundDefault = (props) => {
-  const { className } = props;
+  const { className, image, style } = props;
 
   const { width, height } = useSize();
   const cotainerDiv = useRef();
@@ -18,18 +18,19 @@ const BackgroundDefault = (props) => {
   //           .getPropertyValue("width")
   //           .split("px")[0]
   //       );
-  //     console.log(width);
   //     backgroundDefault.current.style.height = width + "px";
   //   }
   // }, [width]);
 
   return (
-    <div className={`${styles.containerDiv}`} ref={cotainerDiv}>
+    <div className={`${styles.containerDiv}`} ref={cotainerDiv} style={style}>
       <div
         className={
           className
             ? `${className} ${styles.containerDivCircle}`
-            : `${styles.backgroundDefault}`
+            : image != false
+            ? `${styles.backgroundDefault}`
+            : `${styles.backgroundNone}`
         }
         ref={backgroundDefault}
       ></div>

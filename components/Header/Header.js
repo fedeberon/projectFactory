@@ -21,6 +21,7 @@ import SuggestionsSearch from "../SuggestionsSearch/SuggestionsSearch";
 import * as professionalService from "../../services/professionalService";
 import * as buildingWorkService from "../../services/buildingWorkService";
 import * as userService from "../../services/userService";
+import * as imageService from "../../services/imageService";
 import styles from "./Header.module.css";
 
 import RolProfile from "../RolProfile";
@@ -33,6 +34,7 @@ import useSize from "../../hooks/window/useSize";
 // Services
 import * as tagService from "../../services/tagService";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
+import Logo from "./logo";
 
 export default function Header(props) {
   const { navSearch, finder, authentication } = props;
@@ -114,24 +116,44 @@ export default function Header(props) {
         );
         newSuggestions.forEach((suggestion) => {
           suggestion.value = suggestion.contact;
-          suggestion.link = "#";
+          suggestion.link = `/professional/${suggestion.contact.replace(
+            /\s+/g,
+            "-"
+          )}-${suggestion.id}`;
         });
       } else {
-        newSuggestions = await buildingWorkService.findByNameAndStatus(
-          value,
-          "APPROVED",
-          pageSize.page,
-          pageSize.size
-        );
+        // newSuggestions = await buildingWorkService.findByNameAndStatus(
+        //   value,
+        //   "APPROVED",
+        //   pageSize.page,
+        //   pageSize.size
+        // );
+        // const result = await tagService.getStartsWithTypeTag(
+        //   value,
+        //   "BUILDING_WORK",
+        //   session.accessToken
+        // );
+        try {
+          newSuggestions = await imageService.getProfessionalImagesByTags(
+            [{ name: value }],
+            pageSize.page,
+            100,
+            session?.accessToken
+          );
+        } catch (error) {
+          console.error(error);
+        }
         newSuggestions.forEach((suggestion) => {
-          suggestion.value = suggestion.name;
-          suggestion.link = `building/${suggestion.name}-${suggestion.id}`;
+          suggestion.value = suggestion.buildingWork.name;
+          suggestion.link = `/building/${suggestion.buildingWork.name.replace(
+            /\s+/g,
+            "-"
+          )}-${suggestion.buildingWork.id}`;
         });
       }
     } else {
       newSuggestions = [];
     }
-
     setSuggestions(newSuggestions);
   };
 
@@ -158,13 +180,7 @@ export default function Header(props) {
           <Col className="col-auto col-sm-auto col-lg-4 p-0">
             <Link href="/" passHref>
               <Navbar.Brand className="p-0 m-0">
-                <img
-                  className={`${styles.imgLogo}`}
-                  width={"auto"}
-                  height={"auto"}
-                  alt="logo.svg"
-                  src={navSearch ? "/logo.svg" : "/logo_92x92.svg"}
-                />
+                <Logo/>
               </Navbar.Brand>
             </Link>
           </Col>
@@ -192,8 +208,13 @@ export default function Header(props) {
                     onFocus={() => setSearchActive(true)}
                     onBlur={handleOnBlurInputSearch}
                   />
-                  <InputGroup.Text className={styles.buttonSearch}>
-                    <Search />
+                  <InputGroup.Text className={styles.searchTopIcon}>
+                    <Image
+                      src={`/search.svg`}
+                      width={17}
+                      height={17}
+                      alt={`search`}
+                    />
                   </InputGroup.Text>
                 </InputGroup>
               </InputGroup>

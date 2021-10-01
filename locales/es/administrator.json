@@ -7,6 +7,7 @@
   "managing-products": "Administrar productos",
   "managing-buildingWorks": "Administrar obras",
   "managing-categories": "Administrar categorías",
+  "managing-tags": "Administrar etiquetas",
 
   "accept": "Aceptar",
   "reject": "Rechazar",
@@ -14,20 +15,31 @@
   "accept-images": "Aceptar imagenes",
   "managing-images": "Administrar imagenes",
   "images-accepted": "Imagenes aceptadas",
-  "tokens-setted" : "Tokens establecidos",
-  "apply" : "Aplicar",
+  "tokens-setted": "Tokens establecidos",
+  "apply": "Aplicar",
 
-  "administrator-categories" : {
-    "category-name-label" : "Escriba el nombre de la categoría",
-    "category-name-placeholder" : "Escriba el nombre",
-    "category-type-label" : "Seleccione el tipo de la categoría",
+  "administrator-categories": {
+    "category-name-label": "Escriba el nombre de la categoría",
+    "category-name-placeholder": "Escriba el nombre",
+    "category-type-label": "Seleccione el tipo de la categoría",
     "category-type-required": "El tipo de categoria es obligatorio",
-    "category-type-placeholder" : "Seleccione una",
-    "category-type-product" : "Producto",
-    "category-type-building-work" : "Obra",
-    "category-type-magazine" : "Magazine",
-    "category-type-company" : "Empresa",
-    "add-category" : "Agregar categoría",
-    "categories-table-label" : "Categorías actuales"
-  }
+    "category-type-placeholder": "Seleccione una",
+    "category-type-product": "Producto",
+    "category-type-building-work": "Obra",
+    "category-type-magazine": "Magazine",
+    "category-type-company": "Empresa",
+    "add-category": "Agregar categoría",
+    "categories-table-label": "Categorías actuales"
+  },
+  "building_work": "Obra",
+  "product": "Producto",
+  "project": "Proyecto",
+  "magazine": "Magazine",
+  "company": "Empresa",
+  "professional": "Profesional",
+  "tag-name-label": "Escriba el nombre de la Etiqueta",
+  "tag-name-placeholder": "Escriba el nombre",
+  "tag-table-label": "Etiquetas actuales",
+  "add-tag": "Agregar etiqueta",
+  "tag-type-label": "Seleccione el tipo de la etiqueta"
 }

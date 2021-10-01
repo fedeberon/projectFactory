@@ -7,7 +7,7 @@ import InputImages from "./InputImages/InputImages";
 import * as imageService from "../services/imageService";
 import PrimaryButton from "./Buttons/PrimaryButton/PrimaryButton";
 
-const CarouselImageCreator = ({ onAddCarouselImages }) => {
+const CarouselImageCreator = ({ onGetCarouselImages }) => {
   const [modalAddImages, setModalAddImages] = useState(false);
   const [modalAddTitle, setModalAddTitle] = useState(false);
   const [currentImage, setCurrentImage] = useState({});
@@ -19,7 +19,7 @@ const CarouselImageCreator = ({ onAddCarouselImages }) => {
 
   const onAddImages = async () => {
     await imageService.addCaroucelImages(images, session.accessToken);
-    await onAddCarouselImages();
+    await onGetCarouselImages();
     setModalAddImages(false);
   };
 
@@ -80,9 +80,7 @@ const CarouselImageCreator = ({ onAddCarouselImages }) => {
               alt="image-selected"
             ></img>
             <Form.Group>
-              <Form.Label htmlFor="input-title">
-                {t("title")}
-              </Form.Label>
+              <Form.Label htmlFor="input-title">{t("title")}</Form.Label>
               <br></br>
               <Form.Control id="input-title" />
               <br></br>

@@ -1,17 +1,38 @@
+// Frameworks
 import React, { useState, useEffect } from "react";
 import { Carousel, Button, Modal } from "react-bootstrap";
-import ModalImage from "../../ModalImage/ModalImage";
 import { Swiper, SwiperSlide } from "swiper/react";
+
+// Styles
 import styles from "./SwiperCarouselProject.module.css";
+// import "swiper/swiper-bundle.css";
+
+// swiper bundle styles
+import 'swiper/css/bundle'
+
+// swiper core styles
+import 'swiper/css'
+import "swiper/css/lazy";
+
+// modules styles
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+
+// Components
+import ModalImage from "../../ModalImage/ModalImage";
+
+// Services
+import * as imageService from "../../../services/imageService";
+
+// Modules
 import SwiperCore, {
   Autoplay,
+  Lazy,
   Pagination,
   Navigation,
   Controller,
 } from "swiper";
-import * as imageService from "../../../services/imageService";
-import "swiper/swiper-bundle.css";
-SwiperCore.use([Autoplay, Pagination, Navigation, Controller]);
+SwiperCore.use([Autoplay, Lazy, Pagination, Navigation, Controller]);
 
 const SwiperCarouselProject = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -97,6 +118,7 @@ const SwiperCarouselProject = (props) => {
         spaceBetween={0}
         slidesPerView={1}
         loop={false}
+        lazy={true}
         onSlideChange={(slide) => handleSlideChange(slide)}
         onSwiper={(slide) => onSwiper(slide)}
         controller={{ control: swiper }}
@@ -116,11 +138,12 @@ const SwiperCarouselProject = (props) => {
             key={image.id}
           >
             <img
-              className={`${styles.img}`}
+              className={`${styles.img} swiper-lazy`}
               name={image.id}
               src={image.path}
               alt={image.name}
             />
+            <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
           </SwiperSlide>
         ))}
         <div className={`swiper-button-next ${styles.swiperButtonNext}`}></div>

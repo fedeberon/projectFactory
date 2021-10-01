@@ -17,17 +17,8 @@
   width: 300px;
   height: 300px;
   top: -150px;
-  z-index: 100;
-  background-color: #FFF;
-}
-
-.afterLess::after {
-  display: none;
-}
-
-.imgProfile {
-  width: 50px;
-  height: 0;
+  z-index: 5;
+  background-color: #fff;
 }
 
 @media (max-width: 425px) {
@@ -36,4 +27,8 @@
     height: 150px;
     top: -50%;
   }
+}
+
+.buttonFixed {
+  background-color: red;
 }

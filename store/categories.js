@@ -7,6 +7,7 @@ const { reducer, actions } = createSlice({
     products: [],
     magazines: [],
     companies: [],
+    professionals: [],
     buildingWorks: [],
     selectedCategories: []
   },
@@ -22,6 +23,9 @@ const { reducer, actions } = createSlice({
     },
     setCompanies(state, action) {
         state.companies = action.payload;
+    },
+    setProfessional(state, action) {
+        state.professionals = action.payload;
     },
     setBuildingWorks(state, action) {
       state.buildingWorks = action.payload;

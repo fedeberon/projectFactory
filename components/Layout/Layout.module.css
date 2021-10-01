@@ -6,10 +6,109 @@
   -o-filter: grayscale(100%);
   filter: gray;
 }
-.backgroundGray {
-  background-color: #f7f7f7;
-}
 
 .ancor:hover {
   text-decoration: underline;
+}
+.overFlowHidden {
+  overflow: hidden;
+}
+
+.footer {
+  padding-top: 60px;
+  background-color: #f7f7f7;
+}
+
+.copyfooter {
+  font-size: 12px;
+  font-weight: 300;
+  padding-top: 20px;
+}
+.footerLegal {
+  padding-top: 0px;
+  color: #8e8e8e;
+  padding-bottom: 0px;
+  margin-top: 35px;
+}
+
+/* Zurbrand */
+.contLogoZurbrand {
+  text-align: right;
+}
+.linkZurbrand {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: inline-block;
+  -moz-transition: all 0.3s ease-out; /*FF3.7+*/
+  -o-transition: all 0.3s ease-out; /*Opera 10.5*/
+  -webkit-transition: all 0.3s ease-out; /*Saf3.2+, Chrome*/
+  transition: all 0.3s ease-out;
+}
+.linkZurbrand:hover {
+  opacity: 0.8;
+}
+.logoZurbrand {
+  height: 13px;
+}
+
+.datos {
+  display: flex;
+  color: #515151;
+  float: left;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  color: #515151;
+  margin-top: 6px;
+}
+
+.datosfooter {
+  display: block;
+  float: none;
+}
+
+.datosfooter li {
+  margin: 0px;
+  margin-bottom: 7px;
+  border: 0px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.datos li {
+  /* padding-right: 15px; */
+  /* margin-right: 15px; */
+  /* border-right: 1px solid #eaeaea; */
+}
+
+.ul {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.menuFooter a {
+  color: #3C3C3B;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 767px) {
+  /* Zurbrand */
+  .contLogoZurbrand {
+    text-align: center;
+    clear: both;
+    background-color: #efefef;
+    padding-left: 0px;
+    padding: 0px;
+    margin-top: 20px;
+  }
+  .linkZurbrand {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    display: block;
+  }
+  .logoZurbrand {
+    height: 15px;
+  }
 }

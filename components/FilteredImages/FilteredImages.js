@@ -4,8 +4,13 @@ import useTranslation from "next-translate/useTranslation";
 import { useSession } from "next-auth/client";
 import Link from "next/link";
 import Image from "next/image";
-import { Alert, Card, Col, Row } from "react-bootstrap";
-import { Heart, HeartFill, InfoCircleFill } from "react-bootstrap-icons";
+import { Card, Col, Row } from "react-bootstrap";
+import {
+  Heart,
+  HeartFill,
+  InfoCircleFill,
+  PersonCircle,
+} from "react-bootstrap-icons";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 // Styles
@@ -16,15 +21,12 @@ import * as imageService from "../../services/imageService";
 
 //Components
 import SpinnerCustom from "../SpinnerCustom/SpinnerCustom";
+import AlertCustom from "../Alert/AlertCustom";
 
 const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
   const [session] = useSession();
   const refLikes = useRef([]);
   const [hasMore, setHasMore] = useState(true);
-
-  useEffect(() => {
-    console.log("images", images.length);
-  }, [images]);
 
   refLikes.current = [];
 
@@ -47,7 +49,6 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
         heartsIco[1].style.display = "none";
       } else {
         if (disLiked != null) {
-          console.log("entre a disliked");
           await disLiked();
         }
         heartsIco[0].style.display = "none";
@@ -81,7 +82,6 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
     // setHasMore(
     //   !limit || (!images.length === 0 && images.length > 10) ? true : false
     // );
-    console.log(images.length >= 10);
     setHasMore(images.length >= 10 ? true : false);
   }, [images]);
 
@@ -90,17 +90,14 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
       <Col>
         {images.length === 0 ? (
           <Col xs={12}>
-            <Alert
-              variant="primary"
-              className="d-flex justify-content-center gap-2 "
-            >
+            <AlertCustom themeDark>
               <InfoCircleFill size={25} />
               {`${t("table-admin.there-are-not-more")} `}
-            </Alert>
+            </AlertCustom>
           </Col>
         ) : (
           <InfiniteScroll
-            className="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4 w-100 m-0"
+            className="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 w-100 m-0"
             dataLength={images.length}
             next={fetchMoreData}
             hasMore={hasMore}
@@ -108,13 +105,10 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
             endMessage={
               !limit && (
                 <Col xs={12}>
-                  <Alert
-                    variant="primary"
-                    className="d-flex justify-content-center gap-2 "
-                  >
+                  <AlertCustom themeDark>
                     <InfoCircleFill size={25} />
                     {`${t("yay-You-have-seen-it-all")}`}
-                  </Alert>
+                  </AlertCustom>
                 </Col>
               )
             }
@@ -154,14 +148,18 @@ const FilteredImages = ({ images, disLiked, fetchMoreData, limit }) => {
                     </Link>
                     <div className={`${filteredImagesStyles.cardText}`}>
                       <Col className="col-auto">
-                        <img
-                          className={`${filteredImagesStyles.imgProfile} rounded-circle`}
-                          src={image.professional?.previewImage}
-                        />
+                        {image.professional?.previewImage ? (
+                          <img
+                            className={`${filteredImagesStyles.imgProfile} rounded-circle`}
+                            src={image.professional?.previewImage}
+                          />
+                        ) : (
+                          <PersonCircle size={50} />
+                        )}
                       </Col>
-                      <Col className={`col-auto`}>
+                      <Col className={`col-7 col-md-9 col-lg-8`}>
                         <Card.Text
-                          className={`${filteredImagesStyles.textShadowSm} fw-bold`}
+                          className={`${filteredImagesStyles.textShadowSm} ${filteredImagesStyles.parrafoName} fw-bold`}
                         >
                           {`${image.professional?.contact}`}
                         </Card.Text>

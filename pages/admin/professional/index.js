@@ -230,7 +230,7 @@ const ProfessionalAdmin = ({
    * @returns the body of the table.
    */
   const getList = (professionals, buttons) => {
-    const professionalList = professionals.map((professional, index) => {
+    const professionalList = professionals.professionals.map((professional, index) => {
       return (
         <tr key={index} className="align-middle text-center">
           <td scope="row">#{index + 1}</td>

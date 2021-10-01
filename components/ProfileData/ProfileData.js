@@ -31,10 +31,21 @@ const ProfileData = (props) => {
   const [isLinkedWithMercadopago, setIsLinkedWithMercadopago] = useState(false);
   const [amountTokens, setAmountTokens] = useState(-1);
   const { t } = useTranslation("profile");
-  const { onBecomeProfessional, error, setError, data, onBuyPlan, status } =
-    props;
+  const {
+    onBecomeProfessional,
+    onSetProfessional,
+    error,
+    setError,
+    data,
+    onBuyPlan,
+    status,
+  } = props;
   const [showModalPlan, setShowModalPlan] = useState(status == "approved");
   const [statusPurchased, setStatusPurchased] = useState(status);
+  const [stateFormProfessional, setStateFormProfessional] = useState({
+    post: false,
+    put: false,
+  });
 
   const toggleModalPlan = () => {
     setStatusPurchased("");
@@ -51,13 +62,26 @@ const ProfileData = (props) => {
     setAmountTokens(tokens);
   }, []);
 
-  const toggleModal = () => setModalOpen(!modalOpen);
+  const toggleModal = (mode) => {
+    if (mode == "new") {
+      setStateFormProfessional({
+        post: true,
+        put: false,
+      });
+    } else if (mode == "edit") {
+      setStateFormProfessional({
+        post: false,
+        put: true,
+      });
+    }
+    setModalOpen(!modalOpen);
+  };
 
   return (
     <Container>
       {session ? (
         <>
-          <Row className="row-cols-1 gap-2 row w-100 m-0">
+          <Row className="row-cols-1 gap-4 row w-100 m-0">
             <Col className="p-0">
               <Row className="p-0 row m-0 w-100 gap-2 gap-md-0 justify-content-center">
                 {!session.authorities.includes("ROLE_PROFESSIONAL") &&
@@ -65,7 +89,10 @@ const ProfileData = (props) => {
                 !session.authorities.includes("ROLE_COMPANY") ? (
                   <>
                     <Col className="col-auto">
-                      <Button variant="primary" onClick={toggleModal}>
+                      <Button
+                        variant="primary"
+                        onClick={() => toggleModal("new")}
+                      >
                         <Briefcase size={25} />
                         {` `}
                         {t("become-professional")}
@@ -78,6 +105,17 @@ const ProfileData = (props) => {
                 ) : (
                   <>
                     <Col className="col-auto">
+                      <PrimaryButton
+                        type="button"
+                        onClick={() => toggleModal("edit")}
+                      >
+                        {t("common:edit")}
+                        {/* <Briefcase size={25} />
+                        {` `}
+                        {t("become-professional")} */}
+                      </PrimaryButton>
+                    </Col>
+                    {/* <Col className="col-auto">
                       <span className="d-block">{`${t(
                         "your-tokens"
                       )}: ${amountTokens}`}</span>
@@ -87,41 +125,138 @@ const ProfileData = (props) => {
                     </Col>
                     <Col className="col-auto d-flex align-items-end p-0">
                       <MercadopagoButton />
-                    </Col>
+                    </Col> */}
                   </>
                 )}
               </Row>
             </Col>
             <Col>
-              <Row className="row-cols-1 row-cols-md-2 justify-content-center align-items-center">
-                <Col className="col-auto">
-                  {session.user.image ? (
-                    <Figure className={`m-0`}>
-                      <Figure.Image
-                        width={200}
-                        height={200}
-                        className={`${ProfileDataStyles.imgProfile} m-0`}
-                        src={session.user.image}
-                        roundedCircle
-                      ></Figure.Image>
-                    </Figure>
-                  ) : (
-                    <PersonCircle size={"100%"} />
-                  )}
-                </Col>
-                <Col className="col-auto">
-                  <ListGroup className="text-break">
-                    <h3>{t("common:name")}</h3>
-                    <ListGroupItem>{session.user.name}</ListGroupItem>
-                    <h3>{t("common:email")}</h3>
-                    <ListGroupItem>{session.user.email}</ListGroupItem>
-                    <h3>{t("authority")}</h3>
-                    <ListGroupItem>
-                      <RolProfile />
-                    </ListGroupItem>
-                  </ListGroup>
-                </Col>
-              </Row>
+              {!session.authorities.includes("ROLE_PROFESSIONAL") &&
+              !session.authorities.includes("ROLE_COMPANY") ? (
+                <>
+                  <Row className="row-cols-1 row-cols-md-2 justify-content-center align-items-center">
+                    <Col className="col-auto">
+                      {session.user.image ? (
+                        <Figure className={`m-0`}>
+                          <Figure.Image
+                            width={250}
+                            height={250}
+                            className={`${ProfileDataStyles.imgProfile} m-0`}
+                            src={session.user.image}
+                            roundedCircle
+                          ></Figure.Image>
+                        </Figure>
+                      ) : (
+                        <PersonCircle size={250} />
+                      )}
+                    </Col>
+                    <Col className="col-12 col-lg-8 col-xl-4">
+                      <Row className={`row-cols-1`}>
+                        <Col>
+                          <ListGroup className="text-break">
+                            <h4>{t("common:formulary.contact")}</h4>
+                            <ListGroupItem className={`mb-2`}>
+                              {session.user.name}
+                            </ListGroupItem>
+                            <h4>{t("common:formulary.contact-email")}</h4>
+                            <ListGroupItem className={`mb-2`}>
+                              {session.user.email}
+                            </ListGroupItem>
+                            <h4>{t("authority")}</h4>
+                            <ListGroupItem className={`mb-2`}>
+                              <RolProfile />
+                            </ListGroupItem>
+                          </ListGroup>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </>
+              ) : (
+                <>
+                  <Row className="row-cols-1 row-cols-md-2 justify-content-evenly align-items-center">
+                    <Col className="col-auto">
+                      {session.user.image ? (
+                        <Figure className={`m-0`}>
+                          <Figure.Image
+                            width={300}
+                            height={300}
+                            className={`${ProfileDataStyles.imgProfile} m-0`}
+                            src={session.user.image}
+                            roundedCircle
+                          ></Figure.Image>
+                        </Figure>
+                      ) : (
+                        <PersonCircle size={300} />
+                      )}
+                    </Col>
+                    <Col className="col-auto col-lg-8 col-xl-7">
+                      <Row className={`row-cols-1 row-cols-lg-2`}>
+                        <Col>
+                          <ListGroup className="text-break">
+                            <h4>{t("common:formulary.contact")}</h4>
+                            <ListGroupItem className={`mb-2`}>
+                              {session.user.name}
+                            </ListGroupItem>
+                            <h4>{t("common:formulary.contact-email")}</h4>
+                            <ListGroupItem className={`mb-2`}>
+                              {session.user.email}
+                            </ListGroupItem>
+                            <h4>{t("authority")}</h4>
+                            <ListGroupItem className={`mb-2`}>
+                              <RolProfile />
+                            </ListGroupItem>
+                            {session.user.categoryCompany && (
+                              <>
+                                <h4>{t("common:formulary.company")}</h4>
+                                <ListGroupItem className={`mb-2`}>
+                                  {session.user.company.name}
+                                </ListGroupItem>
+                              </>
+                            )}
+                          </ListGroup>
+                        </Col>
+                        <Col>
+                          <ListGroup className="text-break">
+                            {session.user.categoryCompany && (
+                              <>
+                                <h4>
+                                  {t("common:formulary.company-category")}
+                                </h4>
+                                <ListGroupItem className={`mb-2`}>
+                                  {session.user.categoryCompany.name}
+                                </ListGroupItem>
+                              </>
+                            )}
+                            <h4>
+                              {t("common:formulary.professional-category")}
+                            </h4>
+                            <ListGroupItem className={`mb-2`}>
+                              {session.user.category.name}
+                            </ListGroupItem>
+                            <h4>{t("common:formulary.telephone")}</h4>
+                            <ListGroupItem className={`mb-2`}>
+                              {session.user.phoneNumber}
+                            </ListGroupItem>
+                            {session.user.website && (
+                              <>
+                                <h4>{t("common:formulary.web-page")}</h4>
+                                <ListGroupItem className={`mb-2`}>
+                                  {session.user.website}
+                                </ListGroupItem>
+                              </>
+                            )}
+                            <h4>{t("common:formulary.contact-charge")}</h4>
+                            <ListGroupItem className={`mb-2`}>
+                              {session.user.contactLoad}
+                            </ListGroupItem>
+                          </ListGroup>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </>
+              )}
             </Col>
           </Row>
         </>
@@ -146,10 +281,15 @@ const ProfileData = (props) => {
         formBody={
           <FormProfessional
             onAddProfessional={onBecomeProfessional}
+            onSetProfessional={onSetProfessional}
             toggle={toggleModal}
             error={error}
             setError={setError}
             data={data}
+            changeState={{
+              stateFormProfessional,
+              function: setStateFormProfessional,
+            }}
           />
         }
         modalOpen={{ open: modalOpen, function: setModalOpen }}
