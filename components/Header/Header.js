@@ -34,6 +34,7 @@ import useSize from "../../hooks/window/useSize";
 // Services
 import * as tagService from "../../services/tagService";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
+import Logo from "./logo";
 
 export default function Header(props) {
   const { navSearch, finder, authentication } = props;
@@ -179,13 +180,7 @@ export default function Header(props) {
           <Col className="col-auto col-sm-auto col-lg-4 p-0">
             <Link href="/" passHref>
               <Navbar.Brand className="p-0 m-0">
-                <img
-                  className={`${styles.imgLogo}`}
-                  width={"auto"}
-                  height={"auto"}
-                  alt="logo.svg"
-                  src={navSearch ? "/logo.svg" : "/logo_92x92.svg"}
-                />
+                <Logo/>
               </Navbar.Brand>
             </Link>
           </Col>
