@@ -18,6 +18,7 @@ import PrimaryButton from "../../Buttons/PrimaryButton/PrimaryButton";
 SwiperCore.use([Autoplay, Pagination, Navigation]);
 
 const SwiperEmpresas = (props) => {
+
   const { t } = useTranslation("common");
 
   const {
