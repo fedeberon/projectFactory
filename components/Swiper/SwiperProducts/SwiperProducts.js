@@ -60,7 +60,7 @@ const SwiperProducts = (props) => {
         <Swiper
           spaceBetween={30}
           slidesPerView={slidesPerViewLocal}
-          loop={true}
+          loop={false}
           autoplay={{ delay: 3000 }}
           navigation={{
             nextEl: ".swiper-button-next",
