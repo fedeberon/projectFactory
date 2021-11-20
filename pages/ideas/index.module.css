@@ -1,0 +1,10 @@
+.headListPhotos h1 {
+  text-align: center;
+  margin: auto;
+  font-size: 21px;
+  font-weight: 500;
+}
+
+.counter {
+  font-size: 13px;
+}
