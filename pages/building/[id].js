@@ -1,38 +1,30 @@
-// Frameworks
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
-import { getSession } from "next-auth/client";
-import { Row, Col, Card, Container } from "react-bootstrap";
-import Link from "next/link";
-
-// Services
-import * as imageService from "../../services/imageService";
-import * as buildingWorkService from "../../services/buildingWorkService";
-
-// Components
 import Layout from "../../components/Layout/Layout";
 import SwiperCarouselProject from "../../components/Swiper/SwiperCarouselProject/SwiperCarouselProject";
+import { getSession } from "next-auth/client";
+import * as imageService from "../../services/imageService";
+import * as buildingWorkService from "../../services/buildingWorkService";
+import Link from "next/link";
+import { Row, Col, Button, Card, Badge, Container } from "react-bootstrap";
+import buildingStyles from "./building.module.css";
+import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton";
+import { GeoAlt } from "react-bootstrap-icons";
 import FilteredImages from "../../components/FilteredImages/FilteredImages";
-import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
-
-// Styles
-import styles from "./building.module.css";
 
 const BuildingDetail = ({ data, session, imageClicked }) => {
   const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const [filteredImages, setFilteredImages] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [currentImageId, setCurrentImageId] = useState(null);
-  const [currentTag, setCurrentTag] = useState("");
   const [reset, setReset] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [isLoadingSwiper, setLoadingSwiper] = useState(false);
 
   const [tagsAuxiliar, setTagsAuxiliar] = useState([]);
   const { t } = useTranslation("common");
 
-  const [imagenes, setImagenes] = useState(data.images);
+  const [imagenes, setImagenes] = useState([]);
 
   const resetCarousel = () => setReset(!reset);
 
@@ -64,24 +56,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
     }
   };
 
-  useEffect(() => {
-    const tag = getTagOfTheCurrentImage();
-    setCurrentTag(tag);
-  }, [currentImageId]);
-
-  const getTagOfTheCurrentImage = () => {
-    const [currentImage] = data.images.filter(
-      (img) => img.id === currentImageId
-    );
-    if (currentImage) {
-      return currentImage.tags[0].name;
-    } else {
-      return "";
-    }
-  };
-
   const onLoadImage = async () => {
-    setLoadingSwiper(true);
     const newArray = [];
     await Promise.all(
       data.images.map(async (image) => {
@@ -93,12 +68,11 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
         newArray.push(image);
       })
     );
-    setLoadingSwiper(false);
     return newArray;
   };
 
   useEffect(async () => {
-    if (data.images && imageClicked) {
+    if (data.images) {
       let newArray = await onLoadImage();
       newArray = orderImagesByImageClicked(newArray);
       const firstImage = newArray[0];
@@ -111,10 +85,9 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   }, [data.images]);
 
   useEffect(async () => {
-    debugger;
     let images = await getProfessionalsByTags();
     if (images) {
-      images = images.filter((img) => !img.default || img.id != currentImageId);
+      images = images.filter((img) => img.id != currentImageId);
       setFilteredImages(images);
     }
   }, [appliedFilters]);
@@ -122,85 +95,82 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   return (
     <Layout>
       <Container fluid className="p-0">
-        {/* {isLoadingSwiper ? (
-          <SpinnerCustom center />
-        ) : ( */}
-          <SwiperCarouselProject
-            setAppliedFilters={setAppliedFilters}
-            setCurrentImageId={setCurrentImageId}
-            images={imagenes}
-            reset={reset}
-          />
-
-        <Row>
-          <Col>
-            <div className={`${styles.contPhotoInfo}`}>
-              <div className="container-fluid clearfix">
-                <h1 className={`${styles.titName}`}>Foto: {currentTag}</h1>
-                <h2 className={`${styles.titProjects}`}>
-                  <a href="">Proyecto: {data.buildingWork.name}</a>
-                </h2>
-                <Link
-                  href={`/professional/[id]`}
-                  as={`/professional/${data.buildingWork.professional.contact.replace(
-                    /\s+/g,
-                    "-"
-                  )}-${data.buildingWork.professional.id}`}
-                >
-                  {/* <a>{category.name}</a> */}
-                  <a className={`${styles.verMas}`}>
-                    {/* Mesopotamian BA. */}
-                    {data.buildingWork.professional.contact}
-                    {/* {data.buildingWork.professional.id} */}
-                  </a>
-                </Link>
-              </div>
-            </div>
-          </Col>
-        </Row>
-        {/* )} */}
-        <Row className="w-100 m-0 mt-4">
+        <SwiperCarouselProject
+          setAppliedFilters={setAppliedFilters}
+          setCurrentImageId={setCurrentImageId}
+          images={imagenes}
+          reset={reset}
+        />
+        <Row className="w-100 m-0">
           <Col>
             <Container>
-              {Object.keys(data.buildingWork).length > 0 && (
-                <Row className="w-100 gap-2 gap-lg-0 m-0 my-4">
-                  <Col className="col-12 col-md-12 col-lg-9 order-lg-2">
-                    <Card className="border-0">
-                      <Card.Title
-                        tag="h5"
-                        className={`${styles.titObraDetail}`}
-                      >
-                        {data.buildingWork.name}
-                      </Card.Title>
-                      <Card.Text>{data.buildingWork.description}</Card.Text>
-                    </Card>
-                  </Col>
-                  <Col className="col-12 col-md-12 col-lg-3 order-lg-1">
-                    <Col
-                      className={`${styles.boxDeg} p-4 d-flex flex-column gap-2`}
+              <Row className="w-100 gap-2 gap-lg-0 m-0">
+                <Col className="col-12 col-md-12 col-lg-9 order-lg-2">
+                  <Card className="border-0">
+                    <Card.Title
+                      tag="h5"
+                      className={`${buildingStyles.titObraDetail}`}
                     >
-                      <h3 className={`${styles.titName}`}>
-                        {data.buildingWork.professional.contact}
-                      </h3>
-                      <h3 className={`${styles.titProjects}`}>
-                        <span className="d-block">{t("email")}</span>
-                        <span>{data.buildingWork.professional.email}</span>
-                      </h3>
-                    </Col>
+                      {data.buildingWork.name}
+                    </Card.Title>
+                    <Card.Text>{data.buildingWork.description}</Card.Text>
+                  </Card>
+                </Col>
+                <Col className="col-12 col-md-12 col-lg-3 order-lg-1">
+                  <Col
+                    className={`${buildingStyles.boxDeg} p-4 d-flex flex-column gap-2`}
+                  >
+                    <h3 className={`${buildingStyles.titName}`}>
+                      {data.buildingWork.professional.company.name}
+                    </h3>
+                    <h3 className={`${buildingStyles.titProjects}`}>
+                      <Badge
+                        className={`${buildingStyles.badge}`}
+                        bg=""
+                        text="dark"
+                      >
+                        {
+                          data.buildingWork.professional.company
+                            .countBuildingWorks
+                        }
+                      </Badge>
+                      {` Obras`}
+                    </h3>
+                    <h3
+                      className={`${buildingStyles.location} p-0 d-flex gap-2`}
+                    >
+                      <GeoAlt size={15} />
+                      {`${data.buildingWork.professional.company.location}, ${data.buildingWork.professional.company.province}`}
+                    </h3>
+
+                    <Link
+                      href={`/companies/${data.buildingWork.name
+                        .replace(/\s+/g, "-")
+                        .toLowerCase()}-${
+                        data.buildingWork.professional.company.id
+                      }`}
+                      passHref
+                    >
+                      <PrimaryButton className={`me-auto`}>
+                        {t("view-more")}
+                      </PrimaryButton>
+                    </Link>
                   </Col>
-                </Row>
-              )}
+                </Col>
+              </Row>
             </Container>
           </Col>
         </Row>
         <section className="container py-2">
           <Row>
             <Col>
-              <div className={`${styles.related} row`}>
+              <div className={`${buildingStyles.related} row`}>
                 <div className="col">
-                  <h2 className={`${styles.tit}`}>
-                    {t("other-building-works-of")}
-                    {currentTag}
+                  <h2 className={`${buildingStyles.tit}`}>
+                    {t("other-projects-of")}
+                    {tagsAuxiliar.map((tag) => {
+                      return ` ${tag.tag}`;
+                    })}
                   </h2>
                 </div>
               </div>
@@ -220,7 +190,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
   );
 };
 
-export async function getServerSideProps({ params, req, query }) {
+export async function getServerSideProps({ params, req, res, locale, query }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
   let token;
@@ -240,44 +210,21 @@ export async function getServerSideProps({ params, req, query }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  try {
-    images = await imageService.getImagesByBuildingWorksId(
-      buildingWorkId,
-      0,
-      99
-    );
-    if (imageClicked === undefined && images.length > 0) {
-      imageClicked = images[0].id;
-    } else {
-      // TODO: item not approved, then send message the error this item not approved.
-      // return {
-      //   redirect: {
-      //     destination: "/",
-      //     permanent: false,
-      //   },
-      // };
-    }
-  } catch (error) {
-    console.error(error);
-    return {
-      redirect: {
-        destination: "/404",
-        permanent: false,
-      },
-    };
+  images = await imageService.getImagesByBuildingWorksId(
+    buildingWorkId,
+    page,
+    99
+  );
+  if (imageClicked === undefined) {
+    imageClicked = images[0].id;
   }
-
-  try {
-    buildingWork = await buildingWorkService.getById(buildingWorkId);
-  } catch (error) {
-    console.error(error);
-  }
+  buildingWork = await buildingWorkService.getById(buildingWorkId);
 
   return {
     props: {
       data: { images, buildingWork },
       session,
-      imageClicked: imageClicked ? imageClicked : null,
+      imageClicked,
     },
   };
 }

@@ -13,7 +13,6 @@ export const getProjectImages = async (id, token, page, size) => {
 };
 
 export const increaseVisit = async (image) => {
-  if (image.id == null) return;
   image.seen = true;
   await API.put(`/images/${image.id}/visit`);
 };
@@ -31,7 +30,6 @@ export const getProjectsImagesFiltered = async (token, page, size) => {
 
 export const addCaroucelImages = async (images, token) => {
   API.defaults.headers.common["Authorization"] = token;
-
   await Promise.all(
     images.map(async (image) => {
       const imageData = new FormData();
@@ -48,7 +46,7 @@ export const getProfessionalImagesByTags = async (tags, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
   let concatenatedTags = "";
   tags.forEach((tag) => {
-    concatenatedTags = `${concatenatedTags}tags=${tag.name}&`;
+    concatenatedTags = `${concatenatedTags}tags=${tag.tag}&`;
   });
   concatenatedTags = concatenatedTags.substring(0, concatenatedTags.length - 1);
 
@@ -88,10 +86,7 @@ export const getProfessionalImagesByTagsLessFuntions = async (
   return images;
 };
 
-export const getImagesByBuildingWorksId = async (id, page, size, token) => {
-  if (token) {
-    API.defaults.headers.common["Authorization"] = token;
-  }
+export const getImagesByBuildingWorksId = async (id, page, size) => {
   const images = await API.get(
     `/images/building-works/${id}?page=${page}&size=${size}`
   );
@@ -126,70 +121,6 @@ export const uploadCompanyPreview = async (image, token) => {
   await API.post(`/images/companies/preview`, imageData);
 };
 
-export const uploadMagazinePreview = async (
-  magazineId,
-  previewImage,
-  token
-) => {
-  API.defaults.headers.common["Authorization"] = token;
-  const imageData = new FormData();
-  imageData.append("image", previewImage);
-  await API.post(`/images/magazines/${magazineId}/preview`, imageData);
-};
-
-/**
- * Find all local memory images in content ( blob:http://localhost... ),
- * upload them, and replace them with path to image of backend
- * @param {String} content of the magazine with all images in local memory
- * @param {Number} magazineId to upload images in that magazine
- * @param {String} token
- */
-export const uploadLocalImagesFromContent = async (
-  content,
-  magazineId,
-  token
-) => {
-  API.defaults.headers.common["Authorization"] = token;
-  let indexOfBlob = content.indexOf("blob:");
-
-  while (indexOfBlob != -1) {
-    let actualChar = content.charAt(indexOfBlob);
-    let i = 0;
-    while (actualChar != '"') {
-      i++;
-      actualChar = content.charAt(indexOfBlob + i);
-    }
-
-    let indexOfEndBlob = indexOfBlob + i;
-    let localSrc = content.substring(indexOfBlob, indexOfEndBlob);
-    content =
-      content.substring(0, indexOfBlob) +
-      (await fromLocalSrcToSrc(localSrc, magazineId, token)) +
-      content.substring(indexOfEndBlob, content.length);
-    indexOfBlob = content.indexOf("blob:");
-  }
-
-  return content;
-};
-
-const fromLocalSrcToSrc = async (localSrc, magazineId, token) => {
-  const image = await fetch(localSrc);
-  let blob = await image.blob();
-  let file = new File([blob], `${localSrc}`, {
-    type: "image/jpg",
-  });
-
-  const { path } = await uploadToMagazine(file, magazineId, token);
-  return path;
-};
-
-export const uploadToMagazine = async (image, magazineId, token) => {
-  API.defaults.headers.common["Authorization"] = token;
-  const imageData = new FormData();
-  imageData.append("image", image);
-  return await API.post(`/images/magazines/${magazineId}`, imageData);
-};
-
 export const uploadCompanyBackground = async (image, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const imageData = new FormData();
@@ -199,10 +130,6 @@ export const uploadCompanyBackground = async (image, token) => {
 
 export const findCarouselImages = async () => {
   return await API.get(`/images/carousel`);
-};
-export const deleteCarouselImage = async (imageId, token) => {
-  API.defaults.headers.common["Authorization"] = token;
-  return await API.delete(`/images/carousel/${imageId}`);
 };
 
 export const changeStateImagesByProfessionalId = async (
@@ -239,26 +166,12 @@ export const setLikePhoto = async (image, token) => {
 
 export const getLikePhotos = async (page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  let { images, count } = await API.get(
-    `/images/liked?page=${page}&size=${size}`
-  );
-  images.forEach((image) => {
-    image.div = null;
-    image.setLike = (div) => {
-      image.div = div;
-    };
-    image.like = async (callback) => {
-      image.liked = !image.liked;
-      await callback(image);
-    };
-    image.name = image.path;
-  });
+  let images = await API.get(`/images/liked?page=${page}&size=${size}`);
   return images;
 };
 
 export const addPreviewImageToBuildingWork = async (data, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  URL.revokeObjectURL(data.previewImage);
   const imageData = new FormData();
   imageData.append("image", data.previewImage);
   return await API.post(`/images/building-works/${data.id}/preview`, imageData);

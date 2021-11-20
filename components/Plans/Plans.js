@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import useTranslation from "next-translate/useTranslation";
 import styles from "./Plans.module.css";
-import { Alert } from "react-bootstrap";
 
 const Plans = (props) => {
   const { onBuyPlan, toggle, status } = props;
@@ -113,9 +112,9 @@ const Plans = (props) => {
         </div>
       </div>
       {status == "approved"  && (
-        <Alert variant="success">
+        <div className="alert alert-success" role="alert">
           {`${t("formulary-plan.successful-message")}`}
-        </Alert>
+        </div>
       )}
 
       <h2 className="display-6 text-center mb-4">{t("formulary-plan.compare-plans")}</h2>

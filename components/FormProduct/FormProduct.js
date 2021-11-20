@@ -1,23 +1,14 @@
-// Frameworks
 import React, { useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { useForm, Controller } from "react-hook-form";
-import { Col, Row, Button, Form, FormGroup } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import Select from "react-select";
-
-// Components
 import ModalForm from "../ModalForm";
 import InputImages from "../InputImages/InputImages";
 import FormTag from "../FormTag/FormTag";
 import Error from "../Error";
 import Dropzone from "../Dropzone/Dropzone";
-import CategoryList from "../List/CategoryList/CategoryList";
+import { Col, Row, Button, Form, FormGroup } from "react-bootstrap";
+import TagList from "../TagList/TagList";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
-import CategorySelector from "../CategorySelector/CategorySelector";
-
-// Store Redux
-import { categoriesActions } from "../../store";
 
 const FormProduct = ({
   toggle,
@@ -32,17 +23,12 @@ const FormProduct = ({
   productId,
 }) => {
   const { t } = useTranslation("common");
-  const dispatch = useDispatch();
   const [error, setError] = useState("");
   const [timeErrorLive, setTimeErrorLive] = useState(0);
-  const selectedCategories = useSelector((state) => state.categories.products);
-  const selectedCategoriesDefault = useSelector(
-    (state) => state.categories.selectedCategories
-  );
+  const [tagsCategories, setTagsCategories] = useState([]);
   const [modalTagOpen, setModalTagOpen] = useState(false);
   const [currentImageTag, setCurrentImageTag] = useState({});
-  const tags = useSelector((state) => state.tags.products);
-  
+
   const handleToggleTagModal = () =>
     setModalTagOpen((modalTagOpen) => !modalTagOpen);
 
@@ -63,82 +49,66 @@ const FormProduct = ({
     handleSubmit,
   } = useForm(productData);
 
-  const hasPreviewImage = () => previewImage.length > 0;
-
-  const hasCategories = () => selectedCategories.length > 0;
-
-  const hasAnyError = () => {
+  const onSubmit = async (
+    { name, description, price, width, height, depth },
+    event
+  ) => {
+    let data = {
+      previewImage: previewImage[0],
+      images,
+      name,
+      description,
+      price,
+      width,
+      height,
+      depth,
+    };
     if (!imagesHasTags()) {
       showErrorToLimitTime(
         t("is-required", {
           nameRequired: t("form-tag.tag"),
         })
       );
-      return true;
+      return;
     }
 
-    if (!hasPreviewImage()) {
+    if (!(previewImage.length > 0)) {
       showErrorToLimitTime(
         t("is-required", {
           nameRequired: t("preview-image"),
         })
       );
-      return true;
+      return;
     }
 
-    if (!hasCategories()) {
+    if (!(tagsCategories.length > 0)) {
       showErrorToLimitTime(
         t("company-creator.cannot-be-empty", {
           fieldName: t("company-creator.the-categories"),
         })
       );
-      return true;
+      return;
     }
-
-    return false;
-  };
-
-  const onSubmit = async (
-    { name, description, price, width, height, depth, productCategory },
-    event
-  ) => {
-    const error = hasAnyError();
-
-    if (!error) {
-      const data = {
-        previewImage: previewImage[0],
-        // categories: selectedCategories,
-        categories: [productCategory],
-        images,
-        name,
-        description,
-        price,
-        width,
-        height,
-        depth,
-      };
-
-      if (changeState.stateFormProduct.post) {
-        const product = await onAddProduct(data);
-        if (product) {
-          setPreviewImage([]);
-          event.target.reset();
-          setError("");
-          toggle();
-        }
+    data.categories = tagsCategories.map((tag) => {
+      return { name: tag.tag };
+    });
+    if (changeState.stateFormProduct.post) {
+      const product = await onAddProduct(data);
+      if (product) {
+        setPreviewImage([]);
+        event.target.reset();
+        setError("");
+        toggle();
       }
-
-      if (changeState.stateFormProduct.put) {
-        const productModify = await onSetProduct(data, productId);
-        if (productModify) {
-          setPreviewImage([]);
-          event.target.reset();
-          setError("");
-          toggle();
-        }
+    }
+    if (changeState.stateFormProduct.put) {
+      const productModify = await onSetProduct(data, productId);
+      if (productModify) {
+        setPreviewImage([]);
+        event.target.reset();
+        setError("");
+        toggle();
       }
-
-      dispatch(categoriesActions.setSelectedCategories([]));
     }
   };
 
@@ -151,17 +121,65 @@ const FormProduct = ({
     }
   };
 
+  const isEqual = (tag) => {
+    for (const elem of tagsCategories) {
+      if (elem.tag === tag.tag.toLowerCase()) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const AddCategory = (event) => {
+    const category = document
+      .querySelector("#category")
+      .value.toLowerCase()
+      .trim();
+    const parse = { tag: category };
+    if (category !== "") {
+      if (!isEqual(parse)) {
+        const newTagsCategories = Array.from(tagsCategories);
+        newTagsCategories.push(parse);
+        setTagsCategories(newTagsCategories);
+      } else {
+        showErrorToLimitTime(
+          t("company-creator.already-exists", {
+            fieldName: t("company-creator.the-category"),
+          })
+        );
+      }
+    } else {
+      showErrorToLimitTime(
+        t("company-creator.cannot-be-empty", {
+          fieldName: t("company-creator.the-category"),
+        })
+      );
+    }
+    document.querySelector("#category").value = "";
+  };
+
+  const removeTagCategory = (tagCategory) => {
+    const newTagsCategories = Array.from(tagsCategories);
+    const index = newTagsCategories.indexOf(tagCategory);
+    if (index > -1) {
+      newTagsCategories.splice(index, 1);
+      setTagsCategories(newTagsCategories);
+    }
+  };
+
   const showTagModal = (img) => {
     setModalTagOpen(true);
     setCurrentImageTag(img);
   };
 
-  // useEffect(() => {
-  //   if (productData) {
-  //     const categories = productData.defaultValues.categories;
-  //     dispatch(categoriesActions.setSelectedCategories(categories));
-  //   }
-  // }, [productData]);
+  useEffect(() => {
+    if (productData) {
+      productData.defaultValues.categories.forEach(
+        (category) => (category.tag = category.name)
+      );
+      setTagsCategories(productData.defaultValues.categories);
+    }
+  }, [productData]);
 
   return (
     <div>
@@ -407,67 +425,6 @@ const FormProduct = ({
                   </Form.Group>
                 </Row>
 
-                <Col className="col-12 order-1 order-md-2">
-                  {/* <Form.Group>
-                  <Form.Label>
-                    {t("company-creator.select-categories-please")}
-                  </Form.Label>
-                  <Row className="row-cols-1 row-cols-md-2 gap-2 gap-md-0">
-                    <Col className="col-12 col-md-6">
-                      <Row className="row-cols-1 row-cols-lg-2 gap-1 gap-lg-0">
-                        <Col className="col-12">
-                          <CategorySelector typeCategory="PRODUCT"/>
-                        </Col>
-                      </Row>
-                    </Col>
-                    <Col className="col-auto col-md-6">
-                      <CategoryList/>
-                    </Col>
-                  </Row>
-                </Form.Group> */}
-                  <Form.Group className={`mb-2`}>
-                    <Form.Label htmlFor="productCategory">
-                      {t("company-creator.select-category-please")}
-                    </Form.Label>
-                    <Controller
-                      name="productCategory"
-                      control={control}
-                      rules={{
-                        required: {
-                          value: true,
-                          message: `${t("common:is-required", {
-                            nameRequired: t(
-                              "common:formulary.the-product-category"
-                            ),
-                          })}`,
-                        },
-                      }}
-                      render={({ field }) => (
-                        <Select
-                          {...field}
-                          inputId={"productCategory"}
-                          defaultValue={selectedCategoriesDefault}
-                          options={selectedCategories}
-                          getOptionLabel={(option) => `${option?.name}`}
-                          getOptionValue={(option) => `${option?.id}`}
-                          isClearable
-                          className={
-                            "form-field" +
-                            (errors.productCategory ? " has-error" : "")
-                          }
-                        />
-                      )}
-                    />
-                    {errors.productCategory && (
-                      <Form.Text
-                        variant="danger"
-                        className="invalid error-Form.Label text-danger"
-                      >
-                        {errors.productCategory.message}
-                      </Form.Text>
-                    )}
-                  </Form.Group>
-                </Col>
                 <FormGroup>
                   <Form.Label htmlFor="price">{t("price")}</Form.Label>
                   <Controller
@@ -513,7 +470,7 @@ const FormProduct = ({
               <Col className="order-2 order-md-1">
                 <FormGroup>
                   <Form.Label htmlFor="filePreview">
-                    {t("select-preview-image-for-the-product")}
+                    {t("select-preview-image-for-building-work")}
                   </Form.Label>
                   <Dropzone
                     newFiles={previewImage}
@@ -525,7 +482,36 @@ const FormProduct = ({
                   />
                 </FormGroup>
               </Col>
-              {/* aca va el select de categorias */}
+              <Col className="col-12 order-1 order-md-2">
+                <Form.Group>
+                  <Form.Label>
+                    {t("company-creator.select-categories-please")}
+                  </Form.Label>
+                  <Row className="row-cols-1 row-cols-md-2 gap-2 gap-md-0">
+                    <Col className="col-12 col-md-6">
+                      <Row className="row-cols-1 row-cols-lg-2 gap-1 gap-lg-0">
+                        <Col>
+                          <Form.Control type="text" id="category" />
+                        </Col>
+                        <Col>
+                          <PrimaryButton
+                            onClick={AddCategory}
+                            className="mx-auto mx-lg-0"
+                          >
+                            {t("company-creator.add-category")}
+                          </PrimaryButton>
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col className="col-auto col-md-6">
+                      <TagList
+                        tags={tagsCategories}
+                        onDeleteTag={removeTagCategory}
+                      />
+                    </Col>
+                  </Row>
+                </Form.Group>
+              </Col>
             </Row>
             <Row>
               <Col className="p-0">
@@ -570,11 +556,7 @@ const FormProduct = ({
         className={"Button"}
         modalTitle={t("add-tags")}
         formBody={
-          <FormTag
-            image={currentImageTag}
-            toggle={handleToggleTagModal}
-            tags={tags}
-          />
+          <FormTag image={currentImageTag} toggle={handleToggleTagModal} />
         }
         modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
       />

@@ -1,18 +1,27 @@
-// Frameworks
 import React, { useEffect, useState } from "react";
-import { getSession } from "next-auth/client";
+import { getSession, useSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
-import { Col, Row } from "react-bootstrap";
-import { PersonCircle, PlusCircleDotted } from "react-bootstrap-icons";
-import { useDispatch, useSelector } from "react-redux";
-import { categoriesActions } from "../../store";
+import Link from "next/link";
+import {
+  Card,
+  Dropdown,
+  DropdownButton,
+  Col,
+  Row,
+  Button,
+} from "react-bootstrap";
+import {
+  PlusSquareDotted,
+  Images,
+  ThreeDotsVertical,
+  PencilSquare,
+} from "react-bootstrap-icons";
 
-// Components
+//Components
 import ModalForm from "../../components/ModalForm";
 import FormObra from "../../components/FormObra/FormObra";
 import Layout from "../../components/Layout/Layout";
-import BackgroundDefault from "../../components/BackgroundDefault/BackgroundDefault";
-import ImagesGroup from "../../components/ImagesGroup/ImagesGroup";
+import SpinnerCustom from "../../components/SpinnerCustom/SpinnerCustom";
 
 // Services
 import * as professionalService from "../../services/professionalService";
@@ -20,111 +29,92 @@ import * as buildingWorkService from "../../services/buildingWorkService";
 import * as imageService from "../../services/imageService";
 
 // Styles
-import styles from "./index.module.css";
-import ButtonFixed from "../../components/Buttons/ButtonFixed/ButtonFixed";
-import BuildingWorkList from "../../components/BuildingWork/BuildingWorkList/BuildingWorkList";
+import indexStyles from "./index.module.css";
+import filteredImagesStyles from "../../components/FilteredImages/FilteredImages.module.css";
+import image from "next/image";
 
-const Portfolio = ({ professional, buildingWorks, session }) => {
+const CustomButtonTogle = ({ id, editBuildingWork, imageSize }) => {
+  const [dropdownOpen, setOpen] = useState(false);
+  const toggle = () => setOpen((dropdownOpen) => !dropdownOpen);
+
+  return (
+    <>
+      <Dropdown drop="left" align="end">
+        <Dropdown.Toggle
+          variant="light"
+          id="dropdown-autoclose-true"
+          className={indexStyles.afterLess}
+        >
+          <ThreeDotsVertical color={"dark"} size={25} />
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          <Dropdown.Header>
+            <Images
+              className={`${filteredImagesStyles.heart}`}
+              color={"white"}
+              size={25}
+            />
+            {` ${imageSize} Photos`}
+          </Dropdown.Header>
+          <Dropdown.Divider />
+          <Dropdown.Item
+            onClick={() => {
+              editBuildingWork(id);
+            }}
+          >
+            <PencilSquare color={"red"} size={25} />
+            {` Edit`}
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    </>
+  );
+};
+
+const Portfolio = ({ professional, buildingWorks }) => {
+  const [session] = useSession();
   const { t } = useTranslation("common");
   const [previewImage, setPreviewImage] = useState([]);
   const [images, setImages] = useState([]);
-  const [localBuildingWorks, setLocalBuildingWorks] = useState(buildingWorks);
-  const [pageSize, setPageSize] = useState({
-    page: 0,
-    size: process.env.NEXT_PUBLIC_SIZE_PER_PAGE,
-  });
-
-  const [paginationMultipleImage, setPaginationMultipleImage] = useState({
-    page: 0,
-    size: 100,
-  });
+  const [localBuildingWorks, setLocalBuildingWorks] = useState([]);
+  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const [buildingWorkId, setBuildingWorkId] = useState(null);
 
   const [buildingWorkData, setBuildingWorkData] = useState({
     defaultValues: {
       name: "",
       description: "",
-      categories: {},
     },
   });
-  const dispatch = useDispatch();
-
   const [modalOpen, setModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [stateFormObra, setStateFormObra] = useState({
     post: false,
     put: false,
   });
-  const [enterOne, setEnterOne] = useState(false);
 
-  const toggleModal = () => {
-    setModalOpen(!modalOpen);
-  };
+  const toggleModal = () => setModalOpen(!modalOpen);
 
   const updateCardsBuildingWorks = async () => {
-    let newBuildingWorks = {
-      buildingWorks: [],
-      count: 0,
-    };
+    let buildingWorks = [];
     setLoading(true);
     if (session) {
-      try {
-        let token = session.accessToken;
-        let professionalId = session.user.id;
-        let professional = await professionalService.getById(
-          professionalId,
+      let token = session.accessToken;
+      let professionalId = session.user.id;
+      let professional = await professionalService.getById(
+        professionalId,
+        token
+      );
+      if (professional) {
+        buildingWorks = await buildingWorkService.getByProfessionalId(
+          professional.id,
+          pageSize.page,
+          pageSize.size,
           token
         );
-        if (professional) {
-          newBuildingWorks = await buildingWorkService.getByProfessionalId(
-            professional.id,
-            pageSize.page,
-            pageSize.size,
-            token
-          );
-
-          const count = await getTotalBuildingWorksByProfessional();
-          const endArray = [
-            newBuildingWorks.buildingWorks[
-              newBuildingWorks.buildingWorks.length - 1
-            ],
-          ];
-
-          const buildingWorks = {
-            buildingWorks: endArray ? endArray : [],
-          };
-
-          if (count.count) {
-            // TODO corregir que no se carga la ultima obra
-            //  cuando supera el limite maximo de paginacion
-
-            setLocalBuildingWorks({
-              ...localBuildingWorks,
-              buildingWorks: [
-                ...localBuildingWorks.buildingWorks,
-                ...buildingWorks.buildingWorks,
-              ],
-              count: count.count,
-            });
-          }
-
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error(error);
+        setLocalBuildingWorks(buildingWorks);
         setLoading(false);
       }
-    }
-  };
-
-  const getTotalBuildingWorksByProfessional = async () => {
-    try {
-      const count = await buildingWorkService.getCountByProfessional(
-        session.user.id
-      );
-      return count;
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -169,34 +159,22 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
   const onSetbuildingWork = async (data, buildingWorkId) => {
     if (session) {
       try {
-        const data2 = {
-          name: data.name,
-          description: data.description,
-          categories: data.categories,
-        };
+        const data2 = { name: data.name, description: data.description };
         await buildingWorkService.setFolder(
           buildingWorkId,
           data2,
           session.accessToken
         );
         data.id = buildingWorkId;
-        if (previewImage[0].name !== "IMAGEN_NO_CARGADA") {
-          await imageService.addPreviewImageToBuildingWork(
-            data,
-            session.accessToken
-          );
-        }
+        await imageService.addPreviewImageToBuildingWork(
+          data,
+          session.accessToken
+        );
         await buildingWorkService.removeAndAddImages(
           data.images,
           buildingWorkId,
           session.accessToken
         );
-        const buildingWorks = await onGetByProfessionalId();
-        if (buildingWorks) {
-          // setLocalBuildingWorks([...localBuildingWorks, ...images]);
-
-          setLocalBuildingWorks(buildingWorks);
-        }
         return true;
       } catch (error) {
         console.error(error);
@@ -226,11 +204,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
     if (session) {
       try {
         let folder = await buildingWorkService.addFolder(
-          {
-            name: data.name,
-            description: data.description,
-            categories: data.categories,
-          },
+          { name: data.name, description: data.description },
           session.accessToken
         );
         if (folder) {
@@ -241,7 +215,6 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
           if (data.images.length > 0) {
             let images = await onAddImagesToBuildingWork(folder, data.images);
           }
-          // const newBuildingWork = await buildingWorkService.getById(folder.id);F
           updateCardsBuildingWorks();
           return true;
         }
@@ -260,7 +233,6 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
       defaultValues: {
         name: "",
         description: "",
-        categories: [],
       },
     };
     setBuildingWorkData(defaultValues);
@@ -274,13 +246,10 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
       post: false,
       put: true,
     });
-    const [buildingWork] = localBuildingWorks.buildingWorks.filter(
-      (d) => d.id == id
-    );
+    const [buildingWork] = localBuildingWorks.filter((d) => d.id == id);
     let copyBuildingWorkData = Object.assign({}, buildingWorkData);
     copyBuildingWorkData.defaultValues.name = buildingWork.name;
     copyBuildingWorkData.defaultValues.description = buildingWork.description;
-    copyBuildingWorkData.defaultValues.categories = buildingWork.category;
 
     setBuildingWorkData(copyBuildingWorkData);
 
@@ -307,8 +276,7 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
 
     const imagen = await fetch(buildingWork.previewImage);
     let blob = await imagen.blob();
-
-    let file = new File([blob], `IMAGEN_NO_CARGADA`, {
+    let file = new File([blob], `${buildingWork.previewImage}`, {
       type: "image/jpg",
     });
 
@@ -325,8 +293,8 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
     try {
       let dataImages = await imageService.getImagesByBuildingWorksId(
         id,
-        paginationMultipleImage.page,
-        paginationMultipleImage.size,
+        pageSize.page,
+        pageSize.size,
         session.accessToken
       );
       return dataImages;
@@ -335,141 +303,129 @@ const Portfolio = ({ professional, buildingWorks, session }) => {
     }
   };
 
-  // useEffect(async () => {
-    // if (buildingWorks) {
-    //   setLocalBuildingWorks(buildingWorks);
-    // }
-  // }, [buildingWorks]);
-
-  const onGetByProfessionalId = async () => {
-    // setLoading(true);
-    try {
-      if (session) {
-        const buildingWorks = await buildingWorkService.getByProfessionalId(
-          professional.id,
-          pageSize.page,
-          pageSize.size,
-          session.accessToken
-        );
-
-        // setLoading(false);
-        return buildingWorks;
-      }
-    } catch (error) {
-      console.error(error);
-      // setLoading(false);
-    }
-  };
-
   useEffect(async () => {
-    if (enterOne) {
-      const buildingWorks = await onGetByProfessionalId();
-      // const buildingWorks = {
-      //   buildingWorks: images,
-      // };
-      if (images) {
-        // setLocalBuildingWorks([...localBuildingWorks, ...images]);
-        setLocalBuildingWorks({
-          ...localBuildingWorks,
-          buildingWorks: [
-            ...localBuildingWorks.buildingWorks,
-            ...buildingWorks.buildingWorks,
-          ],
-        });
-      }
-    } else {
-      setEnterOne(true);
+    if (buildingWorks) {
+      setLocalBuildingWorks(buildingWorks);
     }
-  }, [pageSize]);
+  }, [buildingWorks]);
 
-  const resetPage = () => {
-    const { page } = { page: 0 };
-    setPageSize({ ...pageSize, page });
+  const isState = (buildingWork) => {
+    let statusColor;
+    let ico;
+    // if (product.status === "PENDING") {
+    //   statusColor = `bg-warning text-dark`;
+    //   ico = <ExclamationCircle className={`${statusColor}`} size={15} />;
+    // }
+    // if (product.status === "APPROVED") {
+    //   statusColor = "bg-success";
+    //   ico = <Check2Circle className={`${statusColor}`} size={15} />;
+    // }
+    // if (product.status === "REJECTED") {
+    //   statusColor = `bg-danger`;
+    //   ico = <XCircle className={`${statusColor}`} size={15} />;
+    // }
+    // return (
+    //   <>
+    //     <CardText className={`${indexStyles.itemStatus} ${statusColor} m-0`}>
+    //       {ico}
+    //       {t(product.status.toLowerCase())}
+    //     </CardText>
+    //   </>
+    // );
   };
 
-  const changePage = () => {
-    const { page } = { page: pageSize.page + 1 };
-    setPageSize({ ...pageSize, page });
-  };
-
-  const fetchMoreData = () => {
-    changePage();
-  };
-
-  useEffect(() => {
-    if (buildingWorkData) {
-      const categories = buildingWorkData.defaultValues.categories;
-      dispatch(categoriesActions.setSelectedCategories(categories));
-    }
-  }, [toggleModal]);
+  const imagesCard = (
+    <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {isLoading ? (
+        <SpinnerCustom />
+      ) : (
+        localBuildingWorks.map((buildingWork, index) => (
+          <Col key={index}>
+            <Card className={`${filteredImagesStyles.colCard}`}>
+              <Card.Body className="p-0">
+                <Link
+                  href={`/building/[id]`}
+                  as={`/building/${buildingWork.name.replace(/\s+/g, "-")}-${
+                    buildingWork.id
+                  }`}
+                >
+                  <img
+                    className={`${filteredImagesStyles.cardImage} cursor-pointer`}
+                    src={buildingWork.previewImage}
+                    alt="Professional preview"
+                  />
+                </Link>
+                {isState(buildingWork)}
+                <div className={`${filteredImagesStyles.cardText}`}>
+                  <Col className="col-auto">
+                    <img
+                      className={`${indexStyles.imgProfile}`}
+                      // src={buildingWork.entity.previewImage}
+                    />
+                  </Col>
+                  <Col className={`col-auto`}>
+                    <Card.Text
+                      className={`${filteredImagesStyles.textShadowSm} fw-bold`}
+                    >
+                      {buildingWork.name}
+                    </Card.Text>
+                  </Col>
+                  <Col
+                    className={`col-auto ${filteredImagesStyles.containerHeart}`}
+                  >
+                    {session && (
+                      <div>
+                        <CustomButtonTogle
+                          id={buildingWork.id}
+                          editBuildingWork={editBuildingWork}
+                          imageSize={buildingWork.countImages}
+                        />
+                      </div>
+                    )}
+                  </Col>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))
+      )}
+    </Row>
+  );
 
   return (
     <Layout>
       <section className="container py-2">
         <Row className="row-cols-1">
           <Col>
-            {professional.backgroundImage ? (
+            <img
+              width={"100%"}
+              height={"300px"}
+              src={`${professional.backgroundImage}`}
+              className={indexStyles.backgroundImg}
+            />
+            <div className={indexStyles.previewDiv}>
               <img
-                width={"100%"}
-                height={"300px"}
-                src={`${professional.backgroundImage}`}
-                className={styles.backgroundImg}
-              />
-            ) : (
-              <BackgroundDefault image={false} />
-            )}
-            <div className={styles.previewDiv}>
-              {professional.previewImage ? (
-                <img
-                  src={professional.previewImage}
-                  className={styles.previewImg}
-                ></img>
-              ) : (
-                // <BackgroundDefault className={styles.previewImg}/>
-                <div className={styles.previewImg}>
-                  <PersonCircle size={"100%"} />
-                </div>
-              )}
-              {/* <img
                 src={professional.previewImage}
-                className={styles.previewImg}
-              ></img> */}
+                className={indexStyles.previewImg}
+              ></img>
             </div>
           </Col>
         </Row>
         <Row>
           <Col>
             <div className="text-center">
-              <h1 className="text-break">{professional.contact}</h1>
-              <h1 className="text-break">{professional?.company?.name}</h1>
+              <h1>{`${professional.contact}`}</h1>
+              <h1>{`${professional.company?.name}`}</h1>
             </div>
           </Col>
         </Row>
-        <Row className="row-cols-1 gap-4">
-          <Col className="col-auto mx-auto mx-md-0">
-            {/* <Button variant="outline-primary" onClick={openModalBuilderWork}>
+        <Row className="row-cols-2 g-2">
+          <Col className="col-auto">
+            <Button variant="outline-primary" onClick={openModalBuilderWork}>
               <PlusSquareDotted size={100} />
-            </Button> */}
-            <ButtonFixed onClick={openModalBuilderWork}>
-              <PlusCircleDotted size={50} />
-            </ButtonFixed>
+            </Button>
           </Col>
-          <Col className="col-12">
-            {/* <ImagesGroup
-              isLoading={isLoading}
-              localBuildingWorks={localBuildingWorks}
-              editBuildingWork={editBuildingWork}
-              fetchMoreData={fetchMoreData}
-              profileHidden={true}
-              getTotalBuildingWorks={getTotalBuildingWorksByProfessional}
-            /> */}
-            <BuildingWorkList
-              data={localBuildingWorks}
-              editBuildingWork={editBuildingWork}
-              fetchMoreData={fetchMoreData}
-              profileHidden
-            />
-          </Col>
+          <Col className="col-12">{imagesCard}</Col>
         </Row>
         <ModalForm
           size={"xl"}
@@ -517,7 +473,6 @@ export async function getServerSideProps({ params, req, res, locale }) {
   let professionalId;
   let professional = [];
   let buildingWorks = [];
-  let count = 0;
   let { page, size } = req.__NEXT_INIT_QUERY;
 
   if (!page || page <= 0) {
@@ -527,6 +482,7 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
   try {
+
     if (session) {
       token = session.accessToken;
       professionalId = session.user.id;
@@ -538,13 +494,9 @@ export async function getServerSideProps({ params, req, res, locale }) {
           size,
           token
         );
-        // count = await buildingWorkService.getCountByProfessional(
-        //   professionalId
-        // );
       }
     }
   } catch (e) {
-    console.error(e);
     return {
       redirect: {
         destination: "/logIn?expired",
@@ -552,17 +504,11 @@ export async function getServerSideProps({ params, req, res, locale }) {
       },
     };
   }
-
+      
   return {
     props: {
       professional,
       buildingWorks,
-
-      // buildingWorks: {
-      //   buildingWorks: buildingWorks,
-      //   count: count.count,
-      // },
-      session,
     },
   };
 }

@@ -1,34 +1,21 @@
-// Frameworks
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useTranslation from "next-translate/useTranslation";
-import Link from "next/link";
-import { Col, Row } from "react-bootstrap";
-
-// Styles
+import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
+import "swiper/swiper-bundle.css";
 import styles from "./SwiperProducts.module.css";
-
-// swiper bundle styles
-import "swiper/css/bundle";
-
-// modules styles
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 
 // Custom Hooks
 import useSize from "../../../hooks/window/useSize";
-
-// Components
 import PrimaryButton from "../../Buttons/PrimaryButton/PrimaryButton";
-
-// Modules
-import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
-SwiperCore.use([Autoplay, Pagination, Navigation]);
-
+import Link from "next/link";
+import { Col, Row } from "react-bootstrap";
 /**
  * Docs of swiperJS in
  * https://swiperjs.com/react
  */
+
+SwiperCore.use([Autoplay, Pagination, Navigation]);
 
 const SwiperProducts = (props) => {
   const {
@@ -60,7 +47,7 @@ const SwiperProducts = (props) => {
         <Swiper
           spaceBetween={30}
           slidesPerView={slidesPerViewLocal}
-          loop={false}
+          loop={true}
           autoplay={{ delay: 3000 }}
           navigation={{
             nextEl: ".swiper-button-next",
@@ -71,20 +58,19 @@ const SwiperProducts = (props) => {
             <SwiperSlide key={product.id}>
               <div className="swiper-slide">
                 <div className={styles.productList}>
-                  <Link
-                    href={`/product/${product?.name
-                      ?.replace(/\s+/g, "-")
-                      .toLowerCase()}-${product.id}`}
+                  <a
+                    href={`/product/${product?.name?.replace(/\s+/g, "-").toLowerCase()}-${
+                      product.id
+                    }`}
+                    className={styles.ancor}
                   >
-                    <a className={styles.ancor}>
-                      <figure className={styles.figure}>
-                        <img
-                          src={product.previewImage}
-                          className={styles.photo}
-                        />
-                      </figure>
-                    </a>
-                  </Link>
+                    <figure className={styles.figure}>
+                      <img
+                        src={product.previewImage}
+                        className={styles.photo}
+                      />
+                    </figure>
+                  </a>
                   <Row className="row-cols-1">
                     <Col>
                       <div

@@ -4,7 +4,6 @@ import useTranslation from "next-translate/useTranslation";
 import { NavLink, Button, Row, Col } from "react-bootstrap";
 import AuthenticationStyle from "./Authentication.module.css";
 import Link from "next/link";
-import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
 /**
  * Login and logout component when user wants to use Facebook or Instagram or Google account.
@@ -24,17 +23,17 @@ const Authentication = (props) => {
         <Col className="col d-flex">
           <Col>
             <Link href="/logIn">
-              <PrimaryButton type="Button" className="text-nowrap w-100">
-                <img src="/svg/icon-user.svg" />
-                {t("log-in")}
-              </PrimaryButton>
+              <Button
+                className={`d-flex w-100 gap-2 justify-content-center ${AuthenticationStyle.pLine} ${AuthenticationStyle.btnLogin} ${AuthenticationStyle.btn}`}
+              >
+                <img src="/svg/icon-user.svg"/>
+                <span className={AuthenticationStyle.center}>{t("log-in")}</span>
+              </Button>
             </Link>
           </Col>
           <Col>
             <Link href="/signIn">
-              <Button
-                className={`d-flex w-100 justify-content-center ${AuthenticationStyle.pLine} ${AuthenticationStyle.signInBtn} ${AuthenticationStyle.btn} mx-1`}
-              >
+              <Button className={`d-flex w-100 justify-content-center ${AuthenticationStyle.pLine} ${AuthenticationStyle.signInBtn} ${AuthenticationStyle.btn} mx-1`}>
                 {t("common:sign-in")}
               </Button>
             </Link>

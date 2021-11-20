@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 import { ButtonGroup, Col, Row } from "react-bootstrap";
-import Link from "next/link";
 
 // Components
 import FilterList from "../components/FilterList/FilterList";
@@ -19,47 +18,30 @@ import * as tagService from "../services/tagService";
 import * as imageService from "../services/imageService";
 import * as productService from "../services/productService";
 import * as companyService from "../services/companyService";
-import * as buildingWorkService from "../services/buildingWorkService";
-import * as magazineService from "../services/magazineService";
-import * as professionalService from "../services/professionalService";
 
 // Styles
 import styles from "../styles/Home.module.css";
 import CarouselImageCreator from "../components/CarouselImageCreator";
 import AdministratorCreator from "../components/AdministratorCreator";
 import OffCanvasFilter from "../components/OffCanvas/OffCanvasFilter.js/OffCanvasFilter";
-import PrimaryButton from "../components/Buttons/PrimaryButton/PrimaryButton";
-import ImagesGroup from "../components/ImagesGroup/ImagesGroup";
-import SwiperMagazine from "../components/Swiper/SwiperMagazine/SwiperMagazine";
-import SwiperProfessionals from "../components/Swiper/SwiperProfessionals/SwiperProfessionals";
-import BuildingWorkList from "../components/BuildingWork/BuildingWorkList/BuildingWorkList";
 
-const Home = ({
-  buildingWorks,
-  carouselImages,
-  session,
-  products,
-  companies,
-  magazines,
-  professionals,
-}) => {
+const Home = ({ filters, carouselImages, session, products, companies }) => {
   const [filteredImages, setFilteredImages] = useState([]);
-  // const [appliedFilters, setAppliedFilters] = useState([]);
-  const [localBuildingWorks, setLocalBuildingWorks] = useState(buildingWorks);
-  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
+  const [appliedFilters, setAppliedFilters] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [pageSize, setPageSize] = useState({ page: 0, size: 10 });
   const [imagesCarousel, setImagesCarousel] = useState([]);
 
   let { t } = useTranslation("home");
 
-  // useEffect(async () => {
-  //   const images = await getProfessionalsByTags();
-  //   if (images) {
-  //     setFilteredImages(images);
-  //   }
-  // }, [appliedFilters]);
+  useEffect(async () => {
+    const images = await getProfessionalsByTags();
+    if (images) {
+      setFilteredImages(images);
+    }
+  }, [appliedFilters]);
 
-  const onGetCarouselImages = async () => {
+  const onAddCarouselImages = async () => {
     try {
       const carouselImages = await imageService.findCarouselImages();
       setImagesCarousel(carouselImages);
@@ -68,66 +50,44 @@ const Home = ({
     }
   };
 
-  const onDeleteCarouselImage = async (imageId) => {
-    try {
-      await imageService.deleteCarouselImage(imageId, session.accessToken);
-      await onGetCarouselImages();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(async () => {
     if (carouselImages) {
-      await onGetCarouselImages();
+      await onAddCarouselImages();
     }
   }, [carouselImages]);
 
-  const getTotalBuildingWorks = async () => {
-    const status = "APPROVED";
+  const getProfessionalsByTags = async () => {
+    setLoading(true);
     try {
-      const total = await buildingWorkService.getCount(status);
-      return total;
+      const images = await imageService.getProfessionalImagesByTags(
+        appliedFilters,
+        pageSize.page,
+        pageSize.size,
+        session?.accessToken
+      );
+      setLoading(false);
+      return images;
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
-
-  const changePage = () => {
-    const { page } = { page: pageSize.page + 1 };
-    setPageSize({ ...pageSize, page });
-  };
-
-  const fetchMoreData = () => {
-    setTimeout(() => {
-      changePage();
-    }, 1500);
-  };
-
-  useEffect(async () => {
-    if (buildingWorks) {
-      setLocalBuildingWorks(buildingWorks);
-    }
-  }, [buildingWorks]);
 
   return (
     <Layout>
-      <SwiperCarouselHome
-        images={imagesCarousel}
-        onDeleteCarouselImage={onDeleteCarouselImage}
-      />
+      <SwiperCarouselHome images={imagesCarousel} />
       <section className="container py-5">
         <Row className="row-cols-1 gap-2">
           <Col>
             <ButtonGroup aria-label="Basic example" className="gap-1">
-              <CarouselImageCreator onGetCarouselImages={onGetCarouselImages} />
+              <CarouselImageCreator onAddCarouselImages={onAddCarouselImages} />
               <AdministratorCreator />
             </ButtonGroup>
           </Col>
           <Col>
             <Row className="row-cols-1 gap-2">
               <Col className={styles.infoHead}>
-                <h2 className={styles.tit}>
+                <h2 className={styles.itemsTitle}>
                   {t("buildings")}
                   <small className={styles.itemsSmallTitle}>
                     {t("design-objects-for-your-spaces")}
@@ -135,23 +95,19 @@ const Home = ({
                 </h2>
               </Col>
               <Col>
-                {/* <FilteredImages images={filteredImages} limit={true} /> */}
-                {/* <ImagesGroup
-                  isLoading={isLoading}
-                  localBuildingWorks={localBuildingWorks}
-                  fetchMoreData={fetchMoreData}
-                  getTotalBuildingWorks={getTotalBuildingWorks}
-                  limit={true}
-                /> */}
-                <BuildingWorkList data={buildingWorks} limit />
+                <Row>
+                  <Col>
+                    <OffCanvasFilter
+                      filters={filters}
+                      appliedFilters={appliedFilters}
+                      setAppliedFilters={setAppliedFilters}
+                    />
+                  </Col>
+                </Row>
               </Col>
-              <div className="w-100">
-                <Link href="/ideas">
-                  <PrimaryButton className="mx-auto my-4">
-                    {t("common:view-more")}
-                  </PrimaryButton>
-                </Link>
-              </div>
+              <Col>
+                <FilteredImages isLoading={isLoading} images={filteredImages} />
+              </Col>
             </Row>
           </Col>
         </Row>
@@ -160,7 +116,7 @@ const Home = ({
       <section className="container-fluid py-5">
         <Col>
           <Row className="row-cols-1 gap-2">
-            <Col className={`${styles.infoHead} ${styles.info}`}>
+            <Col className={styles.infoHead}>
               <h2 className={styles.productsTitle}>
                 {t("common:products")}
                 <small className={styles.productsSmallTitle}>
@@ -183,7 +139,7 @@ const Home = ({
         <Col>
           <Row className="row-cols-1 gap-2">
             <Col className={styles.infoHead}>
-              <h2 className={styles.tit}>
+              <h2 className={styles.itemsTitle}>
                 {t("common:companies")}
                 <small className={styles.itemsSmallTitle}>
                   {t("new-design-and-construction-companies")}
@@ -204,7 +160,7 @@ const Home = ({
       <section className={`container-fluid py-5`}>
         <Col>
           <div className={styles.infoHead}>
-            <h2 className={styles.tit}>
+            <h2 className={styles.itemsTitle}>
               {t("common:magazine")}
               <small className={styles.itemsSmallTitle}>
                 {t("new-design-architecture-and-deco")}
@@ -212,36 +168,7 @@ const Home = ({
             </h2>
           </div>
         </Col>
-        <Col>
-          <SwiperMagazine
-            items={magazines}
-            slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
-            slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
-            slidesPerViewDesktop={{ dimensionLimit: 992, slides: 3 }}
-          />
-        </Col>
       </section>
-      <section className={`container-fluid py-5 ${styles.backgroundGray}`}>
-        <Col>
-          <div className={styles.infoHead}>
-            <h2 className={styles.tit}>
-              {t("common:professionals")}
-              <small className={styles.itemsSmallTitle}>
-                {t("new-design-and-construction-professionals")}
-              </small>
-            </h2>
-          </div>
-        </Col>
-        <Col>
-          <SwiperProfessionals
-            items={professionals.professionals}
-            slidesPerViewMobile={{ dimensionLimit: 576, slides: 1 }}
-            slidesPerViewTablet={{ dimensionLimit: 768, slides: 2 }}
-            slidesPerViewDesktop={{ dimensionLimit: 992, slides: 3 }}
-          />
-        </Col>
-      </section>
-      <section className={`container-fluid py-5`}></section>
     </Layout>
   );
 };
@@ -259,29 +186,18 @@ export async function getServerSideProps({ params, req, res, locale }) {
     size = process.env.NEXT_PUBLIC_SIZE_PER_PAGE;
   }
 
-  const status = "APPROVED";
-  // const filters = await tagService.findAll();
+  const filters = await tagService.findAll();
   const carouselImages = await imageService.findCarouselImages();
-  const products = await productService.findAllByStatus(page, size, status);
-  const companies = await companyService.findAll(status, page, size);
-  const magazines = await magazineService.findAll(status, page, size);
-  const professionals = await professionalService.findAll(page, size);
-  const buildingWorks = await buildingWorkService.getAllByCategoryAndStatus(
-    status,
-    [],
-    page,
-    process.env.NEXT_PUBLIC_BUILDING_WORKS_PER_HOME
-  );
+  const products = await productService.findAllByStatus(page, size, "APPROVED");
+  const companies = await companyService.findAll("APPROVED", page, size);
 
   return {
     props: {
-      buildingWorks: buildingWorks,
+      filters: filters,
       carouselImages,
       session,
       companies,
       products,
-      magazines,
-      professionals,
     },
   };
 }

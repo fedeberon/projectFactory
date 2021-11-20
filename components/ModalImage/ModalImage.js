@@ -14,11 +14,11 @@ const ModalImage = (props) => {
         show={show}
         onHide={onHide}
         className={`${ModalImageStyle.modalSize} p-0`}
-        dialogClassName="mw-100 vh-100 m-0 overflow-hidden "
+        dialogClassName="mw-100 vh-100 m-0 "
       >
         <Modal.Body className={`${ModalImageStyle.bodyModal} p-0`}>
           <Row className="text-end">
-            <Col className="vh-100">
+            <Col>
               <Button variant="danger" className="p-1 m-1 position-absolute top-0 end-0" onClick={toggle}>
                 <X size={25} />
               </Button>

@@ -6,7 +6,6 @@ import {
   Row,
   Col,
   Button,
-  Figure,
 } from "react-bootstrap";
 import { useSession, getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
@@ -18,12 +17,11 @@ import RolProfile from "../RolProfile";
 import FormProfessional from "../FormProfessional/FormProfessional";
 import Plans from "../Plans/Plans";
 import CompanyCreator from "../CompanyCreator/CompanyCreator";
-import { Briefcase, PersonCircle } from "react-bootstrap-icons";
+import { Briefcase } from "react-bootstrap-icons";
 
 //Styles
 import ProfileDataStyles from "./ProfileData.module.css";
 import MercadopagoButton from "../Buttons/MercadopagoButton/MercadopagoButton";
-import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
 const ProfileData = (props) => {
   const [session] = useSession();
@@ -33,7 +31,6 @@ const ProfileData = (props) => {
   const { t } = useTranslation("profile");
   const {
     onBecomeProfessional,
-    onSetProfessional,
     error,
     setError,
     data,
@@ -42,57 +39,35 @@ const ProfileData = (props) => {
   } = props;
   const [showModalPlan, setShowModalPlan] = useState(status == "approved");
   const [statusPurchased, setStatusPurchased] = useState(status);
-  const [stateFormProfessional, setStateFormProfessional] = useState({
-    post: false,
-    put: false,
-  });
 
   const toggleModalPlan = () => {
     setStatusPurchased("");
     setShowModalPlan(!showModalPlan);
   };
 
-  useEffect(async () => {
+  useEffect( async () => {
     const session = await getSession();
     const tokens = await userService.getAmountTokens(session.accessToken);
-    const isLinkedWithMercadopago = await userService.isLinkedWithMercadopago(
-      session.accessToken
-    );
+    const isLinkedWithMercadopago = await userService.isLinkedWithMercadopago(session.accessToken);
     setIsLinkedWithMercadopago(isLinkedWithMercadopago);
     setAmountTokens(tokens);
   }, []);
 
-  const toggleModal = (mode) => {
-    if (mode == "new") {
-      setStateFormProfessional({
-        post: true,
-        put: false,
-      });
-    } else if (mode == "edit") {
-      setStateFormProfessional({
-        post: false,
-        put: true,
-      });
-    }
-    setModalOpen(!modalOpen);
-  };
+  const toggleModal = () => setModalOpen(!modalOpen);
 
   return (
     <Container>
       {session ? (
         <>
-          <Row className="row-cols-1 gap-4 row w-100 m-0">
-            <Col className="p-0">
-              <Row className="p-0 row m-0 w-100 gap-2 gap-md-0 justify-content-center">
+          <Row className="row-cols-1 g-2">
+            <Row className="p-0">
+              <Row className="col-auto g-2 d-flex">
                 {!session.authorities.includes("ROLE_PROFESSIONAL") &&
                 !session.authorities.includes("ROLE_ADMINISTRATOR") &&
                 !session.authorities.includes("ROLE_COMPANY") ? (
                   <>
                     <Col className="col-auto">
-                      <Button
-                        variant="primary"
-                        onClick={() => toggleModal("new")}
-                      >
+                      <Button variant="primary" onClick={toggleModal}>
                         <Briefcase size={25} />
                         {` `}
                         {t("become-professional")}
@@ -103,160 +78,30 @@ const ProfileData = (props) => {
                     </Col>
                   </>
                 ) : (
-                  <>
-                    <Col className="col-auto">
-                      <PrimaryButton
-                        type="button"
-                        onClick={() => toggleModal("edit")}
-                      >
-                        {t("common:edit")}
-                        {/* <Briefcase size={25} />
-                        {` `}
-                        {t("become-professional")} */}
-                      </PrimaryButton>
-                    </Col>
-                    {/* <Col className="col-auto">
-                      <span className="d-block">{`${t(
-                        "your-tokens"
-                      )}: ${amountTokens}`}</span>
-                      <PrimaryButton dark onClick={toggleModalPlan}>
-                        {t("buy-more-tokens")}
-                      </PrimaryButton>
-                    </Col>
-                    <Col className="col-auto d-flex align-items-end p-0">
-                      <MercadopagoButton />
-                    </Col> */}
-                  </>
+                  <div>
+                    <span className="d-block">{`${t("your-tokens")}: ${amountTokens}`}</span>
+                    <Button onClick={toggleModalPlan}>
+                      {t("buy-more-tokens")}
+                    </Button>
+                    <MercadopagoButton/>
+                  </div>
                 )}
               </Row>
+            </Row>
+            <Col>
+              <img className={`${ProfileDataStyles.imgProfile}`} src={session.user.image}></img>
             </Col>
             <Col>
-              {!session.authorities.includes("ROLE_PROFESSIONAL") &&
-              !session.authorities.includes("ROLE_COMPANY") ? (
-                <>
-                  <Row className="row-cols-1 row-cols-md-2 justify-content-center align-items-center">
-                    <Col className="col-auto">
-                      {session.user.image ? (
-                        <Figure className={`m-0`}>
-                          <Figure.Image
-                            width={250}
-                            height={250}
-                            className={`${ProfileDataStyles.imgProfile} m-0`}
-                            src={session.user.image}
-                            roundedCircle
-                          ></Figure.Image>
-                        </Figure>
-                      ) : (
-                        <PersonCircle size={250} />
-                      )}
-                    </Col>
-                    <Col className="col-12 col-lg-8 col-xl-4">
-                      <Row className={`row-cols-1`}>
-                        <Col>
-                          <ListGroup className="text-break">
-                            <h4>{t("common:formulary.contact")}</h4>
-                            <ListGroupItem className={`mb-2`}>
-                              {session.user.name}
-                            </ListGroupItem>
-                            <h4>{t("common:formulary.contact-email")}</h4>
-                            <ListGroupItem className={`mb-2`}>
-                              {session.user.email}
-                            </ListGroupItem>
-                            <h4>{t("authority")}</h4>
-                            <ListGroupItem className={`mb-2`}>
-                              <RolProfile />
-                            </ListGroupItem>
-                          </ListGroup>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </>
-              ) : (
-                <>
-                  <Row className="row-cols-1 row-cols-md-2 justify-content-evenly align-items-center">
-                    <Col className="col-auto">
-                      {session.user.image ? (
-                        <Figure className={`m-0`}>
-                          <Figure.Image
-                            width={300}
-                            height={300}
-                            className={`${ProfileDataStyles.imgProfile} m-0`}
-                            src={session.user.image}
-                            roundedCircle
-                          ></Figure.Image>
-                        </Figure>
-                      ) : (
-                        <PersonCircle size={300} />
-                      )}
-                    </Col>
-                    <Col className="col-auto col-lg-8 col-xl-7">
-                      <Row className={`row-cols-1 row-cols-lg-2`}>
-                        <Col>
-                          <ListGroup className="text-break">
-                            <h4>{t("common:formulary.contact")}</h4>
-                            <ListGroupItem className={`mb-2`}>
-                              {session.user.name}
-                            </ListGroupItem>
-                            <h4>{t("common:formulary.contact-email")}</h4>
-                            <ListGroupItem className={`mb-2`}>
-                              {session.user.email}
-                            </ListGroupItem>
-                            <h4>{t("authority")}</h4>
-                            <ListGroupItem className={`mb-2`}>
-                              <RolProfile />
-                            </ListGroupItem>
-                            {session.user.categoryCompany && (
-                              <>
-                                <h4>{t("common:formulary.company")}</h4>
-                                <ListGroupItem className={`mb-2`}>
-                                  {session.user.company.name}
-                                </ListGroupItem>
-                              </>
-                            )}
-                          </ListGroup>
-                        </Col>
-                        <Col>
-                          <ListGroup className="text-break">
-                            {session.user.categoryCompany && (
-                              <>
-                                <h4>
-                                  {t("common:formulary.company-category")}
-                                </h4>
-                                <ListGroupItem className={`mb-2`}>
-                                  {session.user.categoryCompany.name}
-                                </ListGroupItem>
-                              </>
-                            )}
-                            <h4>
-                              {t("common:formulary.professional-category")}
-                            </h4>
-                            <ListGroupItem className={`mb-2`}>
-                              {session.user.category.name}
-                            </ListGroupItem>
-                            <h4>{t("common:formulary.telephone")}</h4>
-                            <ListGroupItem className={`mb-2`}>
-                              {session.user.phoneNumber}
-                            </ListGroupItem>
-                            {session.user.website && (
-                              <>
-                                <h4>{t("common:formulary.web-page")}</h4>
-                                <ListGroupItem className={`mb-2`}>
-                                  {session.user.website}
-                                </ListGroupItem>
-                              </>
-                            )}
-                            <h4>{t("common:formulary.contact-charge")}</h4>
-                            <ListGroupItem className={`mb-2`}>
-                              {session.user.contactLoad}
-                            </ListGroupItem>
-                          </ListGroup>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </>
-              )}
+              <ListGroup>
+                <h3>{t("common:name")}</h3>
+                <ListGroupItem>{session.user.name}</ListGroupItem>
+                <h3>{t("common:email")}</h3>
+                <ListGroupItem>{session.user.email}</ListGroupItem>
+                <h3>{t("authority")}</h3>
+                <ListGroupItem>
+                  <RolProfile />
+                </ListGroupItem>
+              </ListGroup>
             </Col>
           </Row>
         </>
@@ -266,30 +111,22 @@ const ProfileData = (props) => {
 
       <ModalForm
         size={"xl"}
-        fullscreen={"lg-down"}
         modalTitle={t("formulary-plan.title")}
         className={"Button mt-50"}
         formBody={<Plans onBuyPlan={onBuyPlan} status={statusPurchased} />}
         modalOpen={{ open: showModalPlan, function: setShowModalPlan }}
       />
-
       <ModalForm
         size={"xl"}
-        fullscreen={"lg-down"}
         modalTitle={t("common:formulary.professional-form")}
         className={"Button mt-50"}
         formBody={
           <FormProfessional
             onAddProfessional={onBecomeProfessional}
-            onSetProfessional={onSetProfessional}
             toggle={toggleModal}
             error={error}
             setError={setError}
             data={data}
-            changeState={{
-              stateFormProfessional,
-              function: setStateFormProfessional,
-            }}
           />
         }
         modalOpen={{ open: modalOpen, function: setModalOpen }}

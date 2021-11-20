@@ -6,11 +6,7 @@ export const findAll = async (status, page, size) => {
 };
 
 export const findAllByCategory = async (status, category, page, size) => {
-  const encoded = encodeURI(
-    `/products/category/${category}/status/${status}?page=${page}&size=${size}`
-  );
-  return await API.get(encoded);
-  // `/products/category/${category}/status/${status}?page=${page}&size=${size}`
+  return await API.get(`/products/category/${category}/status/${status}?page=${page}&size=${size}`);
 };
 
 export const findMyProducts = async (page, size, token) => {
@@ -18,15 +14,13 @@ export const findMyProducts = async (page, size, token) => {
   return await API.get(`/products/my-products?page=${page}&size=${size}`);
 };
 
-export const getAllByCompanyId = async (companyId, page, size) => {
-  return await API.get(
-    `/products/companies/${companyId}?page=${page}&size=${size}`
-  );
-};
-
 export const setNewTokensToProductId = async (newTokens, productId, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.put(`/products/${productId}/tokens/${newTokens}`);
+}
+
+export const findAllCategories = async (page, size) => {
+  return await API.get(`/products/categories?page=${page}&size=${size}`);
 };
 
 export const addProduct = async (product, token) => {
@@ -35,6 +29,7 @@ export const addProduct = async (product, token) => {
   const previewImage = product.previewImage;
   delete product.images;
   delete product.previewImage;
+
   const response = await API.post(`/products`, product);
 
   if (previewImage != undefined || previewImage != null)

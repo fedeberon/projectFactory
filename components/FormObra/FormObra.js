@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Col, Row, Button, Form } from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
 import ModalForm from "../ModalForm";
 import FormTag from "../FormTag/FormTag";
-import Select from "react-select";
-import { useDispatch, useSelector } from "react-redux";
 
 //Components
 import InputImages from "../../components/InputImages/InputImages";
 import Error from "../../components/Error";
 import Dropzone from "../Dropzone/Dropzone";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
-import CategorySelector from "../CategorySelector/CategorySelector";
-import CategoryList from "../List/CategoryList/CategoryList";
-import { categoriesActions } from "../../store";
-import image from "next/image";
-
-// Styles
-import styles from "./FormObra.module.css";
 
 const FormObra = ({
   toggle,
@@ -32,19 +23,11 @@ const FormObra = ({
   changeState,
   buildingWorkId,
 }) => {
-  const dispatch = useDispatch();
   const { t } = useTranslation("common");
   const [currentImageTag, setCurrentImageTag] = useState({});
   const [modalTagOpen, setModalTagOpen] = useState(false);
   const [error, setError] = useState("");
   const [timeErrorLive, setTimeErrorLive] = useState(0);
-  const selectedCategories = useSelector(
-    (state) => state.categories.buildingWorks
-  );
-  const selectedCategoriesDefault = useSelector(
-    (state) => state.categories.selectedCategories
-  );
-  const tags = useSelector((state) => state.tags.buildingWorks);
 
   const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
 
@@ -58,15 +41,8 @@ const FormObra = ({
     );
   };
 
-  const imagesHasTags = (statePut) => {
+  const imagesHasTags = () => {
     if (images.length > 0) {
-      // if (statePut) {
-      //   images.map((img) => {
-      //     if (img.tags.length == 0) {
-      //       img.tags.push("delete");
-      //     }
-      //   });
-      // }
       const imagesWithoutTags = images.filter((img) => img.tags.length == 0);
       return imagesWithoutTags.length == 0;
     } else {
@@ -81,100 +57,58 @@ const FormObra = ({
 
   const {
     control,
+    register,
     formState: { errors },
     handleSubmit,
   } = useForm(buildingWorkData);
 
-  const hasPreviewImage = () => previewImage.length > 0;
-
-  const hasAnyCategory = () => selectedCategories.length > 0;
-
-  const hasAnyImages = () => {
-    if (images.length > 0) {
-      return images.some((img) => (!img.remove && img.added) || !img.added);
-    }
-  };
-
-  const hasAnyError = (statePut) => {
-    if (!imagesHasTags(statePut)) {
+  const onSubmit = async ({ name, description }, event) => {
+    if (imagesHasTags()) {
+      let data = {
+        previewImage: previewImage[0],
+        images,
+        name,
+        description,
+      };
+      if (previewImage.length > 0) {
+        //aca
+        if (changeState.stateFormObra.post) {
+          const buildingWork = await onAddbuildingWork(data);
+          if (buildingWork) {
+            setPreviewImage([]);
+            event.target.reset();
+            setError("");
+            toggle();
+          }
+        }
+        if (changeState.stateFormObra.put) {
+          const buildingWorkModify = await onSetbuildingWork(
+            data,
+            buildingWorkId
+          );
+          if (buildingWorkModify) {
+            setPreviewImage([]);
+            event.target.reset();
+            setError("");
+            toggle();
+          }
+        }
+      } else {
+        showErrorToLimitTime(
+          t("is-required", {
+            nameRequired: t("preview-image"),
+          })
+        );
+      }
+    } else {
       showErrorToLimitTime(
         t("is-required", {
           nameRequired: t("form-tag.tag"),
         })
       );
-      return true;
-    }
-
-    if (!error && !hasPreviewImage()) {
-      showErrorToLimitTime(
-        t("is-required", {
-          nameRequired: t("preview-image"),
-        })
-      );
-      return true;
-    }
-
-    if (!error && !hasAnyCategory()) {
-      showErrorToLimitTime(
-        t("is-required", {
-          nameRequired: t("categories"),
-        })
-      );
-      return true;
-    }
-
-    if (!hasAnyImages()) {
-      showErrorToLimitTime(
-        t("is-required", {
-          nameRequired: t("carousel-image-creator.images"),
-        })
-      );
-      return true;
-    }
-
-    return false;
-  };
-
-  const onSubmit = async ({ name, description, categories }, event) => {
-    const error = hasAnyError(changeState.stateFormObra.put);
-    if (!error) {
-      let data = {
-        previewImage: previewImage[0],
-        // categories: selectedCategories,
-        categories: [categories],
-        images,
-        name,
-        description,
-      };
-
-      if (changeState.stateFormObra.post) {
-        const buildingWork = await onAddbuildingWork(data);
-        if (buildingWork) {
-          setPreviewImage([]);
-          event.target.reset();
-          setError("");
-          toggle();
-        }
-      }
-
-      if (changeState.stateFormObra.put) {
-        const buildingWorkModify = await onSetbuildingWork(
-          data,
-          buildingWorkId
-        );
-
-        if (buildingWorkModify) {
-          setPreviewImage([]);
-          event.target.reset();
-          setError("");
-          toggle();
-        }
-      }
-
-      dispatch(categoriesActions.setSelectedCategories([]));
     }
   };
-  
+
   return (
     <div>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -283,53 +217,6 @@ const FormObra = ({
                     </Form.Text>
                   )}
                 </Form.Group>
-                {/* <div className="mt-4">
-                  <CategorySelector typeCategory="BUILDING_WORK" />
-                </div>
-                <div className="mt-4">
-                  <CategoryList />
-                </div> */}
-                <Form.Group className={`mb-2`}>
-                  <Form.Label htmlFor="categories">
-                    {t("company-creator.select-category-please")}
-                  </Form.Label>
-                  <Controller
-                    name="categories"
-                    control={control}
-                    rules={{
-                      required: {
-                        value: true,
-                        message: `${t("common:is-required", {
-                          nameRequired: t(
-                            "common:formulary.the-buildingWork-category"
-                          ),
-                        })}`,
-                      },
-                    }}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        inputId={"categories"}
-                        defaultValue={selectedCategoriesDefault}
-                        options={selectedCategories}
-                        getOptionLabel={(option) => `${option?.name}`}
-                        getOptionValue={(option) => `${option?.id}`}
-                        isClearable
-                        className={
-                          "form-field" + (errors.categories ? " has-error" : "")
-                        }
-                      />
-                    )}
-                  />
-                  {errors.categories && (
-                    <Form.Text
-                      variant="danger"
-                      className="invalid error-Form.Label text-danger"
-                    >
-                      {errors.categories.message}
-                    </Form.Text>
-                  )}
-                </Form.Group>
               </Col>
               <Col>
                 <Form.Group>
@@ -386,17 +273,10 @@ const FormObra = ({
       )}
 
       <ModalForm
-        size={"lg"}
-        fullscreen={"lg-down"}
-        className={`Button ${styles.bgModal}`}
+        size={"md"}
+        className={"Button"}
         modalTitle={t("common:add-tags")}
-        formBody={
-          <FormTag
-            image={currentImageTag}
-            toggle={toggleTagModal}
-            tags={tags}
-          />
-        }
+        formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}
         modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
       />
     </div>

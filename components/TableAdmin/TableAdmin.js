@@ -3,7 +3,6 @@ import { InfoCircleFill } from "react-bootstrap-icons";
 import { Alert, Table } from "react-bootstrap";
 import useTranslation from "next-translate/useTranslation";
 import { Form } from "react-bootstrap";
-import AlertCustom from "../Alert/AlertCustom";
 
 const TableAdmin = ({ listHead, listBody, title, onSearch }) => {
   const { t, lang } = useTranslation("common");
@@ -13,7 +12,7 @@ const TableAdmin = ({ listHead, listBody, title, onSearch }) => {
   };
 
   return (
-    <Table hover striped responsive>
+    <Table hover striped>
       <thead>
         <tr className="text-center">
           <th>
@@ -32,12 +31,12 @@ const TableAdmin = ({ listHead, listBody, title, onSearch }) => {
         ) : (
           <tr>
             <td colSpan="8" className="p-0">
-              <AlertCustom themeDark className={"mt-3"}>
+              <Alert variant="primary" className="d-flex justify-content-center gap-2 ">
                 <InfoCircleFill size={25} />
                 {`${t(
                   "table-admin.there-are-not-more"
                 )} ${title.toLowerCase()}`}
-              </AlertCustom>
+              </Alert>
             </td>
           </tr>
         )}

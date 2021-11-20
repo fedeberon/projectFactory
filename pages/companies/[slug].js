@@ -11,7 +11,7 @@ import styles from "./slug.module.css";
 //Components
 import Layout from "../../components/Layout/Layout";
 import MercadopagoButton from "../../components/Buttons/MercadopagoButton/MercadopagoButton";
-import Product from "../../components/ProductList/Product";
+import BuildingWork from "../../components/BuildingWork/BuildingWork";
 import Plans from "../../components/Plans/Plans";
 import PrimaryButton from "../../components/Buttons/PrimaryButton/PrimaryButton";
 import ModalForm from "../../components/ModalForm";
@@ -20,13 +20,13 @@ import ModalForm from "../../components/ModalForm";
 import * as companyService from "../../services/companyService";
 import * as professionalService from "../../services/professionalService";
 import * as userService from "../../services/userService";
-import * as productService from "../../services/productService";
+import * as buildingWorkService from "../../services/buildingWorkService";
 import * as imageService from "../../services/imageService";
 import SeeImagesLiked from "../../components/SeeImagesLiked/SeeImagesLiked";
 
-const CompanyDetails = ({ company, initialProducts, status, session }) => {
+const CompanyDetails = ({ company, initalBuildingWorks, status, session }) => {
   const { t } = useTranslation("common");
-  const [products, setProducts] = useState(initialProducts);
+  const [buildingWorks, setBuildingWorks] = useState(initalBuildingWorks);
   const [amountTokens, setAmountTokens] = useState(-1);
   const [imagesLiked, setImagesLiked] = useState([]);
   const [tabProfile, setTabProfile] = useState(<></>);
@@ -45,11 +45,11 @@ const CompanyDetails = ({ company, initialProducts, status, session }) => {
         <span>{company.description}</span>
         {isOwner() && (
           <div className="mt-4">
-            {/* <MercadopagoButton />
+            <MercadopagoButton />
             <span className="d-block mt-4">{`${t(
               "profile:your-tokens"
               )}: ${tokens}`}</span>
-            <PrimaryButton onClick={toggleModalPlan}>{t("profile:buy-more-tokens")}</PrimaryButton> */}
+            <PrimaryButton onClick={toggleModalPlan}>{t("profile:buy-more-tokens")}</PrimaryButton>
             <div className="mt-4">
               <SeeImagesLiked imagesLiked={liked} />
             </div>
@@ -64,11 +64,11 @@ const CompanyDetails = ({ company, initialProducts, status, session }) => {
     }
   }, [company])
 
-  const productsList = (
+  const buildingWorksList = (
     <Row className="g-2">
-      {products.map((product) => (
-        <Col sm={6} md={6} lg={4} key={product.id}>
-          <Product product={product} />
+      {buildingWorks.map((buildingWork) => (
+        <Col sm={6} md={6} lg={4} key={buildingWork.id}>
+          <BuildingWork buildingWork={buildingWork} />
         </Col>
       ))}
     </Row>
@@ -108,7 +108,7 @@ const CompanyDetails = ({ company, initialProducts, status, session }) => {
 
   return (
     <Layout>
-      <section className="container content">
+      <section className="container py-2">
         <img
           src={company.backgroundImage}
           className={`w-100 ${styles.backgroundImage}`}
@@ -143,7 +143,7 @@ const CompanyDetails = ({ company, initialProducts, status, session }) => {
 
                 <div>
                   <span className={styles.asideTitle}>
-                    {t("categories")}
+                    {t("company-creator.categories")}
                   </span>
                   {company.categories.map((category, index) => (
                     <span key={index} className="d-block">
@@ -158,22 +158,22 @@ const CompanyDetails = ({ company, initialProducts, status, session }) => {
 
             <Col sm={12} md={8} lg={9}>
               <Tabs
-                defaultActiveKey="products"
+                defaultActiveKey="building-works"
                 id="uncontrolled-tab-example"
                 className={`${styles.tabs} mb-3`}
               >
                 <Tab
-                  eventKey="products"
+                  eventKey="building-works"
                   title={
                     <h5>
                       <span className="badge">
-                        {company.countProducts}
+                        {company.countBuildingWorks}
                       </span>{" "}
-                      {t("products")}
+                      {t("buildings")}
                     </h5>
                   }
                 >
-                  <div className={styles.tabContent}>{productsList}</div>
+                  <div className={styles.tabContent}>{buildingWorksList}</div>
                 </Tab>
 
                 <Tab eventKey="profile" title={<h5>{t("header.profile")}</h5>}>
@@ -201,19 +201,17 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
   const split = slug.split("-");
   const companyId = split[split.length - 1];
   const company = await companyService.findById(companyId);
-  const initialProducts = await productService.getAllByCompanyId(
+  const initalBuildingWorks = await buildingWorkService.getAllByCompanyId(
     companyId,
     0,
     10
   );
 
-
-
   const session = await getSession({ req });
   return {
     props: {
       company,
-      initialProducts,
+      initalBuildingWorks,
       status : query.status ? query.status : "",
       session,
     },

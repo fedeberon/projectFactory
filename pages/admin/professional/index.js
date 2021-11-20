@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/client";
 import { Button, Col, Row } from "react-bootstrap";
-import { CheckCircle, PersonCircle, XCircle } from "react-bootstrap-icons";
+import { CheckCircle, XCircle } from "react-bootstrap-icons";
 import useTranslation from "next-translate/useTranslation";
 
 // Components
@@ -230,25 +230,21 @@ const ProfessionalAdmin = ({
    * @returns the body of the table.
    */
   const getList = (professionals, buttons) => {
-    const professionalList = professionals.professionals.map((professional, index) => {
+    const professionalList = professionals.map((professional, index) => {
       return (
         <tr key={index} className="align-middle text-center">
-          <td scope="row">#{index + 1}</td>
+          <td scope="row">{index + 1}</td>
           <td width="150px">
             <figure className="figure mx-auto">
-              {professional.previewImage ? (
-                <img
-                  className="img-fluid rounded"
-                  src={professional.previewImage}
-                  alt=""
-                />
-              ) : (
-                <PersonCircle size={100} />
-              )}
+              <img
+                className="img-fluid rounded"
+                src={professional.previewImage}
+                alt=""
+              />
             </figure>
           </td>
           <td>{professional.contact}</td>
-          <td>{professional?.company?.name}</td>
+          <td>{professional.company.name}</td>
           <td>{professional.email}</td>
           <td>{professional.statusUpdate}</td>
           <td>

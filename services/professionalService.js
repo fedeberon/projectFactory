@@ -7,17 +7,14 @@ export const findAll = async (page, size) => {
   return await API.get(`/professionals?page=${page}&size=${size}`);
 };
 
-export const getById = async (id) => {
+export const getById = async (id, token) => {
+  API.defaults.headers.common["Authorization"] = token;
   return await API.get(`/professionals/${id}`);
-};
-
-export const editById = async (id, data) => {
-  return await API.put(`/professionals/${id}`, data);
 };
 
 export const getByIdWithImages = async (id, page, size, token) => {
   API.defaults.headers.common["Authorization"] = token;
-  const professional = await getById(id);
+  const professional = await getById(id, token);
   const images = await imageService.getProfessionalImages(
     id,
     page,
@@ -85,12 +82,12 @@ export const become = async (data, token) => {
 };
 
 export const updateToken = async (token, userId) => {
-  const professional = await getById(userId);
+  const professional = await getById(userId, token);
   signIn("credentials", {
     accessToken: token,
     name: professional.contact,
     email: professional.email,
-    image: professional.previewImage ? professional.previewImage : "",
+    image: professional.previewImage,
     callbackUrl: `${window.location.origin}/profile`,
   });
 };
@@ -107,57 +104,27 @@ export const setEnebleProfessional = async (id, status, token) => {
   return await API.put(`/professionals/${id}/status/${status}`);
 };
 
+
 export const findByUsernameAndStatus = async (username, status, page, size) => {
-  return await API.get(
-    `/professionals/username/${username}/status/${status}?page=${page}&size=${size}`
-  );
+  return await API.get(`/professionals/username/${username}/status/${status}?page=${page}&size=${size}`);
 };
 
 export const findByContactAndStatus = async (contact, status, page, size) => {
-  return await API.get(
-    `/professionals/contact/${contact}/status/${status}?page=${page}&size=${size}`
-  );
+  return await API.get(`/professionals/contact/${contact}/status/${status}?page=${page}&size=${size}`);
 };
 
-export const setNewTokensToProfessional = async (
-  newTokens,
-  professionalId,
-  token
-) => {
+export const setNewTokensToProfessional = async (newTokens, professionalId, token) => {
   API.defaults.headers.common["Authorization"] = token;
   return await API.put(`/professionals/${professionalId}/tokens/${newTokens}`);
-};
+}
 
 export const generatePreferenceForToken = async (plan, token) => {
   API.defaults.headers.common["Authorization"] = token;
   const backUrl = {
-    success: window.location.href,
-    failure: window.location.href,
-    pending: window.location.href,
-  };
+    success : window.location.href,
+    failure : window.location.href,
+    pending : window.location.href
+  }
   return await API.post(`/mercadopago/plan/${plan}/create-preference`, backUrl);
 };
 
-export const getCount = async (status) => {
-  return await API.get(`/professionals/status/${status}/count`);
-};
-
-export const getAllByCategoryAndStatus = async (
-  status,
-  arrayCategories,
-  page,
-  size
-) => {
-  if (arrayCategories.length == 0) {
-    return findAll(page, size);
-  }
-  let categoriesSeparatedByCommas = "";
-  arrayCategories.map((category, index) => {
-    return (categoriesSeparatedByCommas += `,${category}`);
-  });
-  categoriesSeparatedByCommas = categoriesSeparatedByCommas.substring(1);
-  const encoded = encodeURI(
-    `/professionals/status/${status}/category/${categoriesSeparatedByCommas}?page=${page}&size=${size}`
-  );
-  return await API.get(encoded);
-};

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
 import { Button, Container, Form } from "react-bootstrap";
 import ModalForm from "./ModalForm";
@@ -7,7 +7,7 @@ import InputImages from "./InputImages/InputImages";
 import * as imageService from "../services/imageService";
 import PrimaryButton from "./Buttons/PrimaryButton/PrimaryButton";
 
-const CarouselImageCreator = ({ onGetCarouselImages }) => {
+const CarouselImageCreator = ({ onAddCarouselImages }) => {
   const [modalAddImages, setModalAddImages] = useState(false);
   const [modalAddTitle, setModalAddTitle] = useState(false);
   const [currentImage, setCurrentImage] = useState({});
@@ -19,7 +19,7 @@ const CarouselImageCreator = ({ onGetCarouselImages }) => {
 
   const onAddImages = async () => {
     await imageService.addCaroucelImages(images, session.accessToken);
-    await onGetCarouselImages();
+    await onAddCarouselImages();
     setModalAddImages(false);
   };
 
@@ -35,6 +35,11 @@ const CarouselImageCreator = ({ onGetCarouselImages }) => {
 
     setModalAddTitle(false);
   };
+
+  useEffect(() => {
+    if (modalAddImages) {
+    }
+  }, [modalAddImages]);
 
   return (
     <>
@@ -80,7 +85,9 @@ const CarouselImageCreator = ({ onGetCarouselImages }) => {
               alt="image-selected"
             ></img>
             <Form.Group>
-              <Form.Label htmlFor="input-title">{t("title")}</Form.Label>
+              <Form.Label htmlFor="input-title">
+                {t("carousel-image-creator.title")}
+              </Form.Label>
               <br></br>
               <Form.Control id="input-title" />
               <br></br>

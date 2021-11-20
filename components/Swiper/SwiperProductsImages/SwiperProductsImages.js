@@ -1,33 +1,20 @@
-// Frameworks
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useTranslation from "next-translate/useTranslation";
-
-// Styles
+import SwiperCore, { Autoplay, Pagination, Navigation, Zoom } from "swiper";
+import "swiper/swiper-bundle.css";
+import "swiper/swiper.min.css";
+import "swiper/components/zoom/zoom.min.css";
 import styles from "./SwiperProductsImages.module.css";
-
-// swiper bundle styles
-import "swiper/css/bundle";
-
-// modules styles
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/zoom";
-
-// import "swiper/swiper.min.css";
-// import "swiper/components/zoom/zoom.min.css";
 
 // Custom Hooks
 import useSize from "../../../hooks/window/useSize";
-
-// Modules
-import SwiperCore, { Autoplay, Pagination, Navigation, Zoom } from "swiper";
-SwiperCore.use([Autoplay, Pagination, Navigation, Zoom]);
-
 /**
  * Docs of swiperJS in
  * https://swiperjs.com/react
  */
+
+SwiperCore.use([Autoplay, Pagination, Navigation, Zoom]);
 
 const SwiperProductsImages = (props) => {
   const {

@@ -1,41 +1,26 @@
-// Frameworks
-import React, { useEffect } from "react";
-import { Nav, Navbar, NavDropdown, Row, Col, Dropdown } from "react-bootstrap";
+import React, { useState } from "react";
+import {
+  Nav,
+  Navbar,
+  Container,
+  NavDropdown,
+  Row,
+  Col,
+  Dropdown,
+} from "react-bootstrap";
 import { useRouter } from "next/dist/client/router";
 import useTranslation from "next-translate/useTranslation";
 import { signOut, useSession } from "next-auth/client";
 import Link from "next/link";
-import Image from "next/image";
-import { PersonCircle } from "react-bootstrap-icons";
-import { useDispatch, useSelector } from "react-redux";
-
-// Styles
 import styles from "./NavSearchCel.module.css";
-
-// Components
 import Authentication from "../Authentication/Authentication";
+import Image from "next/image";
+import { PersonCircle, Search } from "react-bootstrap-icons";
 import RolProfile from "../RolProfile";
-
-// Services
 import * as userService from "../../services/userService";
-import * as categoryService from "../../services/categoryService";
-import * as tagService from "../../services/tagService";
 
 export default function NavSearchCel() {
-  const [session] = useSession();
-  const categoriesInitializated = useSelector(
-    (state) => state.categories.initializated
-  );
-  const tagsInitializated = useSelector((state) => state.tags.initializated);
-  const productCategories = useSelector((state) => state.categories.products);
-  const professionalCategories = useSelector(
-    (state) => state.categories.professionals
-  );
-  const buildingWorkCategories = useSelector(
-    (state) => state.categories.buildingWorks
-  );
-  const dispatch = useDispatch();
-
+  const [session, loading] = useSession();
   const { t } = useTranslation("common");
 
   const router = useRouter();
@@ -51,18 +36,6 @@ export default function NavSearchCel() {
     signOut();
   };
 
-  useEffect(async () => {
-    if (!categoriesInitializated) {
-      categoryService.dispatchCategories(dispatch);
-    }
-  }, []);
-
-  useEffect(async () => {
-    if (!tagsInitializated) {
-      tagService.dispatchTags(dispatch);
-    }
-  }, []);
-
   return (
     <>
       <div className={styles.band2}>
@@ -73,81 +46,6 @@ export default function NavSearchCel() {
           >
             <Nav className={`${styles.nav} flex-column m-0 gap-2`}>
               <NavDropdown
-                className="navLink"
-                title={<span className={styles.navLink}> {t("photos")}</span>}
-              >
-                <Link href={`/ideas`} passHref>
-                  <NavDropdown.Item>{t("all")}</NavDropdown.Item>
-                </Link>
-                {buildingWorkCategories.map((category, index) => (
-                  <Link
-                    key={index}
-                    href={`/ideas?categories=${category.name}`}
-                    passHref
-                  >
-                    <NavDropdown.Item>{category.name}</NavDropdown.Item>
-                  </Link>
-                ))}
-              </NavDropdown>
-
-              {/* //TODO: Aqui cambiar a elementos multiples */}
-              <NavDropdown
-                className="navLink"
-                title={
-                  <span className={styles.navLink}> {t("professionals")}</span>
-                }
-              >
-                <Link href={`/professional`} passHref>
-                  <NavDropdown.Item>{t("all")}</NavDropdown.Item>
-                </Link>
-                {professionalCategories.map((category, index) => (
-                  <Link
-                    key={index}
-                    href={`/professional?categories=${category.name}`}
-                    passHref
-                  >
-                    <NavDropdown.Item>{category.name}</NavDropdown.Item>
-                  </Link>
-                ))}
-              </NavDropdown>
-
-              {/* <Link href="/professional" passHref>
-                <Nav.Link>
-                  <span className={styles.navLink}> {t("professionals")}</span>
-                </Nav.Link>
-              </Link> */}
-
-              {/* <Link href="/product" passHref>
-                <Nav.Link>
-                  <span className={styles.navLink}>{t("products")}</span>
-                </Nav.Link>
-              </Link> */}
-
-              <NavDropdown
-                className="navLink"
-                title={<span className={styles.navLink}> {t("products")}</span>}
-              >
-                <Link href={`/product`} passHref>
-                  <NavDropdown.Item>{t("all")}</NavDropdown.Item>
-                </Link>
-                {productCategories.map((category, index) => (
-                  <Link
-                    key={index}
-                    href={`/product?category=${category.name}`}
-                    passHref
-                  >
-                    <NavDropdown.Item>{category.name}</NavDropdown.Item>
-                  </Link>
-                ))}
-              </NavDropdown>
-
-              <Link href="/companies" passHref>
-                <Nav.Link>
-                  <span className={styles.navLink}>{t("companies")}</span>
-                </Nav.Link>
-              </Link>
-
-              {/* <NavDropdown
                 className="navLink"
                 title={
                   <span className={styles.navLink}>{t("professionals")}</span>
@@ -160,13 +58,19 @@ export default function NavSearchCel() {
                 <Link href="/companies" passHref>
                   <NavDropdown.Item>{t("companies")}</NavDropdown.Item>
                 </Link>
-              </NavDropdown> */}
+              </NavDropdown>
 
-              {/* <Link href="/project" passHref>
+              <Link href="/product" passHref>
+                <Nav.Link>
+                  <span className={styles.navLink}>{t("products")}</span>
+                </Nav.Link>
+              </Link>
+
+              <Link href="/project" passHref>
                 <Nav.Link>
                   <span className={styles.navLink}>{t("projects")}</span>
                 </Nav.Link>
-              </Link> */}
+              </Link>
 
               <Link href="/magazine" passHref>
                 <Nav.Link>
@@ -206,10 +110,6 @@ export default function NavSearchCel() {
 
                   <Link href="/admin/building" passHref>
                     <NavDropdown.Item>{t("buildings")}</NavDropdown.Item>
-                  </Link>
-
-                  <Link href="/admin/categories" passHref>
-                    <NavDropdown.Item>{t("categories")}</NavDropdown.Item>
                   </Link>
                 </NavDropdown>
               )}

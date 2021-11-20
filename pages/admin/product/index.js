@@ -230,7 +230,7 @@ const ProductAdmin = ({
     const productsList = products.map((product, index) => {
       return (
         <tr key={index} className="align-middle text-center">
-          <td scope="row">#{index + 1}</td>
+          <td scope="row">{index + 1}</td>
           <td width="150px">
             <figure className="figure mx-auto">
               <img

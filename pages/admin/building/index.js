@@ -191,7 +191,7 @@ const BuildingAdmin = ({
         pageSize.size,
         session?.accessToken
       );
-      return buildingWorksNotAppoved.buildingWorks;
+      return buildingWorksNotAppoved;
     } catch (error) {
       console.error(error);
     }
@@ -205,7 +205,7 @@ const BuildingAdmin = ({
         pageSize.size,
         session?.accessToken
       );
-      return buildingWorksNotApproved.buildingWorks;
+      return buildingWorksNotApproved;
     } catch (error) {
       console.error(error);
     }
@@ -234,7 +234,7 @@ const BuildingAdmin = ({
     const buildingWorksList = buildingWorks.map((buildingWork, index) => {
       return (
         <tr key={index} className="align-middle text-center">
-          <td scope="row">#{index + 1}</td>
+          <td scope="row">{index + 1}</td>
           <td width="150px">
             <figure className="figure mx-auto">
               <img
@@ -255,12 +255,12 @@ const BuildingAdmin = ({
               defaultValue={buildingWork.tokensAsigned}
             />
             <Button
-              onClick={(e) =>
-                setNewTokensToBuildingWork(
-                  e.target.previousElementSibling.value,
-                  buildingWork.id
-                )
-              }
+            onClick={(e) =>
+              setNewTokensToBuildingWork(
+                e.target.previousElementSibling.value,
+                buildingWork.id
+              )
+            }
             >
               {t("apply")}
             </Button>
@@ -455,9 +455,9 @@ export async function getServerSideProps({ params, req, res, locale }) {
 
   return {
     props: {
-      buildingWorksNotApproved: buildingWorksNotApproved.buildingWorks,
-      buildingWorksApproved: buildingWorksApproved.buildingWorks,
-      buildingWorksRejected: buildingWorksRejected.buildingWorks,
+      buildingWorksNotApproved,
+      buildingWorksApproved,
+      buildingWorksRejected,
       session,
     },
   };

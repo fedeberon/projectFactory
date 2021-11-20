@@ -4,11 +4,10 @@ import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 import myProductsStyles from "../../pages/my-products/index.module.css";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
-import styles from "./Product.module.css";
 
 const Product = (props) => {
   const { product } = props;
-  const { t } = useTranslation("common");
+  const { t } = useTranslation("products");
 
   const isNew = (product) => {
     const today = new Date();
@@ -24,20 +23,11 @@ const Product = (props) => {
 
   return (
     <Card>
-      <Link
-        href={`/product/${product.name.replace(/\s+/g, "-").toLowerCase()}-${
-          product.id
-        }`}
-        passHref
-      >
-        <a>
-          <Card.Img
-            className={`img-fluid ${styles.img}`}
-            src={product.previewImage}
-            alt={product.name}
-          />
-        </a>
-      </Link>
+      <Card.Img
+        className="img-fluid"
+        src={product.previewImage}
+        alt={product.name}
+      />
       <Card.Body>
         {isNew(product) && (
           <Card.Text
@@ -55,7 +45,7 @@ const Product = (props) => {
             product.id
           }`}
         >
-          <PrimaryButton>{t("view-more")}</PrimaryButton>
+          <PrimaryButton>{t("common:view-more")}</PrimaryButton>
         </Link>
       </Card.Footer>
     </Card>

@@ -10,19 +10,13 @@ import Error from "../Error";
 import Select from "react-select";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
-import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
-import CategoryList from "../List/CategoryList/CategoryList";
-import CategorySelector from "../CategorySelector/CategorySelector";
-import { useSelector } from "react-redux";
 
 const FormProfessional = ({
   onAddProfessional,
-  onSetProfessional,
   toggle,
   error,
   setError,
   data,
-  changeState,
 }) => {
   const { t } = useTranslation("profile");
   const [previewImage, setPreviewImage] = useState([]);
@@ -31,29 +25,10 @@ const FormProfessional = ({
   const [currentImageTag, setCurrentImageTag] = useState({});
   const [companyOptions, setCompanyOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [profesionalCategoryOptions, setProfesionalCategoryOptions] = useState(
-    []
-  );
   const [optionSelect, setOptionSelect] = useState(true);
-  const [companySelected, setCompanySelected] = useState(null);
+  const [companySelected, setCompanySelected] = useState({});
   const [value, setValue] = useState();
   const [session] = useSession();
-  const selectedCategories = useSelector(
-    (state) => state.categories.selectedCategories
-  );
-  // const [error, setError] = useState("");
-
-  const [timeErrorLive, setTimeErrorLive] = useState(0);
-
-  const showErrorToLimitTime = (error) => {
-    setError(error);
-    clearTimeout(timeErrorLive);
-    setTimeErrorLive(
-      setTimeout(() => {
-        setError("");
-      }, 3000)
-    );
-  };
 
   const {
     control,
@@ -74,7 +49,6 @@ const FormProfessional = ({
       email,
       telephone,
       companyCategory,
-      professionalCategory,
       contactLoad,
       website,
       province,
@@ -85,9 +59,7 @@ const FormProfessional = ({
     // You should handle login logic with firstName, lastName, email, preview and background images and form data
     let data = {
       company: companySelected,
-      categoryCompany: companyCategory,
-      // category: selectedCategories[0],
-      category: professionalCategory,
+      category: companyCategory,
       contact,
       email,
       phoneNumber: telephone,
@@ -98,47 +70,22 @@ const FormProfessional = ({
       province,
       location,
     };
+    const professional = await onAddProfessional(data);
 
-    if (changeState.stateFormProfessional.post) {
-      const professional = await onAddProfessional(data);
-
-      if (professional != null) {
-        setPreviewImage([]);
-        setBackgroundImage([]);
-        event.target.reset();
-        toggle();
-        setError("");
-      }
+    if (professional != null) {
+      setPreviewImage([]);
+      setBackgroundImage([]);
+      event.target.reset();
+      toggle();
+      setError("");
     }
-
-    if (changeState.stateFormProfessional.put) {
-      const professionalModify = await onSetProfessional(data);
-
-      if (professionalModify) {
-        // setPreviewImage([]);
-        event.target.reset();
-        toggle();
-        setError("");
-      } else {
-        showErrorToLimitTime(
-          `${t("common:email-is-already-exist-please-write-another-one")}`
-        );
-      }
-    }
-
-    // } else {
-    //   showErrorToLimitTime(t("the-professional-category-cannot-be-empty"));
-    // }
   };
 
   const toggleTagModal = () => setModalTagOpen(!modalTagOpen);
 
   useEffect(() => {
-    if (data.companies) {
-      setCompanyOptions(data.companies);
-    }
-    if (data.professionalCategories) {
-      setProfesionalCategoryOptions(data.professionalCategories);
+    if (data) {
+      setCompanyOptions(data);
     }
   }, [data]);
 
@@ -161,17 +108,12 @@ const FormProfessional = ({
           <Col>
             <Row>
               <Col className="col-12">
-                {changeState.stateFormProfessional.post && (
-                  <h2>{t("common:formulary.professional-profile")}</h2>
-                )}
-                {changeState.stateFormProfessional.put && (
-                  <h2>{t("common:formulary.professional-profile-edit")}</h2>
-                )}
+                <h2>{t("common:formulary.professional-profile")}</h2>
               </Col>
             </Row>
             <Row className="row-cols-1 row-cols-md-2 row-cols-xl-4 g-3">
               <Col>
-                <Form.Group className={`mb-2`}>
+                <Form.Group>
                   <Form.Label htmlFor="company">
                     {t("common:formulary.company")}
                   </Form.Label>
@@ -180,8 +122,7 @@ const FormProfessional = ({
                     control={control}
                     rules={{
                       required: {
-                        value: false,
-                        // value: optionSelect,
+                        value: optionSelect,
                         message: `${t("common:is-required", {
                           nameRequired: t("common:formulary.the-company"),
                         })}`,
@@ -212,7 +153,7 @@ const FormProfessional = ({
                     </Form.Text>
                   )}
                 </Form.Group>
-                <Form.Group className={`mb-2`}>
+                <Form.Group>
                   <Form.Label htmlFor="contact">
                     {t("common:formulary.contact")}
                   </Form.Label>
@@ -261,7 +202,7 @@ const FormProfessional = ({
                     </Form.Text>
                   )}
                 </Form.Group>
-                <Form.Group className={`mb-2`}>
+                <Form.Group>
                   <Form.Label htmlFor="email">
                     {t("common:formulary.contact-email")}
                   </Form.Label>
@@ -310,7 +251,7 @@ const FormProfessional = ({
                     </Form.Text>
                   )}
                 </Form.Group>
-                <Form.Group className={`mb-2`}>
+                <Form.Group>
                   <Form.Label htmlFor="telephone">
                     {t("common:formulary.telephone")}
                   </Form.Label>
@@ -331,10 +272,10 @@ const FormProfessional = ({
                         })}`,
                       },
                       minLength: {
-                        value: 10,
+                        value: 3,
                         message: `${t("common:cannot-be-less-than-character", {
                           nameInput: t("common:formulary.the-telephone"),
-                          numberCharacters: 10,
+                          numberCharacters: 3,
                         })}`,
                       },
                     })}
@@ -358,7 +299,7 @@ const FormProfessional = ({
                 /> */}
               </Col>
               <Col>
-                <Form.Group className={`mb-2`}>
+                <Form.Group>
                   <Form.Label htmlFor="companyCategory">
                     {t("common:formulary.company-category")}
                   </Form.Label>
@@ -367,8 +308,7 @@ const FormProfessional = ({
                     control={control}
                     rules={{
                       required: {
-                        value: false,
-                        // value: true,
+                        value: true,
                         message: `${t("common:is-required", {
                           nameRequired: t(
                             "common:formulary.the-company-category"
@@ -400,7 +340,7 @@ const FormProfessional = ({
                     </Form.Text>
                   )}
                 </Form.Group>
-                <Form.Group className={`mb-2`}>
+                <Form.Group>
                   <Form.Label htmlFor="contactLoad">
                     {t("common:formulary.contact-charge")}
                   </Form.Label>
@@ -443,7 +383,7 @@ const FormProfessional = ({
                     </Form.Text>
                   )}
                 </Form.Group>
-                <Form.Group className={`mb-2`}>
+                <Form.Group>
                   <Form.Label htmlFor="website">
                     {t("common:formulary.web-page")}
                   </Form.Label>
@@ -458,7 +398,7 @@ const FormProfessional = ({
                     })}
                     {...register("website", {
                       required: {
-                        value: false,
+                        value: true,
                         message: `${t("common:is-required", {
                           nameRequired: t("common:formulary.the-web-page"),
                         })}`,
@@ -481,59 +421,6 @@ const FormProfessional = ({
                       className="invalid error-Form.Label text-danger"
                     >
                       {errors.website.message}
-                    </Form.Text>
-                  )}
-                </Form.Group>
-
-                {/* <Form.Group className={`mb-2`}>
-                  <Form.Label htmlFor="category">
-                    {t("professional-category")}
-                  </Form.Label>
-                  {selectedCategories.length === 0 ? (
-                    <CategorySelector typeCategory="PROFESSIONAL" />
-                  ) : (
-                    <CategoryList />
-                  )}
-                </Form.Group> */}
-
-                <Form.Group className={`mb-2`}>
-                  <Form.Label htmlFor="professionalCategory">
-                    {t("common:formulary.professional-category")}
-                  </Form.Label>
-                  <Controller
-                    name="professionalCategory"
-                    control={control}
-                    rules={{
-                      required: {
-                        value: true,
-                        message: `${t("common:is-required", {
-                          nameRequired: t(
-                            "common:formulary.the-professional-category"
-                          ),
-                        })}`,
-                      },
-                    }}
-                    render={({ field }) => (
-                      <Select
-                        {...field}
-                        inputId={"professionalCategory"}
-                        options={profesionalCategoryOptions}
-                        getOptionLabel={(option) => `${option?.name}`}
-                        getOptionValue={(option) => `${option?.id}`}
-                        isClearable
-                        className={
-                          "form-field" +
-                          (errors.professionalCategory ? " has-error" : "")
-                        }
-                      />
-                    )}
-                  />
-                  {errors.professionalCategory && (
-                    <Form.Text
-                      variant="danger"
-                      className="invalid error-Form.Label text-danger"
-                    >
-                      {errors.professionalCategory.message}
                     </Form.Text>
                   )}
                 </Form.Group>
@@ -571,20 +458,9 @@ const FormProfessional = ({
             </Row>
           </Col>
           <Col>
-            {changeState.stateFormProfessional.post && (
-              <PrimaryButton dark type="submit" variant="primary mt-1">
-                {t("common:send")}
-              </PrimaryButton>
-            )}
-            {changeState.stateFormProfessional.put && (
-              <PrimaryButton
-                dark
-                type="submit"
-                // variant="warning mt-1"
-              >
-                {t("common:modify")}
-              </PrimaryButton>
-            )}
+            <Button type="submit" variant="primary mt-1">
+              {t("common:send")}
+            </Button>
           </Col>
         </Row>
       </Form>
@@ -595,13 +471,7 @@ const FormProfessional = ({
         formBody={<FormTag image={currentImageTag} toggle={toggleTagModal} />}
         modalOpen={{ open: modalTagOpen, function: setModalTagOpen }}
       />
-      {error && (
-        <Row className="mt-2">
-          <Col>
-            <Error error={error} />
-          </Col>
-        </Row>
-      )}
+      {error && <Error error={error} />}
     </div>
   );
 };

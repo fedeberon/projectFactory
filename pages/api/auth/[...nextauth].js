@@ -2,7 +2,6 @@ import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import { signInCallBack } from "../../../services/userService";
 import jwt_decode from "jwt-decode";
-import * as professionalService from "../../../services/professionalService";
 
 const PREFIX = "Bearer ";
 const AUTHORITIES = "authorities";
@@ -28,10 +27,10 @@ export default NextAuth({
       clientSecret: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_SECRET,
     }),
     Providers.Credentials({
-      name: "credentials",
+      name: 'credentials',
       async authorize(credentials) {
         return credentials;
-      },
+      }
     }),
     // ...add more providers here
   ],
@@ -50,7 +49,7 @@ export default NextAuth({
         user.email = `${profile.username}@gmail.com`;
       }
 
-      if (account.type != "credentials") {
+      if (account.type != 'credentials') {
         const token = await signInCallBack(user, account, profile);
         user.token = token;
         return !!token;
@@ -90,14 +89,6 @@ export default NextAuth({
       session.authorities = payload[AUTHORITIES];
       session.user.id = payload[ID];
       session.user.username = payload[USERNAME];
-      const userRole = await whoIAm(session, token);
-      session.user.image = userRole.previewImage;
-      session.user.category = userRole.category;
-      session.user.phoneNumber = userRole.phoneNumber;
-      session.user.categoryCompany = userRole.categoryCompany;
-      session.user.contactLoad = userRole.contactLoad;
-      session.user.website = userRole.website;
-      session.user.company = userRole.company;
       return session;
     },
   },
@@ -105,31 +96,3 @@ export default NextAuth({
   // A database is optional, but required to persist accounts in a database
   database: process.env.DATABASE_URL,
 });
-
-/**
- * Discribe what role has the user, but if this is it a professional
- * needed change imageProfile because the imageProfile is not mandatory
- * in formulary become professional.
- */
-const whoIAm = async (session, token) => {
-  const isRole = (role) => {
-    if (session) {
-      return session.authorities.includes(role);
-    }
-  };
-
-  if (session) {
-    if (isRole("ROLE_PROFESSIONAL")) {
-      const professional = await professionalService.getById(
-        session.user.id,
-        token.accessToken
-      );
-      return professional;
-    } else if (isRole("ROLE_COMPANY")) {
-      // TODO here change imageProfile is you need
-    } else if (isRole("ROLE_USER")) {
-      // TODO here change imageProfile is you need
-    }
-  }
-  return "";
-};
