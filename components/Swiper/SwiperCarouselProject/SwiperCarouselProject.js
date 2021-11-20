@@ -55,7 +55,7 @@ const SwiperCarouselProject = (props) => {
   };
 
   useEffect(() => {
-    if (images) {
+    if (images && images.id != null) {
       const imagesCarousel = images.map((item, index) => {
         return (
           <Carousel.Item className={`${styles.height}`} key={index}>

@@ -13,6 +13,7 @@ export const getProjectImages = async (id, token, page, size) => {
 };
 
 export const increaseVisit = async (image) => {
+  if (image.id == null) return;
   image.seen = true;
   await API.put(`/images/${image.id}/visit`);
 };
