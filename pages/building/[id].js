@@ -121,7 +121,7 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
                     className={`${buildingStyles.boxDeg} p-4 d-flex flex-column gap-2`}
                   >
                     <h3 className={`${buildingStyles.titName}`}>
-                      {data.buildingWork.professional.company.name}
+                      {data.buildingWork.professional.company ? data.buildingWork.professional.company.name : ""}
                     </h3>
                     <h3 className={`${buildingStyles.titProjects}`}>
                       <Badge
@@ -130,8 +130,9 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
                         text="dark"
                       >
                         {
-                          data.buildingWork.professional.company
-                            .countBuildingWorks
+                          data.buildingWork.professional.company ?
+                              data.buildingWork.professional.company.countBuildingWorks
+                              : ""
                         }
                       </Badge>
                       {` Obras`}
@@ -140,21 +141,36 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
                       className={`${buildingStyles.location} p-0 d-flex gap-2`}
                     >
                       <GeoAlt size={15} />
-                      {`${data.buildingWork.professional.company.location}, ${data.buildingWork.professional.company.province}`}
+                      {
+                          data.buildingWork.professional.company
+                        ?
+                          `${data.buildingWork.professional.company.location}, ${data.buildingWork.professional.company.province}`
+                        : ""
+                      }
                     </h3>
 
-                    <Link
-                      href={`/companies/${data.buildingWork.name
-                        .replace(/\s+/g, "-")
-                        .toLowerCase()}-${
-                        data.buildingWork.professional.company.id
-                      }`}
-                      passHref
-                    >
-                      <PrimaryButton className={`me-auto`}>
-                        {t("view-more")}
-                      </PrimaryButton>
-                    </Link>
+
+                    {
+                      data.buildingWork.professional.company
+                        ?
+                        <>
+                          <Link
+                              href={`/companies/${data.buildingWork.name
+                                  .replace(/\s+/g, "-")
+                                  .toLowerCase()}-${
+                                  data.buildingWork.professional.company.id
+                              }`}
+                              passHref
+                          >
+                            <PrimaryButton className={`me-auto`}>
+                              {t("view-more")}
+                            </PrimaryButton>
+                          </Link>
+                        </>
+                       :
+                       <></>
+                    }
+
                   </Col>
                 </Col>
               </Row>
