@@ -5,11 +5,20 @@ import styles from "./OffCanvasFilter.module.css";
 import useTranslation from "next-translate/useTranslation";
 import FilterList from "../../FilterList/FilterList";
 import PrimaryButton from "../../Buttons/PrimaryButton/PrimaryButton";
+import { useSelector } from "react-redux";
 
 const OffCanvasFilter = (props) => {
-  const { filters, appliedFilters, setAppliedFilters } = props;
+  const { filters, appliedFilters, setAppliedFilters, resetPage, classNameButton } = props;
   const [show, setShow] = useState(false);
   let { t } = useTranslation("common");
+
+  const buildingWorkCategories = useSelector(
+    (state) => state.categories.buildingWorks
+  );
+
+  const destructuringCategories = buildingWorkCategories.map((nameFilter) => {
+    return nameFilter.name;
+  });
 
   const handleToggle = () => {
     setShow((show) => !show);
@@ -17,7 +26,7 @@ const OffCanvasFilter = (props) => {
 
   return (
     <>
-      <PrimaryButton onClick={handleToggle}>
+      <PrimaryButton onClick={handleToggle} className={classNameButton}>
         <Funnel size={15} /> {t("filter")}
       </PrimaryButton>
 
@@ -29,9 +38,10 @@ const OffCanvasFilter = (props) => {
           <Col xs={12}>
             <aside>
               <FilterList
-                filters={filters}
+                filters={destructuringCategories}
                 appliedFilters={appliedFilters}
                 setAppliedFilters={setAppliedFilters}
+                handleToggle={handleToggle}
               />
             </aside>
           </Col>

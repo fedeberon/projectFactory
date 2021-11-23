@@ -4,20 +4,24 @@ import { Button, Row, Col, Form } from "react-bootstrap";
 import ModalForm from "../ModalForm";
 import useTranslation from "next-translate/useTranslation";
 import * as companyService from "../../services/companyService";
-import companyCreatorStyles from "./CompanyCreator.module.css";
-import TagList from "../TagList/TagList";
+import CategoryList from "../List/CategoryList/CategoryList";
 import Error from "../../components/Error";
 import Dropzone from "../Dropzone/Dropzone";
 import { useForm } from "react-hook-form";
 import { Building } from "react-bootstrap-icons";
+import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
+import CategorySelector from "../CategorySelector/CategorySelector";
+import { useDispatch, useSelector } from "react-redux";
+import { categoriesActions } from "../../store";
 
 const CompanyCreator = () => {
+  const dispatch = useDispatch();
   const [modalCompany, setModalCompany] = useState(false);
   const [session] = useSession();
   const { t } = useTranslation("common");
   const [previewImage, setPreviewImage] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState([]);
-  const [tagsCategories, setTagsCategories] = useState([]);
+  const selectedCategories = useSelector(state => state.categories.selectedCategories);
   const [error, setError] = useState("");
   const [timeErrorLive, setTimeErrorLive] = useState(0);
 
@@ -31,69 +35,33 @@ const CompanyCreator = () => {
     );
   };
 
-  const isEqual = (tag) => {
-    for (const elem of tagsCategories) {
-      if (elem.tag === tag.tag.toLowerCase()) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  const removeTagCategory = (tagCategory) => {
-    const newTagsCategories = Array.from(tagsCategories);
-    const index = newTagsCategories.indexOf(tagCategory);
-    if (index > -1) {
-      newTagsCategories.splice(index, 1);
-      setTagsCategories(newTagsCategories);
-    }
-  };
-
   const toggle = () => setModalCompany(!modalCompany);
 
-  const AddCategory = () => {
-    const category = document
-      .querySelector("#category")
-      .value.toLowerCase()
-      .trim();
-    const parse = { tag: category };
-    if (category !== "") {
-      if (!isEqual(parse)) {
-        const newTagsCategories = Array.from(tagsCategories);
-        newTagsCategories.push(parse);
-        setTagsCategories(newTagsCategories);
-      } else {
-        showErrorToLimitTime(
-          t("company-creator.already-exists", {
-            fieldName: t("company-creator.the-category"),
-          })
-        );
-      }
-    } else {
-      showErrorToLimitTime(
-        t("company-creator.cannot-be-empty", {
-          fieldName: t("company-creator.the-category"),
-        })
-      );
-    }
-  };
-
   const {
-    control,
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
   const onSubmit = async (
-    { name, email, contact, contactLoad, website, province, location, description },
-    event
+    {
+      name,
+      email,
+      telephone,
+      contact,
+      contactLoad,
+      website,
+      province,
+      location,
+      description,
+    }
   ) => {
-    name = name.toLowerCase().trim();
+    name = name.trim();
     // You should handle login logic with name, preview and background images and form data
     let data = {
       name,
       email,
+      phoneNumber: telephone,
       contact,
       description,
       contactLoad,
@@ -104,18 +72,17 @@ const CompanyCreator = () => {
 
     if (name !== "") {
       if (previewImage.length != 0 && backgroundImage.length != 0) {
-        if (tagsCategories.length > 0) {
+        if (selectedCategories.length > 0) {
           await companyService.create(
             data,
             previewImage[0],
             backgroundImage[0],
-            tagsCategories,
+            selectedCategories,
             session?.accessToken,
             session.user.id
           );
-          setTagsCategories([]);
-          setPreviewImage([]);
           toggle();
+          dispatch(categoriesActions.setSelectedCategories([]));
         } else {
           showErrorToLimitTime(
             t("company-creator.cannot-be-empty", {
@@ -143,12 +110,12 @@ const CompanyCreator = () => {
     <>
       <Button variant="dark" onClick={toggle}>
         <Building size={25} />
-        {` `}
         {t("profile:become-in-a-company")}
       </Button>
 
       <ModalForm
         size={"xl"}
+        fullscreen={"lg-down"}
         className={"Button"}
         modalTitle={t("company-creator.add-company")}
         formBody={
@@ -164,7 +131,7 @@ const CompanyCreator = () => {
                 </Col>
               </Row>
               <Row className="g-3">
-                <Col className="col-6">
+                <Col className="col-12 col-md-6">
                   <Form.Group>
                     <Form.Label htmlFor="company">
                       {t("company-creator.company-name")}
@@ -206,46 +173,44 @@ const CompanyCreator = () => {
                   </Form.Group>
 
                   <Form.Group>
-                    <Form.Label htmlFor="description">{t("description")}</Form.Label>
-                        <Form.Control
-                          type="textarea"
-                          id="description"
-                          rows="10"
-                          cols="50"
-                          placeholder={`${t("write-the-here-please", {
-                            namePlaceholder: t("the-description").toLowerCase(),
-                          })}`}
-                          className={
-                            "form-field" +
-                            (errors.description ? " has-error" : "")
-                          }
-                          style={{ resize: "none" }}
-                          {...register("description", {
-                            required: {
-                              value: true,
-                              message: `${t("is-required", {
-                                nameRequired: t("the-description"),
-                              })}`,
-                            },
-                            minLength: {
-                              value: 3,
-                              message: `${t("cannot-be-less-than-character", {
-                                nameInput: t("the-description"),
-                                numberCharacters: 3,
-                              })}`,
-                            },
-                            maxLength: {
-                              value: 255,
-                              message: `${t("cannot-be-more-than-character", {
-                                nameInput: t("description").toLowerCase(),
-                                numberCharacters: 255,
-                              })}`,
-                            }
-                          })}
-                          className={
-                            "form-field" + (errors.name ? " has-error" : "")
-                          }
-                        />
+                    <Form.Label htmlFor="description">
+                      {t("description")}
+                    </Form.Label>
+                    <Form.Control
+                      type="textarea"
+                      id="description"
+                      rows="10"
+                      cols="50"
+                      placeholder={`${t("write-the-here-please", {
+                        namePlaceholder: t("the-description").toLowerCase(),
+                      })}`}
+                      className={
+                        "form-field" + (errors.description ? " has-error" : "")
+                      }
+                      style={{ resize: "none" }}
+                      {...register("description", {
+                        required: {
+                          value: true,
+                          message: `${t("is-required", {
+                            nameRequired: t("the-description"),
+                          })}`,
+                        },
+                        minLength: {
+                          value: 3,
+                          message: `${t("cannot-be-less-than-character", {
+                            nameInput: t("the-description"),
+                            numberCharacters: 3,
+                          })}`,
+                        },
+                        maxLength: {
+                          value: 255,
+                          message: `${t("cannot-be-more-than-character", {
+                            nameInput: t("description").toLowerCase(),
+                            numberCharacters: 255,
+                          })}`,
+                        },
+                      })}
+                    />
                     {errors.description && (
                       <Form.Text
                         variant="danger"
@@ -271,7 +236,7 @@ const CompanyCreator = () => {
                       })}
                       {...register("website", {
                         required: {
-                          value: true,
+                          value: false,
                           message: `${t("is-required", {
                             nameRequired: t("common:formulary.the-web-page"),
                           })}`,
@@ -422,8 +387,52 @@ const CompanyCreator = () => {
                       </Form.Text>
                     )}
                   </Form.Group>
+                  <Form.Group>
+                    <Form.Label htmlFor="telephone">
+                      {t("common:formulary.telephone")}
+                    </Form.Label>
+                    <Form.Control
+                      type="tel"
+                      name="telephone"
+                      id="telephone"
+                      placeholder={t("common:write-the-here-please", {
+                        namePlaceholder: t(
+                          "common:formulary.the-telephone"
+                        ).toLowerCase(),
+                      })}
+                      {...register("telephone", {
+                        required: {
+                          value: true,
+                          message: `${t("common:is-required", {
+                            nameRequired: t("common:formulary.the-telephone"),
+                          })}`,
+                        },
+                        minLength: {
+                          value: 10,
+                          message: `${t(
+                            "common:cannot-be-less-than-character",
+                            {
+                              nameInput: t("common:formulary.the-telephone"),
+                              numberCharacters: 10,
+                            }
+                          )}`,
+                        },
+                      })}
+                      className={
+                        "form-field" + (errors.telephone ? " has-error" : "")
+                      }
+                    />
+                    {errors.telephone && (
+                      <Form.Text
+                        variant="danger"
+                        className="invalid error-Form.Label text-danger"
+                      >
+                        {errors.telephone.message}
+                      </Form.Text>
+                    )}
+                  </Form.Group>
                 </Col>
-                <Col className="col-6">
+                <Col className="col-12 col-md-6">
                   <Form.Group>
                     <Form.Label htmlFor="logo">
                       {t("company-creator.select-logo")}
@@ -455,25 +464,20 @@ const CompanyCreator = () => {
                   </Form.Group>
                 </Col>
 
-                <Col className="col-auto">
+                <Col className="col-12 order-1 order-md-2">
                   <Form.Group>
                     <Form.Label>
                       {t("company-creator.select-categories-please")}
                     </Form.Label>
-                    <Col className="col-12 d-flex">
-                      <Form.Control type="text" id="category" />
-                      <Button className="mx-4" onClick={AddCategory}>
-                        {t("company-creator.add-category")}
-                      </Button>
-                    </Col>
-                    <Col className="col-auto">
-                      <div className="my-3">
-                        <TagList
-                          tags={tagsCategories}
-                          onDeleteTag={removeTagCategory}
-                        />
-                      </div>
-                    </Col>
+
+                    <Row className="row-cols-1 row-cols-md-2 gap-2 gap-md-0">
+                      <Col className="col-12 col-md-6">
+                        <CategorySelector typeCategory="COMPANY"/>
+                      </Col>
+                      <Col className="col-auto col-md-6">
+                        <CategoryList/>
+                      </Col>
+                    </Row>
                   </Form.Group>
                 </Col>
               </Row>
@@ -571,10 +575,10 @@ const CompanyCreator = () => {
                 </Col>
               </Row>
               <Row>
-                <Col>
-                  <Button type="submit" variant="primary mt-1">
+                <Col className="mt-2">
+                  <PrimaryButton dark type="submit" variant="primary mt-1">
                     {t("company-creator.add-company")}
-                  </Button>
+                  </PrimaryButton>
                 </Col>
               </Row>
               {error && (

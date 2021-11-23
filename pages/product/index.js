@@ -1,9 +1,9 @@
 //Frameworks
 import React from "react";
-import { getSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { Row, Col } from "react-bootstrap";
+import { useSelector } from 'react-redux';
 
 //Components
 import Layout from "../../components/Layout/Layout";
@@ -14,28 +14,33 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import * as productService from "../../services/productService";
 import ContentHeader from "../../components/ContentHeader/ContentHeader";
 
-
 const Product = (props) => {
-  const { data, categories, category } = props;
+  const { data, category } = props;
+  const categories = useSelector(state => state.categories.products);
   const { t } = useTranslation("common");
 
   return (
     <Layout>
-      <section className="container">
+      <section className="container content">
         <Row>
           <Sidebar>
             <h3>{t("products")}</h3>
             <ul>
-              {categories.map((category, index) =>
+              {categories.map((category, index) => (
                 <li key={index}>
-                  <Link href={`/product?category=${category.name.replace(/\s+/g, "-")}`}>
+                  <Link
+                    href={`/product?category=${category.name.replace(
+                      /\s+/g,
+                      "-"
+                    )}`}
+                  >
                     <a>{category.name}</a>
                   </Link>
                 </li>
-              )}
+              ))}
             </ul>
           </Sidebar>
-          
+
           <Col sm={12} md={8} lg={9}>
             <ContentHeader title={category != "" ? category : t("products")} />
 
@@ -47,10 +52,8 @@ const Product = (props) => {
   );
 };
 
-export async function getServerSideProps({ params, req, res, locale, query }) {
+export async function getServerSideProps({ req, query }) {
   // Get the user's session based on the request
-  const session = await getSession({ req });
-  
   let products = [];
   let { page, size } = req.__NEXT_INIT_QUERY;
   let status = "APPROVED";
@@ -62,18 +65,20 @@ export async function getServerSideProps({ params, req, res, locale, query }) {
   }
   let category;
   if (query.category) {
-    category = query.category.replace("-", " ");
-    products = await productService.findAllByCategory(status, category, page, size)
+    category = query.category.replace(/-/g, " ");
+    products = await productService.findAllByCategory(
+      status,
+      category,
+      page,
+      size
+    );
   } else {
     products = await productService.findAll(status, page, size);
   }
-  const categories = await productService.findAllCategories(page, size);
-
   return {
     props: {
       data: products,
-      categories,
-      category : category ? category : "",
+      category: category ? category : "",
     },
   };
 }

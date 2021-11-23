@@ -15,7 +15,7 @@ const ContactUs = () => {
 
   return (
     <Layout title={`${t("common:contact")}`}>
-      <section className="container py-2">
+      <section className="container content">
         <Row className="d-flex justify-content-center">
           <Col xs={6}>
             <b><p>hola@fabricadeproyectos.com</p>

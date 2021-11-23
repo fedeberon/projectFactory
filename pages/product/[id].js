@@ -59,7 +59,7 @@ const ProductDetail = (props) => {
 
   return (
     <Layout>
-      <Container className="py-5">
+      <Container className="content">
         <Row className="w-100 gap-2 gap-lg-0 m-0">
           <Col className="col-sm-12 col-md-12 col-lg-9 order-lg-2">
             <Row
@@ -91,19 +91,19 @@ const ProductDetail = (props) => {
                 </h2>
                 <Col>
                   <p>{data.product.description}</p>
-                  <p>{`${t("price")}: $${data.product.price}`}</p>
+                  {/* <p>{`${t("price")}: $${data.product.price}`}</p> */}
                   <p>
                     {t("width")}: {data.product.width} cm / {t("height")}:{" "}
-                    {data.product.height} cm / {t("depth")}:{data.product.depth}{" "}
+                    {data.product.height} cm / {t("depth")}{" "}:{data.product.depth}{" "}
                     cm
                   </p>
                 </Col>
                 <Col>
                   <div className="d-grid gap-2 w-50">
                     <PrimaryButton dark style={{ width: "200px" }}>
-                      <Envelope size={15} /> {t("consult")}
+                      <Envelope size={20} /> {t("consult")}
                     </PrimaryButton>
-                    {session ? (
+                    {/* {session ? (
                       <PrimaryButton
                         onClick={() => buyProduct(data.product.id)}
                         style={{ width: "200px" }}
@@ -111,12 +111,14 @@ const ProductDetail = (props) => {
                         {t("buy-online")}
                       </PrimaryButton>
                     ) : (
+                      <>
                       <Link href="/logIn">
                         <PrimaryButton style={{ width: "200px" }}>
                           {t("buy-online")}
                         </PrimaryButton>
                       </Link>
-                    )}
+                      </>
+                    )} */}
                     {status == "approved" && (
                       <div className="alert alert-success" role="alert">
                         {`${t("product-purchased")}`}
@@ -141,9 +143,9 @@ const ProductDetail = (props) => {
               </h3>
               <h3 className={`${productStyle.titProjects}`}>
                 <Badge className={`${productStyle.badge}`} bg="" text="dark">
-                  {data.product.company.countBuildingWorks}
+                  {data.product.company.countProducts}
                 </Badge>
-                {` Obras`}
+                {t("products")}
               </h3>
               <h3 className={`${productStyle.location} p-0 d-flex gap-2`}>
                 <GeoAlt size={15} />

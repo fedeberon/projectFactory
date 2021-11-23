@@ -29,5 +29,8 @@
     "increased-visibility": "Increased visibility",
     "amount-tokens": "Amount of tokens",
     "price": "Price"
-  }
+  },
+  
+  "professional-category": "Professional Category",
+  "the-professional-category-cannot-be-empty": "The professional category cannot be empty"
 }

@@ -4,7 +4,12 @@ import useTranslation from "next-translate/useTranslation";
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 import TagCreator from "../TagCreator";
 
-const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
+const FilterList = ({
+  filters,
+  appliedFilters,
+  setAppliedFilters,
+  handleToggle,
+}) => {
   const { t } = useTranslation("common");
   const [tags, setTags] = useState([]);
   const [activeState, setActiveState] = useState("");
@@ -14,7 +19,7 @@ const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
   }, [filters]);
 
   const isActive = (filterBtn) => {
-    return appliedFilters.some((filter) => filter.tag === filterBtn.tag);
+    return appliedFilters.some((filter) => filter === filterBtn);
   };
 
   const onClickFilter = (filter, event) => {
@@ -27,9 +32,11 @@ const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
   };
 
   const addFilter = (filter) => {
-    const newAppliedFilters = Array.from(appliedFilters);
-    newAppliedFilters.push(filter);
-    setAppliedFilters(newAppliedFilters);
+    // const newAppliedFilters = Array.from(appliedFilters);
+    // newAppliedFilters.push(filter);
+    // setAppliedFilters(newAppliedFilters);
+    setAppliedFilters([filter]);
+    handleToggle();
   };
 
   const removeFilter = (filter) => {
@@ -47,14 +54,14 @@ const FilterList = ({ filters, appliedFilters, setAppliedFilters }) => {
         <ListGroupItem
           tag="button"
           action
-          key={filter.tag}
+          key={filter}
           className={isActive(filter) ? "active" : ""}
           onClick={(event) => onClickFilter(filter, event)}
         >
-          {filter.tag}
+          {filter}
         </ListGroupItem>
       ))}
-      <TagCreator tags={tags} setTags={setTags} />
+      {/* <TagCreator tags={tags} setTags={setTags} /> */}
     </ListGroup>
   );
 };
