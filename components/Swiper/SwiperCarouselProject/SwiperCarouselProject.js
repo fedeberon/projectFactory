@@ -42,8 +42,7 @@ const SwiperCarouselProject = (props) => {
   const [selectImage, setSelectImage] = useState("");
   const [swiper, setSwiper] = useState(null);
 
-  const { images, imageOpen, setAppliedFilters, setCurrentImageId, reset } =
-    props;
+  const { images, imageOpen, setAppliedFilters, setCurrentImageId, reset } = props;
 
   const toggle = () => {
     showModalImage(!modalImage);
@@ -100,7 +99,12 @@ const SwiperCarouselProject = (props) => {
   const setCurrentImage = (image) => {
     setCurrentImageId(image.id);
     setAppliedFilters(image.tags);
-    if (!image.seen) imageService.increaseVisit(image);
+
+    /* Action not available
+    if (!image.seen) {
+      imageService.increaseVisit(image)
+    };
+    */
   };
 
   return (
