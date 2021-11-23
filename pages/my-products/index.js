@@ -2,16 +2,18 @@ import React, { useEffect, useState } from "react";
 import { getSession, useSession } from "next-auth/client";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
-import { Card, Col, Row, Button, Dropdown } from "react-bootstrap";
+import { Card, Col, Row, Dropdown } from "react-bootstrap";
 import {
-  PlusSquareDotted,
   ThreeDotsVertical,
   PencilSquare,
   XCircle,
   ExclamationCircle,
   Check2Circle,
+  PlusCircleDotted,
 } from "react-bootstrap-icons";
 import FormProduct from "../../components/FormProduct/FormProduct";
+import { useDispatch, useSelector } from "react-redux";
+import { categoriesActions } from "../../store";
 
 //Components
 import ModalForm from "../../components/ModalForm";
@@ -25,6 +27,7 @@ import * as productService from "../../services/productService";
 
 // Styles
 import indexStyles from "./index.module.css";
+import ButtonFixed from "../../components/Buttons/ButtonFixed/ButtonFixed";
 
 const CustomButtonTogle = ({ id, editProduct }) => {
   return (
@@ -78,6 +81,7 @@ const MyProducts = (props) => {
       categories: [],
     },
   });
+  const dispatch = useDispatch();
 
   useEffect(async () => {
     if (products) {
@@ -138,6 +142,13 @@ const MyProducts = (props) => {
     toggleModalProducts();
   };
 
+  useEffect(() => {
+    if (productData) {
+      const categories = productData.defaultValues.categories;
+      dispatch(categoriesActions.setSelectedCategories(categories));
+    }
+  }, [toggleModalProducts]);
+
   const onEditGetProducts = async (id) => {
     try {
       let dataImages = await imageService.getImagesByProductId(
@@ -168,6 +179,7 @@ const MyProducts = (props) => {
         categories: [],
       },
     };
+    dispatch(categoriesActions.setSelectedCategories([]));
     setProductData(defaultValues);
     setImages([]);
     setPreviewImage([]);
@@ -181,7 +193,6 @@ const MyProducts = (props) => {
           data,
           session.accessToken
         );
-
         const productReload = await productService.findMyProducts(
           pageSize.page,
           pageSize.size,
@@ -287,12 +298,15 @@ const MyProducts = (props) => {
 
   return (
     <Layout>
-      <section className="container py-2">
+      <section className="container content">
         <Row className="row-cols-2 g-2">
           <Col className="col-auto">
-            <Button variant="outline-primary" onClick={openModalProduct}>
+            {/* <Button variant="outline-primary" onClick={openModalProduct}>
               <PlusSquareDotted size={100} />
-            </Button>
+            </Button> */}
+            <ButtonFixed onClick={openModalProduct}>
+              <PlusCircleDotted size={50} />
+            </ButtonFixed>
           </Col>
           <Col className="col-12">{imagesCard}</Col>
         </Row>
@@ -358,14 +372,12 @@ export async function getServerSideProps({ params, req, res, locale }) {
       size,
       session.accessToken
     );
-  
 
     return {
       props: {
         data,
       },
     };
-
   } catch (e) {
     return {
       redirect: {

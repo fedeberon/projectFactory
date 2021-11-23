@@ -3,7 +3,7 @@ import Layout from "../../components/Layout/Layout";
 import useTranslation from "next-translate/useTranslation";
 import LogInForm from "../../components/LogInForm";
 import { getSession, signOut } from "next-auth/client";
-import * as userService from '../../services/userService';
+import * as userService from "../../services/userService";
 
 const LogIn = (props) => {
   const { expiredToken } = props;
@@ -14,13 +14,11 @@ const LogIn = (props) => {
       userService.clearData();
       signOut();
     }
-  }, [])
+  }, []);
 
   return (
-    <Layout title={t("log-in")} header={false} footer={false}>
-      <section className="container py-2">
-        <LogInForm />
-      </section>
+    <Layout header={false} footer={false}>
+      <LogInForm />
     </Layout>
   );
 };
@@ -28,7 +26,7 @@ const LogIn = (props) => {
 export async function getServerSideProps({ params, req, query, res, locale }) {
   // Get the user's session based on the request
   const session = await getSession({ req });
-  const expiredToken = query.expired == '' && session;
+  const expiredToken = query.expired == "" && session;
 
   if (session && !expiredToken) {
     return {
@@ -40,7 +38,7 @@ export async function getServerSideProps({ params, req, query, res, locale }) {
   }
 
   return {
-    props: {expiredToken},
+    props: { expiredToken },
   };
 }
 

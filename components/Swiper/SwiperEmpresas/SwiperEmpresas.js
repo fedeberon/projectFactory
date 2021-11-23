@@ -1,24 +1,36 @@
+// Frameworks
 import React, { useEffect, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
-import "swiper/swiper-bundle.css";
-import styles from "./SwiperEmpresas.module.css";
 import Link from "next/link";
 import { Col, Row } from "react-bootstrap";
 
+//Styles
+import styles from "./SwiperEmpresas.module.css";
+
+// swiper bundle styles
+import "swiper/css/bundle";
+
+// modules styles
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
 // Custom Hooks
 import useSize from "../../../hooks/window/useSize";
+
+// Components
 import PrimaryButton from "../../Buttons/PrimaryButton/PrimaryButton";
+
+// Modules
+import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
+SwiperCore.use([Autoplay, Pagination, Navigation]);
+
 /**
  * Docs of swiperJS in
  * https://swiperjs.com/react
  */
 
-SwiperCore.use([Autoplay, Pagination, Navigation]);
-
 const SwiperEmpresas = (props) => {
-
   const { t } = useTranslation("common");
 
   const {
@@ -43,7 +55,7 @@ const SwiperEmpresas = (props) => {
   }, [width]);
 
   return (
-    <div className="container">
+    <div className={`container ${styles.body}`}>
       <Swiper
         spaceBetween={30}
         slidesPerView={slidesPerViewLocal}
@@ -61,9 +73,9 @@ const SwiperEmpresas = (props) => {
                 <Row className="row-cols-1">
                   <Col>
                     <Link
-                      href={`/companies/${company.name.replace(/\s+/g, "-").toLowerCase()}-${
-                        company.id
-                      }`}
+                      href={`/companies/${company.name
+                        .replace(/\s+/g, "-")
+                        .toLowerCase()}-${company.id}`}
                       passHref
                     >
                       <a className={styles.ancor}>
@@ -86,24 +98,36 @@ const SwiperEmpresas = (props) => {
                       </a>
                     </Link>
                   </Col>
-                  <Col className={"d-flex justify-content-between"}>
-                    <Col className={"col-auto m-2"}>
-                      <div className={`${styles.blockAndWeight} fw-bold`}>
-                        {company.contact}
-                      </div>
-                      {company.categories[0].name}
-                    </Col>
-                    <Col className={"col-auto m-2"}>
-                      <Link
-                        href={`/companies/${company.name.replace(
-                          /\s+/g,
-                          "-"
-                        ).toLowerCase()}-${company.id}`}
-                        passHref
+                  {/* <Col className={"d-flex justify-content-between "}> */}
+                  <Col>
+                    <Row className={`justify-content-between ${styles.info}`}>
+                      <Col
+                        className={`col-5 col-sm-6 col-md-7 col-lg-6 col-xl-8`}
                       >
-                        <PrimaryButton>{t("common:view-more")}</PrimaryButton>
-                      </Link>
-                    </Col>
+                        <strong
+                          className={`${styles.blockAndWeight} ${styles.strong} ${styles.maxTextLength} fw-bold`}
+                        >
+                          {company.contact}
+                        </strong>
+                        <div
+                          className={`${styles.name} ${styles.maxTextLength}`}
+                        >
+                          {company.categories[0].name}
+                        </div>
+                      </Col>
+                      <Col
+                        className={`col-auto col-sm-auto col-md-5 col-lg-6 col-xl-4`}
+                      >
+                        <Link
+                          href={`/companies/${company.name
+                            .replace(/\s+/g, "-")
+                            .toLowerCase()}-${company.id}`}
+                          passHref
+                        >
+                          <PrimaryButton>{t("common:view-more")}</PrimaryButton>
+                        </Link>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </div>

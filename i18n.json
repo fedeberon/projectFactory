@@ -13,9 +13,12 @@
     "/admin/company": ["administrator"],
     "/admin/product": ["administrator"],
     "/admin/building": ["administrator"],
+    "/admin/categories": ["administrator"],
+    "/admin/tags": ["administrator"],
     "/admin": ["administrator"],
     "/policies":["policies"],
-    "/product":["products"],
+    "/magazine": ["magazine"],
+    "/magazine/create-magazine": ["magazine"],
     "/companies/[slug]":["profile"]
   }
 }
