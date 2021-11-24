@@ -57,7 +57,6 @@ class MyDocument extends Document {
             content="default"
           />
 
-          {/* pedido por fede
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
@@ -71,7 +70,7 @@ class MyDocument extends Document {
           <link
             href="https://fonts.googleapis.com/css2?family=Overpass:wght@200;300;400;600;700;800;900&display=swap"
             rel="stylesheet"
-          /> */}
+          />
         </Head>
         <body>
           <Main />
