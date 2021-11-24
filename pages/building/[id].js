@@ -124,20 +124,12 @@ const BuildingDetail = ({ data, session, imageClicked }) => {
         {/* {isLoadingSwiper ? (
           <SpinnerCustom center />
         ) : ( */}
-        {imageClicked ? (
           <SwiperCarouselProject
             setAppliedFilters={setAppliedFilters}
             setCurrentImageId={setCurrentImageId}
             images={imagenes}
             reset={reset}
           />
-        ) : (
-          <Row className={`m-4 justify-content-center text-center`}>
-            <Col xs={6}>
-              <h1>{t("the-images-buldingWork-is-not-approved")}</h1>
-            </Col>
-          </Row>
-        )}
         <Row>
           <Col>
             <div className={`${styles.contPhotoInfo}`}>
