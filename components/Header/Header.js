@@ -1,25 +1,26 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
-  Navbar,
-  InputGroup,
-  Col,
-  Row,
-  Dropdown,
-  Form,
-  DropdownButton,
+  Button,
   ButtonGroup,
+  Col,
+  Dropdown,
+  DropdownButton,
+  Form,
+  InputGroup,
+  Modal,
+  Navbar,
+  Row,
 } from "react-bootstrap";
 import Authentication from "../Authentication/Authentication";
-import { useRouter } from "next/dist/client/router";
+import {useRouter} from "next/dist/client/router";
 import useTranslation from "next-translate/useTranslation";
-import { signOut, useSession } from "next-auth/client";
-import { Globe, PersonCircle, Search, Translate } from "react-bootstrap-icons";
+import {signOut, useSession} from "next-auth/client";
+import {Globe, PersonCircle} from "react-bootstrap-icons";
 
 import Link from "next/link";
 import Image from "next/image";
 import SuggestionsSearch from "../SuggestionsSearch/SuggestionsSearch";
 import * as professionalService from "../../services/professionalService";
-import * as buildingWorkService from "../../services/buildingWorkService";
 import * as userService from "../../services/userService";
 import * as imageService from "../../services/imageService";
 import styles from "./Header.module.css";
@@ -32,9 +33,7 @@ import OffCanvasMenuCel from "../OffCanvas/OffCanvasMenuCel";
 import useSize from "../../hooks/window/useSize";
 
 // Services
-import * as tagService from "../../services/tagService";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
-import Logo from "./logo";
 
 export default function Header(props) {
   const { navSearch, finder, authentication } = props;
@@ -47,6 +46,38 @@ export default function Header(props) {
   const { width } = useSize();
   const [session] = useSession();
   const inputSearch = useRef();
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => {
+    setShow(false);
+    onSignOut();
+  };
+
+  useEffect(() => {
+
+  }, [width]);
+
+  const handleAccept = () => {
+      fetch("/api/v1/users/termsAccepted", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.token}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setShow(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleTermAndConditions = () => {
+    router.push("/terms-and-conditions");
+  }
 
   const router = useRouter();
 
@@ -164,6 +195,45 @@ export default function Header(props) {
 
   return (
     <>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Terminos y Condiciones</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Acepto los terminos y condiciones de la plataforma</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleAccept}>
+            Aceptar
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Salir
+          </Button>
+          <Button variant="primary" onClick={handleTermAndConditions}>
+            Leer terminos y condiciones
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <Navbar
         collapseOnSelect
         expand={navSearch ? "lg" : true}
@@ -180,7 +250,26 @@ export default function Header(props) {
           <Col className="col-auto col-sm-auto col-lg-4 p-0">
             <Link href="/" passHref>
               <Navbar.Brand className="p-0 m-0">
-                <Logo/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="220" height="92" viewBox="0 0 220 92">
+                  <g transform="translate(277 -222)">
+                    <rect width="89" height="92" transform="translate(-277 222)"></rect>
+                    <text transform="translate(-162 264)" font-size="18" font-family="Overpass-ExtraBold, Overpass"
+                          font-weight="800">
+                      <tspan x="0" y="0">FABRICA DE</tspan>
+                      <tspan x="0" y="22">PROYECTOS</tspan>
+                    </text>
+                    <g transform="translate(-332 221)">
+                      <g transform="translate(85 28)">
+                        <path
+                            d="M1650.617,578.187h.14a5.61,5.61,0,0,1,0,11.219l-3.488-.007v7.374h3.488a12.687,12.687,0,0,0,9.206-3.8,12.345,12.345,0,0,0,3.844-9.167,13.045,13.045,0,0,0-13.051-13.011h-.14Z"
+                            transform="translate(-1630.178 -570.797)" fill="#fff"></path>
+                        <path
+                            d="M1605.753,570.8h-17.7v33.911h0v4.083l2.892,3.766a1.355,1.355,0,0,0,1.67,0l2.892-3.766V602.4h0v-5.628h6.9V594.6h-9.073v7.8h0v4.576a1.553,1.553,0,0,1-3.106,0v-5.983h0V572.97h13.769v3.044h-10.663v15.538l9.072.01v-2.168l-6.9-.012v-11.2h10.248Z"
+                            transform="translate(-1588.052 -570.797)" fill="#ffca05" fill-rule="evenodd"></path>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
               </Navbar.Brand>
             </Link>
           </Col>
@@ -349,6 +438,7 @@ export default function Header(props) {
       </Navbar>
 
       {width > 992 && navSearch && <NavSearch />}
+
     </>
   );
 }
