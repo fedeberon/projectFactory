@@ -18,8 +18,8 @@ const ContactUs = () => {
       <section className="container content">
         <Row className="d-flex justify-content-center">
           <Col xs={6}>
-            <b><p>hola@fabricadeproyectos.com</p>
-            <p>+54 9 11 4545 4545</p></b>
+            <b><p>hola@lafabricadeproyectos.com.ar</p>
+            <p>+54 9 2314 616681</p></b>
             <Form>
               <FormGroup>
                 <Form.Label htmlFor="name">{t("common:name")}</Form.Label>
