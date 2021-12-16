@@ -113,7 +113,7 @@ const Layout = ({ children, title, footer = true, header = true }) => {
                       alt=""
                       className={`text-muted`}
                     />{" "}
-                    +54 9 11 4545 4545
+                    +54 9 2314 616681
                   </li>
                   <li className={`text-break`}>
                     <Image
@@ -123,7 +123,7 @@ const Layout = ({ children, title, footer = true, header = true }) => {
                       alt=""
                       className={`text-muted`}
                     />{" "}
-                    hola@fabricadeproyectos.com
+                    hola@lafabricadeproyectos.com.ar
                   </li>
                 </ul>
               </Col>

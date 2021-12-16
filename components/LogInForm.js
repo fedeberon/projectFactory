@@ -215,7 +215,7 @@ const LogInForm = (props) => {
                         {`${t("by-continuing-i-accept-the")} `}
                         <AnchorButton
                           title={t("terms-of-use")}
-                          href={"/"}
+                          href={"/terms-and-conditions"}
                           className="text-reset"
                         />
                         {` ${t("and-accept-the")} `}

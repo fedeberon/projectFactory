@@ -1,25 +1,26 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
-  Navbar,
-  InputGroup,
-  Col,
-  Row,
-  Dropdown,
-  Form,
-  DropdownButton,
+  Button,
   ButtonGroup,
+  Col,
+  Dropdown,
+  DropdownButton,
+  Form,
+  InputGroup,
+  Modal,
+  Navbar,
+  Row,
 } from "react-bootstrap";
 import Authentication from "../Authentication/Authentication";
-import { useRouter } from "next/dist/client/router";
+import {useRouter} from "next/dist/client/router";
 import useTranslation from "next-translate/useTranslation";
-import { signOut, useSession } from "next-auth/client";
-import { Globe, PersonCircle, Search, Translate } from "react-bootstrap-icons";
+import {signOut, useSession} from "next-auth/client";
+import {Globe, PersonCircle} from "react-bootstrap-icons";
 
 import Link from "next/link";
 import Image from "next/image";
 import SuggestionsSearch from "../SuggestionsSearch/SuggestionsSearch";
 import * as professionalService from "../../services/professionalService";
-import * as buildingWorkService from "../../services/buildingWorkService";
 import * as userService from "../../services/userService";
 import * as imageService from "../../services/imageService";
 import styles from "./Header.module.css";
@@ -32,7 +33,6 @@ import OffCanvasMenuCel from "../OffCanvas/OffCanvasMenuCel";
 import useSize from "../../hooks/window/useSize";
 
 // Services
-import * as tagService from "../../services/tagService";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
 export default function Header(props) {
@@ -46,6 +46,38 @@ export default function Header(props) {
   const { width } = useSize();
   const [session] = useSession();
   const inputSearch = useRef();
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => {
+    setShow(false);
+    onSignOut();
+  };
+
+  useEffect(() => {
+
+  }, [width]);
+
+  const handleAccept = () => {
+      fetch("/api/v1/users/termsAccepted", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.token}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setShow(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleTermAndConditions = () => {
+    router.push("/terms-and-conditions");
+  }
 
   const router = useRouter();
 
@@ -163,6 +195,45 @@ export default function Header(props) {
 
   return (
     <>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Terminos y Condiciones</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Acepto los terminos y condiciones de la plataforma</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleAccept}>
+            Aceptar
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Salir
+          </Button>
+          <Button variant="primary" onClick={handleTermAndConditions}>
+            Leer terminos y condiciones
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <Navbar
         collapseOnSelect
         expand={navSearch ? "lg" : true}
@@ -367,6 +438,7 @@ export default function Header(props) {
       </Navbar>
 
       {width > 992 && navSearch && <NavSearch />}
+
     </>
   );
 }
