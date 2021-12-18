@@ -44,16 +44,15 @@ const About = () => {
             src="https://www.enlacehw.com/wp-content/uploads/2014/12/Hombre-2Busando-2Bla-2Bnotebook-2BHP-2BEliteBook-2B1020-2Ben-2Bla-2Boficina.jpg"
           ></img>
           <p className="col-12 col-md-6 float-md-end p-5">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Facilisis sed odio morbi quis commodo. Quam lacus suspendisse
-            faucibus interdum posuere lorem ipsum dolor sit. A diam maecenas sed
-            enim ut sem viverra aliquet. Sollicitudin tempor id eu nisl nunc mi.
-            Ut tortor pretium viverra suspendisse potenti nullam ac tortor.
-            Facilisis gravida neque convallis a cras semper. Fusce id velit ut
-            tortor pretium viverra. Accumsan sit amet nulla facilisi morbi
-            tempus. Maecenas pharetra convallis posuere morbi leo. Accumsan
-            tortor posuere ac ut consequat semper viverra nam libero.
+            <h1>Nuestra Mision</h1>
+            <p>
+              Poder crear a través de la arquitectura una plataforma digial
+              que permita la interaccción entre los <strong>Individuos Profesionales, Empresas</strong>
+            </p>
+            <h1>Nuestro Objetivo</h1>
+            <p>
+              Crear los vinculos que permitan a los usuarioas <strong>Comprar, Vender y Publicar</strong> sus productos
+            </p>
           </p>
         </Container>
         <Col className="p-3 d-flex justify-content-center">
