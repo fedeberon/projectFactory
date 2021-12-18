@@ -41,7 +41,7 @@ const About = () => {
         <Container className="col-12 bg-light my-3">
           <img
             className="col-12 col-md-6"
-            src="https://www.enlacehw.com/wp-content/uploads/2014/12/Hombre-2Busando-2Bla-2Bnotebook-2BHP-2BEliteBook-2B1020-2Ben-2Bla-2Boficina.jpg"
+            src="/Hombre-2Busando-2Bla-2Bnotebook-2BHP-2BEliteBook-2B1020-2Ben-2Bla-2Boficina.jpeg"
           ></img>
           <p className="col-12 col-md-6 float-md-end p-5">
             <h1>Nuestra Mision</h1>
