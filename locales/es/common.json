@@ -6,7 +6,7 @@
     "signed-in-as": "Ingresado como",
     "profile": "Perfil",
     "portfolio": "Mi portafolio",
-    "search-placeholder": "Buscar fotos / profesionales",
+    "search-placeholder": "Buscar Fotos / Profesionales",
     "search-by": "Buscar por",
     "search-by-ideas": "Buscar por ideas",
     "search-by-professionals": "Buscar por profesionales",
@@ -40,7 +40,8 @@
   "new": "NUEVO",
 
   "is-required": "{{nameRequired}} es requerido",
-  "write-the-here-please": "Escriba {{namePlaceholder}} aquí por favor",
+  "is-required-pass":"{{nameRequired}} es requerida",
+  "write-the-here-please": "Escriba {{namePlaceholder}}",
   "cannot-be-less-than-character": "{{nameInput}} no puede tener menos de {{numberCharacters}} caracteres",
   "cannot-be-more-than-character": "{{nameInput}} no puede tener más de {{numberCharacters}} caracteres",
   "the-name": "El nombre",
@@ -207,7 +208,7 @@
   "project-factory-can-send-me-marketing-emails": "Fabrica de proyectos puede enviarme correos electrónicos de marketing",
 
   "Authentication": "--------------------------------",
-  "log-in": "Inciar sesión",
+  "log-in": "Iniciar sesión",
   "sign-in": "Crear cuenta",
   "username-already-exists": "El nombre de usuario ya existe",
 
@@ -308,7 +309,7 @@
   "month-10": "Octubre",
   "month-11": "Noviembre",
   "month-12": "Diciembre",
-  "you-may-also-like": "También te pude interesar",
+  "you-may-also-like": "También te puede interesar",
   "welcome-create-your-account": "Bienvenido! Creá tu cuenta",
 
   "spanish": "Español",

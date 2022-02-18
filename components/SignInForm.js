@@ -42,7 +42,7 @@ const SignInForm = (props) => {
         </Col>
         <Col xs={12} md={10} lg={8} xl={6}>
           <Card className={`${styles.card}`}>
-            <Card.Body className={`${styles.cardBody}`}>
+            <Card.Body className={`${styles.cardBody}"px-2"`}>
               <Row className="justify-content-center">
                 <Col className="col-auto my-3 text-center">
                   <h2>{t("welcome-create-your-account")}</h2>
@@ -146,7 +146,7 @@ const SignInForm = (props) => {
                         {...register("password", {
                           required: {
                             value: true,
-                            message: `${t("is-required", {
+                            message: `${t("is-required-pass", {
                               nameRequired: t("the-password"),
                             })}`,
                           },
