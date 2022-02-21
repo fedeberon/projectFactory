@@ -46,12 +46,12 @@ const About = () => {
           <p className="col-12 col-md-6 float-md-end p-5">
             <h1>Nuestra Mision</h1>
             <p>
-              Poder crear a través de la arquitectura una plataforma digial
-              que permita la interaccción entre los <strong>Individuos Profesionales, Empresas</strong>
+              Poder crear a través de la arquitectura una plataforma digital
+              que permita la interacción entre los <strong>Individuos Profesionales y Empresas</strong>
             </p>
             <h1>Nuestro Objetivo</h1>
             <p>
-              Crear los vinculos que permitan a los usuarioas <strong>Comprar, Vender y Publicar</strong> sus productos
+              Crear los vinculos que permitan a los usuarios <strong>Comprar, Vender y Publicar</strong> sus productos
             </p>
           </p>
         </Container>
