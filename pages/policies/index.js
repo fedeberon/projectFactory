@@ -15,17 +15,14 @@ const Policies = () => {
         <Row className="d-flex justify-content-center">
           <Col xs={6} className="bg-light">
             <h4 className="text-center">{t("site-policies")}</h4>
+            <h1>Nuestra Mision</h1>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Facilisis sed odio morbi quis commodo. Quam lacus suspendisse
-              faucibus interdum posuere lorem ipsum dolor sit. A diam maecenas sed
-              enim ut sem viverra aliquet. Sollicitudin tempor id eu nisl nunc mi.
-              Ut tortor pretium viverra suspendisse potenti nullam ac tortor.
-              Facilisis gravida neque convallis a cras semper. Fusce id velit ut
-              tortor pretium viverra. Accumsan sit amet nulla facilisi morbi
-              tempus. Maecenas pharetra convallis posuere morbi leo. Accumsan
-              tortor posuere ac ut consequat semper viverra nam libero.
+              Poder crear a través de la arquitectura una plataforma digial
+              que permita la interaccción entre los <strong>Individuos Profesionales, Empresas</strong>
+            </p>
+            <h1>Nuestro Objetivo</h1>
+            <p>
+              Crear los vinculos que permitan a los usuarioas <strong>Comprar, Vender y Publicar</strong> sus productos
             </p>
           </Col>
         </Row>
